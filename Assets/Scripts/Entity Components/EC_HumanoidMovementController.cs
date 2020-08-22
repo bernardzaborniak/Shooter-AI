@@ -24,7 +24,7 @@ public class EC_HumanoidMovementController : EntityComponent
     }
     protected MovementState movementState;
 
-    protected float maxAngularSpeed;   //for rotation independent of navmeshAgent;
+    //protected float maxAngularSpeed;   //for rotation independent of navmeshAgent;
 
     enum MovementType
     {
@@ -151,12 +151,14 @@ public class EC_HumanoidMovementController : EntityComponent
 
     // Measuring angularVelocity
     float angularVelocity;
+    float desiredAngularVelocity;
     Quaternion rotationLastFrame;
 
     public bool manualRotation;
     Quaternion desiredRotation;
 
     public float rotSpeed; //? needed?
+    public float rotAcceleration;
     float stationaryTurnSpeed;
     float runningTurnSpeed;
     float runningSpeed;
@@ -170,7 +172,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     public override void SetUpComponent(GameEntity entity)
     {
-        maxAngularSpeed = agent.angularSpeed;   //almost the same speed as original navmeshAgent?
+        //maxAngularSpeed = agent.angularSpeed;   //almost the same speed as original navmeshAgent?
         currentMovementOrder = new MovementOrder(agent);
         rotationLastFrame = transform.rotation;
 
@@ -231,7 +233,7 @@ public class EC_HumanoidMovementController : EntityComponent
             
         }
            
-        Debug.Log("angleDifference: " + angleDifference);
+        //Debug.Log("angleDifference: " + angleDifference);
 
 
         /*if (axis.y > 0) //instead of checking if its pointing down, we could do vector3 angle with the world up -> if >90 degrees - > its pointing down
@@ -244,7 +246,7 @@ public class EC_HumanoidMovementController : EntityComponent
         }*/
 
 
-        Debug.Log("signedAngleDifference: " + signedAngleDifference);
+        //Debug.Log("signedAngleDifference: " + signedAngleDifference);
 
         // Here I drop down to 0.9f times the desired movement,
         // since we'd rather undershoot and ease into the correct angle
@@ -259,16 +261,20 @@ public class EC_HumanoidMovementController : EntityComponent
 
         if(angleDifference < 0.01f)
         {
-            angularVelocity = 0;
+            desiredAngularVelocity = 0;
         }
         else if(signedAngleDifference < 0.01f)
         {
-            angularVelocity = rotSpeed;
+            desiredAngularVelocity = rotSpeed;
         }
         else
         {
-            angularVelocity = -rotSpeed;
+            desiredAngularVelocity = -rotSpeed;
         }
+
+        float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
+
+        angularVelocity = angularVelocity + deltaAngularVelocity * rotAcceleration * Time.deltaTime;
         
         
         Debug.Log("current angular vel: " + angularVelocity);
@@ -314,14 +320,14 @@ public class EC_HumanoidMovementController : EntityComponent
 
         Quaternion desiredSpineRotation = Quaternion.LookRotation(directionForSpine);
         desiredSpineRotation = Quaternion.Euler(desiredSpineRotation.eulerAngles.x, 0, 0);
-        spine.localRotation = Quaternion.RotateTowards(spine.localRotation, desiredSpineRotation, maxAngularSpeed * Time.deltaTime);
+        //spine.localRotation = Quaternion.RotateTowards(spine.localRotation, desiredSpineRotation, maxAngularSpeed * Time.deltaTime);
 
 
 
         direction.y = 0;
         Quaternion desiredLookRotation = Quaternion.LookRotation(direction);
         //because we want the same speed as the agent, which has its angular speed saved as degrees per second we use the rotaate towards function
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, maxAngularSpeed * Time.deltaTime );
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, maxAngularSpeed * Time.deltaTime );
     }
 
     public void MoveTo(Vector3 destination)
