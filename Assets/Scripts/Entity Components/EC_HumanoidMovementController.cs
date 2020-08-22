@@ -234,11 +234,12 @@ public class EC_HumanoidMovementController : EntityComponent
         bool resetVelocity = false; // To prevent overshooting at high velocities we reset the velocity when we passed the desired angle
         if (Mathf.Abs(signedAngleDifference) < 0.01f)
         {
-            resetVelocity = true;
+            resetVelocity = true;   
         }
 
 
-        if (Mathf.Abs(signedAngleDifference) < 0.01f)
+
+        if (Mathf.Abs(signedAngleDifference) < 0.1f)
         {
             angularVelocity = 0;
         }
@@ -247,13 +248,13 @@ public class EC_HumanoidMovementController : EntityComponent
             bool brake = false;
             float currentBreakAngle = angularVelocity * angularVelocity / (2 * rotAcceleration);
            // if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle + rotAcceleration/25) // i modify the break distance to prevent overshooting caused by too fast timing
-            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle) // i modify the break distance to prevent overshooting caused by too fast timing
+            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle *4) // i modify the break distance to prevent overshooting caused by too fast timing
             {
                 brake = true;
             }
-            //Debug.Log("-------------------------------------------------------");
+            Debug.Log("-------------------------------------------------------");
             //if(brake) Debug.Log("braking...");
-            //Debug.Log("signedAngleDifference: " + signedAngleDifference);
+            Debug.Log("signedAngleDifference: " + signedAngleDifference);
 
             // Clamp the angle difference and save it as current angular speed, also apply it
 
@@ -282,26 +283,37 @@ public class EC_HumanoidMovementController : EntityComponent
                 }
             }
 
+            if (brake)
+            {
+                desiredAngularVelocity = desiredAngularVelocity*1.1f;
+            }
+
             float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
             //Debug.Log("desired angular vel: " + desiredAngularVelocity);
             //Debug.Log("deltaAngularVelocity: " + deltaAngularVelocity);
+
 
             angularVelocity = angularVelocity + Mathf.Clamp(deltaAngularVelocity, -rotAcceleration, rotAcceleration) * Time.deltaTime;
             //angularVelocity = desiredAngularVelocity;
 
 
-            //Debug.Log("current angular vel: " + angularVelocity);
+            Debug.Log("current angular vel: " + angularVelocity);
 
             //cap the velocity, if it would overshoot?
-
-            if(signedAngleDifferenceLastFrame < 0 && signedAngleDifference >= 0)
+            if (brake)
             {
-                Debug.Log("changed direction with speed: " + angularVelocity);
+                if (signedAngleDifferenceLastFrame < 0 && signedAngleDifference >= 0)
+                {
+                    Debug.Log("changed direction with speed: " + angularVelocity);
+                    angularVelocity = 0;
+                }
+                else if (signedAngleDifferenceLastFrame >= 0 && signedAngleDifference < 0)
+                {
+                    Debug.Log("changed direction with speed: " + angularVelocity);
+                    angularVelocity = 0;
+                }
             }
-            else if (signedAngleDifferenceLastFrame >= 0 && signedAngleDifference < 0)
-            {
-                Debug.Log("changed direction with speed: " + angularVelocity);
-            }
+            
         }
 
         signedAngleDifferenceLastFrame = signedAngleDifference;
