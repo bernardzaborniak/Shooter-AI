@@ -5125,6 +5125,16 @@ PrefabInstance:
       propertyPath: rotAcceleration
       value: 4000
       objectReference: {fileID: 0}
+    - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: turnSpeedAcceleration
+      value: 4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: turnAnimationRealSpeed
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb7aed23282bdb14bbbd83caee2bfa61, type: 3}
 --- !u!4 &607459367 stripped

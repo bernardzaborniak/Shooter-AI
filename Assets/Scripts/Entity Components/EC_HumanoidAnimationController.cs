@@ -17,6 +17,9 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Header("Adjusting Animation Speed")]
     public float runAnimationRealSpeed;
     public float turnAnimationRealSpeed;
+    [Tooltip("because this speed gets capped by the movement controller, this acceleration heps smoothing it out, the best if its the same as turning acceleration on Movement COntroller")]
+    public float turnSpeedAcceleration;
+    float angularVelocityLastFrame;
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -24,6 +27,8 @@ public class EC_HumanoidAnimationController : EntityComponent
         // Convert the strings into hashes to improve performance
         forwardVelocityParamID = Animator.StringToHash(forwardVelocityParam);
         angularVelocityParamID = Animator.StringToHash(angularVelocityParam);
+
+        angularVelocityLastFrame = 0;
     }
 
     public void UpdateAnimation(float velocity, float angularVelocity)
@@ -38,6 +43,11 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetFloat(forwardVelocityParamID, agentSpeedNormalized);
 
         //Debug.Log("angularVelocityRaw: " + angularVelocity);
+
+        float angularVelocityDelta = Mathf.Clamp(angularVelocity - angularVelocityLastFrame, -turnSpeedAcceleration * Time.deltaTime, turnSpeedAcceleration * Time.deltaTime) ;
+        angularVelocity = angularVelocityLastFrame + angularVelocityDelta;
+
+        //Debug.Log("angularVelocitysmoothed: " + angularVelocity);
 
         float agentAngularSpeedNormalized = 0;
         if (angularVelocity > 0)
@@ -61,7 +71,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         //Debug.Log("agentAngularSpeedNormalized: " + agentAngularSpeedNormalized);
 
-
+        angularVelocityLastFrame = angularVelocity;
         animator.SetFloat(angularVelocityParamID, agentAngularSpeedNormalized, 0.1f, Time.deltaTime);
     }
 }

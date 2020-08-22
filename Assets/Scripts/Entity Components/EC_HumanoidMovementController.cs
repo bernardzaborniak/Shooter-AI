@@ -231,15 +231,16 @@ public class EC_HumanoidMovementController : EntityComponent
 
         #region Calculate angular veloicty to reach target
 
-        bool resetVelocity = false; // To prevent overshooting at high velocities we reset the velocity when we passed the desired angle
+        /*bool resetVelocity = false; // To prevent overshooting at high velocities we reset the velocity when we passed the desired angle
         if (Mathf.Abs(signedAngleDifference) < 0.01f)
         {
             resetVelocity = true;   
-        }
+        }*/
+
+        //instead of clamping velocity to 0, we clamp the velocity so it reaches the ideal angle //TODO
 
 
-
-        if (Mathf.Abs(signedAngleDifference) < 0.1f)
+        if (Mathf.Abs(signedAngleDifference) < 0.01f)
         {
             angularVelocity = 0;
         }
@@ -248,13 +249,13 @@ public class EC_HumanoidMovementController : EntityComponent
             bool brake = false;
             float currentBreakAngle = angularVelocity * angularVelocity / (2 * rotAcceleration);
            // if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle + rotAcceleration/25) // i modify the break distance to prevent overshooting caused by too fast timing
-            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle *4) // i modify the break distance to prevent overshooting caused by too fast timing
+            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle) // i modify the break distance to prevent overshooting caused by too fast timing
             {
                 brake = true;
             }
-            Debug.Log("-------------------------------------------------------");
-            //if(brake) Debug.Log("braking...");
-            Debug.Log("signedAngleDifference: " + signedAngleDifference);
+            //Debug.Log("-------------------------------------------------------");
+            if(brake) Debug.Log("braking...");
+            //Debug.Log("signedAngleDifference: " + signedAngleDifference);
 
             // Clamp the angle difference and save it as current angular speed, also apply it
 
@@ -283,34 +284,36 @@ public class EC_HumanoidMovementController : EntityComponent
                 }
             }
 
-            if (brake)
+            /*if (brake)
             {
                 desiredAngularVelocity = desiredAngularVelocity*1.1f;
-            }
+            }*/
 
             float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
             //Debug.Log("desired angular vel: " + desiredAngularVelocity);
             //Debug.Log("deltaAngularVelocity: " + deltaAngularVelocity);
 
 
-            angularVelocity = angularVelocity + Mathf.Clamp(deltaAngularVelocity, -rotAcceleration, rotAcceleration) * Time.deltaTime;
-            //angularVelocity = desiredAngularVelocity;
-
+            //angularVelocity = angularVelocity + Mathf.Clamp(deltaAngularVelocity, -rotAcceleration, rotAcceleration) * Time.deltaTime;
+            float angularVelocityDelta = Mathf.Clamp(desiredAngularVelocity - angularVelocity, -rotAcceleration * Time.deltaTime, rotAcceleration * Time.deltaTime);
+            angularVelocity = angularVelocity + angularVelocityDelta;
 
             Debug.Log("current angular vel: " + angularVelocity);
+            Debug.Log("signed angle : " + signedAngleDifference);
+
 
             //cap the velocity, if it would overshoot?
             if (brake)
             {
                 if (signedAngleDifferenceLastFrame < 0 && signedAngleDifference >= 0)
                 {
-                    Debug.Log("changed direction with speed: " + angularVelocity);
-                    angularVelocity = 0;
+                   // Debug.Log("changed direction with speed: " + angularVelocity);
+                    //angularVelocity = 0;
                 }
                 else if (signedAngleDifferenceLastFrame >= 0 && signedAngleDifference < 0)
                 {
-                    Debug.Log("changed direction with speed: " + angularVelocity);
-                    angularVelocity = 0;
+                   // Debug.Log("changed direction with speed: " + angularVelocity);
+                    //angularVelocity = 0;
                 }
             }
             
@@ -328,7 +331,10 @@ public class EC_HumanoidMovementController : EntityComponent
                 //desiredRotation = Quaternion.LookRotation(agent.velocity);
                 //desiredRotation = Quaternion.LookRotation(agent.desiredVelocity);
             }
-            transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);
+            //transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);
+            
+            //clamp the angular velocity so it cannot overshoot
+            transform.rotation *= Quaternion.AngleAxis(Mathf.Clamp(angularVelocity, -signedAngleDifference / Time.deltaTime, signedAngleDifference / Time.deltaTime) * Time.deltaTime, transform.up);
 
         }
 
