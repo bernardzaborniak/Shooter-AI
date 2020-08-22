@@ -32,7 +32,7 @@ public class NavmeshMover : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             humanoidMovementController.PauseMoving();
         }

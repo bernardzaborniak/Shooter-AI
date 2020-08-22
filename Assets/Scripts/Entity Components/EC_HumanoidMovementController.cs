@@ -167,6 +167,8 @@ public class EC_HumanoidMovementController : EntityComponent
     //Vector3 angularVelocity;
     Vector3 desiredForward;
 
+    float signedAngleDifferenceLastFrame; // we save this value, to check if we didnt overshoot at high velocities and accelerations
+
 
     #endregion
 
@@ -200,28 +202,21 @@ public class EC_HumanoidMovementController : EntityComponent
         currentMovementOrder.Update();
 
 
+        #region Calculate Angle Difference
+
         //float rotationDelta = Quaternion.Euler(transform.rotation, Quaternion.LookRotation(agent.velocity));
-        if(agent.desiredVelocity!= Vector3.zero)
+        if (agent.desiredVelocity!= Vector3.zero)
         {
             desiredForward = agent.desiredVelocity;
         }
         Quaternion rotationDelta = transform.rotation * Quaternion.Inverse(Quaternion.LookRotation(desiredForward));
 
-        // rot code copied from: https://gamedev.stackexchange.com/questions/147409/rotate-from-current-rotation-to-another-using-angular-velocity
         float angleDifference;
         float signedAngleDifference = 0;
-        /*Vector3 axis;
-        rotationDelta.ToAngleAxis(out angleDifference, out axis);
-
-        //Debug.Log("current rotationDelta: " + rotationDelta.eulerAngles);
-        
-        Debug.Log("axis: " + axis);
 
 
-
-        // We get an infinite axis in the event that our rotation is already aligned.
-        if (float.IsInfinity(axis.x))
-            return;*/
+        //if signed angle difference is <0 , it means the target is on the right side
+        //if angular velocity is >0 , it means the velocity is going into the right side
 
         angleDifference = rotationDelta.eulerAngles.y;
 
@@ -229,59 +224,86 @@ public class EC_HumanoidMovementController : EntityComponent
 
         if (signedAngleDifference > 180f)
         {
-            signedAngleDifference = signedAngleDifference - 360f;
-            
+            signedAngleDifference = signedAngleDifference - 360f;  
         }
-           
-        //Debug.Log("angleDifference: " + angleDifference);
 
+        #endregion
 
-        /*if (axis.y > 0) //instead of checking if its pointing down, we could do vector3 angle with the world up -> if >90 degrees - > its pointing down
+        #region Calculate angular veloicty to reach target
+
+        bool resetVelocity = false; // To prevent overshooting at high velocities we reset the velocity when we passed the desired angle
+        if (Mathf.Abs(signedAngleDifference) < 0.01f)
         {
-            signedAngleDifference = -angleDifference;
+            resetVelocity = true;
         }
-        else
+
+
+        if (Mathf.Abs(signedAngleDifference) < 0.01f)
         {
-            signedAngleDifference = angleDifference;
-        }*/
-
-
-        //Debug.Log("signedAngleDifference: " + signedAngleDifference);
-
-        // Here I drop down to 0.9f times the desired movement,
-        // since we'd rather undershoot and ease into the correct angle
-        // than overshoot and oscillate around it in the event of errors.
-
-       // Vector3 angular = (0.9f * Mathf.Deg2Rad * angleDifference / Time.fixedDeltaTime) * axis.normalized;
-
-
-        // angularVelocity = angular;
-
-        // Clamp the angle difference and save it as current angular speed, also apply it
-
-        if(angleDifference < 0.01f)
-        {
-            desiredAngularVelocity = 0;
-        }
-        else if(signedAngleDifference < 0.01f)
-        {
-            desiredAngularVelocity = rotSpeed;
+            angularVelocity = 0;
         }
         else
         {
-            desiredAngularVelocity = -rotSpeed;
+            bool brake = false;
+            float currentBreakAngle = angularVelocity * angularVelocity / (2 * rotAcceleration);
+            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle)
+            {
+                brake = true;
+            }
+            Debug.Log("-------------------------------------------------------");
+            Debug.Log("angle difference: " + angleDifference);
+            Debug.Log("signedAngleDifference: " + signedAngleDifference);
+
+            // Clamp the angle difference and save it as current angular speed, also apply it
+
+            /*if (Mathf.Abs(signedAngleDifference) < 0.1f)
+            {
+                desiredAngularVelocity = 0;
+            }
+            else if(signedAngleDifference < 0.01f)*/
+            if (signedAngleDifference < 0)
+            {
+                desiredAngularVelocity = rotSpeed;
+
+                if (angularVelocity > 0)
+                {
+                    if (brake)
+                    {
+                        desiredAngularVelocity = -rotSpeed;
+                    }
+                }
+            }
+            else
+            {
+                desiredAngularVelocity = -rotSpeed;
+
+                if (angularVelocity < 0)
+                {
+                    if (brake)
+                    {
+                        desiredAngularVelocity = rotSpeed;
+                    }
+                }
+            }
+
+            float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
+            Debug.Log("desired angular vel: " + desiredAngularVelocity);
+            Debug.Log("deltaAngularVelocity: " + deltaAngularVelocity);
+
+            angularVelocity = angularVelocity + Mathf.Clamp(deltaAngularVelocity, -rotAcceleration, rotAcceleration) * Time.deltaTime;
+            //angularVelocity = desiredAngularVelocity;
+
+
+            Debug.Log("current angular vel: " + angularVelocity);
+
+            //cap the velocity, if it would overshoot?
         }
 
-        float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
+        signedAngleDifferenceLastFrame = signedAngleDifference;
 
-        angularVelocity = angularVelocity + deltaAngularVelocity * rotAcceleration * Time.deltaTime;
-        
-        
-        Debug.Log("current angular vel: " + angularVelocity);
+        #endregion
 
-        //apply the velocity
-        
-
+        // Apply Velocity
         if (manualRotation)
         {
             if(agent.desiredVelocity != Vector3.zero)
@@ -291,22 +313,11 @@ public class EC_HumanoidMovementController : EntityComponent
             }
             transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);
 
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotSpeed * Time.deltaTime);
         }
 
-        //angularVelocity = Vector3.Angle(transform.forward, forwardLastFrame) / Time.deltaTime; //degrees per second
-        //Debug.Log("rot this frame: " + transform.rotation.eulerAngles);
-        //Debug.Log("rot previous frame: " + rotationLastFrame.eulerAngles);
-        //Debug.Log("change in degress: " + Quaternion.Angle(transform.rotation, rotationLastFrame));
 
-        //angularVelocity = Quaternion.Angle(transform.rotation,rotationLastFrame) / Time.deltaTime; //degrees per second
-        //rotationLastFrame = transform.rotation;
 
         humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity);
-        //humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, 0);
-
-       
-
     }
 
 
