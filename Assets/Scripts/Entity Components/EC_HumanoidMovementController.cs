@@ -41,47 +41,29 @@ public class EC_HumanoidMovementController : EntityComponent
         Crawling
     }
 
+    //represents an information container about the current order, does not do any logic by itself
     class MovementOrder
     {
         public Vector3 destination;
         public MovementType movementType;
-        NavMeshAgent agent;
-        
+       // NavMeshAgent agent;
+
         public enum OrderExecutionStatus
         {
             Ordered,
             BeingExecuted,
             Paused,
-            FinishedExecuting,
             NoOrder
         }
 
-        OrderExecutionStatus orderExecutionStatus = OrderExecutionStatus.NoOrder;
+         OrderExecutionStatus orderExecutionStatus = OrderExecutionStatus.NoOrder;
 
-        public MovementOrder(NavMeshAgent agent)
+        public MovementOrder()
         {
-            this.agent = agent;
+
         }
 
-        public void Update()
-        {
-            if (orderExecutionStatus == OrderExecutionStatus.Ordered)
-            {
-                Execute();
-            }
-            else if (IsBeingExecuted())
-            {
-                float dist = agent.remainingDistance;
-                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
-                {
-                    orderExecutionStatus = OrderExecutionStatus.FinishedExecuting;
-                }
-            }
-
-            //Debug.Log("current state: " + orderExecutionStatus);
-        }
-
-
+  
         public void SetCurrentOrder(Vector3 destination)
         {
             orderExecutionStatus = OrderExecutionStatus.Ordered;
@@ -92,46 +74,50 @@ public class EC_HumanoidMovementController : EntityComponent
         {
             orderExecutionStatus = OrderExecutionStatus.Ordered;
             this.destination = destination;
+            this.movementType = movementType;
         }
 
-        public void Execute()
+        public void OnExecute()
         {
-            agent.isStopped = false;
-            agent.SetDestination(destination);
             orderExecutionStatus = OrderExecutionStatus.BeingExecuted;
         }
 
-        public void Abort()
+        public void OnAbort()
         {
-            agent.ResetPath();
             orderExecutionStatus = OrderExecutionStatus.NoOrder;
         }
 
-        public void Pause()
+        public void OnFinishedExecuting()
         {
-            if(orderExecutionStatus == OrderExecutionStatus.BeingExecuted)
-            {
-                agent.isStopped = true;
-                orderExecutionStatus = OrderExecutionStatus.Paused;
-            }    
+            orderExecutionStatus = OrderExecutionStatus.NoOrder;
         }
 
-        public void Resume()
+        public void OnPause()
         {
-            agent.isStopped = false;
+            orderExecutionStatus = OrderExecutionStatus.Paused;
+        }
+
+        public void OnResume()
+        { 
             orderExecutionStatus = OrderExecutionStatus.BeingExecuted;
         }
-    
+
         #region Status Checks
 
-        public bool IsBeingExecuted() 
-        { 
+        public bool IsBeingExecuted()
+        {
             return orderExecutionStatus == OrderExecutionStatus.BeingExecuted;
+        }
+
+        public bool IsPaused()
+        {
+            return orderExecutionStatus == OrderExecutionStatus.Paused;
         }
 
         public bool IsWaitingForExecution()
         {
-            return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
+            //return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
+            return  orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 
         #endregion
@@ -167,6 +153,10 @@ public class EC_HumanoidMovementController : EntityComponent
     //Vector3 angularVelocity;
     Vector3 desiredForward;
 
+    //for testing
+    float desiredRotationY;
+    float rotationY;
+
     float signedAngleDifferenceLastFrame; // we save this value, to check if we didnt overshoot at high velocities and accelerations
 
 
@@ -175,13 +165,15 @@ public class EC_HumanoidMovementController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         //maxAngularSpeed = agent.angularSpeed;   //almost the same speed as original navmeshAgent?
-        currentMovementOrder = new MovementOrder(agent);
+        //currentMovementOrder = new MovementOrder(agent);
+        currentMovementOrder = new MovementOrder();
         rotationLastFrame = transform.rotation;
 
         if (manualRotation)
         {
             agent.updateRotation = false;
             desiredForward = transform.forward;
+            rotationY = 0;
         }
     }
 
@@ -199,79 +191,100 @@ public class EC_HumanoidMovementController : EntityComponent
 
             }
         }*/
-        currentMovementOrder.Update();
-
-
-        #region Calculate Angle Difference
-
-        //float rotationDelta = Quaternion.Euler(transform.rotation, Quaternion.LookRotation(agent.velocity));
-        if (agent.desiredVelocity!= Vector3.zero)
+        //currentMovementOrder.Update();
+        if (currentMovementOrder.IsWaitingForExecution())
         {
-            desiredForward = agent.desiredVelocity;
+            agent.isStopped = false;
+            agent.SetDestination(currentMovementOrder.destination);
+            currentMovementOrder.OnExecute();
         }
-        Quaternion rotationDelta = transform.rotation * Quaternion.Inverse(Quaternion.LookRotation(desiredForward));
-
-        float angleDifference;
-        float signedAngleDifference = 0;
-
-
-        //if signed angle difference is <0 , it means the target is on the right side
-        //if angular velocity is >0 , it means the velocity is going into the right side
-
-        angleDifference = rotationDelta.eulerAngles.y;
-
-        signedAngleDifference = angleDifference;
-
-        if (signedAngleDifference > 180f)
+        else if (currentMovementOrder.IsBeingExecuted())
         {
-            signedAngleDifference = signedAngleDifference - 360f;  
+            float dist = agent.remainingDistance;
+            if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
+            {
+                currentMovementOrder.OnFinishedExecuting();
+            }
         }
 
-        #endregion
 
-        #region Calculate angular veloicty to reach target
-
-        /*bool resetVelocity = false; // To prevent overshooting at high velocities we reset the velocity when we passed the desired angle
-        if (Mathf.Abs(signedAngleDifference) < 0.01f)
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            resetVelocity = true;   
-        }*/
-
-        //instead of clamping velocity to 0, we clamp the velocity so it reaches the ideal angle //TODO
-
-
-        if (Mathf.Abs(signedAngleDifference) < 0.01f)
-        {
-            angularVelocity = 0;
+            desiredRotationY = -120;
         }
-        else
+        if (Input.GetKeyDown(KeyCode.B))
         {
+            desiredRotationY = -30;
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            desiredRotationY = 30;
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            desiredRotationY = 120;
+        }
+
+
+        /* #region Calculate Angle Difference
+
+         //float rotationDelta = Quaternion.Euler(transform.rotation, Quaternion.LookRotation(agent.velocity));
+         if (agent.desiredVelocity != Vector3.zero)
+         {
+             desiredForward = agent.desiredVelocity;
+         }
+         Quaternion rotationDelta = transform.rotation * Quaternion.Inverse(Quaternion.LookRotation(desiredForward));
+
+         float angleDifference;
+         float signedAngleDifference = 0;
+
+
+         //if signed angle difference is >0 , it means the target is on the right side
+         //if angular velocity is >0 , it means the velocity is going into the right side
+
+         angleDifference = rotationDelta.eulerAngles.y;
+
+
+
+         signedAngleDifference = angleDifference;
+
+         if (signedAngleDifference > 180f)
+         {
+             signedAngleDifference -= 360f;
+         }
+         signedAngleDifference = -signedAngleDifference;
+
+         if (Mathf.Abs(angleDifference) > 0.01f)
+         {
+             //Debug.Log("angleDifference: " + angleDifference);
+            // Debug.Log("signedAngleDifference: " + signedAngleDifference);
+         }
+
+
+         #endregion*/
+
+        float deltaAngle = desiredRotationY - rotationY;
+
+        #region Calculate desired veloicty to reach target
+
+
+        //if (Mathf.Abs(signedAngleDifference) > 0.1f)
+        if (Mathf.Abs(deltaAngle) > 0.01f)
+        {
+        
             bool brake = false;
             float currentBreakAngle = angularVelocity * angularVelocity / (2 * rotAcceleration);
-           // if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle + rotAcceleration/25) // i modify the break distance to prevent overshooting caused by too fast timing
-            if (Mathf.Abs(signedAngleDifference) <= currentBreakAngle) // i modify the break distance to prevent overshooting caused by too fast timing
+
+            if (Mathf.Abs(deltaAngle) <= currentBreakAngle) 
             {
                 brake = true;
             }
+
             //Debug.Log("-------------------------------------------------------");
-            if(brake) Debug.Log("braking...");
-            //Debug.Log("signedAngleDifference: " + signedAngleDifference);
+            if (brake) Debug.Log("braking...");
 
-            // Clamp the angle difference and save it as current angular speed, also apply it
 
-            if (signedAngleDifference < 0)
-            {
-                desiredAngularVelocity = rotSpeed;
-
-                if (angularVelocity > 0)
-                {
-                    if (brake)
-                    {
-                        desiredAngularVelocity = -rotSpeed;
-                    }
-                }
-            }
-            else
+            if (deltaAngle < 0)
             {
                 desiredAngularVelocity = -rotSpeed;
 
@@ -283,64 +296,59 @@ public class EC_HumanoidMovementController : EntityComponent
                     }
                 }
             }
-
-            /*if (brake)
+            else
             {
-                desiredAngularVelocity = desiredAngularVelocity*1.1f;
-            }*/
+                desiredAngularVelocity = rotSpeed;
+
+                if (angularVelocity > 0)
+                {
+                    if (brake)
+                    {
+                        desiredAngularVelocity = -rotSpeed;
+                    }
+                }
+            }
+
+
 
             float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
-            //Debug.Log("desired angular vel: " + desiredAngularVelocity);
-            //Debug.Log("deltaAngularVelocity: " + deltaAngularVelocity);
-
-
-            //angularVelocity = angularVelocity + Mathf.Clamp(deltaAngularVelocity, -rotAcceleration, rotAcceleration) * Time.deltaTime;
-            float angularVelocityDelta = Mathf.Clamp(desiredAngularVelocity - angularVelocity, -rotAcceleration * Time.deltaTime, rotAcceleration * Time.deltaTime);
-            angularVelocity = angularVelocity + angularVelocityDelta;
-
-            Debug.Log("current angular vel: " + angularVelocity);
-            Debug.Log("signed angle : " + signedAngleDifference);
-
-
-            //cap the velocity, if it would overshoot?
-            if (brake)
+            float deltaAngularVelocityNormalized = 0;
+            if (deltaAngularVelocity > 0)
             {
-                if (signedAngleDifferenceLastFrame < 0 && signedAngleDifference >= 0)
-                {
-                   // Debug.Log("changed direction with speed: " + angularVelocity);
-                    //angularVelocity = 0;
-                }
-                else if (signedAngleDifferenceLastFrame >= 0 && signedAngleDifference < 0)
-                {
-                   // Debug.Log("changed direction with speed: " + angularVelocity);
-                    //angularVelocity = 0;
-                }
+                deltaAngularVelocityNormalized = 1;
             }
-            
-        }
-
-        signedAngleDifferenceLastFrame = signedAngleDifference;
-
-        #endregion
-
-        // Apply Velocity
-        if (manualRotation)
-        {
-            if(agent.desiredVelocity != Vector3.zero)
+            else if (deltaAngularVelocity < 0)
             {
-                //desiredRotation = Quaternion.LookRotation(agent.velocity);
-                //desiredRotation = Quaternion.LookRotation(agent.desiredVelocity);
+                deltaAngularVelocityNormalized = -1;
             }
+
+            #endregion
+
+            #region apply acceleration and velocity
+
+            rotationY = Mathf.SmoothDampAngle(rotationY, desiredRotationY, ref angularVelocity, deltaAngle/rotSpeed);
+            Debug.Log("angularVelocity: " + angularVelocity);
+           /* angularVelocity += 0.5f * deltaAngularVelocityNormalized * rotAcceleration * Time.deltaTime;
+            angularVelocity = Mathf.Clamp(angularVelocity, -rotSpeed, rotSpeed);
             //transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);
-            
-            //clamp the angular velocity so it cannot overshoot
-            transform.rotation *= Quaternion.AngleAxis(Mathf.Clamp(angularVelocity, -signedAngleDifference / Time.deltaTime, signedAngleDifference / Time.deltaTime) * Time.deltaTime, transform.up);
+            rotationY += angularVelocity * Time.deltaTime;*/
+
+            if (angularVelocity > 0)
+            {
+                Debug.Log("rotationY: " + rotationY + " >");
+            }
+            else if (angularVelocity < 0)
+            {
+                Debug.Log("rotationY: " + rotationY + " <");
+            }
+
+        
+          /*  angularVelocity += 0.5f * deltaAngularVelocityNormalized * rotAcceleration * Time.deltaTime;
+            angularVelocity = Mathf.Clamp(angularVelocity, -rotSpeed, rotSpeed);*/
+
 
         }
-
-
-
-        humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity);
+        #endregion
     }
 
 
@@ -372,17 +380,27 @@ public class EC_HumanoidMovementController : EntityComponent
 
     public void AbortMoving()
     {
-        currentMovementOrder.Abort();
+        agent.ResetPath();
+        currentMovementOrder.OnAbort();
     }
 
     public void PauseMoving()
     {
-        currentMovementOrder.Pause();
+        if (currentMovementOrder.IsBeingExecuted())
+        {
+            agent.isStopped = true;
+            currentMovementOrder.OnPause();
+        }
     }
 
     public void ResumeMoving()
     {
-        currentMovementOrder.Resume();
+        if (currentMovementOrder.IsPaused())
+        {
+            agent.isStopped = false;
+            currentMovementOrder.OnResume();
+        }
+    
     }
 
     #endregion
@@ -414,7 +432,7 @@ public class EC_HumanoidMovementController : EntityComponent
     #region Status Checks
     public virtual bool IsMoving()
     {
-         return agent.velocity.magnitude > agent.speed / 2;
+        return agent.velocity.magnitude > agent.speed / 2;
     }
 
     public float GetCurrentVelocityMagnitude()
@@ -439,15 +457,15 @@ public class EC_HumanoidMovementController : EntityComponent
     #region Debug
 
     private void OnDrawGizmos()
-     {
-         if (showGizmo && agent!=null)
-         {
-             if (agent.destination != null)
-             {
-                 Gizmos.color = Color.green;
-                 Gizmos.DrawCube(agent.destination, new Vector3(0.2f, 2, 0.2f));
+    {
+        if (showGizmo && agent != null)
+        {
+            if (agent.destination != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawCube(agent.destination, new Vector3(0.2f, 2, 0.2f));
 
-             }
+            }
 
             if (agent.desiredVelocity != null)
             {
@@ -456,7 +474,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
             }
         }
-     }
+    }
 
     #endregion
 }
