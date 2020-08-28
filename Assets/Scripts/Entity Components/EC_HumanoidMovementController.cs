@@ -281,7 +281,7 @@ public class EC_HumanoidMovementController : EntityComponent
             }
 
             //Debug.Log("-------------------------------------------------------");
-            if (brake) Debug.Log("braking...");
+            //if (brake) Debug.Log("braking...");
 
 
             if (deltaAngle < 0)
@@ -327,7 +327,7 @@ public class EC_HumanoidMovementController : EntityComponent
             #region apply acceleration and velocity
 
             rotationY = Mathf.SmoothDampAngle(rotationY, desiredRotationY, ref angularVelocity, deltaAngle/rotSpeed);
-            Debug.Log("angularVelocity: " + angularVelocity);
+           // Debug.Log("angularVelocity: " + angularVelocity);
            /* angularVelocity += 0.5f * deltaAngularVelocityNormalized * rotAcceleration * Time.deltaTime;
             angularVelocity = Mathf.Clamp(angularVelocity, -rotSpeed, rotSpeed);
             //transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);

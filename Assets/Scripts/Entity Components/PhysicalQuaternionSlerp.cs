@@ -15,6 +15,7 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
 
     //for rotation
     Quaternion currentTargetRot;
+    Vector3 currentTargetForward;
     Quaternion currentStartRotatingRotation;
 
     float initialVelocity;
@@ -44,12 +45,13 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            Rotate(target.rotation);
+            Rotate(target);
         }
 
-
-
-        if(Quaternion.Angle(currentTargetRot, transformToRotate.rotation) > 0f)
+        //Debug.Log("---------------------------------------------");
+        //Debug.Log("difference: " + Quaternion.Angle(currentTargetRot, transformToRotate.rotation));
+        //if(Quaternion.Angle(currentTargetRot, transformToRotate.rotation.normalized) > 0f)
+        if(Vector3.Angle(currentTargetForward, transformToRotate.forward) > 0f)
         {
             //Debug.Log("--------------rot update------------");
             float deltaTime = Time.time - startedRotationTime;
@@ -69,7 +71,7 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
 
                     //calculate distance traveled before the swithc, set the distanceTraveledAtSwitchValue
                     distanceTraveledAtSwitch = initialVelocity * switchDirectionTime + 0.5f * acceleration * switchDirectionTime * switchDirectionTime;
-                    Debug.Log("switch--------------------------------");
+                    Debug.Log("switch-------------------------------- ");
 
                     //calculate distance draveled after the switch
                     float deltaTimeBraking = (deltaTime - switchDirectionTime); 
@@ -86,7 +88,7 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
             //Debug.Log("---------------------------------------");
             //Debug.Log("deltaTime: " + deltaTime);
             //Debug.Log("switchDirectionTime: " + switchDirectionTime);
-           // Debug.Log("distanceTraveled: " + distanceTraveled);
+            // Debug.Log("distanceTraveled: " + distanceTraveled);
             //Debug.Log("distanceTraveledLastFrame: " + distanceTraveledLastFrame);
            // Debug.Log("Time.deltaTime: " + Time.deltaTime);
             angularVelocity = (distanceTraveled - distanceTraveledLastFrame) / Time.deltaTime;
@@ -96,18 +98,22 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
             float percentageOfRotationTraveled = distanceTraveled/ angleDistance;  // 0 to 1;
             //Debug.Log("percentageOfRotationTraveled: " + percentageOfRotationTraveled);
 
-
             transformToRotate.rotation = Quaternion.Slerp(currentStartRotatingRotation, currentTargetRot, percentageOfRotationTraveled);
+            //transformToRotate.rotation = Quaternion.RotateTowards(currentStartRotatingRotation, currentTargetRot, distanceTraveled);
+            //Debug.Log("angle after applying rot: " + Quaternion.Angle(currentTargetRot, transformToRotate.rotation.normalized));
+            //Debug.Log("vector angle after applying rot: " + Vector3.Angle(currentTargetForward, transformToRotate.forward));
+
         }
     }
 
-    public void Rotate(Quaternion targeRotation)
+    public void Rotate(Transform targeRotation)
     {
         isBraking = false;
 
         Debug.Log("rotate");
-        currentTargetRot = targeRotation;
-        currentStartRotatingRotation = transformToRotate.rotation;
+        currentTargetRot = targeRotation.rotation.normalized;
+        currentTargetForward = targeRotation.forward;  // we needthe forward for angle difference, it is more accurate than Quaternion.Angle()
+        currentStartRotatingRotation = transformToRotate.rotation.normalized;
         startedRotationTime = Time.time;
 
         angleDistance = Quaternion.Angle(currentTargetRot, currentStartRotatingRotation);
@@ -120,5 +126,6 @@ public class PhysicalQuaternionSlerp : MonoBehaviour
         switchDirectionTime = rotationTime - defaultTime / 2;
 
         acceleration = maxVelocity / (defaultTime / 2);
+        Debug.Log("acceleration: " + acceleration);
     }
 }

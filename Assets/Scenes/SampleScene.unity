@@ -9046,14 +9046,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002910085}
-  m_LocalRotation: {x: -0, y: 0.15628555, z: -0, w: 0.98771197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.2626157, y: 0, z: 0.03789997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 19003300}
   m_Father: {fileID: 1861752585}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 17.983, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1002910087
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13373,14 +13373,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575454076}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: -0.17364825, z: 0, w: 0.9848078}
+  m_LocalPosition: {x: 0.05287695, y: 0, z: 0.014529228}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 12060935}
   m_Father: {fileID: 1861752585}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -20, z: 0}
 --- !u!65 &1575454078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15972,6 +15972,7 @@ GameObject:
   - component: {fileID: 1861752585}
   - component: {fileID: 1861752584}
   - component: {fileID: 1861752586}
+  - component: {fileID: 1861752587}
   m_Layer: 0
   m_Name: QuaternionTest
   m_TagString: Untagged
@@ -16026,7 +16027,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformToRotate: {fileID: 1002910086}
   target: {fileID: 1575454077}
-  velocity: 6
+  velocity: 100
+--- !u!114 &1861752587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861752583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccebf57f1391fed4ca2f56147896b4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRotation: {fileID: 1575454077}
+  transformToRotate: {fileID: 1002910086}
+  maxVelocity: 20
+  acceleration: 10
 --- !u!4 &1867162744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,
