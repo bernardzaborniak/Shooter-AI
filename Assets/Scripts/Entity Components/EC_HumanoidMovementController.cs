@@ -226,7 +226,7 @@ public class EC_HumanoidMovementController : EntityComponent
         }
 
 
-        /* #region Calculate Angle Difference
+         #region Calculate Angle Difference
 
          //float rotationDelta = Quaternion.Euler(transform.rotation, Quaternion.LookRotation(agent.velocity));
          if (agent.desiredVelocity != Vector3.zero)
@@ -261,7 +261,7 @@ public class EC_HumanoidMovementController : EntityComponent
          }
 
 
-         #endregion*/
+         #endregion
 
         float deltaAngle = desiredRotationY - rotationY;
 
