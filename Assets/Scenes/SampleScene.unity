@@ -15973,6 +15973,7 @@ GameObject:
   - component: {fileID: 1861752584}
   - component: {fileID: 1861752586}
   - component: {fileID: 1861752587}
+  - component: {fileID: 1861752588}
   m_Layer: 0
   m_Name: QuaternionTest
   m_TagString: Untagged
@@ -16042,8 +16043,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotation: {fileID: 1575454077}
   transformToRotate: {fileID: 1002910086}
-  maxVelocity: 20
+  maxVelocity: 500
   acceleration: 10
+--- !u!114 &1861752588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861752583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce919f843bd4744ab33b07a757d4ee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRotationT: {fileID: 1575454077}
+  transformToRotate: {fileID: 1002910086}
+  smoothTime: 1
 --- !u!4 &1867162744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,
