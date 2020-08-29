@@ -5315,15 +5315,25 @@ PrefabInstance:
       propertyPath: rotAcceleration
       value: 40000
       objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: currentMaxAngularVelocity
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: accelerationDistance
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: turnSpeedAcceleration
-      value: 400
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: turnAnimationRealSpeed
-      value: 100
+      value: 400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb7aed23282bdb14bbbd83caee2bfa61, type: 3}
@@ -13373,14 +13383,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575454076}
-  m_LocalRotation: {x: 0, y: -0.17364825, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0.05287695, y: 0, z: 0.014529228}
+  m_LocalRotation: {x: 0, y: 0.08715578, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0.06280661, y: 0, z: 0.1215353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 12060935}
   m_Father: {fileID: 1861752585}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -20, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 10, z: 0}
 --- !u!65 &1575454078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15974,6 +15984,7 @@ GameObject:
   - component: {fileID: 1861752586}
   - component: {fileID: 1861752587}
   - component: {fileID: 1861752588}
+  - component: {fileID: 1861752589}
   m_Layer: 0
   m_Name: QuaternionTest
   m_TagString: Untagged
@@ -15988,7 +15999,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861752583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8e6783cd71c1c44794cf9fcce74524d, type: 3}
   m_Name: 
@@ -16021,7 +16032,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861752583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 957ca97f602c44940ba6f7eb93e78bab, type: 3}
   m_Name: 
@@ -16036,7 +16047,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861752583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ccebf57f1391fed4ca2f56147896b4b1, type: 3}
   m_Name: 
@@ -16052,16 +16063,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861752583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce919f843bd4744ab33b07a757d4ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetRotationT: {fileID: 1575454077}
   transformToRotate: {fileID: 1002910086}
-  smoothTime: 1
   maxSpeed: 600
   accelerationDistance: 70
+  smoothTime: 1
+--- !u!114 &1861752589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861752583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701e0e251cd356143966393eaa686e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRotationTransform: {fileID: 1575454077}
+  transformToRotate: {fileID: 1002910086}
+  maxVelocity: 1
+  accelerationDistance: 70
+  smoothTime: 0.5
 --- !u!4 &1867162744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,

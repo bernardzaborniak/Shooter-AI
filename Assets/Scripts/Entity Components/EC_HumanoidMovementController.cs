@@ -135,29 +135,25 @@ public class EC_HumanoidMovementController : EntityComponent
     [SerializeField]
     bool showGizmo;
 
-    // Measuring angularVelocity
+    // Rotation
+    public float currentMaxAngularVelocity;
+    public float accelerationDistance;
     float angularVelocity;
-    float desiredAngularVelocity;
-    Quaternion rotationLastFrame;
+    float smoothTime;
 
-    public bool manualRotation;
-    Quaternion desiredRotation;
+    Quaternion targetRotation;
+    Quaternion currentRotation;
+    Quaternion newRotation;
+    Vector4 rotationV;
 
-    public float rotSpeed; //? needed?
-    public float rotAcceleration;
     float stationaryTurnSpeed;
     float runningTurnSpeed;
-    float runningSpeed;
-    float walkingSpeed;
-    float rouchingSpeed;
-    //Vector3 angularVelocity;
+
     Vector3 desiredForward;
 
-    //for testing
-    float desiredRotationY;
-    float rotationY;
-
-    float signedAngleDifferenceLastFrame; // we save this value, to check if we didnt overshoot at high velocities and accelerations
+    float runningSpeed;
+    float walkingSpeed;
+    float crouchingSpeed;
 
 
     #endregion
@@ -167,14 +163,10 @@ public class EC_HumanoidMovementController : EntityComponent
         //maxAngularSpeed = agent.angularSpeed;   //almost the same speed as original navmeshAgent?
         //currentMovementOrder = new MovementOrder(agent);
         currentMovementOrder = new MovementOrder();
-        rotationLastFrame = transform.rotation;
 
-        if (manualRotation)
-        {
-            agent.updateRotation = false;
-            desiredForward = transform.forward;
-            rotationY = 0;
-        }
+        agent.updateRotation = false;
+        desiredForward = transform.forward;
+        
     }
 
     // Update is only for looks- the rotation is important for logic but it can be a bit jaggy if far away or not on screen - lod this script, only call it every x seconds?
@@ -208,147 +200,33 @@ public class EC_HumanoidMovementController : EntityComponent
         }
 
 
-        if (Input.GetKeyDown(KeyCode.V))
+
+
+        if (agent.desiredVelocity != Vector3.zero)
         {
-            desiredRotationY = -120;
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            desiredRotationY = -30;
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            desiredRotationY = 30;
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            desiredRotationY = 120;
+            desiredForward = agent.desiredVelocity;
         }
 
+        currentRotation = transform.rotation;
 
-         #region Calculate Angle Difference
-
-         //float rotationDelta = Quaternion.Euler(transform.rotation, Quaternion.LookRotation(agent.velocity));
-         if (agent.desiredVelocity != Vector3.zero)
-         {
-             desiredForward = agent.desiredVelocity;
-         }
-         Quaternion rotationDelta = transform.rotation * Quaternion.Inverse(Quaternion.LookRotation(desiredForward));
-
-         float angleDifference;
-         float signedAngleDifference = 0;
-
-
-         //if signed angle difference is >0 , it means the target is on the right side
-         //if angular velocity is >0 , it means the velocity is going into the right side
-
-         angleDifference = rotationDelta.eulerAngles.y;
-
-
-
-         signedAngleDifference = angleDifference;
-
-         if (signedAngleDifference > 180f)
-         {
-             signedAngleDifference -= 360f;
-         }
-         signedAngleDifference = -signedAngleDifference;
-
-         if (Mathf.Abs(angleDifference) > 0.01f)
-         {
-             //Debug.Log("angleDifference: " + angleDifference);
-            // Debug.Log("signedAngleDifference: " + signedAngleDifference);
-         }
-
-
-         #endregion
-
-        float deltaAngle = desiredRotationY - rotationY;
-
-        #region Calculate desired veloicty to reach target
-
-
-        //if (Mathf.Abs(signedAngleDifference) > 0.1f)
-        if (Mathf.Abs(deltaAngle) > 0.01f)
+        if (targetRotation != Quaternion.LookRotation(desiredForward))
         {
-        
-            bool brake = false;
-            float currentBreakAngle = angularVelocity * angularVelocity / (2 * rotAcceleration);
+            targetRotation = Quaternion.LookRotation(desiredForward);
 
-            if (Mathf.Abs(deltaAngle) <= currentBreakAngle) 
-            {
-                brake = true;
-            }
-
-            //Debug.Log("-------------------------------------------------------");
-            //if (brake) Debug.Log("braking...");
-
-
-            if (deltaAngle < 0)
-            {
-                desiredAngularVelocity = -rotSpeed;
-
-                if (angularVelocity < 0)
-                {
-                    if (brake)
-                    {
-                        desiredAngularVelocity = rotSpeed;
-                    }
-                }
-            }
-            else
-            {
-                desiredAngularVelocity = rotSpeed;
-
-                if (angularVelocity > 0)
-                {
-                    if (brake)
-                    {
-                        desiredAngularVelocity = -rotSpeed;
-                    }
-                }
-            }
-
-
-
-            float deltaAngularVelocity = desiredAngularVelocity - angularVelocity;
-            float deltaAngularVelocityNormalized = 0;
-            if (deltaAngularVelocity > 0)
-            {
-                deltaAngularVelocityNormalized = 1;
-            }
-            else if (deltaAngularVelocity < 0)
-            {
-                deltaAngularVelocityNormalized = -1;
-            }
-
-            #endregion
-
-            #region apply acceleration and velocity
-
-            rotationY = Mathf.SmoothDampAngle(rotationY, desiredRotationY, ref angularVelocity, deltaAngle/rotSpeed);
-           // Debug.Log("angularVelocity: " + angularVelocity);
-           /* angularVelocity += 0.5f * deltaAngularVelocityNormalized * rotAcceleration * Time.deltaTime;
-            angularVelocity = Mathf.Clamp(angularVelocity, -rotSpeed, rotSpeed);
-            //transform.rotation *= Quaternion.AngleAxis(angularVelocity * Time.deltaTime, transform.up);
-            rotationY += angularVelocity * Time.deltaTime;*/
-
-            if (angularVelocity > 0)
-            {
-                Debug.Log("rotationY: " + rotationY + " >");
-            }
-            else if (angularVelocity < 0)
-            {
-                Debug.Log("rotationY: " + rotationY + " <");
-            }
-
-        
-          /*  angularVelocity += 0.5f * deltaAngularVelocityNormalized * rotAcceleration * Time.deltaTime;
-            angularVelocity = Mathf.Clamp(angularVelocity, -rotSpeed, rotSpeed);*/
-
-
+            float distance = Quaternion.Angle(currentRotation, targetRotation);
+            //adjust the smooth time to ensure constant speeds at big and at small angles
+            smoothTime = Utility.CalculateSmoothTime(distance, currentMaxAngularVelocity, accelerationDistance);
         }
-        #endregion
+
+        newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
+
+        angularVelocity = Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation);
+        //Debug.Log("relative v: " + angularVelocity);
+
+        transform.rotation = newRotation;
+
+        humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity);
+
     }
 
 

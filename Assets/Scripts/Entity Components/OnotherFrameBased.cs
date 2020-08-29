@@ -27,13 +27,13 @@ public class OnotherFrameBased : MonoBehaviour
     {
         currentRotation = transformToRotate.rotation;
         
-        if(targetRotation!= targetRotationT.rotation)
+        /*if(targetRotation!= targetRotationT.rotation)
         {
             float distance = Quaternion.Angle(currentRotation, targetRotationT.rotation);
             //adjust the smooth time to ensure constant speeds at big and at small angles
             smoothTime = Utility.CalculateSmoothTime(distance, maxSpeed, accelerationDistance);
             targetRotation = targetRotationT.rotation;
-        }
+        }*/
         
         newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
 
