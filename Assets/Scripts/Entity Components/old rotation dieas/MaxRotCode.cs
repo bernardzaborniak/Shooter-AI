@@ -39,20 +39,22 @@ public class MaxRotCode : MonoBehaviour
             smoothTime = Utility.CalculateSmoothTime(distance, averageVelocity, accelerationDistance);
 
             //For Development only
-            Debug.Log("rotation started-----------------------");
+            //Debug.Log("rotation started-----------------------");
             roatationStartTime = Time.time;
             rotationStartDistance = distance;
-            Debug.Log("rotation dist: " + rotationStartDistance);
+            //Debug.Log("rotation dist: " + rotationStartDistance);
             rot = true;
             velocitysTHisRotations = Vector3.zero;
             veCounter = 0;
             //------
         }
 
-        Quaternion newRoation = Utility.SmoothDamp(transformToRotate.rotation, targetRotationTransform.rotation, ref derivQuaternion, smoothTime);
-        velocitysTHisRotations += Utility.DerivToAngVelCorrected(transformToRotate.rotation, derivQuaternion);
+        //Quaternion newRoation = Utility.SmoothDamp(transformToRotate.rotation, targetRotationTransform.rotation, ref derivQuaternion, smoothTime);
+        //velocitysTHisRotations += Utility.DerivToAngVelCorrected(transformToRotate.rotation, derivQuaternion);
         //Debug.Log("vel: " + Utility.DerivToAngVel(transformToRotate.rotation, derivQuaternion) / Time.deltaTime);
-        transformToRotate.rotation = newRoation;
+        //transformToRotate.rotation = newRoation;
+        transformToRotate.rotation = Utility.SmoothDamp(transformToRotate.rotation, targetRotationTransform.rotation, ref derivQuaternion, smoothTime);
+        velocitysTHisRotations += Utility.DerivToAngVelCorrected(transformToRotate.rotation, derivQuaternion);
 
         //current quaternion is the one after or before? //TODO TRY
         veCounter++;
@@ -63,14 +65,14 @@ public class MaxRotCode : MonoBehaviour
             float distan = Quaternion.Angle(transformToRotate.rotation, targetRotation);
             if (distan < 0.01f)
             {
-                Debug.Log("rotation finished-------------------------------");
+                //Debug.Log("rotation finished-------------------------------");
                 float rotTime = (Time.time - roatationStartTime);
-                Debug.Log("rot time: " + rotTime);
-                Debug.Log("rot avg vel: " + (rotationStartDistance / rotTime));
+                //Debug.Log("rot time: " + rotTime);
+                //Debug.Log("rot avg vel: " + (rotationStartDistance / rotTime));
 
-                Debug.Log("mean velocity x: " + (velocitysTHisRotations / veCounter).x);
-                Debug.Log("mean velocity y: " + (velocitysTHisRotations / veCounter).y);
-                Debug.Log("mean velocity z: " + (velocitysTHisRotations / veCounter).z);
+               // Debug.Log("mean velocity x: " + (velocitysTHisRotations / veCounter).x);
+               // Debug.Log("mean velocity y: " + (velocitysTHisRotations / veCounter).y);
+               // Debug.Log("mean velocity z: " + (velocitysTHisRotations / veCounter).z);
 
                 rot = false;
             }

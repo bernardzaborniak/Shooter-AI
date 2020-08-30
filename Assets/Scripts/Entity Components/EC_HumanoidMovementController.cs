@@ -136,15 +136,14 @@ public class EC_HumanoidMovementController : EntityComponent
     bool showGizmo;
 
     // Rotation
-    public float currentMaxAngularVelocity;
-    public float accelerationDistance;
-    float angularVelocity;
-    float smoothTime;
+    public float averageAngularVelocity;
+    public float angularAccelerationDistance;
+    Vector3 angularVelocity;
+    float angularSmoothTime;
 
     Quaternion targetRotation;
     Quaternion currentRotation;
-    Quaternion newRotation;
-    Vector4 rotationV;
+    Quaternion derivQuaternion;
 
     float stationaryTurnSpeed;
     float runningTurnSpeed;
@@ -201,7 +200,6 @@ public class EC_HumanoidMovementController : EntityComponent
 
 
 
-
         if (agent.desiredVelocity != Vector3.zero)
         {
             desiredForward = agent.desiredVelocity;
@@ -215,17 +213,13 @@ public class EC_HumanoidMovementController : EntityComponent
 
             float distance = Quaternion.Angle(currentRotation, targetRotation);
             //adjust the smooth time to ensure constant speeds at big and at small angles
-            smoothTime = Utility.CalculateSmoothTime(distance, currentMaxAngularVelocity, accelerationDistance);
+            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
         }
 
-        //newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
+        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
+        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
 
-        //angularVelocity = Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation);
-        //Debug.Log("relative v: " + angularVelocity);
-
-        transform.rotation = newRotation;
-
-        humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity);
+        humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
 
     }
 

@@ -5325,6 +5325,16 @@ PrefabInstance:
       propertyPath: accelerationDistance
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: averageAngularVelocity
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: angularAccelerationDistance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: turnSpeedAcceleration
@@ -5333,7 +5343,7 @@ PrefabInstance:
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: turnAnimationRealSpeed
-      value: 400
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb7aed23282bdb14bbbd83caee2bfa61, type: 3}
@@ -16087,7 +16097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotationTransform: {fileID: 1575454077}
   transformToRotate: {fileID: 1002910086}
-  averageVelocity: 500
+  averageVelocity: 50
   accelerationDistance: 20
   smoothTime: 1
   roatationStartTime: 0
