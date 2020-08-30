@@ -218,9 +218,9 @@ public class EC_HumanoidMovementController : EntityComponent
             smoothTime = Utility.CalculateSmoothTime(distance, currentMaxAngularVelocity, accelerationDistance);
         }
 
-        newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
+        //newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
 
-        angularVelocity = Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation);
+        //angularVelocity = Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation);
         //Debug.Log("relative v: " + angularVelocity);
 
         transform.rotation = newRotation;

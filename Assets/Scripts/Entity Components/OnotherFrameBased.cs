@@ -35,9 +35,9 @@ public class OnotherFrameBased : MonoBehaviour
             targetRotation = targetRotationT.rotation;
         }*/
         
-        newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
+       // newRotation = Utility.SmoothDamp(currentRotation, targetRotation, ref rotationV, smoothTime);
 
-        Debug.Log("relative v: " + Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation));
+       // Debug.Log("relative v: " + Utility.CalculateSignedAngularSpeedAroundGlobalY(ref currentRotation, ref newRotation));
 
         transformToRotate.rotation = newRotation; 
 

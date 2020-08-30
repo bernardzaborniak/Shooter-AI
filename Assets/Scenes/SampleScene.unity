@@ -13383,14 +13383,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575454076}
-  m_LocalRotation: {x: 0, y: 0.08715578, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: 0, y: 0.2588191, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0.06280661, y: 0, z: 0.1215353}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 12060935}
   m_Father: {fileID: 1861752585}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 10, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 30, z: 0}
 --- !u!65 &1575454078
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16087,9 +16087,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRotationTransform: {fileID: 1575454077}
   transformToRotate: {fileID: 1002910086}
-  maxVelocity: 1
-  accelerationDistance: 70
-  smoothTime: 0.5
+  averageVelocity: 500
+  accelerationDistance: 20
+  smoothTime: 1
+  roatationStartTime: 0
+  rotationStartDistance: 0
 --- !u!4 &1867162744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,
