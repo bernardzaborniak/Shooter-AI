@@ -28,9 +28,46 @@ public class NavmeshMover : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 // agent.SetDestination(hit.point);
-                humanoidMovementController.MoveTo(hit.point);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
             }
         }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // agent.SetDestination(hit.point);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Walk);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // agent.SetDestination(hit.point);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Crouch);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // agent.SetDestination(hit.point);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Crawl);
+            }
+        }
+
 
         if (Input.GetKeyDown(KeyCode.E))
         {

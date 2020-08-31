@@ -91,8 +91,8 @@ MonoBehaviour:
   humanoidAnimationController: {fileID: 9067105365278048166}
   spine: {fileID: 0}
   showGizmo: 0
-  manualRotation: 0
-  rotSpeed: 0
+  averageAngularVelocity: 100
+  angularAccelerationDistance: 90
 --- !u!114 &9067105365278048166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +109,8 @@ MonoBehaviour:
   forwardVelocityParam: Forward
   angularVelocityParam: Turn
   runAnimationRealSpeed: 6
-  turnAnimationRealSpeed: 120
+  turnAnimationRealSpeed: 100
+  turnSpeedAcceleration: 1000
 --- !u!195 &8146322568146152494
 NavMeshAgent:
   m_ObjectHideFlags: 0

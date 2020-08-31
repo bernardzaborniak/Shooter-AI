@@ -16,6 +16,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     [Header("Adjusting Animation Speed")]
     public float runAnimationRealSpeed;
+    public float walkAnimationRealSpeed;
     public float turnAnimationRealSpeed;
     [Tooltip("because this speed gets capped by the movement controller, this acceleration heps smoothing it out, the best if its the same as turning acceleration on Movement COntroller")]
     public float turnSpeedAcceleration;

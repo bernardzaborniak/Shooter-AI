@@ -26,7 +26,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     //protected float maxAngularSpeed;   //for rotation independent of navmeshAgent;
 
-    enum MovementType
+    public enum MovementType
     {
         Walk,
         Run,
@@ -34,7 +34,7 @@ public class EC_HumanoidMovementController : EntityComponent
         Crawl
     }
 
-    enum Stance
+    public enum Stance
     {
         Standing,
         Crouching,
@@ -136,7 +136,7 @@ public class EC_HumanoidMovementController : EntityComponent
     bool showGizmo;
 
     // Rotation
-    public float averageAngularVelocity;
+    float averageAngularVelocity;
     public float angularAccelerationDistance;
     Vector3 angularVelocity;
     float angularSmoothTime;
@@ -145,14 +145,15 @@ public class EC_HumanoidMovementController : EntityComponent
     Quaternion currentRotation;
     Quaternion derivQuaternion;
 
-    float stationaryTurnSpeed;
-    float runningTurnSpeed;
+    public float stationaryTurnSpeed;
+    public float runningTurnSpeed;
 
     Vector3 desiredForward;
 
-    float runningSpeed;
-    float walkingSpeed;
-    float crouchingSpeed;
+    public float runningSpeed;
+    public float walkingSpeed;
+    public float crouchingSpeed;
+    public float crawlingSpeed;
 
 
     #endregion
@@ -186,7 +187,9 @@ public class EC_HumanoidMovementController : EntityComponent
         if (currentMovementOrder.IsWaitingForExecution())
         {
             agent.isStopped = false;
+
             agent.SetDestination(currentMovementOrder.destination);
+            SetMovementType(currentMovementOrder.movementType);
             currentMovementOrder.OnExecute();
         }
         else if (currentMovementOrder.IsBeingExecuted())
@@ -206,6 +209,8 @@ public class EC_HumanoidMovementController : EntityComponent
         }
 
         currentRotation = transform.rotation;
+
+        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed,(agent.velocity.magnitude/ runningSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
 
         if (targetRotation != Quaternion.LookRotation(desiredForward))
         {
@@ -250,6 +255,12 @@ public class EC_HumanoidMovementController : EntityComponent
         currentMovementOrder.SetCurrentOrder(destination, MovementType.Run);
     }
 
+    public void MoveTo(Vector3 destination, MovementType movementType)
+    {
+        Debug.Log("-------------------------------------------------------Movement order issued---------------------------------------------");
+        currentMovementOrder.SetCurrentOrder(destination, movementType);
+    }
+
     public void AbortMoving()
     {
         agent.ResetPath();
@@ -273,6 +284,30 @@ public class EC_HumanoidMovementController : EntityComponent
             currentMovementOrder.OnResume();
         }
     
+    }
+
+    public void SetMovementType(MovementType movementType)
+    {
+        currentMovementOrder.movementType = movementType;
+
+        switch (movementType)
+        {
+            case MovementType.Run:
+                agent.speed = runningSpeed;
+                break;
+
+            case MovementType.Walk:
+                agent.speed = walkingSpeed;
+                break;
+
+            case MovementType.Crouch:
+                agent.speed = crouchingSpeed;
+                break;
+
+            case MovementType.Crawl:
+                agent.speed = crawlingSpeed;
+                break;
+        }
     }
 
     #endregion

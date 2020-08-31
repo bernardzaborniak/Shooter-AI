@@ -5290,6 +5290,11 @@ PrefabInstance:
       propertyPath: m_Acceleration
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 8146322568146152494, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: m_Speed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8146322568146152495, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: m_Name
@@ -5327,23 +5332,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
-      propertyPath: averageAngularVelocity
-      value: 300
+      propertyPath: stationaryTurnSpeed
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
-      propertyPath: angularAccelerationDistance
-      value: 40
+      propertyPath: runningTurnSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: runningSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: walkingSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: crouchingSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+        type: 3}
+      propertyPath: crawlingSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
-      propertyPath: turnSpeedAcceleration
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: turnAnimationRealSpeed
-      value: 300
+      propertyPath: runAnimationRealSpeed
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb7aed23282bdb14bbbd83caee2bfa61, type: 3}
