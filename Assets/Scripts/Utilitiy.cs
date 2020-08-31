@@ -57,6 +57,7 @@ public static class Utility
     public static Quaternion SmoothDamp(Quaternion rot, Quaternion target, ref Quaternion deriv, float time)
     {
         if (Time.deltaTime < Mathf.Epsilon) return rot;
+
         // account for double-cover
         var Dot = Quaternion.Dot(rot, target);
         var Multi = Dot > 0f ? 1f : -1f;
@@ -100,8 +101,14 @@ public static class Utility
             modifiedMaxSpeed = (remainingDistance / accelerationDistance) * averageSpeed;
         }
 
-        return (0.25f * remainingDistance) / modifiedMaxSpeed; //
+        float smoothSpeed = (0.25f * remainingDistance) / modifiedMaxSpeed;
 
+        if (float.IsNaN(smoothSpeed)) //if modifiedMaxSpeed is 0 it returns an NaN - destryong the whole rotation
+        {
+            smoothSpeed = 0;
+        }
+
+        return smoothSpeed; 
     }
 
 

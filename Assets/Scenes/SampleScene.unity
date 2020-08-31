@@ -5280,21 +5280,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8146322568146152494, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: m_AngularSpeed
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8146322568146152494, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: m_Acceleration
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8146322568146152494, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: m_Speed
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 8146322568146152495, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: m_Name
@@ -5330,40 +5315,15 @@ PrefabInstance:
       propertyPath: accelerationDistance
       value: 70
       objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
+    - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
-      propertyPath: stationaryTurnSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: runningTurnSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: runningSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: walkingSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: crouchingSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8209404375518466407, guid: bb7aed23282bdb14bbbd83caee2bfa61,
-        type: 3}
-      propertyPath: crawlingSpeed
-      value: 1
+      propertyPath: walkAnimationRealSpeed
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 9067105365278048166, guid: bb7aed23282bdb14bbbd83caee2bfa61,
         type: 3}
       propertyPath: runAnimationRealSpeed
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb7aed23282bdb14bbbd83caee2bfa61, type: 3}
@@ -6802,7 +6762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &768360654
 Transform:
   m_ObjectHideFlags: 0
@@ -18282,7 +18242,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: d3f62d429df4a4c418d95dac85f0f551, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

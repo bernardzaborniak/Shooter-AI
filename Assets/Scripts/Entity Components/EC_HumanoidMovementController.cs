@@ -224,6 +224,7 @@ public class EC_HumanoidMovementController : EntityComponent
         transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
         angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
 
+        //humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, runningSpeed, walkingSpeed, angularVelocity.y);
         humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
 
     }
