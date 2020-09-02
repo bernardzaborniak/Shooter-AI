@@ -126,16 +126,12 @@ public class EC_HumanoidMovementController : EntityComponent
     MovementOrder currentMovementOrder;
 
 
-    [Header("Look At")]
-    bool lookAt = false;
-    public Transform spine;
-
 
     [Header("Debug")]
     [SerializeField]
     bool showGizmo;
 
-    // Rotation
+    [Header("Rotation")]
     float averageAngularVelocity;
     public float angularAccelerationDistance;
     Vector3 angularVelocity;
@@ -149,7 +145,10 @@ public class EC_HumanoidMovementController : EntityComponent
     public float runningTurnSpeed;
 
     Vector3 desiredForward;
+    [Tooltip("If false, the agent will rotate towards his movement direction")]
+    public bool manualRotation;
 
+    [Header("Movement")]
     public float runningSpeed;
     public float walkingSpeed;
     public float crouchingSpeed;
@@ -160,8 +159,8 @@ public class EC_HumanoidMovementController : EntityComponent
 
     public override void SetUpComponent(GameEntity entity)
     {
-        //maxAngularSpeed = agent.angularSpeed;   //almost the same speed as original navmeshAgent?
-        //currentMovementOrder = new MovementOrder(agent);
+        base.SetUpComponent(entity);
+
         currentMovementOrder = new MovementOrder();
 
         agent.updateRotation = false;
@@ -184,6 +183,8 @@ public class EC_HumanoidMovementController : EntityComponent
             }
         }*/
         //currentMovementOrder.Update();
+
+        // 1. Update movement according to movement Order 
         if (currentMovementOrder.IsWaitingForExecution())
         {
             agent.isStopped = false;
@@ -201,54 +202,24 @@ public class EC_HumanoidMovementController : EntityComponent
             }
         }
 
-
-
-        if (agent.desiredVelocity != Vector3.zero)
+        // 2. Update rotation according to movement direction or externally set direction if manualRotation=true
+        if (!manualRotation)
         {
-            desiredForward = agent.desiredVelocity;
+            if (agent.desiredVelocity != Vector3.zero)
+            {
+                desiredForward = agent.desiredVelocity;
+            }
         }
 
-        currentRotation = transform.rotation;
+        RotateTowards(desiredForward);
 
-        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed,(agent.velocity.magnitude/ runningSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
-
-        if (targetRotation != Quaternion.LookRotation(desiredForward))
-        {
-            targetRotation = Quaternion.LookRotation(desiredForward);
-
-            float distance = Quaternion.Angle(currentRotation, targetRotation);
-            //adjust the smooth time to ensure constant speeds at big and at small angles
-            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
-        }
-
-        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
-        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
-
-        //humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, runningSpeed, walkingSpeed, angularVelocity.y);
-        humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
+        //3. Update animation
+        if (humanoidAnimationController)humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
 
     }
 
 
     #region Movement Orders
-
-    public void RotateTo(Vector3 direction)
-    {
-        //only rotate on local x direction
-        //first delete side movements- only leave y and z
-        Vector3 directionForSpine = transform.InverseTransformDirection(direction);
-
-        Quaternion desiredSpineRotation = Quaternion.LookRotation(directionForSpine);
-        desiredSpineRotation = Quaternion.Euler(desiredSpineRotation.eulerAngles.x, 0, 0);
-        //spine.localRotation = Quaternion.RotateTowards(spine.localRotation, desiredSpineRotation, maxAngularSpeed * Time.deltaTime);
-
-
-
-        direction.y = 0;
-        Quaternion desiredLookRotation = Quaternion.LookRotation(direction);
-        //because we want the same speed as the agent, which has its angular speed saved as degrees per second we use the rotaate towards function
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredLookRotation, maxAngularSpeed * Time.deltaTime );
-    }
 
     public void MoveTo(Vector3 destination)
     {
@@ -313,27 +284,36 @@ public class EC_HumanoidMovementController : EntityComponent
 
     #endregion
 
-    #region LookAt
 
-    //this enables the use of the method lookAT
-    public void ActivateLookAt()
+
+
+    #region Rotation Orders
+
+    void RotateTowards(Vector3 direction)
     {
-        lookAt = true;
-        agent.updateRotation = false;
+        //only rotate on y axis
+        currentRotation = transform.rotation;
+
+        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / runningSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
+
+        if (targetRotation != Quaternion.LookRotation(direction))
+        {
+            targetRotation = Quaternion.LookRotation(direction);
+
+            float distance = Quaternion.Angle(currentRotation, targetRotation);
+            //adjust the smooth time to ensure constant speeds at big and at small angles
+            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
+        }
+
+        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
+        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
     }
 
-    //looks into the desired direction, needs to be called every frame
-    public void LookAt(Vector3 direction)
+    public void SetDesiredForward(Vector3 direction)
     {
-        RotateTo(direction);
+        direction.y = 0;
+        if (manualRotation) desiredForward = direction;
     }
-
-    public void StopLookAt()
-    {
-        agent.updateRotation = true;
-        lookAt = false;
-    }
-
 
     #endregion
 

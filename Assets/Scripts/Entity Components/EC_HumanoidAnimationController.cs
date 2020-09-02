@@ -25,6 +25,8 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public override void SetUpComponent(GameEntity entity)
     {
+        base.SetUpComponent(entity);
+
         // Convert the strings into hashes to improve performance
         forwardVelocityParamID = Animator.StringToHash(forwardVelocityParam);
         angularVelocityParamID = Animator.StringToHash(angularVelocityParam);
