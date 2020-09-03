@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class EC_HumanoidAimingController : EntityComponent
 {
@@ -10,6 +11,17 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("References")]
     public EC_HumanoidMovementController movementController;
     public Transform testingTarget;
+
+    [Header("Spine Constraint for aiming up/down")]
+    [Tooltip("Spine Constraint needs a local target which is on the forward axis of the character, to it never rotates to the sides, the character is already rotating towards the sides")]
+    public Transform spineConstraintLocalTarget;
+    Transform spineConstraintLocalTargetParent;
+    [Tooltip("Needed to detemrine if the current target needs looking up or looking down")]
+    public float aimingReferencePointLocalY;
+    bool aimingUpwards;
+    public MultiAimConstraint spineConstraint1;
+    public MultiAimConstraint spineConstraint2;
+    public MultiAimConstraint spineConstraint3;
 
     [Header("Aim at Params")]
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
@@ -34,13 +46,15 @@ public class EC_HumanoidAimingController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
+
+        spineConstraintLocalTargetParent = spineConstraintLocalTarget.parent;
     }
 
     public override void UpdateComponent()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            AimInDirection(Vector3.right);
+           // AimInDirection(Vector3.right);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -69,12 +83,41 @@ public class EC_HumanoidAimingController : EntityComponent
                 pointToAimAt = aimAtTransform.position;
             }
 
-
+            // Rotate Horizontally
             movementController.SetDesiredForward(pointToAimAt-transform.position);
+
+            // Rotate Vertically
+
+            //only copy the y value
+            Vector3 localTargetPos = spineConstraintLocalTargetParent.InverseTransformPoint(pointToAimAt);
+            localTargetPos.x = 0; //to prevent rotating to the sides
+            spineConstraintLocalTarget.localPosition = localTargetPos;
+
+            //1. set the weight depending on if the target is above or below the shoulders
+            if (spineConstraintLocalTarget.localPosition.y > aimingReferencePointLocalY)
+            {
+                aimingUpwards = true;
+                spineConstraint1.weight = 0.05f;
+                spineConstraint2.weight = 0.2f;
+                spineConstraint3.weight = 0.4f;
+            }
+            else
+            {
+                aimingUpwards = false;
+                spineConstraint1.weight = 0.2f;
+                spineConstraint2.weight = 0.7f;
+                spineConstraint3.weight = 1f;
+            }
+        }
+        else
+        {
+            spineConstraint1.weight = 0f;
+            spineConstraint2.weight = 0f;
+            spineConstraint3.weight = 0f;
         }
     }
 
-    public void AimInDirection(Vector3 direction)
+    /*public void AimInDirection(Vector3 direction)
     {
         aimAtActive = true;
         currentAimAtTargetingMethod = AimAtTargetingMethod.Direction;
@@ -89,7 +132,7 @@ public class EC_HumanoidAimingController : EntityComponent
         movementController.manualRotation = true;
         aimAtPosition = position;
 
-    }
+    }*/
 
     public void AimAtTransform(Transform transform)
     {
@@ -97,6 +140,8 @@ public class EC_HumanoidAimingController : EntityComponent
         currentAimAtTargetingMethod = AimAtTargetingMethod.Transform;
         movementController.manualRotation = true;
         aimAtTransform = transform;
+
+       
     }
 
     public void StopAimAt()
