@@ -69,6 +69,7 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
             Vector3 pointToAimAt = Vector3.zero;
+            Vector3 directionToAim;
 
             if(currentAimAtTargetingMethod == AimAtTargetingMethod.Direction)
             {
@@ -83,15 +84,23 @@ public class EC_HumanoidAimingController : EntityComponent
                 pointToAimAt = aimAtTransform.position;
             }
 
+            directionToAim = (pointToAimAt - (transform.position + transform.up * aimingReferencePointLocalY)).normalized;
+
             // Rotate Horizontally
-            movementController.SetDesiredForward(pointToAimAt-transform.position);
+            movementController.SetDesiredForward(directionToAim);
 
             // Rotate Vertically
 
-            //only copy the y value
-            Vector3 localTargetPos = spineConstraintLocalTargetParent.InverseTransformPoint(pointToAimAt);
-            localTargetPos.x = 0; //to prevent rotating to the sides
-            spineConstraintLocalTarget.localPosition = localTargetPos;
+            Vector3 horizontalComponents = new Vector3(directionToAim.x, 0f, directionToAim.z);
+             Vector3 upDownTargetPos = transform.position + transform.forward * horizontalComponents.sqrMagnitude + transform.up * directionToAim.y;
+
+
+             //spineConstraintLocalTarget.position = 
+
+             //Vector3 localTargetPos = spineConstraintLocalTargetParent.InverseTransformPoint(pointToAimAt);
+            //localTargetPos.x = 0; //to prevent rotating to the sides
+            //spineConstraintLocalTarget.localPosition = upDownTargetPos;
+            spineConstraintLocalTarget.position = upDownTargetPos;
 
             //1. set the weight depending on if the target is above or below the shoulders
             if (spineConstraintLocalTarget.localPosition.y > aimingReferencePointLocalY)

@@ -2979,7 +2979,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332172097}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43533e7090b592a49936118201f0a2bf, type: 3}
   m_Name: 
@@ -3797,14 +3797,14 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_MinLimit: -90
+    m_MaxLimit: 90
     m_AimAxis: 3
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
-      y: 1
-      z: 1
+      y: 0
+      z: 0
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!4 &402867991 stripped
@@ -6985,14 +6985,14 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_MinLimit: -90
+    m_MaxLimit: 90
     m_AimAxis: 3
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
-      y: 1
-      z: 1
+      y: 0
+      z: 0
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!4 &620318505 stripped
@@ -14216,6 +14216,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -82.361
       objectReference: {fileID: 0}
+    - target: {fileID: 400122, guid: 7e15121f5f042ed46aba81406403f2d2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.33527377
+      objectReference: {fileID: 0}
+    - target: {fileID: 400122, guid: 7e15121f5f042ed46aba81406403f2d2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94212073
+      objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: 7e15121f5f042ed46aba81406403f2d2, type: 3}
       propertyPath: m_Controller
       value: 
@@ -17789,7 +17797,7 @@ MonoBehaviour:
         weight: 1
       m_Item1:
         transform: {fileID: 0}
-        weight: 0
+        weight: 0.315
       m_Item2:
         transform: {fileID: 0}
         weight: 0
@@ -17809,14 +17817,14 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_MinLimit: -90
+    m_MaxLimit: 90
     m_AimAxis: 3
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
-      y: 1
-      z: 1
+      y: 0
+      z: 0
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!4 &1801048192 stripped
