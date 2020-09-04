@@ -13,14 +13,10 @@ public class EC_HumanoidAimingController : EntityComponent
     public Transform testingTarget;
 
     [Header("Spine Constraint for aiming up/down")]
-    //[Tooltip("Spine Constraint needs a local target which is on the forward axis of the character, to it never rotates to the sides, the character is already rotating towards the sides")]
+    [Tooltip("Reference point on human body for aiming direction, ca nchange later to be the gun?")]
     public Transform spineConstraintTarget;
-    //Transform spineConstraintLocalTargetParent;
-    [Tooltip("Needed to detemrine if the current target needs looking up or looking down")]
-    //public float aimingReferencePointLocalY;
-    bool aimingUpwards;
-    //public Transform spine1;
-   // public Transform spine2;
+    
+
     public Transform aimingDistanceReferencePoint; //could be spine 3
     Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
@@ -30,12 +26,13 @@ public class EC_HumanoidAimingController : EntityComponent
     public MultiAimConstraint spineConstraint2;
     public MultiAimConstraint spineConstraint3;
 
-    public float spineConstraint1TargetWeight;
-    public float spineConstraint2TargetWeight;
-    public float spineConstraint3TargetWeight;
-    public float spineConstraint1CurrentWeight;
-    public float spineConstraint2CurrentWeight;
-    public float spineConstraint3CurrentWeight;
+    float spineConstraint1TargetWeight;
+    float spineConstraint2TargetWeight;
+    float spineConstraint3TargetWeight;
+    float spineConstraint1CurrentWeight;
+    float spineConstraint2CurrentWeight;
+    float spineConstraint3CurrentWeight;
+    public float spineConstraintDirectionChangeSmoothTime = 0.3f;
     public float spineConstraintWeightChangeSpeed;
 
     [Header("Aim at Params")]
@@ -86,9 +83,9 @@ public class EC_HumanoidAimingController : EntityComponent
 
         if (aimAtActive)
         {
+            // 1. Calculate Point to aim at
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
             pointToAimAt = Vector3.zero;
-            //directionToAim;
 
             if(currentAimAtTargetingMethod == AimAtTargetingMethod.Direction)
             {
@@ -103,34 +100,31 @@ public class EC_HumanoidAimingController : EntityComponent
                 pointToAimAt = aimAtTransform.position;
             }
 
-           // directionToAim = (pointToAimAt - (transform.position + transform.up * aimingReferencePointLocalY)).normalized;
             directionToAim = pointToAimAt - aimingDistanceReferencePoint.position;
 
-            // Rotate Horizontally
+            // 2. Rotate Horizontally
             movementController.SetDesiredForward(directionToAim.normalized); //do we need to normalize?
 
-            // Rotate Vertically
-            //Limit to rotation on the x axis only
+            // 3. Rotate Vertically
+
+            // 3.1 Limit to rotation on the x axis only
             desiredSpineDirection = transform.InverseTransformDirection(directionToAim);
             desiredSpineDirection.x = 0;
             Debug.Log("spineDirection: " + desiredSpineDirection);
             if (desiredSpineDirection.z < 0.01f) desiredSpineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
-           
-
-
-            //1. set the weight depending on if the target is above or below the shoulders
+            // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
             if (spineConstraintTarget.position.y > aimingDistanceReferencePoint.position.y)
             {
-                aimingUpwards = true;
+                // aiming Up 
                 spineConstraint1TargetWeight = 0.05f;
                 spineConstraint2TargetWeight = 0.2f;
                 spineConstraint3TargetWeight = 0.4f;
             }
             else
             {
-                aimingUpwards = false;
+                // aiming Down
                 spineConstraint1TargetWeight = 0.2f;
                 spineConstraint2TargetWeight = 0.7f;
                 spineConstraint3TargetWeight = 1f;
@@ -138,32 +132,18 @@ public class EC_HumanoidAimingController : EntityComponent
         }
         else
         {
+            // Reset aim Direction & Weight
             desiredSpineDirection = transform.forward;
             spineConstraint1TargetWeight = 0f;
             spineConstraint2TargetWeight = 0f;
             spineConstraint3TargetWeight = 0f;
         }
-        // Limit Speed
-        currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, 0.3f); //Damping is static for now, no real velocity value
 
+        // Move Aiming Direction with damping
+        currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
         spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection.normalized * directionToAim.magnitude; //Todo calculate correct distance here
 
-       /* if (currentSpineDirection.y > 0)
-        {
-            aimingUpwards = true;
-            spineConstraint1TargetWeight = 0.05f;
-            spineConstraint2TargetWeight = 0.2f;
-            spineConstraint3TargetWeight = 0.4f;
-        }
-        else
-        {
-            aimingUpwards = false;
-            spineConstraint1TargetWeight = 0.2f;
-            spineConstraint2TargetWeight = 0.7f;
-            spineConstraint3TargetWeight = 1f;
-        }*/
-
-
+        // Smooth out weight change
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
         spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
         spineConstraint1.weight = spineConstraint1CurrentWeight;
@@ -173,25 +153,8 @@ public class EC_HumanoidAimingController : EntityComponent
         spineConstraint3.weight = spineConstraint3CurrentWeight;
     }
 
-   
-    //}
 
-    /*public override void LateUpdateComponent()
-    {
-        if (aimAtActive)
-        {
-            //Limit to rotation on the x axis only
-            Vector3 spineDirection = transform.InverseTransformDirection(directionToAim);
-            spineDirection.x = 0;
-            Debug.Log("spineDirection: " + spineDirection);
-            if (spineDirection.z < 0.01f) spineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
-            spineDirection = transform.TransformDirection(spineDirection);
 
-            spineConstraintTarget.position = spine3.position + spineDirection.normalized * 10;
-            //spine3.rotation = Quaternion.LookRotation(spineDirection);
-            Debug.Log("rotation: " + spine3.rotation.eulerAngles);
-        }
-    }*/
 
     /*public void AimInDirection(Vector3 direction)
     {
