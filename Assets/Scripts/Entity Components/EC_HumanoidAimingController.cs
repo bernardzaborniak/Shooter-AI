@@ -110,7 +110,6 @@ public class EC_HumanoidAimingController : EntityComponent
             // 3.1 Limit to rotation on the x axis only
             desiredSpineDirection = transform.InverseTransformDirection(directionToAim);
             desiredSpineDirection.x = 0;
-            Debug.Log("spineDirection: " + desiredSpineDirection);
             if (desiredSpineDirection.z < 0.01f) desiredSpineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
