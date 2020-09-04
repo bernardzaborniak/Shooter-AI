@@ -1,162 +1,458 @@
 fileFormatVersion: 2
 guid: 9425296f10f632347a441a9361f609ed
-timeCreated: 1529656962
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: _____________
-    100002: ______________2
-    100004: BArmL
-    100006: BArmL_1
-    100008: BArmL_2
-    100010: BArmL_3
-    100012: BArmL_3_Goal
-    100014: BArmL_Pole
-    100016: BArmR
-    100018: BArmR_1
-    100020: BArmR_2
-    100022: BArmR_3
-    100024: BArmR_3_Goal
-    100026: BArmR_Pole
-    100028: BHeadDown_7
-    100030: BHeadDown_8
-    100032: BHeadUp_7
-    100034: BHeadUp_8
-    100036: BHeadUp_9
-    100038: BIndexL_4
-    100040: BIndexL_5
-    100042: BIndexL_6
-    100044: BIndexR
-    100046: BIndexR_1
-    100048: BIndexR_2
-    100050: BLegL
-    100052: BLegL_1
-    100054: BLegL_2
-    100056: BLegL_2_Goal
-    100058: BLegL_3
-    100060: BLegL_4
-    100062: BLegL_Pole
-    100064: BLegR
-    100066: BLegR_1
-    100068: BLegR_2
-    100070: BLegR_2_Goal
-    100072: BLegR_3
-    100074: BLegR_4
-    100076: BLegR_Pole
-    100078: BMiddleL
-    100080: BMiddleL_1
-    100082: BMiddleL_2
-    100084: BMiddleR
-    100086: BMiddleR_1
-    100088: BMiddleR_2
-    100090: BNeck_5
-    100092: BNeck_6
-    100094: BPinkyL_1
-    100096: BPinkyL_2
-    100098: BPinkyL_3
-    100100: BPinkyR
-    100102: BPinkyR_1
-    100104: BPinkyR_2
-    100106: BRingL_1
-    100108: BRingL_2
-    100110: BRingL_3
-    100112: BRingR
-    100114: BRingR_1
-    100116: BRingR_2
-    100118: BRoot
-    100120: BShoulderL
-    100122: BShoulderR
-    100124: BSpine_2
-    100126: BSpine_3
-    100128: BSpine_4
-    100130: BThumbL_4
-    100132: BThumbL_5
-    100134: BThumbL_6
-    100136: BThumbR_4
-    100138: BThumbR_5
-    100140: BThumbR_6
-    100142: //RootNode
-    100144: Fuman_2
-    400000: _____________
-    400002: ______________2
-    400004: BArmL
-    400006: BArmL_1
-    400008: BArmL_2
-    400010: BArmL_3
-    400012: BArmL_3_Goal
-    400014: BArmL_Pole
-    400016: BArmR
-    400018: BArmR_1
-    400020: BArmR_2
-    400022: BArmR_3
-    400024: BArmR_3_Goal
-    400026: BArmR_Pole
-    400028: BHeadDown_7
-    400030: BHeadDown_8
-    400032: BHeadUp_7
-    400034: BHeadUp_8
-    400036: BHeadUp_9
-    400038: BIndexL_4
-    400040: BIndexL_5
-    400042: BIndexL_6
-    400044: BIndexR
-    400046: BIndexR_1
-    400048: BIndexR_2
-    400050: BLegL
-    400052: BLegL_1
-    400054: BLegL_2
-    400056: BLegL_2_Goal
-    400058: BLegL_3
-    400060: BLegL_4
-    400062: BLegL_Pole
-    400064: BLegR
-    400066: BLegR_1
-    400068: BLegR_2
-    400070: BLegR_2_Goal
-    400072: BLegR_3
-    400074: BLegR_4
-    400076: BLegR_Pole
-    400078: BMiddleL
-    400080: BMiddleL_1
-    400082: BMiddleL_2
-    400084: BMiddleR
-    400086: BMiddleR_1
-    400088: BMiddleR_2
-    400090: BNeck_5
-    400092: BNeck_6
-    400094: BPinkyL_1
-    400096: BPinkyL_2
-    400098: BPinkyL_3
-    400100: BPinkyR
-    400102: BPinkyR_1
-    400104: BPinkyR_2
-    400106: BRingL_1
-    400108: BRingL_2
-    400110: BRingL_3
-    400112: BRingR
-    400114: BRingR_1
-    400116: BRingR_2
-    400118: BRoot
-    400120: BShoulderL
-    400122: BShoulderR
-    400124: BSpine_2
-    400126: BSpine_3
-    400128: BSpine_4
-    400130: BThumbL_4
-    400132: BThumbL_5
-    400134: BThumbL_6
-    400136: BThumbR_4
-    400138: BThumbR_5
-    400140: BThumbR_6
-    400142: //RootNode
-    400144: Fuman_2
-    7400000: Fuman_Idle
-    7400002: Fuman_walk
-    9500000: //RootNode
+  serializedVersion: 20101
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: _____________
+  - first:
+      1: 100002
+    second: ______________2
+  - first:
+      1: 100004
+    second: BArmL
+  - first:
+      1: 100006
+    second: BArmL_1
+  - first:
+      1: 100008
+    second: BArmL_2
+  - first:
+      1: 100010
+    second: BArmL_3
+  - first:
+      1: 100012
+    second: BArmL_3_Goal
+  - first:
+      1: 100014
+    second: BArmL_Pole
+  - first:
+      1: 100016
+    second: BArmR
+  - first:
+      1: 100018
+    second: BArmR_1
+  - first:
+      1: 100020
+    second: BArmR_2
+  - first:
+      1: 100022
+    second: BArmR_3
+  - first:
+      1: 100024
+    second: BArmR_3_Goal
+  - first:
+      1: 100026
+    second: BArmR_Pole
+  - first:
+      1: 100028
+    second: BHeadDown_7
+  - first:
+      1: 100030
+    second: BHeadDown_8
+  - first:
+      1: 100032
+    second: BHeadUp_7
+  - first:
+      1: 100034
+    second: BHeadUp_8
+  - first:
+      1: 100036
+    second: BHeadUp_9
+  - first:
+      1: 100038
+    second: BIndexL_4
+  - first:
+      1: 100040
+    second: BIndexL_5
+  - first:
+      1: 100042
+    second: BIndexL_6
+  - first:
+      1: 100044
+    second: BIndexR
+  - first:
+      1: 100046
+    second: BIndexR_1
+  - first:
+      1: 100048
+    second: BIndexR_2
+  - first:
+      1: 100050
+    second: BLegL
+  - first:
+      1: 100052
+    second: BLegL_1
+  - first:
+      1: 100054
+    second: BLegL_2
+  - first:
+      1: 100056
+    second: BLegL_2_Goal
+  - first:
+      1: 100058
+    second: BLegL_3
+  - first:
+      1: 100060
+    second: BLegL_4
+  - first:
+      1: 100062
+    second: BLegL_Pole
+  - first:
+      1: 100064
+    second: BLegR
+  - first:
+      1: 100066
+    second: BLegR_1
+  - first:
+      1: 100068
+    second: BLegR_2
+  - first:
+      1: 100070
+    second: BLegR_2_Goal
+  - first:
+      1: 100072
+    second: BLegR_3
+  - first:
+      1: 100074
+    second: BLegR_4
+  - first:
+      1: 100076
+    second: BLegR_Pole
+  - first:
+      1: 100078
+    second: BMiddleL
+  - first:
+      1: 100080
+    second: BMiddleL_1
+  - first:
+      1: 100082
+    second: BMiddleL_2
+  - first:
+      1: 100084
+    second: BMiddleR
+  - first:
+      1: 100086
+    second: BMiddleR_1
+  - first:
+      1: 100088
+    second: BMiddleR_2
+  - first:
+      1: 100090
+    second: BNeck_5
+  - first:
+      1: 100092
+    second: BNeck_6
+  - first:
+      1: 100094
+    second: BPinkyL_1
+  - first:
+      1: 100096
+    second: BPinkyL_2
+  - first:
+      1: 100098
+    second: BPinkyL_3
+  - first:
+      1: 100100
+    second: BPinkyR
+  - first:
+      1: 100102
+    second: BPinkyR_1
+  - first:
+      1: 100104
+    second: BPinkyR_2
+  - first:
+      1: 100106
+    second: BRingL_1
+  - first:
+      1: 100108
+    second: BRingL_2
+  - first:
+      1: 100110
+    second: BRingL_3
+  - first:
+      1: 100112
+    second: BRingR
+  - first:
+      1: 100114
+    second: BRingR_1
+  - first:
+      1: 100116
+    second: BRingR_2
+  - first:
+      1: 100118
+    second: BRoot
+  - first:
+      1: 100120
+    second: BShoulderL
+  - first:
+      1: 100122
+    second: BShoulderR
+  - first:
+      1: 100124
+    second: BSpine_2
+  - first:
+      1: 100126
+    second: BSpine_3
+  - first:
+      1: 100128
+    second: BSpine_4
+  - first:
+      1: 100130
+    second: BThumbL_4
+  - first:
+      1: 100132
+    second: BThumbL_5
+  - first:
+      1: 100134
+    second: BThumbL_6
+  - first:
+      1: 100136
+    second: BThumbR_4
+  - first:
+      1: 100138
+    second: BThumbR_5
+  - first:
+      1: 100140
+    second: BThumbR_6
+  - first:
+      1: 100142
+    second: //RootNode
+  - first:
+      1: 100144
+    second: Fuman_2
+  - first:
+      4: 400000
+    second: _____________
+  - first:
+      4: 400002
+    second: ______________2
+  - first:
+      4: 400004
+    second: BArmL
+  - first:
+      4: 400006
+    second: BArmL_1
+  - first:
+      4: 400008
+    second: BArmL_2
+  - first:
+      4: 400010
+    second: BArmL_3
+  - first:
+      4: 400012
+    second: BArmL_3_Goal
+  - first:
+      4: 400014
+    second: BArmL_Pole
+  - first:
+      4: 400016
+    second: BArmR
+  - first:
+      4: 400018
+    second: BArmR_1
+  - first:
+      4: 400020
+    second: BArmR_2
+  - first:
+      4: 400022
+    second: BArmR_3
+  - first:
+      4: 400024
+    second: BArmR_3_Goal
+  - first:
+      4: 400026
+    second: BArmR_Pole
+  - first:
+      4: 400028
+    second: BHeadDown_7
+  - first:
+      4: 400030
+    second: BHeadDown_8
+  - first:
+      4: 400032
+    second: BHeadUp_7
+  - first:
+      4: 400034
+    second: BHeadUp_8
+  - first:
+      4: 400036
+    second: BHeadUp_9
+  - first:
+      4: 400038
+    second: BIndexL_4
+  - first:
+      4: 400040
+    second: BIndexL_5
+  - first:
+      4: 400042
+    second: BIndexL_6
+  - first:
+      4: 400044
+    second: BIndexR
+  - first:
+      4: 400046
+    second: BIndexR_1
+  - first:
+      4: 400048
+    second: BIndexR_2
+  - first:
+      4: 400050
+    second: BLegL
+  - first:
+      4: 400052
+    second: BLegL_1
+  - first:
+      4: 400054
+    second: BLegL_2
+  - first:
+      4: 400056
+    second: BLegL_2_Goal
+  - first:
+      4: 400058
+    second: BLegL_3
+  - first:
+      4: 400060
+    second: BLegL_4
+  - first:
+      4: 400062
+    second: BLegL_Pole
+  - first:
+      4: 400064
+    second: BLegR
+  - first:
+      4: 400066
+    second: BLegR_1
+  - first:
+      4: 400068
+    second: BLegR_2
+  - first:
+      4: 400070
+    second: BLegR_2_Goal
+  - first:
+      4: 400072
+    second: BLegR_3
+  - first:
+      4: 400074
+    second: BLegR_4
+  - first:
+      4: 400076
+    second: BLegR_Pole
+  - first:
+      4: 400078
+    second: BMiddleL
+  - first:
+      4: 400080
+    second: BMiddleL_1
+  - first:
+      4: 400082
+    second: BMiddleL_2
+  - first:
+      4: 400084
+    second: BMiddleR
+  - first:
+      4: 400086
+    second: BMiddleR_1
+  - first:
+      4: 400088
+    second: BMiddleR_2
+  - first:
+      4: 400090
+    second: BNeck_5
+  - first:
+      4: 400092
+    second: BNeck_6
+  - first:
+      4: 400094
+    second: BPinkyL_1
+  - first:
+      4: 400096
+    second: BPinkyL_2
+  - first:
+      4: 400098
+    second: BPinkyL_3
+  - first:
+      4: 400100
+    second: BPinkyR
+  - first:
+      4: 400102
+    second: BPinkyR_1
+  - first:
+      4: 400104
+    second: BPinkyR_2
+  - first:
+      4: 400106
+    second: BRingL_1
+  - first:
+      4: 400108
+    second: BRingL_2
+  - first:
+      4: 400110
+    second: BRingL_3
+  - first:
+      4: 400112
+    second: BRingR
+  - first:
+      4: 400114
+    second: BRingR_1
+  - first:
+      4: 400116
+    second: BRingR_2
+  - first:
+      4: 400118
+    second: BRoot
+  - first:
+      4: 400120
+    second: BShoulderL
+  - first:
+      4: 400122
+    second: BShoulderR
+  - first:
+      4: 400124
+    second: BSpine_2
+  - first:
+      4: 400126
+    second: BSpine_3
+  - first:
+      4: 400128
+    second: BSpine_4
+  - first:
+      4: 400130
+    second: BThumbL_4
+  - first:
+      4: 400132
+    second: BThumbL_5
+  - first:
+      4: 400134
+    second: BThumbL_6
+  - first:
+      4: 400136
+    second: BThumbR_4
+  - first:
+      4: 400138
+    second: BThumbR_5
+  - first:
+      4: 400140
+    second: BThumbR_6
+  - first:
+      4: 400142
+    second: //RootNode
+  - first:
+      4: 400144
+    second: Fuman_2
+  - first:
+      74: 7400000
+    second: Fuman_Idle
+  - first:
+      74: 7400002
+    second: Fuman_walk
+  - first:
+      95: 9500000
+    second: //RootNode
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -179,6 +475,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -190,6 +487,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Fuman_Idle
       takeName: C4D Animation Take
+      internalID: 0
       firstFrame: 10
       lastFrame: 30
       wrapMode: 0
@@ -218,6 +516,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Fuman_walk
       takeName: C4D Animation Take
+      internalID: 0
       firstFrame: 50
       lastFrame: 70
       wrapMode: 0
@@ -249,21 +548,31 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -271,10 +580,13 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: BSpine_2
       humanName: Hips
@@ -1057,14 +1369,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
