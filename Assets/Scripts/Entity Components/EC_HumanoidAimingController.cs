@@ -14,14 +14,18 @@ public class EC_HumanoidAimingController : EntityComponent
 
     [Header("Spine Constraint for aiming up/down")]
     //[Tooltip("Spine Constraint needs a local target which is on the forward axis of the character, to it never rotates to the sides, the character is already rotating towards the sides")]
-    //public Transform spineConstraintLocalTarget;
+    public Transform spineConstraintTarget;
     //Transform spineConstraintLocalTargetParent;
     [Tooltip("Needed to detemrine if the current target needs looking up or looking down")]
-    public float aimingReferencePointLocalY;
+    //public float aimingReferencePointLocalY;
     bool aimingUpwards;
-    public Transform spine1;
-    public Transform spine2;
-    public Transform spine3;
+    //public Transform spine1;
+   // public Transform spine2;
+    public Transform aimingDistanceReferencePoint; //could be spine 3
+
+    public MultiAimConstraint spineConstraint1;
+    public MultiAimConstraint spineConstraint2;
+    public MultiAimConstraint spineConstraint3;
 
     [Header("Aim at Params")]
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
@@ -87,20 +91,26 @@ public class EC_HumanoidAimingController : EntityComponent
                 pointToAimAt = aimAtTransform.position;
             }
 
-            directionToAim = (pointToAimAt - (transform.position + transform.up * aimingReferencePointLocalY)).normalized;
+           // directionToAim = (pointToAimAt - (transform.position + transform.up * aimingReferencePointLocalY)).normalized;
+            directionToAim = (pointToAimAt - aimingDistanceReferencePoint.position);
 
             // Rotate Horizontally
-            movementController.SetDesiredForward(directionToAim);
+            movementController.SetDesiredForward(directionToAim.normalized); //do we need to normalize?
 
             // Rotate Vertically
+            //Limit to rotation on the x axis only
+            Vector3 spineDirection = transform.InverseTransformDirection(directionToAim);
+            spineDirection.x = 0;
+            Debug.Log("spineDirection: " + spineDirection);
+            if (spineDirection.z < 0.01f) spineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
+            spineDirection = transform.TransformDirection(spineDirection);
 
-           /* Vector3 horizontalComponents = new Vector3(directionToAim.x, 0f, directionToAim.z);
-             Vector3 upDownTargetPos = transform.position + transform.forward * horizontalComponents.sqrMagnitude + transform.up * directionToAim.y;
+            spineConstraintTarget.position = aimingDistanceReferencePoint.position + spineDirection.normalized * 10; //Todo calculate correct distance here
+            //spineConstraintTarget.position = aimingDistanceReferencPoint.position + spineDirection.normalized * directionToAim.sqrMagnitude; //Todo calculate correct distance here
 
-            spineConstraintLocalTarget.position = upDownTargetPos;
 
             //1. set the weight depending on if the target is above or below the shoulders
-            if (spineConstraintLocalTarget.localPosition.y > aimingReferencePointLocalY)
+            if (spineConstraintTarget.position.y > aimingDistanceReferencePoint.position.y)
             {
                 aimingUpwards = true;
                 spineConstraint1.weight = 0.05f;
@@ -113,43 +123,31 @@ public class EC_HumanoidAimingController : EntityComponent
                 spineConstraint1.weight = 0.2f;
                 spineConstraint2.weight = 0.7f;
                 spineConstraint3.weight = 1f;
-            }*/
+            }
         }
-       /* else
+        else
         {
             spineConstraint1.weight = 0f;
             spineConstraint2.weight = 0f;
             spineConstraint3.weight = 0f;
-        }*/
+        }
     }
 
     public override void LateUpdateComponent()
     {
-        if (aimAtActive)
+        /*if (aimAtActive)
         {
-            //TODO try rotating here again
+            //Limit to rotation on the x axis only
             Vector3 spineDirection = transform.InverseTransformDirection(directionToAim);
-            Debug.Log("spineDirection: " + spineDirection);
             spineDirection.x = 0;
-            spine3.rotation = Quaternion.LookRotation(transform.TransformDirection(spineDirection));
-
-            // Rotate Vertically
-            /*Debug.Log("direction To Aim At: " + directionToAim);
-            Vector3 spineDirection = transform.InverseTransformDirection(directionToAim);
             Debug.Log("spineDirection: " + spineDirection);
-            spineDirection.x = 0;
-            //spineDirection.y = 0;
-            spine3.up = -transform.TransformDirection(spineDirection);
-            Debug.Log("-transform.TransformDirection(spineDirection): " + -transform.TransformDirection(spineDirection));
-            //spine3.rotation = Quaternion.LookRotation(transform.TransformDirection(spineDirection));*/
+            if (spineDirection.z < 0.01f) spineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
+            spineDirection = transform.TransformDirection(spineDirection);
 
-
-            //float angleX = Vector3.Angle(Vector3.forward, transform.InverseTransformDirection(directionToAim));
-
-            //Vector3 spineEulers = spine3.rotation.eulerAngles;
-            //spineEulers.x = angleX;
-            //Quaternion newRotation = Quaternion.Euler(new Vector3())
-        }
+            spineConstraintTarget.position = spine3.position + spineDirection.normalized * 10;
+            //spine3.rotation = Quaternion.LookRotation(spineDirection);
+            Debug.Log("rotation: " + spine3.rotation.eulerAngles);
+        }*/
     }
 
     /*public void AimInDirection(Vector3 direction)
