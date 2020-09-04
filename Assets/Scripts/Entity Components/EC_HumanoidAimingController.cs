@@ -22,12 +22,21 @@ public class EC_HumanoidAimingController : EntityComponent
     //public Transform spine1;
    // public Transform spine2;
     public Transform aimingDistanceReferencePoint; //could be spine 3
+    Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
     Vector3 currentSpineDirectionChangeVelocity;
 
     public MultiAimConstraint spineConstraint1;
     public MultiAimConstraint spineConstraint2;
     public MultiAimConstraint spineConstraint3;
+
+    public float spineConstraint1TargetWeight;
+    public float spineConstraint2TargetWeight;
+    public float spineConstraint3TargetWeight;
+    public float spineConstraint1CurrentWeight;
+    public float spineConstraint2CurrentWeight;
+    public float spineConstraint3CurrentWeight;
+    public float spineConstraintWeightChangeSpeed;
 
     [Header("Aim at Params")]
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
@@ -102,42 +111,70 @@ public class EC_HumanoidAimingController : EntityComponent
 
             // Rotate Vertically
             //Limit to rotation on the x axis only
-            Vector3 desiredSpineDirection = transform.InverseTransformDirection(directionToAim);
+            desiredSpineDirection = transform.InverseTransformDirection(directionToAim);
             desiredSpineDirection.x = 0;
             Debug.Log("spineDirection: " + desiredSpineDirection);
             if (desiredSpineDirection.z < 0.01f) desiredSpineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
-            // Limit Speed
-            currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection,ref currentSpineDirectionChangeVelocity, 0.3f); //Damping is static for now, no real velocity value
-
-            spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection.normalized * directionToAim.magnitude; //Todo calculate correct distance here
+           
 
 
             //1. set the weight depending on if the target is above or below the shoulders
             if (spineConstraintTarget.position.y > aimingDistanceReferencePoint.position.y)
             {
                 aimingUpwards = true;
-                spineConstraint1.weight = 0.05f;
-                spineConstraint2.weight = 0.2f;
-                spineConstraint3.weight = 0.4f;
+                spineConstraint1TargetWeight = 0.05f;
+                spineConstraint2TargetWeight = 0.2f;
+                spineConstraint3TargetWeight = 0.4f;
             }
             else
             {
                 aimingUpwards = false;
-                spineConstraint1.weight = 0.2f;
-                spineConstraint2.weight = 0.7f;
-                spineConstraint3.weight = 1f;
+                spineConstraint1TargetWeight = 0.2f;
+                spineConstraint2TargetWeight = 0.7f;
+                spineConstraint3TargetWeight = 1f;
             }
         }
         else
         {
-            currentSpineDirection = transform.forward;
-            spineConstraint1.weight = 0f;
-            spineConstraint2.weight = 0f;
-            spineConstraint3.weight = 0f;
+            desiredSpineDirection = transform.forward;
+            spineConstraint1TargetWeight = 0f;
+            spineConstraint2TargetWeight = 0f;
+            spineConstraint3TargetWeight = 0f;
         }
+        // Limit Speed
+        currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, 0.3f); //Damping is static for now, no real velocity value
+
+        spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection.normalized * directionToAim.magnitude; //Todo calculate correct distance here
+
+       /* if (currentSpineDirection.y > 0)
+        {
+            aimingUpwards = true;
+            spineConstraint1TargetWeight = 0.05f;
+            spineConstraint2TargetWeight = 0.2f;
+            spineConstraint3TargetWeight = 0.4f;
+        }
+        else
+        {
+            aimingUpwards = false;
+            spineConstraint1TargetWeight = 0.2f;
+            spineConstraint2TargetWeight = 0.7f;
+            spineConstraint3TargetWeight = 1f;
+        }*/
+
+
+        float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
+        spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
+        spineConstraint1.weight = spineConstraint1CurrentWeight;
+        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - spineConstraint2.weight), -maxSpeed, maxSpeed);
+        spineConstraint2.weight = spineConstraint2CurrentWeight;
+        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraint3.weight), -maxSpeed, maxSpeed);
+        spineConstraint3.weight = spineConstraint3CurrentWeight;
     }
+
+   
+    //}
 
     /*public override void LateUpdateComponent()
     {
