@@ -47,6 +47,14 @@ public class GameEntity : MonoBehaviour
         }
     }
 
+    protected void LateUpdate()
+    {
+        foreach (EntityComponent ability in components)
+        {
+            ability.LateUpdateComponent();
+        }
+    }
+
     #endregion
 
     public Vector3 GetPositionForAiming()
