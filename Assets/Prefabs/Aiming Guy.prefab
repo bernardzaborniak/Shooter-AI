@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementController: {fileID: 150125329770231581}
-  testingTarget: {fileID: 0}
+  aimAtTarget: {fileID: 0}
   spineConstraintTarget: {fileID: 150125329654889063}
   aimingDistanceReferencePoint: {fileID: 1388137237925552630}
   spineConstraint1: {fileID: 150125331146591114}
@@ -207,6 +207,8 @@ MonoBehaviour:
   spineConstraintWeightChangeSpeed: 0.5
   defaultDirectionAimDistance: 10
   defaultDirectionAimHeightOffset: 1
+  lookAtTarget: {fileID: 0}
+  fLookAnimator: {fileID: 0}
 --- !u!114 &150125329770231581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,7 +977,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 676232849e2e19d4f81ab3716ffa92b8,
         type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 676232849e2e19d4f81ab3716ffa92b8, type: 3}

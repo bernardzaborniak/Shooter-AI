@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FIMSpace.FLook;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -8,15 +9,15 @@ public class EC_HumanoidAimingController : EntityComponent
     //is responsible for the correct aiming of the spine bones together with the animation? 
     //rotates differently depending on the current weapon?
 
-    [Header("References")]
+   // [Header("References")]
+   
+
+    [Header("Spine Constraint for Aiming up/down")]
     public EC_HumanoidMovementController movementController;
-    public Transform testingTarget;
-
-    [Header("Spine Constraint for aiming up/down")]
-    [Tooltip("Reference point on human body for aiming direction, ca nchange later to be the gun?")]
+    public Transform aimAtTarget;
+    [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
     public Transform spineConstraintTarget;
-    
-
+    [Tooltip("Reference point on human body for aiming direction, ca nchange later to be the gun?")]
     public Transform aimingDistanceReferencePoint; //could be spine 3
     Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
@@ -39,6 +40,12 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
     public float defaultDirectionAimDistance;
     public float defaultDirectionAimHeightOffset;
+
+    [Header("Look At")]
+    public Transform lookAtTarget;
+    public FLookAnimator fLookAnimator;
+
+  
 
     enum AimAtTargetingMethod
     {
@@ -70,16 +77,22 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-           // AimInDirection(Vector3.right);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AimAtTransform(testingTarget);
+            // AimInDirection(Vector3.right);
+            LookAtTransform(lookAtTarget);
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
+            StopLookAt();
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            AimAtTransform(aimAtTarget);
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
             StopAimAt();
         }
+        
 
         if (aimAtActive)
         {
@@ -171,6 +184,18 @@ public class EC_HumanoidAimingController : EntityComponent
         aimAtPosition = position;
 
     }*/
+
+    public void LookAtTransform(Transform target)
+    {
+        fLookAnimator.ObjectToFollow = target;
+    }
+
+    public void StopLookAt()
+    {
+        fLookAnimator.ObjectToFollow = null;
+    }
+
+
 
     public void AimAtTransform(Transform transform)
     {
