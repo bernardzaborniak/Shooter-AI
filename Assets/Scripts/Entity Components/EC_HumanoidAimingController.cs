@@ -121,9 +121,8 @@ public class EC_HumanoidAimingController : EntityComponent
             // 3. Rotate Vertically
 
             // 3.1 Limit to rotation on the x axis only
-            desiredSpineDirection = transform.InverseTransformDirection(directionToAim);
-            desiredSpineDirection.x = 0;
-            if (desiredSpineDirection.z < 0.01f) desiredSpineDirection.z = 0.01f; //dont allow negative values to prevent strange rotation
+            //We are kind of rotating the vector to point in the Forward Direction
+            desiredSpineDirection = new Vector3(0, directionToAim.y, new Vector2(directionToAim.x, directionToAim.z).magnitude);  
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
             // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
@@ -153,7 +152,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         // Move Aiming Direction with damping
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
-        spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection.normalized * directionToAim.magnitude; //Todo calculate correct distance here
+        spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection;
 
         // Smooth out weight change
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
@@ -211,5 +210,12 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimAtActive = false;
         movementController.manualRotation = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+
+        Gizmos.DrawLine(aimingDistanceReferencePoint.position, aimingDistanceReferencePoint.position + desiredSpineDirection);
     }
 }
