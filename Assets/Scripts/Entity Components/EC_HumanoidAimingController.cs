@@ -61,6 +61,15 @@ public class EC_HumanoidAimingController : EntityComponent
    // public float maxAngleDifference; //angle difference between desired rotation and current
     bool aimWeapon;
 
+    [Header(" Weapon aim target movement")]
+    /* [Tooltip("compared to aimingDistanceReferencePoint - whoch is spine")]
+     public float maxXRotDifference;
+     [Tooltip("compared to aimingDistanceReferencePoint - whoch is spine, should be smaller than XRotDifference")]
+     public float maxYRotDifference;*/
+    public float maxWeaponRotDifference;
+    [Tooltip("speed used for Quaternion.RotateTowards()")]
+    public float weaponAimRotationSpeed;
+    Vector3 currentWeaponAimDirection;
 
 
     enum AimAtTargetingMethod
@@ -189,7 +198,33 @@ public class EC_HumanoidAimingController : EntityComponent
 
         if (aimWeapon)
         {
-            weaponAimTarget.position = aimAtTarget.position;
+            Vector3 desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
+            currentWeaponAimDirection = Vector3.RotateTowards(currentWeaponAimDirection, desiredWeaponAimDirection, weaponAimRotationSpeed * Mathf.Deg2Rad * Time.deltaTime, 100);
+            weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
+
+            /*Vector3 desiredWeaponAimDirection;
+            //if the current target is at an angle smaller than the constraints - the desired direction is also the spine target, if not, we aim towards the real target
+            if (Vector3.Angle(directionToAim, currentSpineDirection)> maxWeaponRotDifference) //directionToAim is the absolute direction, spine direction is the one the spine takes
+            {
+                desiredWeaponAimDirection = currentSpineDirection;
+            }
+            else
+            {
+                desiredWeaponAimDirection = directionToAim;
+            }
+
+            //move vector towards deired direction:
+            currentWeaponAimDirection = Vector3.RotateTowards(currentWeaponAimDirection, desiredWeaponAimDirection, weaponAimRotationSpeed * Mathf.Deg2Rad * Time.deltaTime,100);
+            weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
+                 //in degress pro second
+            */
+
+
+
+
+
+            //weaponAimTarget.position = aimAtTarget.position;
+
 
             // rightHandIKTarget = weapon.rightHandIKPosition;
             // leftHandIKTarget = weapon.leftHandIKPosition;
@@ -269,6 +304,8 @@ public class EC_HumanoidAimingController : EntityComponent
         //weaponAimingConstraint.weight = 1;
         weaponAimingRig.weight = 1;
         aimWeapon = true;
+
+        currentWeaponAimDirection = currentSpineDirection;
     }
 
     public void StopAimingWeaponAtTarget()

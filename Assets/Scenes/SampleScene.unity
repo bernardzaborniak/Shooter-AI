@@ -4553,6 +4553,8 @@ MonoBehaviour:
   rightHandIKTarget: {fileID: 1223857069}
   leftHandIKTarget: {fileID: 163963109}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
+  maxWeaponRotDifference: 30
+  weaponAimRotationSpeed: 300
 --- !u!4 &332335215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,
@@ -5042,13 +5044,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356732803}
-  m_LocalRotation: {x: 0.000000040978193, y: -0.000000059604645, z: 0.70710665, w: 0.707107}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.088393666, y: -0.3603336, z: 0.7477771, w: 0.55061394}
+  m_LocalPosition: {x: -0.003, y: 0.051, z: 0.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 889473773}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 39.512, y: -20.059, z: 100}
 --- !u!1001 &359057526
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13859,7 +13861,7 @@ GameObject:
   - component: {fileID: 826471116}
   - component: {fileID: 826471117}
   m_Layer: 0
-  m_Name: Position Weapon Relative To Shoudler (1)
+  m_Name: Parent Weapon HOlder To Weapon parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13877,7 +13879,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8453179565671218689}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &826471117
 MonoBehaviour:
@@ -32841,7 +32843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &195090559383358898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33094,7 +33096,7 @@ Transform:
   m_GameObject: {fileID: 8344216347411328290}
   m_LocalRotation: {x: -0.000000014901158, y: 0.000000005325346, z: 0.00000006196167,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1778445862}
@@ -33116,7 +33118,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8453179565671218689}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2960873797460716373
 GameObject:
@@ -33467,16 +33469,16 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_MinLimit: -30
+    m_MaxLimit: 30
     m_AimAxis: 4
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
       y: 1
-      z: 1
+      z: 0
   m_SourceObjectsGUIToggle: 1
-  m_SettingsGUIToggle: 0
+  m_SettingsGUIToggle: 1
 --- !u!1 &7924905867699317976
 GameObject:
   m_ObjectHideFlags: 0
@@ -33708,8 +33710,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3182819285675299701}
-  - {fileID: 2400441907979112438}
   - {fileID: 826471116}
+  - {fileID: 2400441907979112438}
   - {fileID: 962271324}
   - {fileID: 1599741149}
   - {fileID: 8078635865453087720}
