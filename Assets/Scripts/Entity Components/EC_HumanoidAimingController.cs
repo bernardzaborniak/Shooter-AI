@@ -69,7 +69,10 @@ public class EC_HumanoidAimingController : EntityComponent
     public float maxWeaponRotDifference;
     [Tooltip("speed used for Quaternion.RotateTowards()")]
     public float weaponAimRotationSpeed;
+    public float currentAimingWeaponSmoothSpeed;
     Vector3 currentWeaponAimDirection;
+    Vector3 desiredWeaponAimDirection;
+    Vector3 weaponAimSpeed;
 
 
     enum AimAtTargetingMethod
@@ -148,6 +151,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
             directionToAim = pointToAimAt - aimingDistanceReferencePoint.position;
 
+
             // 2. Rotate Horizontally
             movementController.SetDesiredForward(directionToAim.normalized); //do we need to normalize?
 
@@ -198,8 +202,21 @@ public class EC_HumanoidAimingController : EntityComponent
 
         if (aimWeapon)
         {
-            Vector3 desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-            currentWeaponAimDirection = Vector3.RotateTowards(currentWeaponAimDirection, desiredWeaponAimDirection, weaponAimRotationSpeed * Mathf.Deg2Rad * Time.deltaTime, 100);
+
+            desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
+
+            /*if(newDesiredWeaponAimDirection!= desiredWeaponAimDirection)
+            {
+                desiredWeaponAimDirection = newDesiredWeaponAimDirection;
+                currentAimingWeaponSmoothSpeed =  0.25f * Vector3.Angle(currentWeaponAimDirection, desiredWeaponAimDirection) / weaponAimRotationSpeed;
+            }*/
+
+            //currentWeaponAimDirection = Vector3.RotateTowards(currentWeaponAimDirection, desiredWeaponAimDirection, weaponAimRotationSpeed * Mathf.Deg2Rad * Time.deltaTime, 100);
+            //currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeed, (0.25f * Vector3.Angle(currentWeaponAimDirection, desiredWeaponAimDirection)) / weaponAimRotationSpeed);
+
+            //calculate currentAimingWeaponSmoothSpeed everytime the target changes ? 
+
+            currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeed, currentAimingWeaponSmoothSpeed);
             weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
 
             /*Vector3 desiredWeaponAimDirection;

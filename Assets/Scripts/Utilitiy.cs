@@ -94,14 +94,14 @@ public static class Utility
         // acceleration distance is basicly a capping ditance- distances below this distance wont reach the max elocity , just distance/acceleration * maxSpeed
         //this formal was changed to average velocity, nothing changed in the calculation, just the names
 
-        float modifiedMaxSpeed = averageSpeed;
+        float modifiedSpeed = averageSpeed;
 
         if (remainingDistance < accelerationDistance)
         {
-            modifiedMaxSpeed = (remainingDistance / accelerationDistance) * averageSpeed;
+            modifiedSpeed = (remainingDistance / accelerationDistance) * averageSpeed;
         }
 
-        float smoothSpeed = (0.25f * remainingDistance) / modifiedMaxSpeed;
+        float smoothSpeed = (0.25f * remainingDistance) / modifiedSpeed;
 
         if (float.IsNaN(smoothSpeed)) //if modifiedMaxSpeed is 0 it returns an NaN - destryong the whole rotation
         {

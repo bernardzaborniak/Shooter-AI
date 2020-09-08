@@ -4554,7 +4554,8 @@ MonoBehaviour:
   leftHandIKTarget: {fileID: 163963109}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
-  weaponAimRotationSpeed: 300
+  weaponAimRotationSpeed: 40
+  currentAimingWeaponSmoothSpeed: 0.05
 --- !u!4 &332335215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8146322568146152481, guid: bb7aed23282bdb14bbbd83caee2bfa61,
@@ -30101,6 +30102,8 @@ MonoBehaviour:
     m_Active: 1
   - m_Rig: {fileID: 3473364777533940227}
     m_Active: 1
+  - m_Rig: {fileID: 0}
+    m_Active: 1
   m_Effectors: []
 --- !u!114 &1940732136
 MonoBehaviour:
@@ -30151,9 +30154,9 @@ MonoBehaviour:
   - Transform: {fileID: 889473773}
   - Transform: {fileID: 1405276758}
   - Transform: {fileID: 2095062472}
-  CompensationWeight: 0.371
+  CompensationWeight: 1
   CompensationWeightB: 0.5
-  CompensatePositions: 0.065
+  CompensatePositions: 1
   CompensatePositionsB: 0
   StartAfterTPose: 1
   AnimatePhysics: 0
