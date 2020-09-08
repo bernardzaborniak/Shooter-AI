@@ -47,7 +47,14 @@ public class EC_HumanoidAimingController : EntityComponent
 
     [Header("Aiming the Weapon")]
     public Transform weaponAimTarget;
-    public MultiAimConstraint weaponAimingConstraint;
+    public Rig weaponAimingRig;
+
+
+    //public TwoBoneIKConstraint
+    public Weapon weapon;
+    public Transform rightHandIKTarget;
+    public Transform leftHandIKTarget;
+    public Vector3 handIKRotationOffset;
    
    // public Transform aimingHand;
    // public float movementSpeed;
@@ -183,6 +190,15 @@ public class EC_HumanoidAimingController : EntityComponent
         if (aimWeapon)
         {
             weaponAimTarget.position = aimAtTarget.position;
+
+            // rightHandIKTarget = weapon.rightHandIKPosition;
+            // leftHandIKTarget = weapon.leftHandIKPosition;
+
+            rightHandIKTarget.position = weapon.rightHandIKPosition.position;
+            rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+
+            leftHandIKTarget.position = weapon.leftHandIKPosition.position;
+            leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset); ;
         }
     }
 
@@ -250,13 +266,15 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponAtTarget()//Transform target)
     {
-        weaponAimingConstraint.weight = 1;
+        //weaponAimingConstraint.weight = 1;
+        weaponAimingRig.weight = 1;
         aimWeapon = true;
     }
 
     public void StopAimingWeaponAtTarget()
     {
-        weaponAimingConstraint.weight = 0;
+        //weaponAimingConstraint.weight = 0;
+        weaponAimingRig.weight = 0;
         aimWeapon = false;
 
     }
