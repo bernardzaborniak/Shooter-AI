@@ -6,86 +6,14 @@ using UnityEngine.Animations.Rigging;
 
 public class EC_HumanoidAimingController : EntityComponent
 {
-    //is responsible for the correct aiming of the spine bones together with the animation? 
-    //rotates differently depending on the current weapon?
+    // Is responsible for the correct aiming of the spine bones together with hands and parenting of weapons?  
 
-   // [Header("References")]
-   
+    #region Calculate Aim At Position Fields
 
-    [Header("Spine Constraint for Aiming up/down")]
-    public EC_HumanoidMovementController movementController;
-    public Transform aimAtTarget;
-    [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
-    public Transform spineConstraintTarget;
-    [Tooltip("Reference point on human body for aiming direction, ca nchange later to be the gun?")]
-    public Transform aimingDistanceReferencePoint; //could be spine 3
-    Vector3 desiredSpineDirection;
-    Vector3 currentSpineDirection;
-    Vector3 currentSpineDirectionChangeVelocity;
-
-    public MultiAimConstraint spineConstraint1;
-    public MultiAimConstraint spineConstraint2;
-    public MultiAimConstraint spineConstraint3;
-
-    float spineConstraint1TargetWeight;
-    float spineConstraint2TargetWeight;
-    float spineConstraint3TargetWeight;
-    float spineConstraint1CurrentWeight;
-    float spineConstraint2CurrentWeight;
-    float spineConstraint3CurrentWeight;
-    public float spineConstraintDirectionChangeSmoothTime = 0.3f;
-    public float spineConstraintWeightChangeSpeed;
-
-    [Header("Aim at Params")]
+    [Header("Aim at Posiiton Calculation")]
+    // Used to determin desired aiming direction - is this really needed?
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
     public float defaultDirectionAimDistance;
-    public float defaultDirectionAimHeightOffset;
-
-    [Header("Look At")]
-    public Transform lookAtTarget;
-    public FLookAnimator fLookAnimator;
-
-    [Header("Idle Weapon Holding")]
-    public Rig idleWeaponHoldingRig;
-    float desiredIdleWeaponHoldingRigWeight = 1;
-    public TwoBoneIKConstraint idleLeftHandIK;
-    public Transform leftHandIdleIKTarget;
-    public bool performIdleWeaponHoldLeftHandIK;
-
-    [Header("Aiming the Weapon")]
-    public Transform weaponAimTarget;
-
-    [Tooltip("Weapons get parented to this object when aiming")]
-    public Transform weaponAimParentLocalAdjuster;
-  
-
-
-    public Rig weaponAimingRig;
-    float desiredWeaponAimingRigWeight;
-    public float changBetweenAimingAndIdleRigSpeed;
-
-
-    public Weapon weapon;
-    public Transform rightHandIKTarget;
-    public Transform leftHandIKTarget;
-    public Vector3 handIKRotationOffset;
-   
-    bool aimWeapon;
-
-    [Header(" Weapon aim target movement")]
-    public float maxWeaponRotDifference;
-    [Tooltip("speed used for Quaternion.RotateTowards()")]
-    public float weaponAimRotationSpeed;
-    public float currentAimingWeaponSmoothSpeed;
-    Vector3 currentWeaponAimDirection;
-    Vector3 desiredWeaponAimDirection;
-    Vector3 weaponAimSpeed;
-
-    float lookAtCompensationWeightBeforeAimingWeapon;
-    float lookAtCompensatiePositionsBeforeAimingWeapon;
-
-  
-
 
     enum AimAtTargetingMethod
     {
@@ -105,6 +33,85 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 pointToAimAt;
     Vector3 directionToAim;
 
+    #endregion
+
+    #region Other Fields
+
+    [Header("Spine Constraint for Aiming up/down")]
+
+    [Tooltip("The movement Controller is used to rotate to the sides")]
+    public EC_HumanoidMovementController movementController;
+    [Tooltip("Target at which the spine/body aims")]
+    public Transform aimAtTarget;
+    [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
+    public Transform spineConstraintTarget;
+    [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
+    public Transform aimingDistanceReferencePoint; //could be spine 3
+    Vector3 desiredSpineDirection;
+    Vector3 currentSpineDirection;
+    Vector3 currentSpineDirectionChangeVelocity;
+
+    public MultiAimConstraint spineConstraint1;
+    public MultiAimConstraint spineConstraint2;
+    public MultiAimConstraint spineConstraint3;
+
+    float spineConstraint1TargetWeight;
+    float spineConstraint2TargetWeight;
+    float spineConstraint3TargetWeight;
+    float spineConstraint1CurrentWeight;
+    float spineConstraint2CurrentWeight;
+    float spineConstraint3CurrentWeight;
+    [Tooltip("Basically The Speed at which the spine Rotates Up and Down, the smaller the smooth time, the faster the rotation")]
+    public float spineConstraintDirectionChangeSmoothTime = 0.1f;
+    [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
+    public float spineConstraintWeightChangeSpeed = 0.5f;
+
+    [Header("Look At")]
+    public FLookAnimator fLookAnimator;
+    public Transform lookAtTarget;
+
+    // Look At distorts the weapon aiming when its 2 compensiation Weights are set on something different than 1, so we set the mto 1 while aiming ,and reset them afterwards.
+    float lookAtCompensationWeightBeforeAimingWeapon;
+    float lookAtCompensatiePositionsBeforeAimingWeapon;
+
+    [Header("Idle Weapon Holding")]
+    public Rig idleWeaponHoldingRig;
+    //float desiredIdleWeaponHoldingRigWeight = 1;  //maybe used later when converting from holding weapon to some other animation?
+    public TwoBoneIKConstraint idleLeftHandIK;
+    public Transform leftHandIdleIKTarget;
+    public bool performIdleWeaponHoldLeftHandIK;
+
+    [Header("Aiming the Weapon")]
+    public Transform weaponAimTarget;
+    public Weapon weapon;
+    public Rig weaponAimingRig;
+
+    float desiredWeaponAimingRigWeight;
+    [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
+    public float changeBetweenAimingAndIdleRigSpeed;
+    [Tooltip("Weapons get parented to this object when aiming")]
+    public Transform weaponAimParentLocalAdjuster;
+
+    public Transform rightHandIKTarget;
+    public Transform leftHandIKTarget;
+    [Tooltip("depending on the specific model skeleton hand orientation?")]
+    public Vector3 handIKRotationOffset;
+
+    bool aimWeapon;
+
+    [Header("Weapon aim target movement")]
+    [Tooltip("Max Rotation difference between current character forward and the target he aims at, to prrevent aiming too far to the side")]
+    public float maxWeaponRotDifference;
+    [Tooltip("speed used for Quaternion.RotateTowards()")]
+    public float weaponAimRotationSpeed;
+    [Tooltip("The smaller this value, the faster the weapon aims, it uses vector3.smoothDamp to smooth the movement a little bit")]
+    public float aimingWeaponSmoothTime = 0.05f;
+    Vector3 currentWeaponAimDirection;
+    Vector3 desiredWeaponAimDirection;
+    Vector3 weaponAimSpeedRef;
+
+#endregion
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -117,6 +124,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public override void UpdateComponent()
     {
+        #region Key Inputs For Testing
+
         if (Input.GetKeyDown(KeyCode.L))
         {
             // AimInDirection(Vector3.right);
@@ -143,6 +152,10 @@ public class EC_HumanoidAimingController : EntityComponent
             StopAimingWeaponAtTarget();
         }
 
+        #endregion
+
+        #region Handle Idle Wepaon IK'S
+
         if (performIdleWeaponHoldLeftHandIK)
         {
             idleLeftHandIK.weight = 1;
@@ -154,16 +167,19 @@ public class EC_HumanoidAimingController : EntityComponent
             idleLeftHandIK.weight = 0;
         }
 
+        #endregion
+
+        #region Aiming Spine
 
         if (aimAtActive)
         {
-            // 1. Calculate Point to aim at
+            // ---------------  1. Calculate Point to aim at -----------
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
             pointToAimAt = Vector3.zero;
 
             if (currentAimAtTargetingMethod == AimAtTargetingMethod.Direction)
             {
-                pointToAimAt = transform.position + aimDirection * defaultDirectionAimDistance + Vector3.up * defaultDirectionAimHeightOffset;
+                pointToAimAt = aimingDistanceReferencePoint.position + aimDirection * defaultDirectionAimDistance;
             }
             else if (currentAimAtTargetingMethod == AimAtTargetingMethod.Position)
             {
@@ -177,10 +193,10 @@ public class EC_HumanoidAimingController : EntityComponent
             directionToAim = pointToAimAt - aimingDistanceReferencePoint.position;
 
 
-            // 2. Rotate Horizontally
+            // -------------   2. Rotate Horizontally  -----------
             movementController.SetDesiredForward(directionToAim.normalized); //do we need to normalize?
 
-            // 3. Rotate Vertically
+            // -------------   3. Calculate vertical desiredSpineDirection & set Weights ----------------
 
             // 3.1 Limit to rotation on the x axis only
             //We are kind of rotating the vector to point in the Forward Direction
@@ -212,11 +228,11 @@ public class EC_HumanoidAimingController : EntityComponent
             spineConstraint3TargetWeight = 0f;
         }
 
-        // Move Aiming Direction with damping
+        //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
         spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection;
 
-        // Smooth out weight change
+        // -----------   5 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
         spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
         spineConstraint1.weight = spineConstraint1CurrentWeight;
@@ -225,18 +241,18 @@ public class EC_HumanoidAimingController : EntityComponent
         spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraint3.weight), -maxSpeed, maxSpeed);
         spineConstraint3.weight = spineConstraint3CurrentWeight;
 
+        #endregion
+
+        #region Aiming Weapon
+
         if (aimWeapon)
         {
-
+            // Calculate & Rotate Weapon Aim Direction
             desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-
-
-
-            currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeed, currentAimingWeaponSmoothSpeed);
+            currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
             weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
 
-
-
+            // Position The hand's IK's
             rightHandIKTarget.position = weapon.rightHandIKPosition.position;
             rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
@@ -244,14 +260,11 @@ public class EC_HumanoidAimingController : EntityComponent
             leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
         }
 
-
-        float changeSpeed = changBetweenAimingAndIdleRigSpeed * Time.deltaTime;
+        // Smooth out the change between aiming weapon and holding it idle
+        float changeSpeed = changeBetweenAimingAndIdleRigSpeed * Time.deltaTime;
         weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
-       // idleWeaponHoldingRig.weight += Mathf.Clamp((desiredIdleWeaponHoldingRigWeight - idleWeaponHoldingRig.weight), -changeSpeed, changeSpeed);
 
-            
-
-
+        #endregion
     }
 
 
@@ -291,8 +304,6 @@ public class EC_HumanoidAimingController : EntityComponent
         currentAimAtTargetingMethod = AimAtTargetingMethod.Transform;
         movementController.manualRotation = true;
         aimAtTransform = transform;
-
-       
     }
 
     public void StopAimAt()
@@ -301,16 +312,14 @@ public class EC_HumanoidAimingController : EntityComponent
         movementController.manualRotation = false;
     }
 
-    public void AimWeaponAtTarget()//Transform target)
+    public void AimWeaponAtTarget()
     {
-        //weaponAimingConstraint.weight = 1;
-        //weaponAimingRig.weight = 1;
         aimWeapon = true;
 
         currentWeaponAimDirection = currentSpineDirection;
 
         // Modify the compensation weight to achieve correct weapon aim and correct hand ik's
-        // cause LookAt modifies the hand and arm positions in Lateupdate
+        // cause LookAt modifies the hand and arm positions in LateUpdate
         lookAtCompensationWeightBeforeAimingWeapon = fLookAnimator.CompensationWeight;
         lookAtCompensatiePositionsBeforeAimingWeapon = fLookAnimator.CompensatePositions;
 
@@ -318,13 +327,10 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = 1;
 
         desiredWeaponAimingRigWeight = 1;
-        //desiredIdleWeaponHoldingRigWeight = 0;
     }
 
     public void StopAimingWeaponAtTarget()
     {
-        //weaponAimingConstraint.weight = 0;
-        //weaponAimingRig.weight = 0;
         aimWeapon = false;
 
         // Modify fLookATWeights to their values before aiming the weapon.
@@ -332,7 +338,6 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = lookAtCompensatiePositionsBeforeAimingWeapon;
 
         desiredWeaponAimingRigWeight = 0;
-        //desiredIdleWeaponHoldingRigWeight = 1;
     }
 
     /*private void OnDrawGizmos()
