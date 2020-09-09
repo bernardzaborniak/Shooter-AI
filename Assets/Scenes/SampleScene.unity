@@ -785,7 +785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &15250004
 Transform:
   m_ObjectHideFlags: 0
@@ -52934,7 +52934,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1402306269
 Transform:
   m_ObjectHideFlags: 0
@@ -76275,7 +76275,7 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 1759106635}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1328265382}
-  weapon: {fileID: 15250005}
+  weapon: {fileID: 1402306270}
   weaponAimingRig: {fileID: 1315554097}
   changeBetweenAimingAndIdleRigSpeed: 2
   weaponAimParentLocalAdjuster: {fileID: 1140016621}
