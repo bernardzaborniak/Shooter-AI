@@ -110,7 +110,10 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeedRef;
 
-#endregion
+    #endregion
+
+    [Header("Fields to be moved to animation controller corresponding to character controller state machine")]
+    public Animator animator;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -150,6 +153,15 @@ public class EC_HumanoidAimingController : EntityComponent
         if (Input.GetKeyDown(KeyCode.B))
         {
             StopAimingWeaponAtTarget();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            animator.SetBool("Aiming", false);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            animator.SetBool("Aiming", true);
         }
 
         #endregion

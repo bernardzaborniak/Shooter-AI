@@ -2033,6 +2033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 62901106}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 357606156}
@@ -2042,25 +2043,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 2095589359}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1375540746}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1239982439}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1447005334}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 2070847912}
+  weaponAimingRig: {fileID: 1447005334}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1865603625}
   leftHandIKTarget: {fileID: 1805604616}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &62901108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4026,7 +4026,7 @@ MonoBehaviour:
   LookAnimatorAmount: 1
   StartLookPointOffset: {x: 0, y: 0, z: 0}
   AnchorStartLookPoint: 1
-  RefreshStartLookPoint: 1
+  RefreshStartLookPoint: 0
   SyncWithAnimator: 1
   MonitorAnimator: 0
   WeightsMultiplier: 1
@@ -4041,11 +4041,11 @@ MonoBehaviour:
   ModelUpAxis: {x: 0, y: 1, z: 0}
   ManualFromAxis: {x: 0, y: 0, z: 1}
   ManualToAxis: {x: 0, y: 0, z: 1}
-  FromAuto: {x: 0, y: 0, z: 0}
-  OffsetAuto: {x: 0, y: 0, z: 0}
-  parentalReferenceLookForward: {x: 0, y: 0, z: 0}
-  parentalReferenceUp: {x: 0, y: 0, z: 0}
-  DynamicReferenceUp: {x: 0, y: 0, z: 0}
+  FromAuto: {x: 0.023162868, y: 0.17968401, z: -0.98345166}
+  OffsetAuto: {x: 8.223474, y: 4.7811575, z: 5.2667522}
+  parentalReferenceLookForward: {x: 0.01573866, y: 0.17989545, z: 0.98355985}
+  parentalReferenceUp: {x: -0.042636428, y: 0.9829077, z: -0.17909391}
+  DynamicReferenceUp: {x: -0.042636428, y: 0.9829077, z: -0.17909391}
   RotationOffset: {x: 0, y: 0, z: 0}
   BackBonesAddOffset: {x: 0, y: 0, z: 0}
   RotCorrectionMultiplier: {x: 1, y: 1, z: 1}
@@ -4057,7 +4057,7 @@ MonoBehaviour:
   DelayPosition: 0
   DelayMaxDistance: 0.25111
   DelayGoSpeed: 0.6
-  BirdTargetPosition: {x: 0, y: 0, z: 1}
+  BirdTargetPosition: {x: 10.15158, y: 0.657643, z: 12.899949}
   UseEyes: 0
   EyesTarget: {fileID: 0}
   LeftEye: {fileID: 0}
@@ -4079,21 +4079,25 @@ MonoBehaviour:
   ParentalReferenceBone: {fileID: 0}
   DestroyMomentTargetOnMaxDistance: 1
   BackBonesCount: 4
-  _preBackBonesCount: 0
+  _preBackBonesCount: 4
   LookBones:
   - Transform: {fileID: 89466050}
-    animatedStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    localStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    animatedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+    animatedStaticRotation: {x: 0.08856467, y: -0.0097841, z: -0.021346554, w: 0.99579364}
+    targetStaticRotation: {x: 0.08856467, y: -0.0097841, z: -0.021346554, w: 0.99579364}
+    localStaticRotation: {x: 0.00030054152, y: -0.000000059604645, z: -0.0000004172325,
+      w: 0.99999994}
+    animatedTargetRotation: {x: -0.004178526, y: -0.00088132627, z: 0.000113298454,
+      w: 1}
+    targetRotation: {x: -0.004178526, y: -0.00088132627, z: 0.000113298454, w: 1}
     correctionOffset: {x: 0, y: 0, z: 0}
-    finalRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastKeyframeRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFinalLocalRotation: {x: 0, y: 0, z: 0, w: 0}
-    forward: {x: 0, y: 0, z: 1}
-    right: {x: 1, y: 0, z: 0}
-    up: {x: 0, y: 1, z: 0}
+    finalRotation: {x: 0.05741041, y: 0.012338388, z: -0.0432666, w: 0.9973363}
+    lastKeyframeRotation: {x: 0.00030083954, y: -0.000000059604645, z: -0.00000013411045,
+      w: 1}
+    lastFinalLocalRotation: {x: 0.00030083582, y: -0.000000063329935, z: -0.00000010948861,
+      w: 1}
+    forward: {x: -0.015738282, y: -0.18048583, z: 0.98345166}
+    right: {x: 0.9989667, y: -0.039102994, z: 0.023162857}
+    up: {x: 0.042636458, y: 0.9828, z: 0.17968392}
     initLocalPos: {x: 6.339214e-12, y: 0.11786287, z: -8.0396115e-12}
     targetDelayPosition: {x: 0, y: 0, z: 0}
     animatedDelayPosition: {x: 0, y: 0, z: 0}
@@ -4101,18 +4105,19 @@ MonoBehaviour:
     lookWeightB: 1
     motionWeight: 1
   - Transform: {fileID: 89466051}
-    animatedStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    localStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    animatedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+    animatedStaticRotation: {x: 0.08826538, y: -0.009777664, z: -0.021349076, w: 0.99582034}
+    targetStaticRotation: {x: 0.08826538, y: -0.009777664, z: -0.021349076, w: 0.99582034}
+    localStaticRotation: {x: 0.06217614, y: 0.023539841, z: -0.01210919, w: 0.9977141}
+    animatedTargetRotation: {x: -0.0016028598, y: -0.000338072, z: 0.000043460674,
+      w: 1}
+    targetRotation: {x: -0.0016028598, y: -0.000338072, z: 0.000043460674, w: 1}
     correctionOffset: {x: 0, y: 0, z: 0}
-    finalRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastKeyframeRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFinalLocalRotation: {x: 0, y: 0, z: 0, w: 0}
-    forward: {x: 0, y: 0, z: 1}
-    right: {x: 1, y: 0, z: 0}
-    up: {x: 0, y: 1, z: 0}
+    finalRotation: {x: 0.057110377, y: 0.012351454, z: -0.043262765, w: 0.9973537}
+    lastKeyframeRotation: {x: 0.026658665, y: 0.022726221, z: -0.032982852, w: 0.9988418}
+    lastFinalLocalRotation: {x: 0.026658667, y: 0.022726221, z: -0.032982863, w: 0.9988418}
+    forward: {x: -0.015738653, y: -0.17989536, z: 0.98355985}
+    right: {x: 0.9989667, y: -0.039116774, z: 0.023139734}
+    up: {x: 0.04263641, y: 0.9829077, z: 0.17909384}
     initLocalPos: {x: -2.9264172e-10, y: 0.13255388, z: 2.2739265e-10}
     targetDelayPosition: {x: 0, y: 0, z: 0}
     animatedDelayPosition: {x: 0, y: 0, z: 0}
@@ -4120,18 +4125,19 @@ MonoBehaviour:
     lookWeightB: 1
     motionWeight: 0.38359374
   - Transform: {fileID: 89466060}
-    animatedStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    localStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    animatedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+    animatedStaticRotation: {x: 0.025526403, y: -0.032938182, z: -0.011927385, w: 0.9990602}
+    targetStaticRotation: {x: 0.025526403, y: -0.032938182, z: -0.011927385, w: 0.9990602}
+    localStaticRotation: {x: 0.013839854, y: -0.013644366, z: -0.011093511, w: 0.9997496}
+    animatedTargetRotation: {x: -0.001179783, y: -0.00024883746, z: 0.000031989173,
+      w: 1}
+    targetRotation: {x: -0.001179783, y: -0.00024883746, z: 0.000031989173, w: 1}
     correctionOffset: {x: 0, y: 0, z: 0}
-    finalRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastKeyframeRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFinalLocalRotation: {x: 0, y: 0, z: 0, w: 0}
-    forward: {x: 0.000000028585054, y: -0.004201275, z: 0.9999912}
-    right: {x: 1, y: 0, z: 0}
-    up: {x: 0.000000027474018, y: 0.9999912, z: 0.004201276}
+    finalRotation: {x: 0.029880308, y: -0.0110592665, z: -0.011285711, w: 0.99942863}
+    lastKeyframeRotation: {x: 0.016369702, y: 0.009682581, z: -0.014112399, w: 0.99971956}
+    lastFinalLocalRotation: {x: 0.0163697, y: 0.009682579, z: -0.014112402, w: 0.99971956}
+    forward: {x: -0.06516668, y: -0.055374477, z: 0.99633676}
+    right: {x: 0.9975634, y: -0.021309527, z: 0.066431254}
+    up: {x: 0.024910053, y: 0.9982382, z: 0.05385087}
     initLocalPos: {x: 0.0000000011010532, y: 0.14888614, z: -0.0000000014312267}
     targetDelayPosition: {x: 0, y: 0, z: 0}
     animatedDelayPosition: {x: 0, y: 0, z: 0}
@@ -4139,18 +4145,19 @@ MonoBehaviour:
     lookWeightB: 1
     motionWeight: 0.28234378
   - Transform: {fileID: 89466042}
-    animatedStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    localStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    animatedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+    animatedStaticRotation: {x: 0.011490504, y: -0.019416492, z: -0.00094887975, w: 0.999745}
+    targetStaticRotation: {x: 0.011490504, y: -0.019416492, z: -0.00094887975, w: 0.999745}
+    localStaticRotation: {x: 0.02205957, y: -0.013517943, z: -0.0016968396, w: 0.99966383}
+    animatedTargetRotation: {x: -0.000746129, y: -0.00015737204, z: 0.000020230884,
+      w: 1}
+    targetRotation: {x: -0.000746129, y: -0.00015737204, z: 0.000020230884, w: 1}
     correctionOffset: {x: 0, y: 0, z: 0}
-    finalRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastKeyframeRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFinalLocalRotation: {x: 0, y: 0, z: 0, w: 0}
-    forward: {x: -0.000000023161947, y: -0.010272864, z: 0.99994725}
-    right: {x: 0.9999833, y: 0.0057787797, z: -0.000059344566}
-    up: {x: -0.0057790843, y: 0.99993056, z: 0.010272695}
+    finalRotation: {x: 0.013246234, y: -0.020970147, z: 0.0023514316, w: 0.9996896}
+    lastKeyframeRotation: {x: 0.024504315, y: 0.0098312935, z: -0.0046667005, w: 0.9996405}
+    lastFinalLocalRotation: {x: 0.024504317, y: 0.009831291, z: -0.004666702, w: 0.9996405}
+    forward: {x: -0.038760375, y: -0.02436113, z: 0.99895155}
+    right: {x: 0.99924606, y: -0.0012860701, z: 0.038803164}
+    up: {x: 0.0022300095, y: 0.9997024, z: 0.02429291}
     initLocalPos: {x: -0.0000000026086742, y: 0.11755967, z: -0.0000000022358229}
     targetDelayPosition: {x: 0, y: 0, z: 0}
     animatedDelayPosition: {x: 0, y: 0, z: 0}
@@ -4158,18 +4165,19 @@ MonoBehaviour:
     lookWeightB: 1
     motionWeight: 0.1785625
   - Transform: {fileID: 89466041}
-    animatedStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    localStaticRotation: {x: 0, y: 0, z: 0, w: 0}
-    animatedTargetRotation: {x: 0, y: 0, z: 0, w: 0}
-    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+    animatedStaticRotation: {x: -0.010587426, y: -0.005894035, z: 0.00047485402, w: 0.9999265}
+    targetStaticRotation: {x: -0.010587426, y: -0.005894035, z: 0.00047485402, w: 0.9999265}
+    localStaticRotation: {x: 0.014498203, y: -0.006799056, z: -0.009630293, w: 0.99982536}
+    animatedTargetRotation: {x: -0.00057266763, y: -0.000120785895, z: 0.00001552757,
+      w: 1}
+    targetRotation: {x: -0.00057266763, y: -0.000120785895, z: 0.00001552757, w: 1}
     correctionOffset: {x: 0, y: 0, z: 0}
-    finalRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastKeyframeRotation: {x: 0, y: 0, z: 0, w: 0}
-    lastFinalLocalRotation: {x: 0, y: 0, z: 0, w: 0}
-    forward: {x: 0, y: 0, z: 1}
-    right: {x: 0.99997336, y: -0.007299102, z: -0.00000021734743}
-    up: {x: 0.007299102, y: 0.99997336, z: 0.0000003688038}
+    finalRotation: {x: -0.0113299815, y: -0.030910285, z: 0.0063717533, w: 0.99943763}
+    lastKeyframeRotation: {x: 0.01569852, y: 0.005017875, z: -0.009421407, w: 0.99981976}
+    lastFinalLocalRotation: {x: 0.01569852, y: 0.005017878, z: -0.009421406, w: 0.99981976}
+    forward: {x: -0.011694404, y: 0.022086294, z: 0.9996877}
+    right: {x: 0.9999314, y: 0.00037728102, z: 0.011705595}
+    up: {x: -0.0006356967, y: 0.999756, z: -0.022080373}
     initLocalPos: {x: -6.730363e-12, y: 0.09195892, z: 5.811276e-10}
     targetDelayPosition: {x: 0, y: 0, z: 0}
     animatedDelayPosition: {x: 0, y: 0, z: 0}
@@ -4183,6 +4191,12 @@ MonoBehaviour:
   _gizmosDrawingLimiting: 0
   _gizmosDrawingGuides: 1
   _editor_hideEyes: 0
+--- !u!95 &89466064 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 676232849e2e19d4f81ab3716ffa92b8,
+    type: 3}
+  m_PrefabInstance: {fileID: 89466030}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &89824894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1488297318981186986, guid: 676232849e2e19d4f81ab3716ffa92b8,
@@ -4316,6 +4330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 91538243}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 820499664}
@@ -4325,25 +4340,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1350641236}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1901032208}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1453349583}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 2105121450}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 741454942}
+  weaponAimingRig: {fileID: 2105121450}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1184624786}
   leftHandIKTarget: {fileID: 285319820}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &91538245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5533,6 +5547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 126280593}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1889214540}
@@ -5542,25 +5557,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 305920124}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 291063154}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 447149002}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 289986542}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 2106036716}
+  weaponAimingRig: {fileID: 289986542}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1318431389}
   leftHandIKTarget: {fileID: 405260585}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &126280595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5759,6 +5773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 128900558}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1335118421}
@@ -5768,25 +5783,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 737864183}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1362383134}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1170712810}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1300854020}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 792568781}
+  weaponAimingRig: {fileID: 1300854020}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 761615937}
   leftHandIKTarget: {fileID: 1238356479}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &128900560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14041,6 +14055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 384238103}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1715966460}
@@ -14050,25 +14065,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 647013815}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1310947757}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1708495157}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1052373027}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1402192375}
+  weaponAimingRig: {fileID: 1052373027}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1667734784}
   leftHandIKTarget: {fileID: 613908528}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &384238105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16014,6 +16028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 444032640}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1301346908}
@@ -16023,25 +16038,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 2088726191}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1379613664}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 362028801}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1316364891}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 966497633}
+  weaponAimingRig: {fileID: 1316364891}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 55061501}
   leftHandIKTarget: {fileID: 670588109}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &444032642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17570,6 +17584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 497623474}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 728746613}
@@ -17579,25 +17594,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1818268914}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 734566023}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1998321175}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 549248647}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 534465966}
+  weaponAimingRig: {fileID: 549248647}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 978764370}
   leftHandIKTarget: {fileID: 733633935}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &497623476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21594,6 +21608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 600262826}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 518256449}
@@ -21603,25 +21618,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1038058189}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 655841743}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2061207864}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 2058667875}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 217735542}
+  weaponAimingRig: {fileID: 2058667875}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1349614400}
   leftHandIKTarget: {fileID: 1635723226}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &600262828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23384,6 +23398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 616167705}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1422953607}
@@ -23393,25 +23408,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 558181603}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1617096145}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1192259163}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1445942713}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1858407133}
+  weaponAimingRig: {fileID: 1445942713}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1926867156}
   leftHandIKTarget: {fileID: 637683917}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &616167707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23770,6 +23784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 622453775}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 524417141}
@@ -23779,25 +23794,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 2119412389}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 760918145}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 502211848}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 2066745732}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 422600216}
+  weaponAimingRig: {fileID: 2066745732}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 759762064}
   leftHandIKTarget: {fileID: 1760892798}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &622453777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29233,6 +29247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 768266929}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 265126579}
@@ -29242,25 +29257,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 834939941}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1030982098}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705896359}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 146663251}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1090369378}
+  weaponAimingRig: {fileID: 146663251}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 218082892}
   leftHandIKTarget: {fileID: 934087427}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &768266931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31242,6 +31256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 833368082}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1466442264}
@@ -31251,25 +31266,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1920271191}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 353440093}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1241618913}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 545618498}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 140632891}
+  weaponAimingRig: {fileID: 545618498}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1658697141}
   leftHandIKTarget: {fileID: 1057645119}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &833368084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43195,6 +43209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1176795062}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 483897829}
@@ -43204,25 +43219,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 387463842}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 874083629}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1119990090}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1406610958}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1732559850}
+  weaponAimingRig: {fileID: 1406610958}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1681678981}
   leftHandIKTarget: {fileID: 873680036}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1176795064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45754,6 +45768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1254091332}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 2073475589}
@@ -45763,25 +45778,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 33546791}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1298318868}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 135157615}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 901727691}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1771929040}
+  weaponAimingRig: {fileID: 901727691}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 9802306}
   leftHandIKTarget: {fileID: 699070500}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1254091334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46944,6 +46958,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: be35db1fd3c4709409e6343f11bec400, type: 2}
+    - target: {fileID: 5866666021909216657, guid: f467802abce1af8449420f57abd3ff6e,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f467802abce1af8449420f57abd3ff6e, type: 3}
 --- !u!1 &1293902071
@@ -47594,6 +47613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1299767256}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1267952495}
@@ -47603,25 +47623,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 2147076170}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 69790834}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 14161980}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 58000228}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 342426701}
+  weaponAimingRig: {fileID: 58000228}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 304215756}
   leftHandIKTarget: {fileID: 1120125849}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1299767258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52006,6 +52025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1387427472}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1040199309}
@@ -52015,25 +52035,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1559614256}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 470167186}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 36722522}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1182631588}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 773574803}
+  weaponAimingRig: {fileID: 1182631588}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1076319957}
   leftHandIKTarget: {fileID: 774998385}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1387427474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53833,6 +53852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1424921975}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1163487424}
@@ -53842,25 +53862,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 250964781}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1944613978}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1961666628}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1312747759}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 211811365}
+  weaponAimingRig: {fileID: 1312747759}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1466048831}
   leftHandIKTarget: {fileID: 1480071497}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1424921977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57148,6 +57167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1538297196}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 500066518}
@@ -57157,25 +57177,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 715978664}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 2000405481}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 263527506}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1853108214}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1915312945}
+  weaponAimingRig: {fileID: 1853108214}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1735785791}
   leftHandIKTarget: {fileID: 1725193813}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1538297198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57351,6 +57370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1542436808}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1908475634}
@@ -57360,25 +57380,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1775588695}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1734487238}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1412144491}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1035268443}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 250610437}
+  weaponAimingRig: {fileID: 1035268443}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 2044015978}
   leftHandIKTarget: {fileID: 835724246}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1542436810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58170,6 +58189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1562355012}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 2106453677}
@@ -58179,25 +58199,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 269032632}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 137704893}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1940364484}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1759991177}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1215577029}
+  weaponAimingRig: {fileID: 1759991177}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1451783152}
   leftHandIKTarget: {fileID: 349460674}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1562355014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72062,6 +72081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1954059786}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 831272754}
@@ -72071,25 +72091,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1766258873}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 73080733}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 835977510}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 316922203}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 360760835}
+  weaponAimingRig: {fileID: 316922203}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 612249044}
   leftHandIKTarget: {fileID: 922135484}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1954059788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72381,6 +72400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 1967688174}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1979252530}
@@ -72390,25 +72410,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1262526852}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1398487981}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1521049120}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 872296332}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 67394477}
+  weaponAimingRig: {fileID: 872296332}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1388854375}
   leftHandIKTarget: {fileID: 1294581297}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &1967688176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75287,6 +75306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 2015455610}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1765913464}
@@ -75296,25 +75316,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 981305551}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 929748658}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705905867}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1868706034}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 114149799}
+  weaponAimingRig: {fileID: 1868706034}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 65610150}
   leftHandIKTarget: {fileID: 1063878581}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &2015455612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75868,6 +75887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 2041376028}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 2140030857}
@@ -75877,25 +75897,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1047181247}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 656417089}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 101418139}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 486671290}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 918810618}
+  weaponAimingRig: {fileID: 486671290}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1094676866}
   leftHandIKTarget: {fileID: 71573559}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &2041376030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76239,6 +76258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 2048070712}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1377525370}
@@ -76248,25 +76268,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 1081712056}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 89466063}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 303334778}
   idleLeftHandIK: {fileID: 1160775946}
   leftHandIdleIKTarget: {fileID: 1759106635}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1328265382}
-  weaponAimParentLocalAdjuster: {fileID: 1140016621}
-  weaponAimingRig: {fileID: 1315554097}
-  changBetweenAimingAndIdleRigSpeed: 2
   weapon: {fileID: 15250005}
+  weaponAimingRig: {fileID: 1315554097}
+  changeBetweenAimingAndIdleRigSpeed: 2
+  weaponAimParentLocalAdjuster: {fileID: 1140016621}
   rightHandIKTarget: {fileID: 1227420975}
   leftHandIKTarget: {fileID: 701172027}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 89466064}
 --- !u!114 &2048070714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78990,6 +79009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultDirectionAimDistance: 10
   movementController: {fileID: 2128086752}
   aimAtTarget: {fileID: 421922529}
   spineConstraintTarget: {fileID: 1318155116}
@@ -78999,25 +79019,24 @@ MonoBehaviour:
   spineConstraint3: {fileID: 785463725}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 0.5
-  defaultDirectionAimDistance: 10
-  defaultDirectionAimHeightOffset: 1
-  lookAtTarget: {fileID: 182164734}
   fLookAnimator: {fileID: 1383397492}
+  lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
   idleLeftHandIK: {fileID: 0}
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2078981280}
-  weaponAimParentLocalAdjuster: {fileID: 0}
-  weaponAimingRig: {fileID: 1553039399}
-  changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1021644955}
+  weaponAimingRig: {fileID: 1553039399}
+  changeBetweenAimingAndIdleRigSpeed: 0
+  weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1482892777}
   leftHandIKTarget: {fileID: 1120773082}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
-  currentAimingWeaponSmoothSpeed: 0.05
+  aimingWeaponSmoothTime: 0.05
+  animator: {fileID: 0}
 --- !u!114 &2128086754
 MonoBehaviour:
   m_ObjectHideFlags: 0
