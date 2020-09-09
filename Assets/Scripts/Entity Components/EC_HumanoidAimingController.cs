@@ -48,6 +48,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Aiming the Weapon")]
     public Transform weaponAimTarget;
     public Rig weaponAimingRig;
+    public Rig idleWeaponHoldingRig;
 
 
     //public TwoBoneIKConstraint
