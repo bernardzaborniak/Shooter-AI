@@ -74,6 +74,9 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeed;
 
+    float lookAtCompensationWeightBeforeAimingWeapon;
+    float lookAtCompensatiePositionsBeforeAimingWeapon;
+
 
     enum AimAtTargetingMethod
     {
@@ -323,6 +326,14 @@ public class EC_HumanoidAimingController : EntityComponent
         aimWeapon = true;
 
         currentWeaponAimDirection = currentSpineDirection;
+
+        // Modify the compensation weight to achieve correct weapon aim and correct hand ik's
+        // cause LookAt modifies the hand and arm positions in Lateupdate
+        lookAtCompensationWeightBeforeAimingWeapon = fLookAnimator.CompensationWeight;
+        lookAtCompensatiePositionsBeforeAimingWeapon = fLookAnimator.CompensatePositions;
+
+        fLookAnimator.CompensationWeight = 1;
+        fLookAnimator.CompensatePositions = 1;
     }
 
     public void StopAimingWeaponAtTarget()
@@ -331,6 +342,9 @@ public class EC_HumanoidAimingController : EntityComponent
         weaponAimingRig.weight = 0;
         aimWeapon = false;
 
+        // Modify fLookATWeights to their values before aiming the weapon.
+        fLookAnimator.CompensationWeight = lookAtCompensationWeightBeforeAimingWeapon;
+        fLookAnimator.CompensatePositions = lookAtCompensatiePositionsBeforeAimingWeapon;
     }
 
     /*private void OnDrawGizmos()
