@@ -155,6 +155,28 @@ public class EC_HumanoidAimingController : EntityComponent
             StopAimingWeaponAtTarget();
         }
 
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            //activate all at once:
+            LookAtTransform(lookAtTarget);
+            AimAtTransform(aimAtTarget);
+            AimWeaponAtTarget();
+
+            animator.SetBool("Aiming", true);
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            //deactivate all at once:
+            StopLookAt();
+            StopAimAt();
+            StopAimingWeaponAtTarget();
+
+            animator.SetBool("Aiming", false);
+
+        }
         if (Input.GetKeyDown(KeyCode.I))
         {
             animator.SetBool("Aiming", false);
@@ -185,6 +207,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         if (aimAtActive)
         {
+            Debug.Log("2");
             // ---------------  1. Calculate Point to aim at -----------
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
             pointToAimAt = Vector3.zero;
@@ -244,6 +267,7 @@ public class EC_HumanoidAimingController : EntityComponent
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
         spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection;
 
+        Debug.Log("spineConstraint1TargetWeight: " + spineConstraint1TargetWeight);
         // -----------   5 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
         spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
@@ -316,6 +340,7 @@ public class EC_HumanoidAimingController : EntityComponent
         currentAimAtTargetingMethod = AimAtTargetingMethod.Transform;
         movementController.manualRotation = true;
         aimAtTransform = transform;
+        Debug.Log("1");
     }
 
     public void StopAimAt()
