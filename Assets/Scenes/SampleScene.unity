@@ -795,7 +795,7 @@ Transform:
   m_GameObject: {fileID: 15250003}
   m_LocalRotation: {x: -0.000000014901158, y: 0.000000005325346, z: 0.00000006196167,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.222}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 191527357}
@@ -1685,7 +1685,7 @@ MonoBehaviour:
     m_SourceObjects:
       m_Length: 1
       m_Item0:
-        transform: {fileID: 940322752}
+        transform: {fileID: 1140016621}
         weight: 1
       m_Item1:
         transform: {fileID: 0}
@@ -2018,6 +2018,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1239982439}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1447005334}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 2070847912}
@@ -4299,6 +4301,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1453349583}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 2105121450}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 741454942}
@@ -5514,6 +5518,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 447149002}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 289986542}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 2106036716}
@@ -5739,6 +5745,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1170712810}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1300854020}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 792568781}
@@ -13984,6 +13992,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1708495157}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1052373027}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1402192375}
@@ -15880,6 +15890,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 362028801}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1316364891}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 966497633}
@@ -17435,6 +17447,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1998321175}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 549248647}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 534465966}
@@ -21457,6 +21471,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2061207864}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 2058667875}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 217735542}
@@ -23246,6 +23262,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1192259163}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1445942713}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1858407133}
@@ -23631,6 +23649,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 502211848}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 2066745732}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 422600216}
@@ -29011,6 +29031,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705896359}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 146663251}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1090369378}
@@ -30942,6 +30964,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1241618913}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 545618498}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 140632891}
@@ -31367,7 +31391,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 15250004}
-  - {fileID: 1019694207}
   m_Father: {fileID: 89466031}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -34762,7 +34785,8 @@ Transform:
   m_LocalRotation: {x: 0.088393666, y: -0.3603336, z: 0.7477771, w: 0.55061394}
   m_LocalPosition: {x: -0.003, y: 0.051, z: 0.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1140016621}
   m_Father: {fileID: 89466049}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 39.512, y: -20.059, z: 100}
@@ -36874,87 +36898,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1912474570}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1019694206
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1019694207}
-  - component: {fileID: 1019694209}
-  - component: {fileID: 1019694208}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1019694207
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019694206}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.035}
-  m_LocalScale: {x: 0.049548205, y: 0.10107, z: 0.054083906}
-  m_Children: []
-  m_Father: {fileID: 838821508}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1019694208
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019694206}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1019694209
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019694206}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1021201132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1799558537151658283, guid: 676232849e2e19d4f81ab3716ffa92b8,
@@ -37121,7 +37064,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1027415520}
   m_LocalRotation: {x: -0.026020855, y: 0.70662814, z: 0.70662767, w: -0.026018979}
-  m_LocalPosition: {x: 0.037, y: -0.21, z: 0.028}
+  m_LocalPosition: {x: 0.015, y: 0.094, z: 0.028}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 89466046}
@@ -41268,6 +41211,36 @@ MonoBehaviour:
     m_MaintainRotationOffset: 0
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
+--- !u!1 &1140016620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140016621}
+  m_Layer: 0
+  m_Name: Weapon Aim Parent Local Adjuster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140016621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140016620}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 940322752}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1140021749 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 643642456294457992, guid: 676232849e2e19d4f81ab3716ffa92b8,
@@ -42940,6 +42913,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1119990090}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1406610958}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1732559850}
@@ -45497,6 +45472,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 135157615}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 901727691}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1771929040}
@@ -47336,6 +47313,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 14161980}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 58000228}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 342426701}
@@ -51747,6 +51726,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 36722522}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1182631588}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 773574803}
@@ -53521,6 +53502,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1961666628}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1312747759}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 211811365}
@@ -56835,6 +56818,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 263527506}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1853108214}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1915312945}
@@ -57037,6 +57022,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1412144491}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1035268443}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 250610437}
@@ -57855,6 +57842,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1940364484}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1759991177}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1215577029}
@@ -71742,6 +71731,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 835977510}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 316922203}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 360760835}
@@ -72060,6 +72051,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1521049120}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 872296332}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 67394477}
@@ -74965,6 +74958,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705905867}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1868706034}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 114149799}
@@ -75545,6 +75540,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 101418139}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 486671290}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 918810618}
@@ -75915,6 +75912,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 1759106635}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1328265382}
+  weaponAimParentLocalAdjuster: {fileID: 1140016621}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.32}
   weaponAimingRig: {fileID: 1315554097}
   changBetweenAimingAndIdleRigSpeed: 2
   weapon: {fileID: 15250005}
@@ -77024,13 +77023,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075587518}
-  m_LocalRotation: {x: 2.4632207e-10, y: 1.3233326e-10, z: -0.7126967, w: 0.7014724}
-  m_LocalPosition: {x: -0, y: -0, z: 0.153}
+  m_LocalRotation: {x: -0.08775609, y: 0.023707448, z: 0.25972253, w: 0.9613954}
+  m_LocalPosition: {x: 0.003, y: -0.034, z: 0.122}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 391813095}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.91}
+  m_LocalEulerAnglesHint: {x: -10.431, y: 0, z: 30.235}
 --- !u!1 &2078981279
 GameObject:
   m_ObjectHideFlags: 0
@@ -78633,6 +78632,8 @@ MonoBehaviour:
   leftHandIdleIKTarget: {fileID: 0}
   performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2078981280}
+  weaponAimParentLocalAdjuster: {fileID: 0}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0}
   weaponAimingRig: {fileID: 1553039399}
   changBetweenAimingAndIdleRigSpeed: 0
   weapon: {fileID: 1021644955}

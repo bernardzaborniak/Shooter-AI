@@ -55,7 +55,12 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Aiming the Weapon")]
     public Transform weaponAimTarget;
 
-   
+    [Tooltip("Weapons get parented to this object when aiming")]
+    public Transform weaponAimParentLocalAdjuster;
+    [Tooltip("Will later be saved insade weapons and will be read when equipping a weapon, makes sure the offset between weapon and shoulder is correct")]
+    public Vector3 weaponAimParentLocalAdjusterOffset;
+
+
     public Rig weaponAimingRig;
     float desiredWeaponAimingRigWeight;
     public float changBetweenAimingAndIdleRigSpeed;
@@ -107,6 +112,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
         //spineConstraintLocalTargetParent = spineConstraintLocalTarget.parent;
         currentSpineDirection = transform.forward;
+
+        weaponAimParentLocalAdjuster.localPosition = weaponAimParentLocalAdjusterOffset;
     }
 
     public override void UpdateComponent()
