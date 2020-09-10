@@ -34,12 +34,13 @@ public class EC_HumanoidMovementController : EntityComponent
         Crawl
     }
 
-    public enum Stance
+    public enum MovementStance
     {
         Standing,
         Crouching,
         Crawling
     }
+    MovementStance stance;
 
     //represents an information container about the current order, does not do any logic by itself
     class MovementOrder
@@ -171,19 +172,6 @@ public class EC_HumanoidMovementController : EntityComponent
     // Update is only for looks- the rotation is important for logic but it can be a bit jaggy if far away or not on screen - lod this script, only call it every x seconds?
     public override void UpdateComponent()
     {
-        /*if (!lookAt)
-        {
-            //reset the spine to normal position if look at is diabled
-            if (spine.localRotation.eulerAngles != Vector3.zero)
-            {
-                Quaternion desiredSpineRotation = Quaternion.Euler(0, 0, 0);
-
-                spine.localRotation = Quaternion.RotateTowards(spine.localRotation, desiredSpineRotation, angularSpeed * Time.deltaTime);
-
-            }
-        }*/
-        //currentMovementOrder.Update();
-
         // 1. Update movement according to movement Order 
         if (currentMovementOrder.IsWaitingForExecution())
         {
@@ -214,7 +202,7 @@ public class EC_HumanoidMovementController : EntityComponent
         RotateTowards(desiredForward);
 
         //3. Update animation
-        if (humanoidAnimationController)humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
+        if (humanoidAnimationController) humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
 
     }
 
@@ -280,6 +268,36 @@ public class EC_HumanoidMovementController : EntityComponent
                 agent.speed = crawlingSpeed;
                 break;
         }
+    }
+
+    void SetStanceAccordingToMovementOrder()
+    {
+        switch (currentMovementOrder.movementType)
+        {
+            case MovementType.Run:
+                SetStance(MovementStance.Standing);
+                break;
+
+            case MovementType.Walk:
+                agent.speed = walkingSpeed;
+                SetStance(MovementStance.Standing);
+                break;
+
+            case MovementType.Crouch:
+                agent.speed = crouchingSpeed;
+                SetStance(MovementStance.Crouching);
+                break;
+
+            case MovementType.Crawl:
+                agent.speed = crawlingSpeed;
+                SetStance(MovementStance.Crawling);
+                break;
+        }
+    }
+
+    public void SetStance(MovementStance stance)
+    {
+        this.stance = stance;
     }
 
     #endregion
