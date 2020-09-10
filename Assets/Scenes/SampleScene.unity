@@ -76408,16 +76408,16 @@ MonoBehaviour:
   weaponAimTarget: {fileID: 1328265382}
   weapon: {fileID: 15250005}
   weaponAimingRig: {fileID: 1315554097}
-  changeFromAimingToIdleRigSpeed: 7
-  changeFromIdleToAimingRigSpeed: 3
+  changeFromAimingToIdleRigSpeed: 2
+  changeFromIdleToAimingRigSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 1140016621}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
-  changeIKWeightsSpeed: 20
+  changeIKWeightsSpeed: 10
   aimingIKLeft: 1
   aimingIKRight: 1
-  idleIKLeft: 1
+  idleIKLeft: 0
   idleIKRight: 0
   aimingRigThresholdToStartEnablingAimingIK: 0.1
   aimingRigThresholdToStartDisablingAimingIK: 0.1
