@@ -111,10 +111,24 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 weaponAimSpeedRef;
 
     [Header("Hand IK")]
+    public float changeIKWeightsSpeed;
+    [Tooltip("Should this IK be enabled while aiming?")]
+    public bool aimingIKLeft;
+    [Tooltip("Should this IK be enabled while aiming?")]
+    public bool aimingIKRight;
+    [Tooltip("Should this IK be enabled while idle? - for pistols mostly fasle , for rifles mostly true")]
+    public bool idleIKLeft;
+    [Tooltip("Should this IK be enabled while idle?")]
+    public bool idleIKRight;
+
+    [Tooltip("If the aiming Rig Weight goes above this value, we start transitioning from idle to aiming hand ik's")]
+    public float aimingRigThresholdToStartEnablingAimingIK;
+    [Tooltip("If the aiming Rig Weight drops below this value, we start transitioning from aiming to idle hand ik's")]
+    public float aimingRigThresholdToStartDisablingAimingIK;
+    bool aimingIKEnabled;
+
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
-    [Tooltip("Should the Left hand be adjusted when holding a weapon idle ? - for pistols mostly fasle , for rifles mostly true")]
-    public bool performLeftHandIKOnIdleWeaponHold;
 
     public TwoBoneIKConstraint leftHandIKConstraint;
     float desiredLeftHandIKRigWeight;
@@ -138,15 +152,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
 
-        if (performLeftHandIKOnIdleWeaponHold)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-        desiredRightHandIKRigWeight = 0;
+        ChangeIKWeightsOnChangeFromAimingToIdle();
     }
 
     public override void UpdateComponent()
@@ -326,32 +332,44 @@ public class EC_HumanoidAimingController : EntityComponent
         #region Handle  Hand IK'S
         //maybe expand it later to use both arms as iks here - for a bow for example?
 
+        //check if the weapon aiming rig has gone through a treshold
+        if (aimWeapon)
+        {
+            if (!aimingIKEnabled)
+            {
+                if (weaponAimingRig.weight > aimingRigThresholdToStartEnablingAimingIK)
+                {
+                    aimingIKEnabled = true;
+                    ChangeIKWeightsOnChangeFromIdleToAiming();
+                }
+            }
+        }
+        else
+        {
+            if (aimingIKEnabled)
+            {
+                if (weaponAimingRig.weight < aimingRigThresholdToStartDisablingAimingIK)
+                {
+                    aimingIKEnabled = false;
+                    ChangeIKWeightsOnChangeFromAimingToIdle();
+                }
+            }
+        }
 
-        if (desiredLeftHandIKRigWeight == 1)
-        {
-            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
-            leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        }
-        else if (desiredLeftHandIKRigWeight == 0)
-        {
-            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
-            leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        }
+
+
+
+        float changeSpeedLeft = changeIKWeightsSpeed * Time.deltaTime;
+        leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeedLeft, changeSpeedLeft);
 
         leftHandIKTarget.position = weapon.leftHandIKPosition.position;
         leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
 
-        if (desiredRightHandIKRigWeight == 1)
-        {
-            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
-            rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        }
-        else if (desiredRightHandIKRigWeight == 0)
-        {
-            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
-            rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        }
+
+        float changeSpeedRight = changeIKWeightsSpeed * Time.deltaTime;
+        rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeedRight, changeSpeedRight);
+
 
         rightHandIKTarget.position = weapon.rightHandIKPosition.position;
         rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
@@ -427,8 +445,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         desiredWeaponAimingRigWeight = 1;
 
-        desiredLeftHandIKRigWeight = 1;
-        desiredRightHandIKRigWeight = 1;
+        //ChangeIKWeightsOnChangeFromIdleToAiming();
     }
 
     public void StopAimingWeaponAtTarget()
@@ -441,16 +458,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         desiredWeaponAimingRigWeight = 0;
 
-        if (performLeftHandIKOnIdleWeaponHold)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        desiredRightHandIKRigWeight = 0;
+        //ChangeIKWeightsOnChangeFromAimingToIdle();
     }
 
     /*private void OnDrawGizmos()
@@ -459,4 +467,46 @@ public class EC_HumanoidAimingController : EntityComponent
 
         Gizmos.DrawLine(aimingDistanceReferencePoint.position, aimingDistanceReferencePoint.position + desiredSpineDirection);
     }*/
+
+    void ChangeIKWeightsOnChangeFromAimingToIdle()
+    {
+        if (idleIKLeft)
+        {
+            desiredLeftHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredLeftHandIKRigWeight = 0;
+        }
+
+        if (idleIKRight)
+        {
+            desiredRightHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredRightHandIKRigWeight = 0;
+        }
+    }
+    
+    void ChangeIKWeightsOnChangeFromIdleToAiming()
+    {
+        if (aimingIKLeft)
+        {
+            desiredLeftHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredLeftHandIKRigWeight = 0;
+        }
+
+        if (aimingIKRight)
+        {
+            desiredRightHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredRightHandIKRigWeight = 0;
+        }
+    }
 }
