@@ -785,7 +785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &15250004
 Transform:
   m_ObjectHideFlags: 0
@@ -2046,9 +2046,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1375540746}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1239982439}
   weapon: {fileID: 2070847912}
   weaponAimingRig: {fileID: 1447005334}
@@ -2056,11 +2053,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1865603625}
-  leftHandIKTarget: {fileID: 1805604616}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1805604616}
   animator: {fileID: 0}
 --- !u!114 &62901108
 MonoBehaviour:
@@ -3894,6 +3893,8 @@ MonoBehaviour:
     m_Active: 1
   - m_Rig: {fileID: 1315554097}
     m_Active: 1
+  - m_Rig: {fileID: 356529477}
+    m_Active: 1
   m_Effectors: []
 --- !u!114 &89466062
 MonoBehaviour:
@@ -4344,9 +4345,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1901032208}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1453349583}
   weapon: {fileID: 741454942}
   weaponAimingRig: {fileID: 2105121450}
@@ -4354,11 +4352,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1184624786}
-  leftHandIKTarget: {fileID: 285319820}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 285319820}
   animator: {fileID: 0}
 --- !u!114 &91538245
 MonoBehaviour:
@@ -5562,9 +5562,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 291063154}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 447149002}
   weapon: {fileID: 2106036716}
   weaponAimingRig: {fileID: 289986542}
@@ -5572,11 +5569,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1318431389}
-  leftHandIKTarget: {fileID: 405260585}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 405260585}
   animator: {fileID: 0}
 --- !u!114 &126280595
 MonoBehaviour:
@@ -5789,9 +5788,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1362383134}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1170712810}
   weapon: {fileID: 792568781}
   weaponAimingRig: {fileID: 1300854020}
@@ -5799,11 +5795,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 761615937}
-  leftHandIKTarget: {fileID: 1238356479}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1238356479}
   animator: {fileID: 0}
 --- !u!114 &128900560
 MonoBehaviour:
@@ -10595,7 +10593,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1766520118}
-  - {fileID: 1160775945}
   m_Father: {fileID: 89466031}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13150,6 +13147,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356160557}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &356529475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 356529476}
+  - component: {fileID: 356529477}
+  m_Layer: 0
+  m_Name: Hand Left IK Rig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &356529476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356529475}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1160775945}
+  m_Father: {fileID: 89466031}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &356529477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356529475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Effectors: []
 --- !u!1 &357449050
 GameObject:
   m_ObjectHideFlags: 0
@@ -14072,9 +14115,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1310947757}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1708495157}
   weapon: {fileID: 1402192375}
   weaponAimingRig: {fileID: 1052373027}
@@ -14082,11 +14122,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1667734784}
-  leftHandIKTarget: {fileID: 613908528}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 613908528}
   animator: {fileID: 0}
 --- !u!114 &384238105
 MonoBehaviour:
@@ -16046,9 +16088,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1379613664}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 362028801}
   weapon: {fileID: 966497633}
   weaponAimingRig: {fileID: 1316364891}
@@ -16056,11 +16095,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 55061501}
-  leftHandIKTarget: {fileID: 670588109}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 670588109}
   animator: {fileID: 0}
 --- !u!114 &444032642
 MonoBehaviour:
@@ -17603,9 +17644,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 734566023}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1998321175}
   weapon: {fileID: 534465966}
   weaponAimingRig: {fileID: 549248647}
@@ -17613,11 +17651,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 978764370}
-  leftHandIKTarget: {fileID: 733633935}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 733633935}
   animator: {fileID: 0}
 --- !u!114 &497623476
 MonoBehaviour:
@@ -18930,14 +18970,14 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -30
-    m_MaxLimit: 30
+    m_MinLimit: -180
+    m_MaxLimit: 180
     m_AimAxis: 4
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
       y: 1
-      z: 0
+      z: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!1 &528507674
@@ -21628,9 +21668,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 655841743}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2061207864}
   weapon: {fileID: 217735542}
   weaponAimingRig: {fileID: 2058667875}
@@ -21638,11 +21675,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1349614400}
-  leftHandIKTarget: {fileID: 1635723226}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1635723226}
   animator: {fileID: 0}
 --- !u!114 &600262828
 MonoBehaviour:
@@ -23419,9 +23458,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1617096145}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1192259163}
   weapon: {fileID: 1858407133}
   weaponAimingRig: {fileID: 1445942713}
@@ -23429,11 +23465,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1926867156}
-  leftHandIKTarget: {fileID: 637683917}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 637683917}
   animator: {fileID: 0}
 --- !u!114 &616167707
 MonoBehaviour:
@@ -23806,9 +23844,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 760918145}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 502211848}
   weapon: {fileID: 422600216}
   weaponAimingRig: {fileID: 2066745732}
@@ -23816,11 +23851,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 759762064}
-  leftHandIKTarget: {fileID: 1760892798}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1760892798}
   animator: {fileID: 0}
 --- !u!114 &622453777
 MonoBehaviour:
@@ -26500,36 +26537,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 831678681}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &701172026
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 701172027}
-  m_Layer: 0
-  m_Name: ref_Hands IK Left Target
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &701172027
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701172026}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1659707524}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &702966185
 GameObject:
   m_ObjectHideFlags: 0
@@ -29270,9 +29277,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1030982098}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705896359}
   weapon: {fileID: 1090369378}
   weaponAimingRig: {fileID: 146663251}
@@ -29280,11 +29284,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 218082892}
-  leftHandIKTarget: {fileID: 934087427}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 934087427}
   animator: {fileID: 0}
 --- !u!114 &768266931
 MonoBehaviour:
@@ -31280,9 +31286,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 353440093}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1241618913}
   weapon: {fileID: 140632891}
   weaponAimingRig: {fileID: 545618498}
@@ -31290,11 +31293,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1658697141}
-  leftHandIKTarget: {fileID: 1057645119}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1057645119}
   animator: {fileID: 0}
 --- !u!114 &833368084
 MonoBehaviour:
@@ -31714,7 +31719,7 @@ Transform:
   - {fileID: 15250004}
   - {fileID: 1402306269}
   m_Father: {fileID: 89466031}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &841223913
 GameObject:
@@ -42372,8 +42377,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1759106635}
-  m_Father: {fileID: 303334777}
-  m_RootOrder: 1
+  m_Father: {fileID: 356529476}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1160775946
 MonoBehaviour:
@@ -43234,9 +43239,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 874083629}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1119990090}
   weapon: {fileID: 1732559850}
   weaponAimingRig: {fileID: 1406610958}
@@ -43244,11 +43246,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1681678981}
-  leftHandIKTarget: {fileID: 873680036}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 873680036}
   animator: {fileID: 0}
 --- !u!114 &1176795064
 MonoBehaviour:
@@ -45794,9 +45798,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1298318868}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 135157615}
   weapon: {fileID: 1771929040}
   weaponAimingRig: {fileID: 901727691}
@@ -45804,11 +45805,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 9802306}
-  leftHandIKTarget: {fileID: 699070500}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 699070500}
   animator: {fileID: 0}
 --- !u!114 &1254091334
 MonoBehaviour:
@@ -47640,9 +47643,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 69790834}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 14161980}
   weapon: {fileID: 342426701}
   weaponAimingRig: {fileID: 58000228}
@@ -47650,11 +47650,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 304215756}
-  leftHandIKTarget: {fileID: 1120125849}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1120125849}
   animator: {fileID: 0}
 --- !u!114 &1299767258
 MonoBehaviour:
@@ -48616,7 +48618,6 @@ Transform:
   - {fileID: 527216802}
   - {fileID: 51952633}
   - {fileID: 724939071}
-  - {fileID: 1659707524}
   - {fileID: 1328265382}
   m_Father: {fileID: 89466031}
   m_RootOrder: 4
@@ -48651,7 +48652,7 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
-  - m_Transform: {fileID: 701172027}
+  - m_Transform: {fileID: 0}
     m_Style:
       shape: {fileID: 4300000, guid: c6793350c150f456688e39a81f97364a, type: 2}
       color: {r: 0, g: 1, b: 0.029981852, a: 0.5}
@@ -48988,7 +48989,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1315554096}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1328703178
 PrefabInstance:
@@ -52053,9 +52054,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 470167186}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 36722522}
   weapon: {fileID: 773574803}
   weaponAimingRig: {fileID: 1182631588}
@@ -52063,11 +52061,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1076319957}
-  leftHandIKTarget: {fileID: 774998385}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 774998385}
   animator: {fileID: 0}
 --- !u!114 &1387427474
 MonoBehaviour:
@@ -52950,7 +52950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1402306269
 Transform:
   m_ObjectHideFlags: 0
@@ -53881,9 +53881,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1944613978}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1961666628}
   weapon: {fileID: 211811365}
   weaponAimingRig: {fileID: 1312747759}
@@ -53891,11 +53888,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1466048831}
-  leftHandIKTarget: {fileID: 1480071497}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1480071497}
   animator: {fileID: 0}
 --- !u!114 &1424921977
 MonoBehaviour:
@@ -57197,9 +57196,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 2000405481}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 263527506}
   weapon: {fileID: 1915312945}
   weaponAimingRig: {fileID: 1853108214}
@@ -57207,11 +57203,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1735785791}
-  leftHandIKTarget: {fileID: 1725193813}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1725193813}
   animator: {fileID: 0}
 --- !u!114 &1538297198
 MonoBehaviour:
@@ -57401,9 +57399,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1734487238}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1412144491}
   weapon: {fileID: 250610437}
   weaponAimingRig: {fileID: 1035268443}
@@ -57411,11 +57406,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 2044015978}
-  leftHandIKTarget: {fileID: 835724246}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 835724246}
   animator: {fileID: 0}
 --- !u!114 &1542436810
 MonoBehaviour:
@@ -58221,9 +58218,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 137704893}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1940364484}
   weapon: {fileID: 1215577029}
   weaponAimingRig: {fileID: 1759991177}
@@ -58231,11 +58225,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1451783152}
-  leftHandIKTarget: {fileID: 349460674}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 349460674}
   animator: {fileID: 0}
 --- !u!114 &1562355014
 MonoBehaviour:
@@ -61358,64 +61354,6 @@ Transform:
   m_Father: {fileID: 2143977816}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1659707523
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1659707524}
-  - component: {fileID: 1659707525}
-  m_Layer: 0
-  m_Name: Attach Hands with IK Left
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1659707524
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659707523}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 701172027}
-  m_Father: {fileID: 1315554096}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1659707525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659707523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Weight: 1
-  m_Data:
-    m_Root: {fileID: 89466057}
-    m_Mid: {fileID: 89466056}
-    m_Tip: {fileID: 89466055}
-    m_Target: {fileID: 701172027}
-    m_Hint: {fileID: 0}
-    m_TargetPositionWeight: 1
-    m_TargetRotationWeight: 1
-    m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
-  m_SourceObjectsGUIToggle: 1
-  m_SettingsGUIToggle: 1
 --- !u!1001 &1665783849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72114,9 +72052,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 73080733}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 835977510}
   weapon: {fileID: 360760835}
   weaponAimingRig: {fileID: 316922203}
@@ -72124,11 +72059,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 612249044}
-  leftHandIKTarget: {fileID: 922135484}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 922135484}
   animator: {fileID: 0}
 --- !u!114 &1954059788
 MonoBehaviour:
@@ -72434,9 +72371,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1398487981}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1521049120}
   weapon: {fileID: 67394477}
   weaponAimingRig: {fileID: 872296332}
@@ -72444,11 +72378,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1388854375}
-  leftHandIKTarget: {fileID: 1294581297}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1294581297}
   animator: {fileID: 0}
 --- !u!114 &1967688176
 MonoBehaviour:
@@ -73137,8 +73073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977888447}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.041, z: 3.62}
-  m_LocalScale: {x: 0.010701187, y: 0.006665797, z: 7.2798}
+  m_LocalPosition: {x: -0, y: 0.04, z: 23.51}
+  m_LocalScale: {x: 0.010701187, y: 0.006665797, z: 46.252937}
   m_Children: []
   m_Father: {fileID: 15250004}
   m_RootOrder: 2
@@ -75341,9 +75277,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 929748658}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1705905867}
   weapon: {fileID: 114149799}
   weaponAimingRig: {fileID: 1868706034}
@@ -75351,11 +75284,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 65610150}
-  leftHandIKTarget: {fileID: 1063878581}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1063878581}
   animator: {fileID: 0}
 --- !u!114 &2015455612
 MonoBehaviour:
@@ -75923,9 +75858,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 656417089}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 101418139}
   weapon: {fileID: 918810618}
   weaponAimingRig: {fileID: 486671290}
@@ -75933,11 +75865,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1094676866}
-  leftHandIKTarget: {fileID: 71573559}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 71573559}
   animator: {fileID: 0}
 --- !u!114 &2041376030
 MonoBehaviour:
@@ -76295,21 +76229,20 @@ MonoBehaviour:
   fLookAnimator: {fileID: 89466063}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 303334778}
-  idleLeftHandIK: {fileID: 1160775946}
-  leftHandIdleIKTarget: {fileID: 1759106635}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 1328265382}
-  weapon: {fileID: 1402306270}
+  weapon: {fileID: 15250005}
   weaponAimingRig: {fileID: 1315554097}
-  changeFromAimingToIdleRigSpeed: 20
-  changeFromIdleToAimingRigSpeed: 2
+  changeFromAimingToIdleRigSpeed: 7
+  changeFromIdleToAimingRigSpeed: 3
   weaponAimParentLocalAdjuster: {fileID: 1140016621}
   rightHandIKTarget: {fileID: 1227420975}
-  leftHandIKTarget: {fileID: 701172027}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 1
+  leftHandIKRig: {fileID: 356529477}
+  leftHandIKTarget: {fileID: 1759106635}
   animator: {fileID: 89466064}
 --- !u!114 &2048070714
 MonoBehaviour:
@@ -79047,9 +78980,6 @@ MonoBehaviour:
   fLookAnimator: {fileID: 1383397492}
   lookAtTarget: {fileID: 182164734}
   idleWeaponHoldingRig: {fileID: 0}
-  idleLeftHandIK: {fileID: 0}
-  leftHandIdleIKTarget: {fileID: 0}
-  performIdleWeaponHoldLeftHandIK: 0
   weaponAimTarget: {fileID: 2078981280}
   weapon: {fileID: 1021644955}
   weaponAimingRig: {fileID: 1553039399}
@@ -79057,11 +78987,13 @@ MonoBehaviour:
   changeFromIdleToAimingRigSpeed: 0
   weaponAimParentLocalAdjuster: {fileID: 0}
   rightHandIKTarget: {fileID: 1482892777}
-  leftHandIKTarget: {fileID: 1120773082}
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
+  performLeftHandIKOnIdleWeaponHold: 0
+  leftHandIKRig: {fileID: 0}
+  leftHandIKTarget: {fileID: 1120773082}
   animator: {fileID: 0}
 --- !u!114 &2128086754
 MonoBehaviour:

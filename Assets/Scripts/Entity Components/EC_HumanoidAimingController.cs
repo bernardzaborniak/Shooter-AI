@@ -77,9 +77,9 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Idle Weapon Holding")]
     public Rig idleWeaponHoldingRig;
     //float desiredIdleWeaponHoldingRigWeight = 1;  //maybe used later when converting from holding weapon to some other animation?
-    public TwoBoneIKConstraint idleLeftHandIK;
-    public Transform leftHandIdleIKTarget;
-    public bool performIdleWeaponHoldLeftHandIK;
+    //public TwoBoneIKConstraint idleLeftHandIK;
+   
+   
 
     [Header("Aiming the Weapon")]
     public Transform weaponAimTarget;
@@ -94,7 +94,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public Transform weaponAimParentLocalAdjuster;
 
     public Transform rightHandIKTarget;
-    public Transform leftHandIKTarget;
+    //public Transform leftHandIKTarget;
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
@@ -111,6 +111,13 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeedRef;
 
+    [Header("Left Hand IK")]
+    [Tooltip("Should the Left hand be adjusted when holding a weapon idle ? - for pistols mostly fasle , for rifles mostly true")]
+    public bool performLeftHandIKOnIdleWeaponHold;
+    public Rig leftHandIKRig;
+    float desiredLeftHandIKRigWeight;
+    public Transform leftHandIKTarget;
+
     #endregion
 
     [Header("Fields to be moved to animation controller corresponding to character controller state machine")]
@@ -124,6 +131,15 @@ public class EC_HumanoidAimingController : EntityComponent
         currentSpineDirection = transform.forward;
 
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
+
+        if (performLeftHandIKOnIdleWeaponHold)
+        {
+            desiredLeftHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredLeftHandIKRigWeight = 0;
+        }
     }
 
     public override void UpdateComponent()
@@ -189,20 +205,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #endregion
 
-        #region Handle Idle Wepaon IK'S
-
-        if (performIdleWeaponHoldLeftHandIK)
-        {
-            idleLeftHandIK.weight = 1;
-            leftHandIdleIKTarget.position = weapon.leftHandIKPosition.position;
-            leftHandIdleIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
-        }
-        else
-        {
-            idleLeftHandIK.weight = 0;
-        }
-
-        #endregion
 
         #region Aiming Spine
 
@@ -293,12 +295,12 @@ public class EC_HumanoidAimingController : EntityComponent
             rightHandIKTarget.position = weapon.rightHandIKPosition.position;
             rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
-            leftHandIKTarget.position = weapon.leftHandIKPosition.position;
-            leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+           // leftHandIKTarget.position = weapon.leftHandIKPosition.position;
+           // leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
         }
 
         // Smooth out the change between aiming weapon and holding it idle
-
+        //Two different speeds to prevent gun from floating around between hands
         if(desiredWeaponAimingRigWeight == 1)
         {
             float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
@@ -310,7 +312,34 @@ public class EC_HumanoidAimingController : EntityComponent
             weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
         }
 
-       
+
+
+        #endregion
+
+        #region Handle Left Hand IK'S
+        //maybe expand it later to use both arms as iks here - for a bow for example?
+
+
+        if (desiredLeftHandIKRigWeight == 1)
+        {
+            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
+            leftHandIKRig.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKRig.weight), -changeSpeed, changeSpeed);
+        }
+        else if (desiredLeftHandIKRigWeight == 0)
+        {
+            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
+            leftHandIKRig.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKRig.weight), -changeSpeed, changeSpeed);
+        }
+
+
+        leftHandIKTarget.position = weapon.leftHandIKPosition.position;
+        leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+
+
+  
+           
+
+
 
         #endregion
     }
@@ -376,6 +405,8 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = 1;
 
         desiredWeaponAimingRigWeight = 1;
+
+        desiredLeftHandIKRigWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
@@ -387,6 +418,15 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = lookAtCompensatiePositionsBeforeAimingWeapon;
 
         desiredWeaponAimingRigWeight = 0;
+
+        if (performLeftHandIKOnIdleWeaponHold)
+        {
+            desiredLeftHandIKRigWeight = 1;
+        }
+        else
+        {
+            desiredLeftHandIKRigWeight = 0;
+        }
     }
 
     /*private void OnDrawGizmos()
