@@ -88,7 +88,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     float desiredWeaponAimingRigWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
-    public float changeBetweenAimingAndIdleRigSpeed;
+    public float changeFromAimingToIdleRigSpeed;
+    public float changeFromIdleToAimingRigSpeed;
     [Tooltip("Weapons get parented to this object when aiming")]
     public Transform weaponAimParentLocalAdjuster;
 
@@ -297,8 +298,19 @@ public class EC_HumanoidAimingController : EntityComponent
         }
 
         // Smooth out the change between aiming weapon and holding it idle
-        float changeSpeed = changeBetweenAimingAndIdleRigSpeed * Time.deltaTime;
-        weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
+
+        if(desiredWeaponAimingRigWeight == 1)
+        {
+            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
+            weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
+        }
+        else if(desiredWeaponAimingRigWeight == 0)
+        {
+            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
+            weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
+        }
+
+       
 
         #endregion
     }
