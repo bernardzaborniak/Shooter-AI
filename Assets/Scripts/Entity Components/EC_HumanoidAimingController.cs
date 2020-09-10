@@ -93,10 +93,9 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("Weapons get parented to this object when aiming")]
     public Transform weaponAimParentLocalAdjuster;
 
-    public Transform rightHandIKTarget;
+    //public Transform rightHandIKTarget;
     //public Transform leftHandIKTarget;
-    [Tooltip("depending on the specific model skeleton hand orientation?")]
-    public Vector3 handIKRotationOffset;
+   
 
     bool aimWeapon;
 
@@ -111,12 +110,19 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeedRef;
 
-    [Header("Left Hand IK")]
+    [Header("Hand IK")]
+    [Tooltip("depending on the specific model skeleton hand orientation?")]
+    public Vector3 handIKRotationOffset;
     [Tooltip("Should the Left hand be adjusted when holding a weapon idle ? - for pistols mostly fasle , for rifles mostly true")]
     public bool performLeftHandIKOnIdleWeaponHold;
-    public Rig leftHandIKRig;
+
+    public TwoBoneIKConstraint leftHandIKConstraint;
     float desiredLeftHandIKRigWeight;
     public Transform leftHandIKTarget;
+
+    public TwoBoneIKConstraint rightHandIKConstraint;
+    float desiredRightHandIKRigWeight;
+    public Transform rightHandIKTarget;
 
     #endregion
 
@@ -140,6 +146,7 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             desiredLeftHandIKRigWeight = 0;
         }
+        desiredRightHandIKRigWeight = 0;
     }
 
     public override void UpdateComponent()
@@ -316,28 +323,42 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #endregion
 
-        #region Handle Left Hand IK'S
+        #region Handle  Hand IK'S
         //maybe expand it later to use both arms as iks here - for a bow for example?
 
 
         if (desiredLeftHandIKRigWeight == 1)
         {
             float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
-            leftHandIKRig.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKRig.weight), -changeSpeed, changeSpeed);
+            leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
         }
         else if (desiredLeftHandIKRigWeight == 0)
         {
             float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
-            leftHandIKRig.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKRig.weight), -changeSpeed, changeSpeed);
+            leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
         }
-
 
         leftHandIKTarget.position = weapon.leftHandIKPosition.position;
         leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
 
-  
-           
+        if (desiredRightHandIKRigWeight == 1)
+        {
+            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
+            rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
+        }
+        else if (desiredRightHandIKRigWeight == 0)
+        {
+            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
+            rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
+        }
+
+        rightHandIKTarget.position = weapon.rightHandIKPosition.position;
+        rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+
+
+
+
 
 
 
@@ -407,6 +428,7 @@ public class EC_HumanoidAimingController : EntityComponent
         desiredWeaponAimingRigWeight = 1;
 
         desiredLeftHandIKRigWeight = 1;
+        desiredRightHandIKRigWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
@@ -427,6 +449,8 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             desiredLeftHandIKRigWeight = 0;
         }
+
+        desiredRightHandIKRigWeight = 0;
     }
 
     /*private void OnDrawGizmos()
