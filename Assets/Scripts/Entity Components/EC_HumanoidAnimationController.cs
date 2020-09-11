@@ -20,6 +20,8 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public float turnAnimationRealSpeed;
 
+    public float movementForwardSideDampTime;
+
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -34,8 +36,8 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
     {
-        animator.SetFloat(forwardVelocityParamID, currentForwardVelocity);
-        animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity);
+        animator.SetFloat(forwardVelocityParamID, currentForwardVelocity, movementForwardSideDampTime, Time.deltaTime);
+        animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity, movementForwardSideDampTime, Time.deltaTime);
 
 
         float agentAngularSpeedNormalized = 0;

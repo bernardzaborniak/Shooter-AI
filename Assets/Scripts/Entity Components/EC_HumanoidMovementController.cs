@@ -205,7 +205,9 @@ public class EC_HumanoidMovementController : EntityComponent
 
         //calculate forward and sideways velocity;
         Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
-       
+
+        Debug.Log("vel: z: " + velocityInLocalSpace.z);
+        Debug.Log("vel: x: " + velocityInLocalSpace.x);
         if (humanoidAnimationController) humanoidAnimationController.UpdateAnimation(velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
     }
@@ -221,7 +223,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     public void MoveTo(Vector3 destination, MovementType movementType)
     {
-        Debug.Log("-------------------------------------------------------Movement order issued---------------------------------------------");
+       // Debug.Log("-------------------------------------------------------Movement order issued---------------------------------------------");
         currentMovementOrder.SetCurrentOrder(destination, movementType);
     }
 
