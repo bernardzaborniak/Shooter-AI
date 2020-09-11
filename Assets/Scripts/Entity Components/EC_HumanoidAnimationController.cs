@@ -20,7 +20,9 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public float turnAnimationRealSpeed;
 
-    public float movementForwardSideDampTime;
+    //public float movementForwardSideDampTime;
+   // public float turnDampTime;
+
 
 
 
@@ -36,27 +38,39 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
     {
-        animator.SetFloat(forwardVelocityParamID, currentForwardVelocity, movementForwardSideDampTime, Time.deltaTime);
-        animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity, movementForwardSideDampTime, Time.deltaTime);
+        //animator.SetFloat(forwardVelocityParamID, currentForwardVelocity, movementForwardSideDampTime, Time.deltaTime);
+        //animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity, movementForwardSideDampTime, Time.deltaTime);
+       
+        animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity);
+        animator.SetFloat(forwardVelocityParamID, currentForwardVelocity);
 
+
+
+        // Normalize angular Speed between 0 and 1 because that is the value of the 1D Blendtree used by the animator for turning, 0.5 means no turn, 0 is full left turn, 1 is full right turn
 
         float agentAngularSpeedNormalized = 0;
         if (angularVelocity > 0)
         {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, turnAnimationRealSpeed, 0, 1);
-            if (agentAngularSpeedNormalized < 0)
+            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, turnAnimationRealSpeed, 0.5f, 1f);
+            if (agentAngularSpeedNormalized > 1f)
             {
-                agentAngularSpeedNormalized = 0;
+                agentAngularSpeedNormalized = 1f;
             }
         }
         else if (angularVelocity < 0)
         {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, -turnAnimationRealSpeed, 0, -1);
-            if (agentAngularSpeedNormalized > 0)
+            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, -turnAnimationRealSpeed, 0.5f, 0f);
+            if (agentAngularSpeedNormalized < 0f)
             {
-                agentAngularSpeedNormalized = 0;
+                agentAngularSpeedNormalized = 0f;
             }
         }
+        else
+        {
+            agentAngularSpeedNormalized = 0.5f;
+        }
+
+        animator.SetFloat(angularVelocityParamID, agentAngularSpeedNormalized);
 
 
         //TODO this is only disabled for current test
