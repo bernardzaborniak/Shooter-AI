@@ -28,7 +28,9 @@ public class NavmeshMover : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 // agent.SetDestination(hit.point);
-                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
+               // humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Walk);
+
             }
         }
 
@@ -40,7 +42,9 @@ public class NavmeshMover : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 // agent.SetDestination(hit.point);
-                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Walk);
+                //humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Walk);
+                humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
+
             }
         }
 

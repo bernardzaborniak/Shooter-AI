@@ -202,7 +202,11 @@ public class EC_HumanoidMovementController : EntityComponent
         RotateTowards(desiredForward);
 
         //3. Update animation
-        if (humanoidAnimationController) humanoidAnimationController.UpdateAnimation(agent.velocity.magnitude, angularVelocity.y);
+
+        //calculate forward and sideways velocity;
+        Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
+       
+        if (humanoidAnimationController) humanoidAnimationController.UpdateAnimation(velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
     }
 
