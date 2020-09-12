@@ -18,6 +18,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     [Header("Adjusting Animation Speed")]
 
+    [Tooltip("Used For the turn override layer when aiming with a rifle")]
     public float turnValueNormalizationRealSpeed;
     //[Tooltip("If angular velocity reaches this value, the animation also reaches its maximum value")]
     //public float idleTurnAngularSpeedAnimationTreshold;
