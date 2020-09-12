@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 84ca0ba2a9f92334fa2547de01135df0
+guid: 95489c23556319a48afa8c5182a5875b
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5099603970213671239
-    second: Rifle Aiming Idle
+    second: Rifle Aiming Walking Backwards
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -22,8 +22,9 @@ ModelImporter:
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tRetargeting
+      quality is good. No significant differences with original animation were found.\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
@@ -35,7 +36,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Rifle Aiming Idle
+      name: Rifle Aiming Walking Backwards
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0

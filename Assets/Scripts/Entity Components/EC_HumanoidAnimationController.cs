@@ -20,10 +20,6 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public float turnAnimationRealSpeed;
 
-    //public float movementForwardSideDampTime;
-   // public float turnDampTime;
-
-
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -38,12 +34,9 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
     {
-        //animator.SetFloat(forwardVelocityParamID, currentForwardVelocity, movementForwardSideDampTime, Time.deltaTime);
-        //animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity, movementForwardSideDampTime, Time.deltaTime);
        
         animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity);
         animator.SetFloat(forwardVelocityParamID, currentForwardVelocity);
-
 
 
         // Normalize angular Speed between 0 and 1 because that is the value of the 1D Blendtree used by the animator for turning, 0.5 means no turn, 0 is full left turn, 1 is full right turn
@@ -71,12 +64,6 @@ public class EC_HumanoidAnimationController : EntityComponent
         }
 
         animator.SetFloat(angularVelocityParamID, agentAngularSpeedNormalized);
-
-
-        //TODO this is only disabled for current test
-        //animator.SetFloat(angularVelocityParamID, agentAngularSpeedNormalized);
-
-
 
     }
 }

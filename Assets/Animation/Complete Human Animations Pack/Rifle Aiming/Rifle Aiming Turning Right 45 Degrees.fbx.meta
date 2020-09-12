@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 84ca0ba2a9f92334fa2547de01135df0
+guid: 90fc0282210ed4143813778ea30c74ca
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5099603970213671239
-    second: Rifle Aiming Idle
+    second: Rifle Aiming Turning Right 45 Degrees
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -22,8 +22,9 @@ ModelImporter:
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tRetargeting
+      quality is good. No significant differences with original animation were found.\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
@@ -35,7 +36,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Rifle Aiming Idle
+      name: Rifle Aiming Turning Right 45 Degrees
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
