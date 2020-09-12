@@ -16,8 +16,8 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string normalizedAngularVelocityParam;
     int normalizedAngularVelocityParamID;
 
-    public string combatStanceParam;
-    public int combatStanceParamID;
+    public string stanceParam;
+    int stanceParamID;
 
     [Header("Adjusting Animation Speed")]
 
@@ -37,7 +37,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         sidewaysVelocityParamID = Animator.StringToHash(sidewaysVelocityParam);
         normalizedAngularVelocityParamID = Animator.StringToHash(normalizedAngularVelocityParam);
 
-        combatStanceParamID = Animator.StringToHash(combatStanceParam);
+        stanceParamID = Animator.StringToHash(stanceParam);
     }
 
     public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
@@ -85,15 +85,25 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetLayerWeight(1, weight);
     }
 
-    public void ChangeFromIdleToCombatStance()
+
+    public void ChangeToIdleStance()
     {
-        animator.SetBool(combatStanceParamID, true);
+        //animator.SetBool(combatStanceParamID, false);
+        animator.SetInteger(stanceParamID, 0);
+        //animator.SetLayerWeight(1, 0f);
+    }
+
+    public void ChangeToCombatStance()
+    {
+        //animator.SetBool(combatStanceParamID, true);
+        animator.SetInteger(stanceParamID, 1);
         //animator.SetLayerWeight(1, 1f);
     }
 
-    public void ChangeFromCombatToIdleStance()
+    public void ChangeToCrouchedStance()
     {
-        animator.SetBool(combatStanceParamID, false);
+        //animator.SetBool(combatStanceParamID, false);
+        animator.SetInteger(stanceParamID, 3);
         //animator.SetLayerWeight(1, 0f);
     }
 }

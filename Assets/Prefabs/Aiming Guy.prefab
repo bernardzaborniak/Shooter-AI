@@ -294,10 +294,10 @@ MonoBehaviour:
   forwardVelocityParam: Movement Forward
   sidewaysVelocityParam: Movement Right
   normalizedAngularVelocityParam: Turn Normalized
-  angularVelocityParam: Angular Velocity
-  combatStanceParam: Combat Stance
-  combatStanceParamID: 0
+  stanceParam: Stance ID
+  stanceParamID: 0
   turnValueNormalizationRealSpeed: 0
+  turnAnimationVelocityThreshold: 0
 --- !u!195 &7366031314207611054
 NavMeshAgent:
   m_ObjectHideFlags: 0

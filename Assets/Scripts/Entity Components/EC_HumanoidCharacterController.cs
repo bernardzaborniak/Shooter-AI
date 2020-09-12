@@ -46,7 +46,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         currentStance = CharacterStance.Idle;
         movementController.SetWalkingSpeed(idleWalkingSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
-        animationController.ChangeFromCombatToIdleStance();
+        animationController.ChangeToIdleStance();
 
     }
 
@@ -55,7 +55,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         currentStance = CharacterStance.CombatStance;
         movementController.SetWalkingSpeed(combatStanceWalkingSpeed);
         movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
-        animationController.ChangeFromIdleToCombatStance();
+        animationController.ChangeToCombatStance();
     }
 
     public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)
