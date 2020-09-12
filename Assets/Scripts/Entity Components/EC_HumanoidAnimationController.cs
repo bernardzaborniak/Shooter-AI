@@ -18,7 +18,9 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     [Header("Adjusting Animation Speed")]
 
-    public float turnAnimationRealSpeed;
+    public float turnValueNormalizationRealSpeed;
+    //[Tooltip("If angular velocity reaches this value, the animation also reaches its maximum value")]
+    //public float idleTurnAngularSpeedAnimationTreshold;
 
 
 
@@ -44,7 +46,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         float agentAngularSpeedNormalized = 0;
         if (angularVelocity > 0)
         {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, turnAnimationRealSpeed, 0.5f, 1f);
+            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, turnValueNormalizationRealSpeed, 0.5f, 1f);
             if (agentAngularSpeedNormalized > 1f)
             {
                 agentAngularSpeedNormalized = 1f;
@@ -52,7 +54,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         }
         else if (angularVelocity < 0)
         {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, -turnAnimationRealSpeed, 0.5f, 0f);
+            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, -turnValueNormalizationRealSpeed, 0.5f, 0f);
             if (agentAngularSpeedNormalized < 0f)
             {
                 agentAngularSpeedNormalized = 0f;
@@ -64,6 +66,9 @@ public class EC_HumanoidAnimationController : EntityComponent
         }
 
         animator.SetFloat(angularVelocityParamID, agentAngularSpeedNormalized);
+
+        //float turn2 = Utility.Remap(agentAngularSpeedNormalized, 0f, 1f, -1f, 1f);
+        animator.SetFloat("Angular Velocity", angularVelocity);
 
     }
 }
