@@ -17,7 +17,8 @@ public class EC_HumanoidCharacterController : EntityComponent
     enum CharacterStance
     {
         Idle,
-        CombatStance
+        CombatStance,
+        Crouching
     }
     CharacterStance currentStance;
 
@@ -36,6 +37,25 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (Input.GetKeyDown(KeyCode.X))
         {
             ChangeCharacterStanceToCombatStance();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ChangeCharacterStanceToCrouchingStance();
+        }
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // agent.SetDestination(hit.point);
+                // humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
+                MoveTo(hit.point);
+
+            }
         }
     }
 
@@ -58,6 +78,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         animationController.ChangeToCombatStance();
     }
 
+    public void ChangeCharacterStanceToCrouchingStance()
+    {
+        currentStance = CharacterStance.Crouching;
+        movementController.SetMovementType(EC_HumanoidMovementController.MovementType.Crouch);
+        movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+        animationController.ChangeToCrouchedStance();
+    }
+
     public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)
     {
 
@@ -65,7 +93,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination)
     {
-
+        movementController.MoveTo(destination);
     }
 
     public void MoveTo(Vector3 destination, EC_HumanoidMovementController.MovementType movementType)

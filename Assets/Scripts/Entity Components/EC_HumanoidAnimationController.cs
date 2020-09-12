@@ -103,7 +103,7 @@ public class EC_HumanoidAnimationController : EntityComponent
     public void ChangeToCrouchedStance()
     {
         //animator.SetBool(combatStanceParamID, false);
-        animator.SetInteger(stanceParamID, 3);
+        animator.SetInteger(stanceParamID, 2);
         //animator.SetLayerWeight(1, 0f);
     }
 }

@@ -20,7 +20,7 @@ public class NavmeshMover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+       /* if (Input.GetMouseButtonDown(0))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -80,7 +80,7 @@ public class NavmeshMover : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             humanoidMovementController.ResumeMoving();
-        }
+        }*/
 
         /* float agentSpeedNormalized = Utility.Remap(agent.velocity.magnitude, 0.2f, agent.speed, 0, 1);
          if (agentSpeedNormalized < 0) agentSpeedNormalized = 0;
