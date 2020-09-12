@@ -6,6 +6,14 @@ public class EC_HumanoidCharacterController : EntityComponent
 {
     // Is the Interface between the Ai Controller and all the other Controllers like aiming movement etc...
 
+    public EC_HumanoidMovementController movementController;
+    public EC_HumanoidAnimationController animationController;
+
+    public float idleWalkingSpeed;
+    public float idleStationaryTurnSpeed;
+    public float combatStanceWalkingSpeed;
+    public float combatStationaryTurnSpeed;
+
     enum CharacterStance
     {
         Idle,
@@ -17,10 +25,18 @@ public class EC_HumanoidCharacterController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
+        ChangeCharacterStanceToIdle();
     }
     public override void UpdateComponent()
     {
-
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            ChangeCharacterStanceToIdle();
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            ChangeCharacterStanceToCombatStance();
+        }
     }
 
 
@@ -28,12 +44,18 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void ChangeCharacterStanceToIdle()
     {
         currentStance = CharacterStance.Idle;
+        movementController.SetWalkingSpeed(idleWalkingSpeed);
+        movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+        animationController.ChangeFromCombatToIdleStance();
+
     }
 
     public void ChangeCharacterStanceToCombatStance()
     {
         currentStance = CharacterStance.CombatStance;
-
+        movementController.SetWalkingSpeed(combatStanceWalkingSpeed);
+        movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
+        animationController.ChangeFromIdleToCombatStance();
     }
 
     public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)

@@ -150,8 +150,9 @@ public class EC_HumanoidMovementController : EntityComponent
     public bool manualRotation;
 
     [Header("Movement")]
-    public float runningSpeed;
+    public float sprintingSpeed;
     public float walkingSpeed;
+   // public float combatStanceWalkingSpeed;
     public float crouchingSpeed;
     public float crawlingSpeed;
 
@@ -257,7 +258,7 @@ public class EC_HumanoidMovementController : EntityComponent
         switch (movementType)
         {
             case MovementType.Run:
-                agent.speed = runningSpeed;
+                agent.speed = sprintingSpeed;
                 break;
 
             case MovementType.Walk:
@@ -304,6 +305,20 @@ public class EC_HumanoidMovementController : EntityComponent
         this.stance = stance;
     }
 
+    public void SetWalkingSpeed(float newWalkingSpeed)
+    {
+        walkingSpeed = newWalkingSpeed;
+        if(currentMovementOrder.movementType == MovementType.Walk)
+        {
+            agent.speed = walkingSpeed;
+        }
+    }
+
+    public void SetStationaryTurnSpeed(float newStationaryTurnSpeed)
+    {
+        stationaryTurnSpeed = newStationaryTurnSpeed;
+    }
+
     #endregion
 
     #region Rotation Orders
@@ -313,7 +328,7 @@ public class EC_HumanoidMovementController : EntityComponent
         //only rotate on y axis
         currentRotation = transform.rotation;
 
-        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / runningSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
+        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
 
         if (targetRotation != Quaternion.LookRotation(direction))
         {
