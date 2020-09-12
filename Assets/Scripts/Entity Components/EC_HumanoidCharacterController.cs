@@ -11,10 +11,14 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public float idleWalkingSpeed;
     public float idleStationaryTurnSpeed;
+    public float idleAcceleration;
     public float combatStanceWalkingSpeed;
     public float combatStationaryTurnSpeed;
+    public float combatStanceAcceleration;
+
 
     public float crouchSpeed;
+    public float crouchAcceleration;
 
     enum CharacterStance
     {
@@ -81,6 +85,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         currentStance = CharacterStance.Idle;
         movementController.SetDefaultSpeed(idleWalkingSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+        movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
 
     }
@@ -90,6 +95,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         currentStance = CharacterStance.CombatStance;
         movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
         movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
+        movementController.SetAcceleration(combatStanceAcceleration);
         animationController.ChangeToCombatStance();
     }
 
@@ -98,6 +104,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         currentStance = CharacterStance.Crouching;
         movementController.SetDefaultSpeed(crouchSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+        movementController.SetAcceleration(crouchAcceleration);
         animationController.ChangeToCrouchedStance();
     }
 

@@ -205,9 +205,12 @@ MonoBehaviour:
   animationController: {fileID: 7366031314207611044}
   idleWalkingSpeed: 1.4
   idleStationaryTurnSpeed: 90
+  idleAcceleration: 6
   combatStanceWalkingSpeed: 2
   combatStationaryTurnSpeed: 140
-  crouchSpeed: 1
+  combatStanceAcceleration: 12
+  crouchSpeed: 0.9
+  crouchAcceleration: 2
 --- !u!114 &7366031314207611040
 MonoBehaviour:
   m_ObjectHideFlags: 0

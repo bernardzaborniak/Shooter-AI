@@ -267,6 +267,11 @@ public class EC_HumanoidMovementController : EntityComponent
         }
     }
 
+    public void SetAcceleration(float newAcceleration)
+    {
+        agent.acceleration = newAcceleration;
+    }
+
     public void SetStationaryTurnSpeed(float newStationaryTurnSpeed)
     {
         stationaryTurnSpeed = newStationaryTurnSpeed;
