@@ -32273,16 +32273,6 @@ PrefabInstance:
       propertyPath: lookAtTarget
       value: 
       objectReference: {fileID: 182164734}
-    - target: {fileID: 7366031314207611041, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: walkingSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611041, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: sprintingSpeed
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611042, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: playerCamera
@@ -32292,6 +32282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: turnValueNormalizationRealSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366031314207611044, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: turnAnimationVelocityThreshold
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}

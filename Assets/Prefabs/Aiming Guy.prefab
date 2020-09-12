@@ -204,7 +204,7 @@ MonoBehaviour:
   movementController: {fileID: 7366031314207611041}
   animationController: {fileID: 7366031314207611044}
   idleWalkingSpeed: 1.4
-  idleStationaryTurnSpeed: 70
+  idleStationaryTurnSpeed: 90
   combatStanceWalkingSpeed: 2
   combatStationaryTurnSpeed: 140
 --- !u!114 &7366031314207611040
@@ -271,10 +271,10 @@ MonoBehaviour:
   humanoidAnimationController: {fileID: 7366031314207611044}
   showGizmo: 1
   angularAccelerationDistance: 90
-  stationaryTurnSpeed: 140
+  stationaryTurnSpeed: 0
   runningTurnSpeed: 50
   manualRotation: 0
-  sprintingSpeed: 0
+  sprintingSpeed: 7
   walkingSpeed: 0
   crouchingSpeed: 1
   crawlingSpeed: 0.4

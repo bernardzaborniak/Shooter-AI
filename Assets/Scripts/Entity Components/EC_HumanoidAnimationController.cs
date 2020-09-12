@@ -15,8 +15,6 @@ public class EC_HumanoidAnimationController : EntityComponent
     int sidewaysVelocityParamID;
     public string normalizedAngularVelocityParam;
     int normalizedAngularVelocityParamID;
-    public string angularVelocityParam;
-    int angularVelocityParamID;
 
     public string combatStanceParam;
     public int combatStanceParamID;
@@ -25,8 +23,8 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     [Tooltip("Used For the turn override layer when aiming with a rifle")]
     public float turnValueNormalizationRealSpeed;
-    //[Tooltip("If angular velocity reaches this value, the animation also reaches its maximum value")]
-    //public float idleTurnAngularSpeedAnimationTreshold;
+    [Tooltip("Turn animation is only played below this velocity")]
+    public float turnAnimationVelocityThreshold;
 
 
 
@@ -37,7 +35,6 @@ public class EC_HumanoidAnimationController : EntityComponent
         // Convert the strings into hashes to improve performance
         forwardVelocityParamID = Animator.StringToHash(forwardVelocityParam);
         sidewaysVelocityParamID = Animator.StringToHash(sidewaysVelocityParam);
-        angularVelocityParamID = Animator.StringToHash(angularVelocityParam);
         normalizedAngularVelocityParamID = Animator.StringToHash(normalizedAngularVelocityParam);
 
         combatStanceParamID = Animator.StringToHash(combatStanceParam);
@@ -76,20 +73,27 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         animator.SetFloat(normalizedAngularVelocityParamID, agentAngularSpeedNormalized);
 
-        //float turn2 = Utility.Remap(agentAngularSpeedNormalized, 0f, 1f, -1f, 1f);
-        animator.SetFloat(angularVelocityParamID, angularVelocity);
+        //animator.SetFloat(angularVelocityParamID, angularVelocity);
 
+        float speed = new Vector3(currentForwardVelocity, currentSidewaysVelocity).magnitude;
+        float weight = 0;
+
+        if (speed < turnAnimationVelocityThreshold)
+        {
+            weight = Utility.Remap(speed, 0, turnAnimationVelocityThreshold, 1, 0);
+        }
+        animator.SetLayerWeight(1, weight);
     }
 
     public void ChangeFromIdleToCombatStance()
     {
         animator.SetBool(combatStanceParamID, true);
-        animator.SetLayerWeight(1, 1f);
+        //animator.SetLayerWeight(1, 1f);
     }
 
     public void ChangeFromCombatToIdleStance()
     {
         animator.SetBool(combatStanceParamID, false);
-        animator.SetLayerWeight(1, 0f);
+        //animator.SetLayerWeight(1, 0f);
     }
 }
