@@ -14,6 +14,8 @@ public class EC_HumanoidCharacterController : EntityComponent
     public float combatStanceWalkingSpeed;
     public float combatStationaryTurnSpeed;
 
+    public float crouchSpeed;
+
     enum CharacterStance
     {
         Idle,
@@ -21,6 +23,9 @@ public class EC_HumanoidCharacterController : EntityComponent
         Crouching
     }
     CharacterStance currentStance;
+
+
+    //add a bool to character stance which tells if stance allows sprinting or not
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -51,9 +56,19 @@ public class EC_HumanoidCharacterController : EntityComponent
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                // agent.SetDestination(hit.point);
-                // humanoidMovementController.MoveTo(hit.point, EC_HumanoidMovementController.MovementType.Run);
                 MoveTo(hit.point);
+
+            }
+        }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                MoveTo(hit.point, true);
 
             }
         }
@@ -64,7 +79,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void ChangeCharacterStanceToIdle()
     {
         currentStance = CharacterStance.Idle;
-        movementController.SetWalkingSpeed(idleWalkingSpeed);
+        movementController.SetDefaultSpeed(idleWalkingSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         animationController.ChangeToIdleStance();
 
@@ -73,7 +88,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void ChangeCharacterStanceToCombatStance()
     {
         currentStance = CharacterStance.CombatStance;
-        movementController.SetWalkingSpeed(combatStanceWalkingSpeed);
+        movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
         movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
         animationController.ChangeToCombatStance();
     }
@@ -81,24 +96,24 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void ChangeCharacterStanceToCrouchingStance()
     {
         currentStance = CharacterStance.Crouching;
-        movementController.SetMovementType(EC_HumanoidMovementController.MovementType.Crouch);
+        movementController.SetDefaultSpeed(crouchSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         animationController.ChangeToCrouchedStance();
     }
 
-    public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)
+   /* public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)
     {
 
-    }
+    }*/
 
     public void MoveTo(Vector3 destination)
     {
         movementController.MoveTo(destination);
     }
 
-    public void MoveTo(Vector3 destination, EC_HumanoidMovementController.MovementType movementType)
+    public void MoveTo(Vector3 destination, bool sprint)
     {
-
+        movementController.MoveTo(destination, sprint);
     }
 
     public void LookAt()

@@ -17,36 +17,20 @@ public class EC_HumanoidMovementController : EntityComponent
     protected EC_HumanoidAnimationController humanoidAnimationController;
 
 
-    protected enum MovementState
+    protected enum PushingState
     {
         Default,
         BeingPushed,
     }
-    protected MovementState movementState;
+    protected PushingState movementState;
 
-    //protected float maxAngularSpeed;   //for rotation independent of navmeshAgent;
-
-    public enum MovementType
-    {
-        Walk,
-        Run,
-        Crouch,
-        Crawl
-    }
-
-    public enum MovementStance
-    {
-        Standing,
-        Crouching,
-        Crawling
-    }
-    MovementStance stance;
 
     //represents an information container about the current order, does not do any logic by itself
     class MovementOrder
     {
         public Vector3 destination;
-        public MovementType movementType;
+        //public MovementType movementType;
+        public bool sprint;
        // NavMeshAgent agent;
 
         public enum OrderExecutionStatus
@@ -71,11 +55,11 @@ public class EC_HumanoidMovementController : EntityComponent
             this.destination = destination;
         }
 
-        public void SetCurrentOrder(Vector3 destination, MovementType movementType)
+        public void SetCurrentOrder(Vector3 destination, bool sprint)
         {
             orderExecutionStatus = OrderExecutionStatus.Ordered;
             this.destination = destination;
-            this.movementType = movementType;
+            this.sprint = sprint;
         }
 
         public void OnExecute()
@@ -151,10 +135,8 @@ public class EC_HumanoidMovementController : EntityComponent
 
     [Header("Movement")]
     public float sprintingSpeed;
-    public float walkingSpeed;
-   // public float combatStanceWalkingSpeed;
-    public float crouchingSpeed;
-    public float crawlingSpeed;
+    public float defaultSpeed;
+
 
 
     #endregion
@@ -179,7 +161,7 @@ public class EC_HumanoidMovementController : EntityComponent
             agent.isStopped = false;
 
             agent.SetDestination(currentMovementOrder.destination);
-            SetMovementType(currentMovementOrder.movementType);
+            UpdateAgentSpeed(currentMovementOrder.sprint);
             currentMovementOrder.OnExecute();
         }
         else if (currentMovementOrder.IsBeingExecuted())
@@ -214,16 +196,16 @@ public class EC_HumanoidMovementController : EntityComponent
 
     #region Movement Orders
 
+
+
     public void MoveTo(Vector3 destination)
     {
-        Debug.Log("-------------------------------------------------------Movement order issued---------------------------------------------");
-        currentMovementOrder.SetCurrentOrder(destination, MovementType.Run);
+        currentMovementOrder.SetCurrentOrder(destination, false);
     }
 
-    public void MoveTo(Vector3 destination, MovementType movementType)
+    public void MoveTo(Vector3 destination, bool sprint)
     {
-       // Debug.Log("-------------------------------------------------------Movement order issued---------------------------------------------");
-        currentMovementOrder.SetCurrentOrder(destination, movementType);
+        currentMovementOrder.SetCurrentOrder(destination, sprint);
     }
 
     public void AbortMoving()
@@ -251,66 +233,37 @@ public class EC_HumanoidMovementController : EntityComponent
     
     }
 
-    public void SetMovementType(MovementType movementType)
+    public void UpdateAgentSpeed(bool sprint)
     {
-        currentMovementOrder.movementType = movementType;
-
-        switch (movementType)
+        if (currentMovementOrder.sprint)
         {
-            case MovementType.Run:
-                agent.speed = sprintingSpeed;
-                break;
-
-            case MovementType.Walk:
-                agent.speed = walkingSpeed;
-                break;
-
-            case MovementType.Crouch:
-                agent.speed = crouchingSpeed;
-                break;
-
-            case MovementType.Crawl:
-                agent.speed = crawlingSpeed;
-                break;
+            agent.speed = sprintingSpeed;
+        }
+        else
+        {
+            agent.speed = defaultSpeed;
         }
     }
 
-    void SetStanceAccordingToMovementOrder()
+
+
+    public void SetDefaultSpeed(float newDefaultSpeed)
     {
-        switch (currentMovementOrder.movementType)
+        defaultSpeed = newDefaultSpeed;
+
+        if (!currentMovementOrder.sprint)
         {
-            case MovementType.Run:
-                SetStance(MovementStance.Standing);
-                break;
-
-            case MovementType.Walk:
-                agent.speed = walkingSpeed;
-                SetStance(MovementStance.Standing);
-                break;
-
-            case MovementType.Crouch:
-                agent.speed = crouchingSpeed;
-                SetStance(MovementStance.Crouching);
-                break;
-
-            case MovementType.Crawl:
-                agent.speed = crawlingSpeed;
-                SetStance(MovementStance.Crawling);
-                break;
+            agent.speed = defaultSpeed;
         }
     }
 
-    public void SetStance(MovementStance stance)
+    public void SetSprintSpeed(float newSprintSpeed)
     {
-        this.stance = stance;
-    }
+        sprintingSpeed = newSprintSpeed;
 
-    public void SetWalkingSpeed(float newWalkingSpeed)
-    {
-        walkingSpeed = newWalkingSpeed;
-        if(currentMovementOrder.movementType == MovementType.Walk)
+        if (currentMovementOrder.sprint)
         {
-            agent.speed = walkingSpeed;
+            agent.speed = sprintingSpeed;
         }
     }
 
