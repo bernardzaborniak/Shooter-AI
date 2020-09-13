@@ -46,4 +46,16 @@ public class EC_HumanoidInterationController : EntityComponent
 
         aimingController.ChangeWeapon(rifle);
     }
+
+    public void SelectNothing()
+    {
+        Debug.Log("select nothing");
+        currentWeapon = null;
+        rifle.gameObject.SetActive(false);
+        pistol.gameObject.SetActive(false);
+
+        animationController.ChangeItemInHand(0);
+
+        //aimingController.ChangeWeapon(null);
+    }
 }

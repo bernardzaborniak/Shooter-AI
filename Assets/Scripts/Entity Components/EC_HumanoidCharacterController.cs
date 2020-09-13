@@ -61,6 +61,10 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             interactionController.SelectPistol();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            interactionController.SelectNothing();
+        }
 
 
 

@@ -132,6 +132,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void ChangeItemInHand(int newItemInHandID)
     {
+        Debug.Log("set item in hand: " + newItemInHandID);
         animator.SetInteger(itemInHandParamID, newItemInHandID);
         
     }
