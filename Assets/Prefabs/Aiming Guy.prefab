@@ -315,11 +315,10 @@ MonoBehaviour:
   animator: {fileID: 3986798228002117030}
   forwardVelocityParam: Movement Forward
   sidewaysVelocityParam: Movement Right
-  normalizedAngularVelocityParam: Turn Normalized
+  angularVelocityParam: Angular Velocity
   stanceParam: Stance ID
   itemInHandParam: Item In Hand ID
-  turnValueNormalizationRealSpeed: 0
-  turnAnimationVelocityThreshold: 0
+  turnAnimationVelocityThreshold: 1
 --- !u!195 &7366031314207611054
 NavMeshAgent:
   m_ObjectHideFlags: 0

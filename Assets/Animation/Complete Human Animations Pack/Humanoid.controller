@@ -634,7 +634,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -682,7 +682,7 @@ BlendTree:
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 7e508df0b2b6ff948926425156d018a0, type: 2}
-    m_Threshold: 0
+    m_Threshold: -20
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -690,7 +690,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 71f81b33fa2c3144eaed6622a4c32dfc, type: 2}
-    m_Threshold: 0.5
+    m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -698,16 +698,16 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: f84db9ce50633424a9236cf5cbf9bc50, type: 2}
-    m_Threshold: 1
+    m_Threshold: 20
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
-  m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MinThreshold: -20
+  m_MaxThreshold: 20
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -859,7 +859,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -893,7 +893,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Turn Normalized
+  - m_Name: Angular Velocity
     m_Type: 1
     m_DefaultFloat: 0.5
     m_DefaultInt: 0
@@ -1054,7 +1054,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1071,7 +1071,7 @@ BlendTree:
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: fbc64f2813214e74c93cd3d3a5169fb3, type: 2}
-    m_Threshold: 0
+    m_Threshold: -20
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1.3
     m_CycleOffset: 0
@@ -1079,7 +1079,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: fe4a11a0aab279a4a976f5839b86738b, type: 2}
-    m_Threshold: 0.5
+    m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -1087,16 +1087,16 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: fbc64f2813214e74c93cd3d3a5169fb3, type: 2}
-    m_Threshold: 1
+    m_Threshold: 20
     m_Position: {x: 0, y: 0}
     m_TimeScale: -1.3
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
-  m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MinThreshold: -20
+  m_MaxThreshold: 20
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -1107,35 +1107,11 @@ BlendTree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Blend Tree
-  m_Childs:
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: c5b4e0c776f238149a050a156b3cddae, type: 2}
-    m_Threshold: 0
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Movement Forward
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b39a9cef5a40ecf4982ec23973f80018, type: 2}
-    m_Threshold: 0.5
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Movement Forward
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 04e2d184c4ded99499f1f35f79ae7860, type: 2}
-    m_Threshold: 1
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Movement Forward
-    m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_Childs: []
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
-  m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MinThreshold: -4.15
+  m_MaxThreshold: 4
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -1199,7 +1175,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1394,7 +1370,7 @@ BlendTree:
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 98653ee8aae9c994ea397a2c5be262b3, type: 2}
-    m_Threshold: 0
+    m_Threshold: -20
     m_Position: {x: 0, y: 0}
     m_TimeScale: -1
     m_CycleOffset: 0
@@ -1402,7 +1378,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 88f5d7746347d99439ab81a52d8b8b0d, type: 2}
-    m_Threshold: 0.5
+    m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -1410,16 +1386,16 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 98653ee8aae9c994ea397a2c5be262b3, type: 2}
-    m_Threshold: 1
+    m_Threshold: 20
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
-  m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MinThreshold: -20
+  m_MaxThreshold: 20
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -1592,7 +1568,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1887,7 +1863,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
-  m_BlendParameter: Turn Normalized
+  m_BlendParameter: Angular Velocity
   m_BlendParameterY: Movement Forward
   m_MinThreshold: 0
   m_MaxThreshold: 1
