@@ -19,6 +19,9 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string stanceParam;
     int stanceParamID;
 
+    public string itemInHandParam;
+    int itemInHandParamID;
+
     [Header("Adjusting Animation Speed")]
 
     [Tooltip("Used For the turn override layer when aiming with a rifle")]
@@ -38,6 +41,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         normalizedAngularVelocityParamID = Animator.StringToHash(normalizedAngularVelocityParam);
 
         stanceParamID = Animator.StringToHash(stanceParam);
+        itemInHandParamID = Animator.StringToHash(itemInHandParam);
     }
 
     public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
@@ -83,6 +87,8 @@ public class EC_HumanoidAnimationController : EntityComponent
             weight = Utility.Remap(speed, 0, turnAnimationVelocityThreshold, 1, 0);
         }
         animator.SetLayerWeight(1, weight);
+
+       
     }
 
 
@@ -105,5 +111,11 @@ public class EC_HumanoidAnimationController : EntityComponent
         //animator.SetBool(combatStanceParamID, false);
         animator.SetInteger(stanceParamID, 2);
         //animator.SetLayerWeight(1, 0f);
+    }
+
+    public void ChangeItemInHand(int newItemInHandID)
+    {
+        animator.SetInteger(itemInHandParamID, newItemInHandID);
+        
     }
 }

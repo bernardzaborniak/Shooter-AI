@@ -506,4 +506,10 @@ public class EC_HumanoidAimingController : EntityComponent
             desiredRightHandIKRigWeight = 0;
         }
     }
+
+    public void ChangeWeapon(Weapon newWeapon)
+    {
+        weapon = newWeapon;
+        weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
+    }
 }

@@ -8,6 +8,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public EC_HumanoidMovementController movementController;
     public EC_HumanoidAnimationController animationController;
+    public EC_HumanoidInterationController interactionController;
 
     public float idleWalkingSpeed;
     public float idleStationaryTurnSpeed;
@@ -24,7 +25,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         Idle,
         CombatStance,
-        Crouching
+        Crouching,
     }
     CharacterStance currentStance;
 
@@ -51,6 +52,17 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             ChangeCharacterStanceToCrouchingStance();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            interactionController.SelectRifle();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            interactionController.SelectPistol();
+        }
+
+
 
 
         if (Input.GetMouseButtonDown(0))
