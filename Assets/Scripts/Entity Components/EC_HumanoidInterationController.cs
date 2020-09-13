@@ -20,21 +20,15 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            animationController.ChangeItemInHand(1);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            animationController.ChangeItemInHand(2);
-        }
     }
 
     public void SelectPistol()
     {
         rifle.gameObject.SetActive(false);
         pistol.gameObject.SetActive(true);
+
+        animationController.ChangeItemInHand(2);
 
         aimingController.ChangeWeapon(pistol);
     }
@@ -43,6 +37,8 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         rifle.gameObject.SetActive(true);
         pistol.gameObject.SetActive(false);
+
+        animationController.ChangeItemInHand(1);
 
         aimingController.ChangeWeapon(rifle);
     }
