@@ -30,6 +30,23 @@ public class EC_HumanoidAnimationController : EntityComponent
     public float turnAnimationVelocityThreshold;
 
 
+    /* ------Animation IDs--------
+    
+   -----Stance ID's---
+
+    Idle,            0
+    Combat,          1
+    CrouchingCombat  2
+
+     -----Item In Hand ID's---
+
+    NoItem,            0
+    Rifle,             1
+    Pistol             2
+
+
+    */
+
 
     public override void SetUpComponent(GameEntity entity)
     {

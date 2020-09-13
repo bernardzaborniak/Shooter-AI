@@ -230,6 +230,7 @@ MonoBehaviour:
   animationController: {fileID: 7366031314207611044}
   rifle: {fileID: 7366031315910803148}
   pistol: {fileID: 7366031314584728135}
+  currentWeapon: {fileID: 0}
 --- !u!114 &7366031314207611040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,6 +566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandIKPosition: {fileID: 7366031314209542996}
   leftHandIKPosition: {fileID: 7366031316044013082}
+  animationID: 2
   weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.43}
 --- !u!1 &7366031314609754848
 GameObject:
@@ -1650,6 +1652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandIKPosition: {fileID: 7366031314741862737}
   leftHandIKPosition: {fileID: 7366031314180013862}
+  animationID: 1
   weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.32}
 --- !u!1 &7366031315934918497
 GameObject:

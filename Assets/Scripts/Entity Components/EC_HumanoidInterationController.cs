@@ -12,6 +12,8 @@ public class EC_HumanoidInterationController : EntityComponent
     public Weapon rifle; //itemInHandID 1
     public Weapon pistol; //itemInHandID 2
 
+    public Weapon currentWeapon;
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -25,20 +27,22 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void SelectPistol()
     {
+        currentWeapon = pistol;
         rifle.gameObject.SetActive(false);
         pistol.gameObject.SetActive(true);
 
-        animationController.ChangeItemInHand(2);
+        animationController.ChangeItemInHand(currentWeapon.animationID);
 
         aimingController.ChangeWeapon(pistol);
     }
 
     public void SelectRifle()
     {
+        currentWeapon = rifle;
         rifle.gameObject.SetActive(true);
         pistol.gameObject.SetActive(false);
 
-        animationController.ChangeItemInHand(1);
+        animationController.ChangeItemInHand(currentWeapon.animationID);
 
         aimingController.ChangeWeapon(rifle);
     }
