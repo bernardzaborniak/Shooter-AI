@@ -6,20 +6,22 @@ public class EC_HumanoidCharacterController : EntityComponent
 {
     // Is the Interface between the Ai Controller and all the other Controllers like aiming movement etc...
 
+    [Header("References")]
     public EC_HumanoidMovementController movementController;
     public EC_HumanoidAnimationController animationController;
     public EC_HumanoidInterationController interactionController;
+    public EC_HumanoidAimingController aimingController;
 
+    [Header("Movement Speeds")]
     public float idleWalkingSpeed;
     public float idleStationaryTurnSpeed;
     public float idleAcceleration;
     public float combatStanceWalkingSpeed;
     public float combatStationaryTurnSpeed;
     public float combatStanceAcceleration;
-
-
     public float crouchSpeed;
     public float crouchAcceleration;
+
 
     enum CharacterStance
     {
@@ -29,7 +31,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     CharacterStance currentStance;
 
-
+    [Header("For development only")]
+    public Transform aimAtTarget;
+    public Transform lookAtTarget;
     //add a bool to character stance which tells if stance allows sprinting or not
 
 
@@ -40,6 +44,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     public override void UpdateComponent()
     {
+        // -------- Stances -------
         if (Input.GetKeyDown(KeyCode.Y))
         {
             ChangeCharacterStanceToIdle();
@@ -53,6 +58,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             ChangeCharacterStanceToCrouchingStance();
         }
 
+        // -------- Weapons -------
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             interactionController.SelectRifle();
@@ -66,6 +72,23 @@ public class EC_HumanoidCharacterController : EntityComponent
             interactionController.SelectNothing();
         }
 
+        // -------- Aiming & Look at -------
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LookAt(lookAtTarget);
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            StopLookAt();
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            AimAt(aimAtTarget);
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            StopAimAt();
+        }
 
 
 
@@ -124,10 +147,6 @@ public class EC_HumanoidCharacterController : EntityComponent
         animationController.ChangeToCrouchedStance();
     }
 
-   /* public void ChangeMovementStance(EC_HumanoidMovementController.MovementStance stance)
-    {
-
-    }*/
 
     public void MoveTo(Vector3 destination)
     {
@@ -139,24 +158,28 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.MoveTo(destination, sprint);
     }
 
-    public void LookAt()
+    public void LookAt(Transform target)
     {
-
+        aimingController.LookAtTransform(target);
     }
 
     public void StopLookAt()
     {
-
+        aimingController.StopLookAt();
     }
 
-    public void AimAt()
+    public void AimAt(Transform traget)
     {
-
+        aimingController.LookAtTransform(traget);
+        aimingController.AimSpineAtTransform(traget);
+        aimingController.AimWeaponAtTarget();
     }
 
     public void StopAimAt()
     {
-
+        aimingController.StopLookAt();
+        aimingController.StopAimSpineAt();
+        aimingController.StopAimingWeaponAtTarget();
     }
 
     public void EquipItem(int inventoryID)

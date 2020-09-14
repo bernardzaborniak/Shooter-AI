@@ -41,8 +41,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
     [Tooltip("The movement Controller is used to rotate to the sides")]
     public EC_HumanoidMovementController movementController;
-    [Tooltip("Target at which the spine/body aims")]
-    public Transform aimAtTarget;
+
     [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
     public Transform spineConstraintTarget;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
@@ -68,7 +67,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
     [Header("Look At")]
     public FLookAnimator fLookAnimator;
-    public Transform lookAtTarget;
+    
 
     // Look At distorts the weapon aiming when its 2 compensiation Weights are set on something different than 1, so we set the mto 1 while aiming ,and reset them afterwards.
     float lookAtCompensationWeightBeforeAimingWeapon;
@@ -140,8 +139,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     #endregion
 
-    [Header("Fields to be moved to animation controller corresponding to character controller state machine")]
-    public Animator animator;
+    //[Header("Fields to be moved to animation controller corresponding to character controller state machine")]
+    //public Animator animator;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -159,7 +158,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         #region Key Inputs For Testing
 
-        if (Input.GetKeyDown(KeyCode.L))
+        /*if (Input.GetKeyDown(KeyCode.L))
         {
             // AimInDirection(Vector3.right);
             LookAtTransform(lookAtTarget);
@@ -215,6 +214,7 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             animator.SetBool("Aiming", true);
         }
+        */
 
         #endregion
 
@@ -302,12 +302,6 @@ public class EC_HumanoidAimingController : EntityComponent
             currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
             weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
 
-            // Position The hand's IK's
-            rightHandIKTarget.position = weapon.rightHandIKPosition.position;
-            rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
-
-           // leftHandIKTarget.position = weapon.leftHandIKPosition.position;
-           // leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
         }
 
         // Smooth out the change between aiming weapon and holding it idle
@@ -412,7 +406,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
 
 
-    public void AimAtTransform(Transform transform)
+    public void AimSpineAtTransform(Transform transform)
     {
         aimAtActive = true;
         currentAimAtTargetingMethod = AimAtTargetingMethod.Transform;
@@ -420,7 +414,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimAtTransform = transform;
     }
 
-    public void StopAimAt()
+    public void StopAimSpineAt()
     {
         aimAtActive = false;
         movementController.manualRotation = false;
@@ -458,12 +452,6 @@ public class EC_HumanoidAimingController : EntityComponent
         //ChangeIKWeightsOnChangeFromAimingToIdle();
     }
 
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-
-        Gizmos.DrawLine(aimingDistanceReferencePoint.position, aimingDistanceReferencePoint.position + desiredSpineDirection);
-    }*/
 
     void ChangeIKWeightsOnChangeFromAimingToIdle()
     {
