@@ -44,6 +44,8 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     public override void UpdateComponent()
     {
+        #region Keyboard Input for Development
+
         // -------- Stances -------
         if (Input.GetKeyDown(KeyCode.Y))
         {
@@ -90,7 +92,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             StopAimAt();
         }
 
-
+       
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -115,8 +117,10 @@ public class EC_HumanoidCharacterController : EntityComponent
 
             }
         }
-    }
 
+        #endregion
+
+    }
 
 
     public void ChangeCharacterStanceToIdle()
@@ -146,6 +150,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetAcceleration(crouchAcceleration);
         animationController.ChangeToCrouchedStance();
     }
+
 
 
     public void MoveTo(Vector3 destination)

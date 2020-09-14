@@ -24,14 +24,11 @@ public class EC_HumanoidMovementController : EntityComponent
     }
     protected PushingState movementState;
 
-
-    //represents an information container about the current order, does not do any logic by itself
+    // Represents an information container about the current order, does not do any logic by itself
     class MovementOrder
     {
         public Vector3 destination;
-        //public MovementType movementType;
         public bool sprint;
-       // NavMeshAgent agent;
 
         public enum OrderExecutionStatus
         {
@@ -111,7 +108,6 @@ public class EC_HumanoidMovementController : EntityComponent
     MovementOrder currentMovementOrder;
 
 
-
     [Header("Debug")]
     [SerializeField]
     bool showGizmo;
@@ -138,7 +134,6 @@ public class EC_HumanoidMovementController : EntityComponent
     public float defaultSpeed;
 
 
-
     #endregion
 
     public override void SetUpComponent(GameEntity entity)
@@ -152,7 +147,6 @@ public class EC_HumanoidMovementController : EntityComponent
         
     }
 
-    // Update is only for looks- the rotation is important for logic but it can be a bit jaggy if far away or not on screen - lod this script, only call it every x seconds?
     public override void UpdateComponent()
     {
         // 1. Update movement according to movement Order 
@@ -193,10 +187,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     }
 
-
     #region Movement Orders
-
-
 
     public void MoveTo(Vector3 destination)
     {
@@ -233,6 +224,39 @@ public class EC_HumanoidMovementController : EntityComponent
     
     }
 
+    #endregion
+
+    #region Rotation Orders
+    void RotateTowards(Vector3 direction)
+    {
+        //only rotate on y axis
+        currentRotation = transform.rotation;
+
+        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
+
+        if (targetRotation != Quaternion.LookRotation(direction))
+        {
+            targetRotation = Quaternion.LookRotation(direction);
+
+            float distance = Quaternion.Angle(currentRotation, targetRotation);
+            //adjust the smooth time to ensure constant speeds at big and at small angles
+            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
+        }
+
+        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
+        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
+    }
+
+    public void SetDesiredForward(Vector3 direction)
+    {
+        direction.y = 0;
+        if (manualRotation) desiredForward = direction;
+    }
+
+    #endregion
+
+    #region Modify Values
+
     public void UpdateAgentSpeed(bool sprint)
     {
         if (currentMovementOrder.sprint)
@@ -244,8 +268,6 @@ public class EC_HumanoidMovementController : EntityComponent
             agent.speed = defaultSpeed;
         }
     }
-
-
 
     public void SetDefaultSpeed(float newDefaultSpeed)
     {
@@ -277,35 +299,6 @@ public class EC_HumanoidMovementController : EntityComponent
         stationaryTurnSpeed = newStationaryTurnSpeed;
     }
 
-    #endregion
-
-    #region Rotation Orders
-
-    void RotateTowards(Vector3 direction)
-    {
-        //only rotate on y axis
-        currentRotation = transform.rotation;
-
-        averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
-
-        if (targetRotation != Quaternion.LookRotation(direction))
-        {
-            targetRotation = Quaternion.LookRotation(direction);
-
-            float distance = Quaternion.Angle(currentRotation, targetRotation);
-            //adjust the smooth time to ensure constant speeds at big and at small angles
-            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
-        }
-
-        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
-        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
-    }
-
-    public void SetDesiredForward(Vector3 direction)
-    {
-        direction.y = 0;
-        if (manualRotation) desiredForward = direction;
-    }
 
     #endregion
 
@@ -335,7 +328,6 @@ public class EC_HumanoidMovementController : EntityComponent
     #endregion
 
     #region Debug
-
     private void OnDrawGizmos()
     {
         if (showGizmo && agent != null)

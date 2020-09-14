@@ -55,7 +55,5 @@ public class EC_HumanoidInterationController : EntityComponent
         pistol.gameObject.SetActive(false);
 
         animationController.ChangeItemInHand(0);
-
-        //aimingController.ChangeWeapon(null);
     }
 }
