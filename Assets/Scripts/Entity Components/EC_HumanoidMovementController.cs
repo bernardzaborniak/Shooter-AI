@@ -189,7 +189,7 @@ public class EC_HumanoidMovementController : EntityComponent
         //calculate forward and sideways velocity;
         Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
 
-        if (humanoidAnimationController) humanoidAnimationController.UpdateAnimation(velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
+        if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
     }
 

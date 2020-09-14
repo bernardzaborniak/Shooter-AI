@@ -22,10 +22,7 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string itemInHandParam;
     int itemInHandParamID;
 
-    [Header("Adjusting Animation Speed")]
-
-    //[Tooltip("Used For the turn override layer when aiming with a rifle")]
-    //public float turnValueNormalizationRealSpeed;
+    [Header("Adjusting Animtion Layers etc..")]
     [Tooltip("Turn animation override layer is only played below this velocity")]
     public float turnAnimationVelocityThreshold;
 
@@ -44,7 +41,6 @@ public class EC_HumanoidAnimationController : EntityComponent
     Rifle,             1
     Pistol             2
 
-
     */
 
 
@@ -61,73 +57,35 @@ public class EC_HumanoidAnimationController : EntityComponent
         itemInHandParamID = Animator.StringToHash(itemInHandParam);
     }
 
-    public void UpdateAnimation(float currentForwardVelocity, float currentSidewaysVelocity, float angularVelocity)
-    {
-       
-        animator.SetFloat(sidewaysVelocityParamID, currentSidewaysVelocity);
-        animator.SetFloat(forwardVelocityParamID, currentForwardVelocity);
-
-
-        // Normalize angular Speed between 0 and 1 because that is the value of the 1D Blendtree used by the animator for turning, 0.5 means no turn, 0 is full left turn, 1 is full right turn
-
-       /* float agentAngularSpeedNormalized = 0;
-        if (angularVelocity > 0)
-        {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, turnValueNormalizationRealSpeed, 0.5f, 1f);
-            if (agentAngularSpeedNormalized > 1f)
-            {
-                agentAngularSpeedNormalized = 1f;
-            }
-        }
-        else if (angularVelocity < 0)
-        {
-            agentAngularSpeedNormalized = Utility.Remap(angularVelocity, 0f, -turnValueNormalizationRealSpeed, 0.5f, 0f);
-            if (agentAngularSpeedNormalized < 0f)
-            {
-                agentAngularSpeedNormalized = 0f;
-            }
-        }
-        else
-        {
-            agentAngularSpeedNormalized = 0.5f;
-        }*/
-
+    public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
+    {  
+        animator.SetFloat(sidewaysVelocityParamID, sidewaysVelocity);
+        animator.SetFloat(forwardVelocityParamID, forwardVelocity);
         animator.SetFloat(angularVelocityParamID, angularVelocity);
 
-        //animator.SetFloat(angularVelocityParamID, angularVelocity);
-
-        float speed = new Vector3(currentForwardVelocity, currentSidewaysVelocity).magnitude;
+        // Set Turn layer weight
         float weight = 0;
 
-        if (speed < turnAnimationVelocityThreshold)
+        if (velocity < turnAnimationVelocityThreshold)
         {
-            weight = Utility.Remap(speed, 0, turnAnimationVelocityThreshold, 1, 0);
+            weight = Utility.Remap(velocity, 0, turnAnimationVelocityThreshold, 1, 0);
         }
-        animator.SetLayerWeight(1, weight);
-
-       
+        animator.SetLayerWeight(1, weight);      
     }
-
 
     public void ChangeToIdleStance()
     {
-        //animator.SetBool(combatStanceParamID, false);
         animator.SetInteger(stanceParamID, 0);
-        //animator.SetLayerWeight(1, 0f);
     }
 
     public void ChangeToCombatStance()
     {
-        //animator.SetBool(combatStanceParamID, true);
         animator.SetInteger(stanceParamID, 1);
-        //animator.SetLayerWeight(1, 1f);
     }
 
     public void ChangeToCrouchedStance()
     {
-        //animator.SetBool(combatStanceParamID, false);
         animator.SetInteger(stanceParamID, 2);
-        //animator.SetLayerWeight(1, 0f);
     }
 
     public void ChangeItemInHand(int newItemInHandID)
