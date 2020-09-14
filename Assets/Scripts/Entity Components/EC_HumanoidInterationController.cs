@@ -56,4 +56,16 @@ public class EC_HumanoidInterationController : EntityComponent
 
         animationController.ChangeItemInHand(0);
     }
+
+    public bool DoesCurrentItemInHandAllowCombatStance()
+    {
+        if(currentWeapon == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }

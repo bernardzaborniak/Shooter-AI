@@ -131,15 +131,20 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
 
+        StopAimAt();
+
     }
 
     public void ChangeCharacterStanceToCombatStance()
     {
-        currentStance = CharacterStance.CombatStance;
-        movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
-        movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
-        movementController.SetAcceleration(combatStanceAcceleration);
-        animationController.ChangeToCombatStance();
+        if (interactionController.DoesCurrentItemInHandAllowCombatStance())
+        {
+            currentStance = CharacterStance.CombatStance;
+            movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
+            movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
+            movementController.SetAcceleration(combatStanceAcceleration);
+            animationController.ChangeToCombatStance();
+        }  
     }
 
     public void ChangeCharacterStanceToCrouchingStance()
@@ -160,6 +165,15 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination, bool sprint)
     {
+        if (sprint)
+        {
+            if (!DoesCurrentStanceAllowSprinting())
+            {
+                sprint = false;
+            }
+        }
+
+
         movementController.MoveTo(destination, sprint);
     }
 
@@ -175,9 +189,12 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimAt(Transform traget)
     {
-        aimingController.LookAtTransform(traget);
-        aimingController.AimSpineAtTransform(traget);
-        aimingController.AimWeaponAtTarget();
+        if (DoesCurrentStanceAllowAiming())
+        {
+            aimingController.LookAtTransform(traget);
+            aimingController.AimSpineAtTransform(traget);
+            aimingController.AimWeaponAtTarget();
+        }  
     }
 
     public void StopAimAt()
@@ -206,6 +223,32 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
 
     }
+
+    bool DoesCurrentStanceAllowSprinting()
+    {
+        if(currentStance == CharacterStance.Crouching)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    bool DoesCurrentStanceAllowAiming()
+    {
+        if (currentStance == CharacterStance.Idle)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+
 
 
 
