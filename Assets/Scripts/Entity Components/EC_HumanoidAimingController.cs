@@ -65,38 +65,38 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
+
+
     [Header("Look At")]
+
     public FLookAnimator fLookAnimator;
     
-
     // Look At distorts the weapon aiming when its 2 compensiation Weights are set on something different than 1, so we set the mto 1 while aiming ,and reset them afterwards.
     float lookAtCompensationWeightBeforeAimingWeapon;
     float lookAtCompensatiePositionsBeforeAimingWeapon;
 
-    [Header("Idle Weapon Holding")]
-    public Rig idleWeaponHoldingRig;
-    //float desiredIdleWeaponHoldingRigWeight = 1;  //maybe used later when converting from holding weapon to some other animation?
-    //public TwoBoneIKConstraint idleLeftHandIK;
-   
-   
 
+
+    [Header("Idle Weapon Holding")]
+
+    public Rig idleWeaponHoldingRig;
+
+   
+   
     [Header("Aiming the Weapon")]
+
     public Transform weaponAimTarget;
-    public Weapon weapon;
+    public Weapon weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
     public Rig weaponAimingRig;
+
+    bool aimWeapon;
 
     float desiredWeaponAimingRigWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
     public float changeFromAimingToIdleRigSpeed;
     public float changeFromIdleToAimingRigSpeed;
     [Tooltip("Weapons get parented to this object when aiming")]
-    public Transform weaponAimParentLocalAdjuster;
-
-    //public Transform rightHandIKTarget;
-    //public Transform leftHandIKTarget;
-   
-
-    bool aimWeapon;
+    public Transform weaponAimParentLocalAdjuster; 
 
     [Header("Weapon aim target movement")]
     [Tooltip("Max Rotation difference between current character forward and the target he aims at, to prrevent aiming too far to the side")]
@@ -109,7 +109,10 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeedRef;
 
+
+
     [Header("Hand IK")]
+
     public float changeIKWeightsSpeed;
     [Tooltip("Should this IK be enabled while aiming?")]
     public bool aimingIKLeft;
@@ -139,14 +142,10 @@ public class EC_HumanoidAimingController : EntityComponent
 
     #endregion
 
-    //[Header("Fields to be moved to animation controller corresponding to character controller state machine")]
-    //public Animator animator;
-
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
 
-        //spineConstraintLocalTargetParent = spineConstraintLocalTarget.parent;
         currentSpineDirection = transform.forward;
 
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
@@ -156,69 +155,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public override void UpdateComponent()
     {
-        #region Key Inputs For Testing
-
-        /*if (Input.GetKeyDown(KeyCode.L))
-        {
-            // AimInDirection(Vector3.right);
-            LookAtTransform(lookAtTarget);
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            StopLookAt();
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AimAtTransform(aimAtTarget);
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StopAimAt();
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            AimWeaponAtTarget();
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            StopAimingWeaponAtTarget();
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            //activate all at once:
-            LookAtTransform(lookAtTarget);
-            AimAtTransform(aimAtTarget);
-            AimWeaponAtTarget();
-
-            animator.SetBool("Aiming", true);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            //deactivate all at once:
-            StopLookAt();
-            StopAimAt();
-            StopAimingWeaponAtTarget();
-
-            animator.SetBool("Aiming", false);
-
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            animator.SetBool("Aiming", false);
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            animator.SetBool("Aiming", true);
-        }
-        */
-
-        #endregion
-
-
         #region Aiming Spine
 
         if (aimAtActive)
@@ -349,8 +285,6 @@ public class EC_HumanoidAimingController : EntityComponent
         }
 
 
-
-
         float changeSpeedLeft = changeIKWeightsSpeed * Time.deltaTime;
         leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeedLeft, changeSpeedLeft);
 
@@ -358,24 +292,16 @@ public class EC_HumanoidAimingController : EntityComponent
         leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
 
-
         float changeSpeedRight = changeIKWeightsSpeed * Time.deltaTime;
         rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeedRight, changeSpeedRight);
-
 
         rightHandIKTarget.position = weapon.rightHandIKPosition.position;
         rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
 
 
 
-
-
-
-
         #endregion
     }
-
-
 
     /*public void AimInDirection(Vector3 direction)
     {
@@ -394,18 +320,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
     }*/
 
-    public void LookAtTransform(Transform target)
-    {
-        fLookAnimator.ObjectToFollow = target;
-    }
-
-    public void StopLookAt()
-    {
-        fLookAnimator.ObjectToFollow = null;
-    }
-
-
-
     public void AimSpineAtTransform(Transform transform)
     {
         aimAtActive = true;
@@ -418,6 +332,16 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimAtActive = false;
         movementController.manualRotation = false;
+    }
+
+    public void LookAtTransform(Transform target)
+    {
+        fLookAnimator.ObjectToFollow = target;
+    }
+
+    public void StopLookAt()
+    {
+        fLookAnimator.ObjectToFollow = null;
     }
 
     public void AimWeaponAtTarget()
@@ -435,8 +359,6 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = 1;
 
         desiredWeaponAimingRigWeight = 1;
-
-        //ChangeIKWeightsOnChangeFromIdleToAiming();
     }
 
     public void StopAimingWeaponAtTarget()
@@ -448,10 +370,7 @@ public class EC_HumanoidAimingController : EntityComponent
         fLookAnimator.CompensatePositions = lookAtCompensatiePositionsBeforeAimingWeapon;
 
         desiredWeaponAimingRigWeight = 0;
-
-        //ChangeIKWeightsOnChangeFromAimingToIdle();
     }
-
 
     void ChangeIKWeightsOnChangeFromAimingToIdle()
     {
@@ -495,7 +414,7 @@ public class EC_HumanoidAimingController : EntityComponent
         }
     }
 
-    public void ChangeWeapon(Weapon newWeapon)
+    public void OnChangeWeapon(Weapon newWeapon)
     {
         weapon = newWeapon;
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;

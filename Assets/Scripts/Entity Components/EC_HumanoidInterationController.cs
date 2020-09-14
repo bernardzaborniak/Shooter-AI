@@ -33,7 +33,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         animationController.ChangeItemInHand(currentWeapon.animationID);
 
-        aimingController.ChangeWeapon(pistol);
+        aimingController.OnChangeWeapon(pistol);
     }
 
     public void SelectRifle()
@@ -44,7 +44,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         animationController.ChangeItemInHand(currentWeapon.animationID);
 
-        aimingController.ChangeWeapon(rifle);
+        aimingController.OnChangeWeapon(rifle);
     }
 
     public void SelectNothing()
