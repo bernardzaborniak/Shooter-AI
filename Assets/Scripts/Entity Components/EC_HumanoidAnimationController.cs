@@ -26,6 +26,17 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Tooltip("Turn animation override layer is only played below this velocity")]
     public float turnAnimationVelocityThreshold;
 
+    [Header("Changing Weapons")]
+    public string pullOutRifleStateName;
+    int pullOutRifleStateNameID;
+    public string hideRifleStateName;
+    int hideRifleStateNameID;
+
+    public string pullOutPistolStateName;
+    int pullOutPistolStateNameID;
+    public string hidePistolStateName;
+    int hidePistolStateNameID;
+
 
     /* ------Animation IDs--------
     
@@ -55,17 +66,23 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         stanceParamID = Animator.StringToHash(stanceParam);
         itemInHandParamID = Animator.StringToHash(itemInHandParam);
+
+        pullOutRifleStateNameID = Animator.StringToHash(pullOutRifleStateName);
+        hideRifleStateNameID = Animator.StringToHash(hideRifleStateName);
+        pullOutPistolStateNameID = Animator.StringToHash(pullOutPistolStateName);
+        hidePistolStateNameID = Animator.StringToHash(hidePistolStateName);
     }
 
     public override void UpdateComponent()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            animator.SetBool("Pulling Out Weapon", true);
+            //animator.SetBool("Pulling Out Weapon", true);
+            
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            animator.SetBool("Hiding Weapon", true);
+            //animator.SetBool("Hiding Weapon", true);
         }
     }
 
@@ -102,8 +119,35 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void ChangeItemInHand(int newItemInHandID)
     {
-        Debug.Log("set item in hand: " + newItemInHandID);
+        //Debug.Log("set item in hand: " + newItemInHandID);
         animator.SetInteger(itemInHandParamID, newItemInHandID);
+
+
         
     }
+
+    public void PullOutWeapon(int animationID)
+    {
+        if (animationID == 1)
+        {
+            animator.Play(pullOutRifleStateNameID, 2, 0);
+        }
+        else if (animationID == 2)
+        {
+            animator.Play(pullOutPistolStateNameID, 2, 0);
+        }
+    }
+
+    public void HideWeapon(int animationID)
+    {
+       if(animationID == 1)
+       {
+            animator.Play(hideRifleStateNameID, 2, 0);
+       }
+       else if(animationID == 2)
+       {
+            animator.Play(hidePistolStateNameID, 2, 0);
+        }
+    }
+
 }

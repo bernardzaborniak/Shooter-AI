@@ -128,7 +128,10 @@ public class EC_HumanoidInterationController : EntityComponent
 
         currentSelectedWeaponID = newWeaponInventoryID;
         inventory[currentSelectedWeaponID].gameObject.SetActive(true);
+        
         animationController.ChangeItemInHand(inventory[currentSelectedWeaponID].animationID);
+        animationController.PullOutWeapon(inventory[currentSelectedWeaponID].animationID);
+
         aimingController.OnChangeWeapon(inventory[currentSelectedWeaponID]);
 
         weaponChangingState = WeaponChangingState.PullingOutWeapon;
@@ -147,6 +150,7 @@ public class EC_HumanoidInterationController : EntityComponent
         // pulledOutPercentage is a value which tells us how much the pull out was already executed, so we can shorten the hide time by this amount
 
         weaponChangingState = WeaponChangingState.HidingWeapon;
+        animationController.HideWeapon(inventory[currentSelectedWeaponID].animationID);
 
         Debug.Log("----------------------------------------StartHidingWeapon ------------------------------");
         Debug.Log("Time.time: " + Time.time);
@@ -164,7 +168,7 @@ public class EC_HumanoidInterationController : EntityComponent
         inventory[currentSelectedWeaponID].gameObject.SetActive(false);
         //inventory[currentSelectedWeaponID] = null;
 
-        animationController.ChangeItemInHand(0);
+        //animationController.ChangeItemInHand(0);
 
         if (inventory[desiredSelectedWeaponID] != null)
         {
@@ -173,6 +177,7 @@ public class EC_HumanoidInterationController : EntityComponent
         else
         {
             currentSelectedWeaponID = desiredSelectedWeaponID;
+            animationController.ChangeItemInHand(0);
             weaponChangingState = WeaponChangingState.Idle;
         }
 
