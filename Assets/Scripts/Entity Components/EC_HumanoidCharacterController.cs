@@ -63,15 +63,16 @@ public class EC_HumanoidCharacterController : EntityComponent
         // -------- Weapons -------
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            interactionController.SelectRifle();
+           // interactionController.SelectRifle();
+            interactionController.ChangeWeapon(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            interactionController.SelectPistol();
+            interactionController.ChangeWeapon(2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            interactionController.SelectNothing();
+            interactionController.ChangeWeapon(0);
         }
 
         // -------- Aiming & Look at -------

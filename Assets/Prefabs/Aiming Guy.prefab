@@ -215,9 +215,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimingController: {fileID: 7366031314207611040}
   animationController: {fileID: 7366031314207611044}
-  rifle: {fileID: 7366031315910803148}
-  pistol: {fileID: 7366031314584728135}
-  currentWeapon: {fileID: 0}
+  currentSelectedWeaponID: 0
+  inventory:
+  - {fileID: 0}
+  - {fileID: 7366031315910803148}
+  - {fileID: 7366031314584728135}
 --- !u!114 &7366031314207611040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,6 +553,8 @@ MonoBehaviour:
   leftHandIKPosition: {fileID: 7366031316044013082}
   animationID: 2
   weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.43}
+  hideWeaponTime: 1
+  pullOutWeaponTime: 5
 --- !u!1 &7366031314609754848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,6 +1641,8 @@ MonoBehaviour:
   leftHandIKPosition: {fileID: 7366031314180013862}
   animationID: 1
   weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.32}
+  hideWeaponTime: 2
+  pullOutWeaponTime: 2
 --- !u!1 &7366031315934918497
 GameObject:
   m_ObjectHideFlags: 0

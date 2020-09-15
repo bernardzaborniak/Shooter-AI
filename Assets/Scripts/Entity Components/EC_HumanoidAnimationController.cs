@@ -57,6 +57,18 @@ public class EC_HumanoidAnimationController : EntityComponent
         itemInHandParamID = Animator.StringToHash(itemInHandParam);
     }
 
+    public override void UpdateComponent()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            animator.SetBool("Pulling Out Weapon", true);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            animator.SetBool("Hiding Weapon", true);
+        }
+    }
+
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
     {  
         animator.SetFloat(sidewaysVelocityParamID, sidewaysVelocity);
