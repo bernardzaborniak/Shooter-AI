@@ -40,30 +40,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public override void UpdateComponent()
     {
-        /*if(weaponChangingState == WeaponChangingState.Idle)
-        {
-            if (desiredSelectedWeaponID != currentSelectedWeaponID)
-            {
-                if (inventory[currentSelectedWeaponID] == null)
-                {
-                    if (inventory[desiredSelectedWeaponID] != null)
-                    {
-                        StartPullingOutWeapon(desiredSelectedWeaponID);
-                    }
-                    else
-                    {
-                        currentSelectedWeaponID = desiredSelectedWeaponID;
-                    }
-                }
-                else
-                {
-                    StartHidingWeapon();
-                }
-            }
-           
-        }*/
 
-        //else 
         if (weaponChangingState == WeaponChangingState.HidingWeapon)
         {
             if(Time.time > hidingWeaponEndTime)
@@ -82,10 +59,10 @@ public class EC_HumanoidInterationController : EntityComponent
         }
 
         Debug.Log("current state: " + weaponChangingState);
-        Debug.Log("current weapon: " + inventory[currentSelectedWeaponID]);
+        //Debug.Log("current weapon: " + inventory[currentSelectedWeaponID]);
 
-        Debug.Log("currentSelectedWeaponID: " + currentSelectedWeaponID);
-        Debug.Log("desiredSelectedWeaponID: " + desiredSelectedWeaponID);
+        //Debug.Log("currentSelectedWeaponID: " + currentSelectedWeaponID);
+       // Debug.Log("desiredSelectedWeaponID: " + desiredSelectedWeaponID);
     }
 
     public void ChangeWeapon(int newWeaponInventoryID)
@@ -130,7 +107,7 @@ public class EC_HumanoidInterationController : EntityComponent
         inventory[currentSelectedWeaponID].gameObject.SetActive(true);
         
         animationController.ChangeItemInHand(inventory[currentSelectedWeaponID].animationID);
-        animationController.PullOutWeapon(inventory[currentSelectedWeaponID].animationID);
+        animationController.StartPullingOutWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].pullOutWeaponTime);
 
         aimingController.OnChangeWeapon(inventory[currentSelectedWeaponID]);
 
@@ -143,6 +120,9 @@ public class EC_HumanoidInterationController : EntityComponent
     void FinishPullingOutWeapon()
     {
         weaponChangingState = WeaponChangingState.Idle;
+
+
+        animationController.FinishPullingOutWeapon();
     }
 
     void StartHidingWeapon(float pulledOutPercentage)
@@ -150,21 +130,25 @@ public class EC_HumanoidInterationController : EntityComponent
         // pulledOutPercentage is a value which tells us how much the pull out was already executed, so we can shorten the hide time by this amount
 
         weaponChangingState = WeaponChangingState.HidingWeapon;
-        animationController.HideWeapon(inventory[currentSelectedWeaponID].animationID);
+        
 
-        Debug.Log("----------------------------------------StartHidingWeapon ------------------------------");
-        Debug.Log("Time.time: " + Time.time);
-        Debug.Log("inventory[currentSelectedWeaponID].hideWeaponTime: " + inventory[currentSelectedWeaponID].hideWeaponTime);
+       // Debug.Log("----------------------------------------StartHidingWeapon ------------------------------");
+        //Debug.Log("Time.time: " + Time.time);
+        //Debug.Log("inventory[currentSelectedWeaponID].hideWeaponTime: " + inventory[currentSelectedWeaponID].hideWeaponTime);
 
         hidingWeaponEndTime = Time.time + inventory[currentSelectedWeaponID].hideWeaponTime * pulledOutPercentage;
 
-        Debug.Log("hidingWeaponEndTime: " + hidingWeaponEndTime);
+        animationController.StartHidingWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].hideWeaponTime , 1- pulledOutPercentage);
+
+        //Debug.Log("hidingWeaponEndTime: " + hidingWeaponEndTime);
 
     }
 
     void FinishHidingWeapon()
     {
-        Debug.Log("----------------------------------------finish hiding ------------------------------");
+        animationController.FinishHidingWeapon();
+
+        //Debug.Log("----------------------------------------finish hiding ------------------------------");
         inventory[currentSelectedWeaponID].gameObject.SetActive(false);
         //inventory[currentSelectedWeaponID] = null;
 
@@ -180,7 +164,6 @@ public class EC_HumanoidInterationController : EntityComponent
             animationController.ChangeItemInHand(0);
             weaponChangingState = WeaponChangingState.Idle;
         }
-
     }
 
     

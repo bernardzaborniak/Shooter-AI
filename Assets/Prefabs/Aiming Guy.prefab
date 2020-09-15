@@ -306,9 +306,17 @@ MonoBehaviour:
   itemInHandParam: Item In Hand ID
   turnAnimationVelocityThreshold: 1
   pullOutRifleStateName: Pull Out Rifle
+  pullOutRifleAnimationLength: 1.333
   hideRifleStateName: Hide Rifle
+  hideRifleAnimationLength: 1.333
   pullOutPistolStateName: Pull Out Pistol
+  pullOutPistolAnimationLength: 0.8
   hidePistolStateName: Hide Pistol
+  hidePistolAnimationLength: 0.8
+  noOverrideState: No Override
+  hideWeaponSpeedMultiplierParam: Hide Weapon Speed Multiplier
+  pullOutWeaponSpeedMultiplierParam: Pull Out Weapon Speed Multiplier
+  hideWeaponStartOffset: Hide Weapon Start Offset
 --- !u!195 &7366031314207611054
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -558,7 +566,7 @@ MonoBehaviour:
   animationID: 2
   weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.43}
   hideWeaponTime: 1
-  pullOutWeaponTime: 5
+  pullOutWeaponTime: 1
 --- !u!1 &7366031314609754848
 GameObject:
   m_ObjectHideFlags: 0
