@@ -13,7 +13,8 @@ public class Weapon : MonoBehaviour
     [Tooltip("Will be read when by aimingController when equipping a weapon, makes sure the offset between weapon and shoulder is correct")]
     public Vector3 weaponAimParentLocalAdjusterOffset;
 
-    public float hideWeaponTime;
+ 
     [Tooltip("some weapons like rpg or machine gun takes longer to get out of the inventory than other weapons")]
     public float pullOutWeaponTime;
+    public float hideWeaponTime;
 }

@@ -58,7 +58,7 @@ public class EC_HumanoidInterationController : EntityComponent
             }
         }
 
-        Debug.Log("current state: " + weaponChangingState);
+        //Debug.Log("current state: " + weaponChangingState);
         //Debug.Log("current weapon: " + inventory[currentSelectedWeaponID]);
 
         //Debug.Log("currentSelectedWeaponID: " + currentSelectedWeaponID);

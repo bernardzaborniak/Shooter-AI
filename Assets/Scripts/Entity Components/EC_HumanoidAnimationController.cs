@@ -29,23 +29,28 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Header("Changing Weapons")]
 
     // pull out / hide weapon states
-    public string pullOutRifleStateName;
-    int pullOutRifleStateNameID;
+   // public string pullOutRifleStateName;
+   // int pullOutRifleStateNameID;
     [Tooltip("How long is the original animaiton in seconds?")]
     public float pullOutRifleAnimationLength;
-    public string hideRifleStateName;
-    int hideRifleStateNameID;
+    //public string hideRifleStateName;
+    //int hideRifleStateNameID;
     [Tooltip("How long is the original animaiton in seconds?")]
     public float hideRifleAnimationLength;
 
-    public string pullOutPistolStateName;
-    int pullOutPistolStateNameID;
+    //public string pullOutPistolStateName;
+    //int pullOutPistolStateNameID;
     [Tooltip("How long is the original animaiton in seconds?")]
     public float pullOutPistolAnimationLength;
-    public string hidePistolStateName;
-    int hidePistolStateNameID;
+   // public string hidePistolStateName;
+    //int hidePistolStateNameID;
     [Tooltip("How long is the original animaiton in seconds?")]
     public float hidePistolAnimationLength;
+
+    public string pullOutWeaponParam;
+    int pullOutWeaponParamID;
+    public string hideWeaponParam;
+    int hideWeaponParamID;
 
     public string noOverrideState;
     int noOverrideStateID;
@@ -89,10 +94,13 @@ public class EC_HumanoidAnimationController : EntityComponent
         itemInHandParamID = Animator.StringToHash(itemInHandParam);
 
         // pull out / hide weapon states
-        pullOutRifleStateNameID = Animator.StringToHash(pullOutRifleStateName);
-        hideRifleStateNameID = Animator.StringToHash(hideRifleStateName);
-        pullOutPistolStateNameID = Animator.StringToHash(pullOutPistolStateName);
-        hidePistolStateNameID = Animator.StringToHash(hidePistolStateName);
+        /* pullOutRifleStateNameID = Animator.StringToHash(pullOutRifleStateName);
+         hideRifleStateNameID = Animator.StringToHash(hideRifleStateName);
+         pullOutPistolStateNameID = Animator.StringToHash(pullOutPistolStateName);
+         hidePistolStateNameID = Animator.StringToHash(hidePistolStateName);*/
+
+        pullOutWeaponParamID = Animator.StringToHash(pullOutWeaponParam);
+        hideWeaponParamID = Animator.StringToHash(hideWeaponParam);
 
         // pull out / hide weapon speed & offset adjusters
         hideWeaponSpeedMultiplierParamID = Animator.StringToHash(hideWeaponSpeedMultiplierParam);
@@ -154,24 +162,33 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void StartPullingOutWeapon(int animationID, float animationDuration)
     {
+
         Debug.Log("----------------------pull out start anim-----------------------------------");
+
+        int weaponAnimationID = animator.GetInteger(itemInHandParamID); // this instead? could reduce problems and make it cleaner?
+
         if (animationID == 1)
         {
-            animator.Play(pullOutRifleStateNameID, 2, 0);
+           // animator.Play(pullOutRifleStateNameID, 2, 0);
             animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutRifleAnimationLength / animationDuration);
             Debug.Log("multiplier: " + (pullOutRifleAnimationLength / animationDuration));
 
         }
         else if (animationID == 2)
         {
-            animator.Play(pullOutPistolStateNameID, 2, 0);
+            //animator.Play(pullOutPistolStateNameID, 2, 0);
             animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutPistolAnimationLength / animationDuration);
         }
+
+        animator.SetBool(pullOutWeaponParamID, true);
+        Debug.Log("pullOutWeaponParamID: " + true);
     }
 
     public void FinishPullingOutWeapon()
     {
-         animator.Play(noOverrideStateID, 2, 0);
+        //animator.Play(noOverrideStateID, 2, 0);
+        animator.SetBool(pullOutWeaponParamID, false);
+        Debug.Log("pullOutWeaponParamID: " + false);
     }
 
     public void StartHidingWeapon(int animationID, float animationDuration, float offset)
@@ -180,19 +197,25 @@ public class EC_HumanoidAnimationController : EntityComponent
 
        if(animationID == 1)
        {
-            animator.Play(hideRifleStateNameID, 2, 0);
+           // animator.Play(hideRifleStateNameID, 2, 0);
             animator.SetFloat(hideWeaponSpeedMultiplierParamID, hideRifleAnimationLength / animationDuration);
        }
        else if(animationID == 2)
        {
-            animator.Play(hidePistolStateNameID, 2, 0);
+            //animator.Play(hidePistolStateNameID, 2, 0);
             animator.SetFloat(hideWeaponSpeedMultiplierParamID, hidePistolAnimationLength / animationDuration);
        }
+
+        animator.SetBool(hideWeaponParamID, true);
+        Debug.Log("hideWeaponParamID: " + true);
+
     }
 
     public void FinishHidingWeapon()
     {
-        animator.Play(noOverrideStateID, 2, 0);
+        //animator.Play(noOverrideStateID, 2, 0);
+        animator.SetBool(hideWeaponParamID, false);
+        Debug.Log("hideWeaponParamID: " + false);
     }
 
 }
