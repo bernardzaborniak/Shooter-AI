@@ -443,8 +443,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Pull Out Weapon
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8513741370794992516}
@@ -635,9 +635,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Hide Weapon
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
+    m_EventTreshold: 2
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 2
@@ -647,7 +647,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -754,31 +754,31 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8959553305987473828}
-    m_Position: {x: 420, y: 40, z: 0}
+    m_Position: {x: 680, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 904927429199037613}
-    m_Position: {x: 180, y: -220, z: 0}
+    m_Position: {x: 310, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6351494462836596937}
-    m_Position: {x: 690, y: -180, z: 0}
+    m_Position: {x: 720, y: -190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3388990410720069841}
-    m_Position: {x: 130, y: 240, z: 0}
+    m_Position: {x: 350, y: 230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6512555190975660431}
-    m_Position: {x: 410, y: 220, z: 0}
+    m_Position: {x: 720, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 956889814683878383}
-    m_Position: {x: 920, y: -180, z: 0}
+    m_Position: {x: 720, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1387174038697552302}
-    m_Position: {x: 410, y: 140, z: 0}
+    m_Position: {x: 720, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8513741370794992516}
-    m_Position: {x: 390, y: -220, z: 0}
+    m_Position: {x: 310, y: -120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7440993021368019228}
-    m_Position: {x: 200, y: 160, z: 0}
+    m_Position: {x: 350, y: 150, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 7689221120563362311}
@@ -1111,9 +1111,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Hide Weapon
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
+    m_EventTreshold: 2
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 1
@@ -1123,7 +1123,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -1232,8 +1232,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Hide Weapon
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 956889814683878383}
@@ -1426,14 +1426,8 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Pull Out Weapon
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Hide Weapon
-    m_Type: 4
+  - m_Name: Weapon Interaction State ID
+    m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -1451,6 +1445,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: Hide Weapon Start Offset
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Pull Out Weapon Start Offset
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1613,13 +1613,13 @@ AnimatorState:
   m_Mirror: 0
   m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
+  m_CycleOffsetParameterActive: 1
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 761093512e810b846a6014677a8d9c39, type: 2}
   m_Tag: 
   m_SpeedParameter: Pull Out Weapon Speed Multiplier
   m_MirrorParameter: 
-  m_CycleOffsetParameter: Movement Forward
+  m_CycleOffsetParameter: Pull Out Weapon Start Offset
   m_TimeParameter: 
 --- !u!1102 &956889814683878383
 AnimatorState:
@@ -1934,13 +1934,13 @@ AnimatorState:
   m_Mirror: 0
   m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
+  m_CycleOffsetParameterActive: 1
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 640b5d87ecf0ef443a1ea9c8dca1e8c3, type: 2}
   m_Tag: 
   m_SpeedParameter: Pull Out Weapon Speed Multiplier
   m_MirrorParameter: 
-  m_CycleOffsetParameter: 
+  m_CycleOffsetParameter: Pull Out Weapon Start Offset
   m_TimeParameter: 
 --- !u!1101 &3453021178384359666
 AnimatorStateTransition:
@@ -1950,9 +1950,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Pull Out Weapon
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
+    m_EventTreshold: 1
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 2
@@ -1962,7 +1962,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -2616,9 +2616,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Pull Out Weapon
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
+    m_EventTreshold: 1
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 1
@@ -2628,7 +2628,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -2855,8 +2855,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Pull Out Weapon
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7440993021368019228}
@@ -2985,8 +2985,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Hide Weapon
+  - m_ConditionMode: 6
+    m_ConditionEvent: Weapon Interaction State ID
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1387174038697552302}

@@ -28,6 +28,10 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     [Header("Changing Weapons")]
 
+    public string weaponInteractionStateParam;
+    int  weaponInteractionStateParamID;
+
+
     // pull out / hide weapon states
    // public string pullOutRifleStateName;
    // int pullOutRifleStateNameID;
@@ -47,24 +51,30 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Tooltip("How long is the original animaiton in seconds?")]
     public float hidePistolAnimationLength;
 
-    public string pullOutWeaponParam;
+    /*public string pullOutWeaponParam;
     int pullOutWeaponParamID;
     public string hideWeaponParam;
     int hideWeaponParamID;
 
     public string noOverrideState;
-    int noOverrideStateID;
+    int noOverrideStateID;*/
+
+
 
     // pull out / hide weapon speed & offset adjusters
-    public string hideWeaponSpeedMultiplierParam;
-    int hideWeaponSpeedMultiplierParamID;
+   
     public string pullOutWeaponSpeedMultiplierParam;
     int pullOutWeaponSpeedMultiplierParamID;
+    public string pullOutWeaponStartOffset;
+    int pullOutWeaponStartOffsetID;
+
+    public string hideWeaponSpeedMultiplierParam;
+    int hideWeaponSpeedMultiplierParamID;
     public string hideWeaponStartOffset;
     int hideWeaponStartOffsetID;
 
 
-    /* ------Animation IDs--------
+    /* ------Animation ID's--------
     
    -----Stance ID's---
 
@@ -77,6 +87,13 @@ public class EC_HumanoidAnimationController : EntityComponent
     NoItem,            0
     Rifle,             1
     Pistol             2
+
+    ---WeaponInteractionState ID's-----
+    
+     Idle,              0
+     PullingOutWeapon,  1
+     HidingWeapon       2
+    
 
     */
 
@@ -99,15 +116,18 @@ public class EC_HumanoidAnimationController : EntityComponent
          pullOutPistolStateNameID = Animator.StringToHash(pullOutPistolStateName);
          hidePistolStateNameID = Animator.StringToHash(hidePistolStateName);*/
 
-        pullOutWeaponParamID = Animator.StringToHash(pullOutWeaponParam);
-        hideWeaponParamID = Animator.StringToHash(hideWeaponParam);
+        //pullOutWeaponParamID = Animator.StringToHash(pullOutWeaponParam);
+        //hideWeaponParamID = Animator.StringToHash(hideWeaponParam);
+        weaponInteractionStateParamID = Animator.StringToHash(weaponInteractionStateParam);
 
         // pull out / hide weapon speed & offset adjusters
-        hideWeaponSpeedMultiplierParamID = Animator.StringToHash(hideWeaponSpeedMultiplierParam);
         pullOutWeaponSpeedMultiplierParamID = Animator.StringToHash(pullOutWeaponSpeedMultiplierParam);
+        pullOutWeaponStartOffsetID = Animator.StringToHash(pullOutWeaponStartOffset);
+
+        hideWeaponSpeedMultiplierParamID = Animator.StringToHash(hideWeaponSpeedMultiplierParam);
         hideWeaponStartOffsetID = Animator.StringToHash(hideWeaponStartOffset);
 
-        noOverrideStateID = Animator.StringToHash(noOverrideState);
+        //noOverrideStateID = Animator.StringToHash(noOverrideState);
     }
 
     public override void UpdateComponent()
@@ -160,7 +180,57 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetInteger(itemInHandParamID, newItemInHandID);       
     }
 
-    public void StartPullingOutWeapon(int animationID, float animationDuration)
+    public void ChangeWeaponInteractionState(int weaponinteractionState)
+    {
+        //adjust the speeds and offsets
+
+
+        animator.SetInteger(weaponInteractionStateParamID, weaponinteractionState);
+    }
+
+    public void AdjustPullOutAnimationSpeedAndOffset(float animationDuration, float animationOffset)
+    {
+        Debug.Log("adjust speed: " + animationDuration + " " + animationOffset);
+        int weaponAnimationID = animator.GetInteger(itemInHandParamID);
+
+        if (weaponAnimationID == 1)
+        {
+            // animator.Play(pullOutRifleStateNameID, 2, 0);
+            animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutRifleAnimationLength / animationDuration);
+            Debug.Log("multiplier: " + (pullOutRifleAnimationLength / animationDuration));
+
+        }
+        else if (weaponAnimationID == 2)
+        {
+            //animator.Play(pullOutPistolStateNameID, 2, 0);
+            animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutPistolAnimationLength / animationDuration);
+        }
+
+        animator.SetFloat(pullOutWeaponStartOffsetID, animationOffset);
+    }
+
+
+    public void AdjustHideAnimationSpeedAndOffset(float animationDuration, float animationOffset)
+    {
+        int weaponAnimationID = animator.GetInteger(itemInHandParamID);
+
+        if (weaponAnimationID == 1)
+        {
+            // animator.Play(pullOutRifleStateNameID, 2, 0);
+            animator.SetFloat(hideWeaponSpeedMultiplierParamID, hideRifleAnimationLength / animationDuration);
+            Debug.Log("multiplier: " + (pullOutRifleAnimationLength / animationDuration));
+
+        }
+        else if (weaponAnimationID == 2)
+        {
+            //animator.Play(pullOutPistolStateNameID, 2, 0);
+            animator.SetFloat(hideWeaponSpeedMultiplierParamID, hidePistolAnimationLength / animationDuration);
+        }
+
+        animator.SetFloat(hideWeaponStartOffsetID, animationOffset);
+    }
+
+    /*public void OStartPullingOutWeapon(int animationID, float animationDuration)
     {
 
         Debug.Log("----------------------pull out start anim-----------------------------------");
@@ -180,7 +250,7 @@ public class EC_HumanoidAnimationController : EntityComponent
             animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutPistolAnimationLength / animationDuration);
         }
 
-        animator.SetBool(pullOutWeaponParamID, true);
+        //animator.SetBool(pullOutWeaponParamID, true);
         Debug.Log("pullOutWeaponParamID: " + true);
     }
 
@@ -216,6 +286,6 @@ public class EC_HumanoidAnimationController : EntityComponent
         //animator.Play(noOverrideStateID, 2, 0);
         animator.SetBool(hideWeaponParamID, false);
         Debug.Log("hideWeaponParamID: " + false);
-    }
+    }*/
 
 }

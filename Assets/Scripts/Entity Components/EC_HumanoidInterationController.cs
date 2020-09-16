@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EC_HumanoidInterationController : EntityComponent
 {
@@ -17,14 +15,14 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public Weapon[] inventory;
 
-    enum WeaponChangingState
+    enum WeaponInteractionState
     {
         Idle,
         PullingOutWeapon,
         HidingWeapon
     }
 
-    WeaponChangingState weaponChangingState;
+    WeaponInteractionState weaponInteractionState;
 
     float hidingWeaponEndTime;
     float pullingOutWeaponEndTime;
@@ -41,7 +39,7 @@ public class EC_HumanoidInterationController : EntityComponent
     public override void UpdateComponent()
     {
 
-        if (weaponChangingState == WeaponChangingState.HidingWeapon)
+        if (weaponInteractionState == WeaponInteractionState.HidingWeapon)
         {
             if(Time.time > hidingWeaponEndTime)
             {
@@ -49,7 +47,7 @@ public class EC_HumanoidInterationController : EntityComponent
                 FinishHidingWeapon();
             }
         }
-        else if (weaponChangingState == WeaponChangingState.PullingOutWeapon)
+        else if (weaponInteractionState == WeaponInteractionState.PullingOutWeapon)
         {
             if (Time.time > pullingOutWeaponEndTime)
             {
@@ -58,7 +56,7 @@ public class EC_HumanoidInterationController : EntityComponent
             }
         }
 
-        //Debug.Log("current state: " + weaponChangingState);
+        //Debug.Log("current state: " + weaponInteractionState);
         //Debug.Log("current weapon: " + inventory[currentSelectedWeaponID]);
 
         //Debug.Log("currentSelectedWeaponID: " + currentSelectedWeaponID);
@@ -69,7 +67,7 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         desiredSelectedWeaponID = newWeaponInventoryID;
 
-        if(weaponChangingState == WeaponChangingState.Idle)
+        if(weaponInteractionState == WeaponInteractionState.Idle)
         {
             if (desiredSelectedWeaponID != currentSelectedWeaponID)
             {
@@ -77,7 +75,7 @@ public class EC_HumanoidInterationController : EntityComponent
                 {
                     if (inventory[desiredSelectedWeaponID] != null)
                     {
-                        StartPullingOutWeapon(desiredSelectedWeaponID);
+                        StartPullingOutWeapon(desiredSelectedWeaponID, 1);
                     }
                     else
                     {
@@ -89,56 +87,80 @@ public class EC_HumanoidInterationController : EntityComponent
                     StartHidingWeapon(1);
                 }
             }
-        }else if(weaponChangingState == WeaponChangingState.PullingOutWeapon)
+        }else if(weaponInteractionState == WeaponInteractionState.PullingOutWeapon)
         {
-            float percentageAlreadyPulledOut = 1 - (pullingOutWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].pullOutWeaponTime;
-            Debug.Log("percentageAlreadyPulledOut: " + percentageAlreadyPulledOut);
-            StartHidingWeapon(percentageAlreadyPulledOut);
+            if (desiredSelectedWeaponID != currentSelectedWeaponID)
+            {
+                float percentageAlreadyPulledOut = 1 - (pullingOutWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].pullOutWeaponTime;
+                Debug.Log("percentageAlreadyPulledOut: " + percentageAlreadyPulledOut);
+                StartHidingWeapon(percentageAlreadyPulledOut);
+            }
+        }
+        else if(weaponInteractionState == WeaponInteractionState.HidingWeapon)
+        {
+            if(desiredSelectedWeaponID == currentSelectedWeaponID)
+            {
+                float percentageAlreadyHidden = 1 - (hidingWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].hideWeaponTime;
+                Debug.Log("percentageAlreadyHidden: " + percentageAlreadyHidden);
+                StartPullingOutWeapon(desiredSelectedWeaponID, percentageAlreadyHidden);
+            }
+            
+            
         }
 
        
     }
 
-    void StartPullingOutWeapon(int newWeaponInventoryID)
+    void StartPullingOutWeapon(int newWeaponInventoryID, float percentageAlreadyHidden)
     {
         // if (inventory[currentSelectedWeaponID]) inventory[currentSelectedWeaponID].gameObject.SetActive(false);
 
         currentSelectedWeaponID = newWeaponInventoryID;
         inventory[currentSelectedWeaponID].gameObject.SetActive(true);
-        
+
+        pullingOutWeaponEndTime = Time.time + inventory[currentSelectedWeaponID].pullOutWeaponTime * percentageAlreadyHidden;
+
+        weaponInteractionState = WeaponInteractionState.PullingOutWeapon;
         animationController.ChangeItemInHand(inventory[currentSelectedWeaponID].animationID);
-        animationController.StartPullingOutWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].pullOutWeaponTime);
+        animationController.AdjustPullOutAnimationSpeedAndOffset(inventory[currentSelectedWeaponID].pullOutWeaponTime, 1-percentageAlreadyHidden);
+        animationController.ChangeWeaponInteractionState(1);
+        
+        //animationController.StartPullingOutWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].pullOutWeaponTime);
+        
 
         aimingController.OnChangeWeapon(inventory[currentSelectedWeaponID]);
 
-        weaponChangingState = WeaponChangingState.PullingOutWeapon;
 
-        pullingOutWeaponEndTime = Time.time + inventory[currentSelectedWeaponID].pullOutWeaponTime;
+       
 
     }
 
     void FinishPullingOutWeapon()
     {
-        weaponChangingState = WeaponChangingState.Idle;
+        weaponInteractionState = WeaponInteractionState.Idle;
+        animationController.ChangeWeaponInteractionState(0);
 
 
-        animationController.FinishPullingOutWeapon();
+        //animationController.FinishPullingOutWeapon();
     }
 
     void StartHidingWeapon(float pulledOutPercentage)
     {
         // pulledOutPercentage is a value which tells us how much the pull out was already executed, so we can shorten the hide time by this amount
 
-        weaponChangingState = WeaponChangingState.HidingWeapon;
-        
+        hidingWeaponEndTime = Time.time + inventory[currentSelectedWeaponID].hideWeaponTime * pulledOutPercentage;
 
-       // Debug.Log("----------------------------------------StartHidingWeapon ------------------------------");
+
+        weaponInteractionState = WeaponInteractionState.HidingWeapon;
+        animationController.AdjustHideAnimationSpeedAndOffset(inventory[currentSelectedWeaponID].hideWeaponTime, 1 - pulledOutPercentage);
+        animationController.ChangeWeaponInteractionState(2);
+
+        // Debug.Log("----------------------------------------StartHidingWeapon ------------------------------");
         //Debug.Log("Time.time: " + Time.time);
         //Debug.Log("inventory[currentSelectedWeaponID].hideWeaponTime: " + inventory[currentSelectedWeaponID].hideWeaponTime);
 
-        hidingWeaponEndTime = Time.time + inventory[currentSelectedWeaponID].hideWeaponTime * pulledOutPercentage;
 
-        animationController.StartHidingWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].hideWeaponTime , 1- pulledOutPercentage);
+        //animationController.StartHidingWeapon(inventory[currentSelectedWeaponID].animationID, inventory[currentSelectedWeaponID].hideWeaponTime , 1- pulledOutPercentage);
 
         //Debug.Log("hidingWeaponEndTime: " + hidingWeaponEndTime);
 
@@ -146,7 +168,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     void FinishHidingWeapon()
     {
-        animationController.FinishHidingWeapon();
+        //animationController.FinishHidingWeapon();
 
         //Debug.Log("----------------------------------------finish hiding ------------------------------");
         inventory[currentSelectedWeaponID].gameObject.SetActive(false);
@@ -156,13 +178,15 @@ public class EC_HumanoidInterationController : EntityComponent
 
         if (inventory[desiredSelectedWeaponID] != null)
         {
-            StartPullingOutWeapon(desiredSelectedWeaponID);
+            StartPullingOutWeapon(desiredSelectedWeaponID,1);
         }
         else
         {
             currentSelectedWeaponID = desiredSelectedWeaponID;
+            
+            weaponInteractionState = WeaponInteractionState.Idle;
+            animationController.ChangeWeaponInteractionState(0);
             animationController.ChangeItemInHand(0);
-            weaponChangingState = WeaponChangingState.Idle;
         }
     }
 
