@@ -145,6 +145,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
             movementController.SetAcceleration(combatStanceAcceleration);
             animationController.ChangeToCombatStance();
+
         }  
     }
 
@@ -155,6 +156,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(crouchAcceleration);
         animationController.ChangeToCrouchedStance();
+
     }
 
 

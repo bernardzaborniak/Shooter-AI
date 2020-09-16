@@ -1,5 +1,13 @@
 ﻿using UnityEngine;
 
+
+public enum WeaponInteractionType
+{
+    BareHands,
+    Pistol,
+    Rifle
+}
+
 public class EC_HumanoidInterationController : EntityComponent
 {
     // Is responsible for interactions like picking up/ changing weapons/reloading etc, communicates with animator  
@@ -107,7 +115,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         weaponInteractionState = WeaponInteractionState.PullingOutWeapon;
 
-        animationController.ChangeItemInHand(inventory[currentSelectedWeaponID].animationID);
+        animationController.ChangeItemInHand(inventory[currentSelectedWeaponID].GetWeaponInteractionTypeID());
         animationController.AdjustPullOutAnimationSpeedAndOffset(inventory[currentSelectedWeaponID].pullOutWeaponTime, 1-percentageAlreadyHidden);
         animationController.ChangeWeaponInteractionState(1);
         
@@ -148,6 +156,8 @@ public class EC_HumanoidInterationController : EntityComponent
             weaponInteractionState = WeaponInteractionState.Idle;
             animationController.ChangeWeaponInteractionState(0);
             animationController.ChangeItemInHand(0);
+
+            aimingController.OnChangeWeapon(null);
         }
     }
 

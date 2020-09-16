@@ -264,6 +264,22 @@ MonoBehaviour:
   leftHandIKTarget: {fileID: 7366031314437626578}
   rightHandIKConstraint: {fileID: 7366031315530497497}
   rightHandIKTarget: {fileID: 7366031314958711222}
+  iKSettingsCorrespondingToWeaponInteractionTypes:
+  - weaponInteractionType: 0
+    idleIKLeft: 0
+    idleIKRight: 0
+    aimingIKLeft: 0
+    aimingIKRight: 0
+  - weaponInteractionType: 2
+    idleIKLeft: 1
+    idleIKRight: 0
+    aimingIKLeft: 1
+    aimingIKRight: 1
+  - weaponInteractionType: 1
+    idleIKLeft: 0
+    idleIKRight: 0
+    aimingIKLeft: 1
+    aimingIKRight: 1
 --- !u!114 &7366031314207611041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,12 +574,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b3a462758ed9b48981bae7eeddccd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponInteractionType: 1
   rightHandIKPosition: {fileID: 7366031314209542996}
   leftHandIKPosition: {fileID: 7366031316044013082}
-  animationID: 2
   weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.43}
-  pullOutWeaponTime: 0.25
-  hideWeaponTime: 0.5
+  pullOutWeaponTime: 2
+  hideWeaponTime: 2
 --- !u!1 &7366031314609754848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1646,12 +1662,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43b3a462758ed9b48981bae7eeddccd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponInteractionType: 2
   rightHandIKPosition: {fileID: 7366031314741862737}
   leftHandIKPosition: {fileID: 7366031314180013862}
-  animationID: 1
   weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.32}
-  pullOutWeaponTime: 0.75
-  hideWeaponTime: 0.5
+  pullOutWeaponTime: 2
+  hideWeaponTime: 2
 --- !u!1 &7366031315934918497
 GameObject:
   m_ObjectHideFlags: 0
