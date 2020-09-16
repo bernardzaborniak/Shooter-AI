@@ -84,7 +84,6 @@ public class EC_HumanoidInterationController : EntityComponent
             if (desiredSelectedWeaponID != currentSelectedWeaponID)
             {
                 float percentageAlreadyPulledOut = 1 - (pullingOutWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].pullOutWeaponTime;
-                Debug.Log("percentageAlreadyPulledOut: " + percentageAlreadyPulledOut);
                 StartHidingWeapon(percentageAlreadyPulledOut);
             }
         }
@@ -93,7 +92,6 @@ public class EC_HumanoidInterationController : EntityComponent
             if(desiredSelectedWeaponID == currentSelectedWeaponID)
             {
                 float percentageAlreadyHidden = 1 - (hidingWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].hideWeaponTime;
-                Debug.Log("percentageAlreadyHidden: " + percentageAlreadyHidden);
                 StartPullingOutWeapon(desiredSelectedWeaponID, percentageAlreadyHidden);
             }     
         }   
