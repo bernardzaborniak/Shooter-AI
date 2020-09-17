@@ -39,6 +39,11 @@ public class EC_HumanoidInterationController : EntityComponent
     float currentHideWeaponDuration;
     float currentPullingOutWeaponDuration;
 
+    [Tooltip("the reload time of weapons can be speed up by this value")]
+    public float reloadTimeSkillMultiplier = 1;
+    float reloadingEndTime;
+
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -61,6 +66,13 @@ public class EC_HumanoidInterationController : EntityComponent
             {
                 FinishPullingOutWeapon();
             }
+        }else if(weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        {
+            Debug.Log("reloading");
+            if(Time.time > reloadingEndTime)
+            {
+                FinishReloadingWeapon();
+            }
         }
     }
 
@@ -68,8 +80,13 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         desiredSelectedWeaponID = newWeaponInventoryID;
 
-        if(weaponInteractionState == WeaponInteractionState.Idle)
+        if(weaponInteractionState == WeaponInteractionState.Idle || weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
         {
+            if(weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+            {
+                AbortReloadingWeapon();
+            }
+
             if (desiredSelectedWeaponID != currentSelectedWeaponID)
             {
                 if (inventory[currentSelectedWeaponID] == null)
@@ -103,7 +120,8 @@ public class EC_HumanoidInterationController : EntityComponent
                 float percentageAlreadyHidden = 1 - (hidingWeaponEndTime - Time.time) / inventory[currentSelectedWeaponID].hideWeaponTime;
                 StartPullingOutWeapon(desiredSelectedWeaponID, percentageAlreadyHidden);
             }     
-        }   
+        }
+
     }
 
     void StartPullingOutWeapon(int newWeaponInventoryID, float percentageAlreadyHidden)
@@ -181,6 +199,47 @@ public class EC_HumanoidInterationController : EntityComponent
         if(weaponInteractionState == WeaponInteractionState.Idle)
         {
             inventory[currentSelectedWeaponID].Shoot();
+        }
+    }
+
+    public void StartReloadingWeapon()
+    {
+        if(weaponInteractionState == WeaponInteractionState.Idle)
+        {
+            weaponInteractionState = WeaponInteractionState.ReloadingWeapon;
+
+            //calculate reload animation duration & speed
+            float reloadDuration = inventory[currentSelectedWeaponID].defaultReloadDuration * reloadTimeSkillMultiplier;
+
+            reloadingEndTime = Time.time + reloadDuration;
+
+
+            animationController.StartReloadingWeapon(reloadDuration);
+
+            //todo djust hands IK here
+        }
+
+
+    }
+
+    public void AbortReloadingWeapon()
+    {
+        if (weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        {
+            weaponInteractionState = WeaponInteractionState.Idle;
+            animationController.AbortReloadingWeapon();
+            //todo adjust hands IK here
+        }
+    }
+
+    public void FinishReloadingWeapon()
+    {
+        if (weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        {
+            weaponInteractionState = WeaponInteractionState.Idle;
+            inventory[currentSelectedWeaponID].RefillBulletsInMagazine();
+            animationController.AbortReloadingWeapon();
+            //todo adjust hands IK here
         }
     }
 }

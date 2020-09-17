@@ -237,12 +237,12 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-
+        interactionController.StartReloadingWeapon();
     }
 
     public void AbortReloadingWeapon()
     {
-
+        interactionController.AbortReloadingWeapon();
     }
 
     bool DoesCurrentStanceAllowSprinting()

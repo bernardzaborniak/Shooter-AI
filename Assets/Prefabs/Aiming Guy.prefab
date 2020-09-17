@@ -284,6 +284,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 7366031315910803148}
   - {fileID: 7366031314584728135}
+  reloadTimeSkillMultiplier: 1
 --- !u!114 &7366031314207611040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +372,9 @@ MonoBehaviour:
   hideWeaponSpeedMultiplierParam: Hide Weapon Speed Multiplier
   hideWeaponStartOffset: Hide Weapon Start Offset
   reloadWeaponParam: Reloading Weapon
+  reloadWeaponSpeedMultiplierParam: Reloading Weapon Speed Modifier
+  reloadRifleStandingAnimationLength: 3.1
+  reloadRifleCrouchingAnimationLength: 3.1
 --- !u!114 &7399303670798280785
 MonoBehaviour:
   m_ObjectHideFlags: 0

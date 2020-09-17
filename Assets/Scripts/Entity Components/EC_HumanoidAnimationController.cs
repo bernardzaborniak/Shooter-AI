@@ -58,6 +58,14 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string reloadWeaponParam;
     int reloadWeaponParamID;
 
+    public string reloadWeaponSpeedMultiplierParam;
+    int reloadWeaponSpeedMultiplierParamID;
+
+    public float reloadRifleStandingAnimationLength;
+    public float reloadRifleCrouchingAnimationLength;
+
+
+
 
     /* ------Animation ID's--------
     
@@ -107,21 +115,12 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         //reloading wepaon
         reloadWeaponParamID = Animator.StringToHash(reloadWeaponParam);
+        reloadWeaponSpeedMultiplierParamID = Animator.StringToHash(reloadWeaponSpeedMultiplierParam);
     }
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            
-            
-            animator.SetBool(reloadWeaponParamID, true);
-            
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            animator.SetBool(reloadWeaponParamID, false);
-        }
+
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
@@ -197,5 +196,30 @@ public class EC_HumanoidAnimationController : EntityComponent
         }
 
         animator.SetFloat(hideWeaponStartOffsetID, animationOffset);
+    }
+
+    public void StartReloadingWeapon(float animationDuration)
+    {
+
+        //modify speed based on stance
+        int stanceID = animator.GetInteger(stanceParamID);
+
+        if(stanceID == 2)
+        {
+            animator.SetFloat(reloadWeaponSpeedMultiplierParamID, reloadRifleCrouchingAnimationLength / animationDuration);
+        }
+        else
+        {
+            animator.SetFloat(reloadWeaponSpeedMultiplierParamID, reloadRifleStandingAnimationLength / animationDuration);
+        }
+
+
+        //set bool true
+        animator.SetBool(reloadWeaponParamID, true);
+    }
+
+    public void AbortReloadingWeapon()
+    {
+        animator.SetBool(reloadWeaponParamID, false);
     }
 }
