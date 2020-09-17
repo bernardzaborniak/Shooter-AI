@@ -54,6 +54,10 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string hideWeaponStartOffset;
     int hideWeaponStartOffsetID;
 
+    [Header("Reload Weapon")]
+    public string reloadWeaponParam;
+    int reloadWeaponParamID;
+
 
     /* ------Animation ID's--------
     
@@ -100,18 +104,23 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         hideWeaponSpeedMultiplierParamID = Animator.StringToHash(hideWeaponSpeedMultiplierParam);
         hideWeaponStartOffsetID = Animator.StringToHash(hideWeaponStartOffset);
+
+        //reloading wepaon
+        reloadWeaponParamID = Animator.StringToHash(reloadWeaponParam);
     }
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            //animator.SetBool("Pulling Out Weapon", true);
+            
+            
+            animator.SetBool(reloadWeaponParamID, true);
             
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            //animator.SetBool("Hiding Weapon", true);
+            animator.SetBool(reloadWeaponParamID, false);
         }
     }
 
