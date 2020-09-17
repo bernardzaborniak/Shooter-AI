@@ -300,4 +300,9 @@ public class EC_HumanoidAimingController : EntityComponent
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;
         }
     }
+
+    public bool IsCharacterAiming()
+    {
+        return aimWeapon;
+    }
 }

@@ -217,6 +217,7 @@ public class EC_HumanoidInterationController : EntityComponent
             animationController.StartReloadingWeapon(reloadDuration);
 
             //todo djust hands IK here
+            handsIKController.DisableIKs();
         }
 
 
@@ -229,6 +230,8 @@ public class EC_HumanoidInterationController : EntityComponent
             weaponInteractionState = WeaponInteractionState.Idle;
             animationController.AbortReloadingWeapon();
             //todo adjust hands IK here
+
+            handsIKController.ReenableIKs();
         }
     }
 
@@ -240,6 +243,8 @@ public class EC_HumanoidInterationController : EntityComponent
             inventory[currentSelectedWeaponID].RefillBulletsInMagazine();
             animationController.AbortReloadingWeapon();
             //todo adjust hands IK here
+
+            handsIKController.ReenableIKs();
         }
     }
 }

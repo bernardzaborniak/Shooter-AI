@@ -192,8 +192,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 sprint = false;
             }
+            else if (IsAiming())
+            {
+                StopAimAt();
+            }
         }
-
 
         movementController.MoveTo(destination, sprint);
     }
@@ -218,6 +221,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         }  
     }
 
+    public bool IsAiming()
+    {
+        return aimingController.IsCharacterAiming();
+    }
+
     public void StopAimAt()
     {
         aimingController.StopLookAt();
@@ -237,6 +245,11 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
+        if (IsAiming())
+        {
+            StopAimAt();
+        }
+
         interactionController.StartReloadingWeapon();
     }
 

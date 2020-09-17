@@ -48,6 +48,9 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     IKStance iKStance;
 
+    //overwrite weapon iks
+    bool disableIKs; //for now overwriting just means disabling ik's
+
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -168,5 +171,30 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             desiredRightHandIKRigWeight = 0;
         }
+    }
+
+    public void DisableIKs()
+    {
+        disableIKs = true;
+
+        desiredLeftHandIKRigWeight = 0;
+        desiredLeftHandIKRigWeight = 0;
+    }
+
+    public void ReenableIKs()
+    {
+        disableIKs = false;
+
+        if(iKStance == IKStance.Idle)
+        {
+            SetIKWeightsForIdle();
+        }
+        else
+        {
+            SetIKWeightsForCombat();
+        }
+
+
+      
     }
 }
