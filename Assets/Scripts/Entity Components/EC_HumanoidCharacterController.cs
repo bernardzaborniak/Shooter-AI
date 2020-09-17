@@ -94,7 +94,13 @@ public class EC_HumanoidCharacterController : EntityComponent
             StopAimAt();
         }
 
-       
+        // -------Shooting & Reloading -----
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Shoot();
+        }
+
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -218,7 +224,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void Shoot()
     {
-
+        interactionController.ShootWeapon();
     }
 
     public void StartReloadingCurrentWeapon()

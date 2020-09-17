@@ -175,4 +175,12 @@ public class EC_HumanoidInterationController : EntityComponent
             return true;
         }
     }
+
+    public void ShootWeapon()
+    {
+        if(weaponInteractionState == WeaponInteractionState.Idle)
+        {
+            inventory[currentSelectedWeaponID].Shoot();
+        }
+    }
 }
