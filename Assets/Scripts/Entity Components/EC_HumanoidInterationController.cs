@@ -213,7 +213,6 @@ public class EC_HumanoidInterationController : EntityComponent
 
             reloadingEndTime = Time.time + reloadDuration;
 
-
             animationController.StartReloadingWeapon(reloadDuration);
 
             //todo djust hands IK here

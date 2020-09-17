@@ -213,6 +213,8 @@ public class EC_HumanoidAnimationController : EntityComponent
             animator.SetFloat(reloadWeaponSpeedMultiplierParamID, reloadRifleStandingAnimationLength / animationDuration);
         }
 
+      
+
 
         //set bool true
         animator.SetBool(reloadWeaponParamID, true);
