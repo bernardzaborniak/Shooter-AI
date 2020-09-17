@@ -304,8 +304,8 @@ MonoBehaviour:
   weaponInteractionStateParam: Weapon Interaction State ID
   pullOutRifleAnimationLength: 1.333
   hideRifleAnimationLength: 1.333
-  pullOutPistolAnimationLength: 0.667
-  hidePistolAnimationLength: 0.667
+  pullOutPistolAnimationLength: 1.333
+  hidePistolAnimationLength: 1.333
   pullOutWeaponSpeedMultiplierParam: Pull Out Weapon Speed Multiplier
   pullOutWeaponStartOffset: Pull Out Weapon Start Offset
   hideWeaponSpeedMultiplierParam: Hide Weapon Speed Multiplier
@@ -323,8 +323,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeIKWeightsSpeed: 10
-  aimingRigThresholdToStartEnablingAimingIK: 0
-  aimingRigThresholdToStartDisablingAimingIK: 0
   handIKRotationOffset: {x: -90, y: 180, z: 0}
   leftHandIKConstraint: {fileID: 7366031314758960531}
   leftHandIKTarget: {fileID: 7366031314437626578}
@@ -600,8 +598,8 @@ MonoBehaviour:
   rightHandIKPosition: {fileID: 7366031314209542996}
   leftHandIKPosition: {fileID: 7366031316044013082}
   weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.43}
-  pullOutWeaponTime: 2
-  hideWeaponTime: 2
+  pullOutWeaponTime: 0.6
+  hideWeaponTime: 0.8
 --- !u!1 &7366031314609754848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1688,8 +1686,8 @@ MonoBehaviour:
   rightHandIKPosition: {fileID: 7366031314741862737}
   leftHandIKPosition: {fileID: 7366031314180013862}
   weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.32}
-  pullOutWeaponTime: 2
-  hideWeaponTime: 2
+  pullOutWeaponTime: 0.8
+  hideWeaponTime: 0.8
 --- !u!1 &7366031315934918497
 GameObject:
   m_ObjectHideFlags: 0
