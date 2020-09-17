@@ -12,12 +12,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public float changeIKWeightsSpeed;
 
-    [Tooltip("If the aiming Rig Weight goes above this value, we start transitioning from idle to aiming hand ik's")]
-    public float aimingRigThresholdToStartEnablingAimingIK;
-    [Tooltip("If the aiming Rig Weight drops below this value, we start transitioning from aiming to idle hand ik's")]
-    public float aimingRigThresholdToStartDisablingAimingIK;
-    bool aimingIKEnabled;
-
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
@@ -69,41 +63,10 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public override void UpdateComponent()
     {
-        /*if (aimWeapon)
-        {
-            if (!aimingIKEnabled)
-            {
-                if (weaponAimingRig.weight > aimingRigThresholdToStartEnablingAimingIK)
-                {
-                    aimingIKEnabled = true;
-                    ChangeIKWeightsOnChangeFromIdleToAiming();
-                }
-            }
-        }
-        else
-        {
-            if (aimingIKEnabled)
-            {
-                if (weaponAimingRig.weight < aimingRigThresholdToStartDisablingAimingIK)
-                {
-                    aimingIKEnabled = false;
-                    ChangeIKWeightsOnChangeFromAimingToIdle();
-                }
-            }
-        }*/
+        float changeSpeed = changeIKWeightsSpeed * Time.deltaTime;
 
-    
-            float changeSpeed = changeIKWeightsSpeed * Time.deltaTime;
-
-            leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-            rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
-
-
-
-        //float changeSpeedRight = changeIKWeightsSpeed * Time.deltaTime;
-
-
-
+        leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
+        rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
 
         if (ikTargetWeapon)
         {
@@ -184,9 +147,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             desiredRightHandIKRigWeight = 0;
         }
-
-        Debug.Log("desiredRightHandIKRigWeight: " + desiredRightHandIKRigWeight);
-        Debug.Log("desiredLeftHandIKRigWeight: " + desiredLeftHandIKRigWeight);
     }
 
     void SetIKWeightsForCombat()

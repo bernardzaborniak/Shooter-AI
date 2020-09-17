@@ -71,7 +71,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Look At")]
 
     public FLookAnimator fLookAnimator;
-    
+
     // Look At distorts the weapon aiming when its 2 compensiation Weights are set on something different than 1, so we set the mto 1 while aiming ,and reset them afterwards.
     public float lookAtCompensationWeightWithoutWeapon;
     public float lookAtCompensatiePositionsWithoutWeapon;
@@ -85,8 +85,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public Rig idleWeaponHoldingRig;
 
-   
-   
+
+
     [Header("Aiming the Weapon")]
 
     public Transform weaponAimTarget;
@@ -100,7 +100,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public float changeFromAimingToIdleRigSpeed;
     public float changeFromIdleToAimingRigSpeed;
     [Tooltip("Weapons get parented to this object when aiming")]
-    public Transform weaponAimParentLocalAdjuster; 
+    public Transform weaponAimParentLocalAdjuster;
 
     [Header("Weapon aim target movement")]
     [Tooltip("Max Rotation difference between current character forward and the target he aims at, to prrevent aiming too far to the side")]
@@ -113,49 +113,6 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 desiredWeaponAimDirection;
     Vector3 weaponAimSpeedRef;
 
-
-
-    /* [Header("Hand IK")]
-
-     public float changeIKWeightsSpeed;
-
-
-     [Tooltip("If the aiming Rig Weight goes above this value, we start transitioning from idle to aiming hand ik's")]
-     public float aimingRigThresholdToStartEnablingAimingIK;
-     [Tooltip("If the aiming Rig Weight drops below this value, we start transitioning from aiming to idle hand ik's")]
-     public float aimingRigThresholdToStartDisablingAimingIK;
-     bool aimingIKEnabled;
-
-     [Tooltip("depending on the specific model skeleton hand orientation?")]
-     public Vector3 handIKRotationOffset;
-
-     public TwoBoneIKConstraint leftHandIKConstraint;
-     float desiredLeftHandIKRigWeight;
-     public Transform leftHandIKTarget;
-
-     public TwoBoneIKConstraint rightHandIKConstraint;
-     float desiredRightHandIKRigWeight;
-     public Transform rightHandIKTarget;
-
-     #endregion
-
-     #region Settings for IK Positioning
-
-     [Serializable]
-     public class IKSettingsCorrespondingToWeaponInteractionType
-     {
-         public WeaponInteractionType weaponInteractionType;
-
-         public bool idleIKLeft = false;
-         public bool idleIKRight = false;
-         public bool aimingIKLeft = false;
-         public bool aimingIKRight = false;
-     }
-
-     public IKSettingsCorrespondingToWeaponInteractionType[] iKSettingsCorrespondingToWeaponInteractionTypes;
-
-     public IKSettingsCorrespondingToWeaponInteractionType currentIKSettings;
-    */
     #endregion
 
     public override void SetUpComponent(GameEntity entity)
@@ -165,9 +122,6 @@ public class EC_HumanoidAimingController : EntityComponent
         currentSpineDirection = transform.forward;
 
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
-
-        //currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
-       // ChangeIKWeightsOnChangeFromAimingToIdle();
     }
 
     public override void UpdateComponent()
@@ -259,65 +213,19 @@ public class EC_HumanoidAimingController : EntityComponent
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
-        if(desiredWeaponAimingRigWeight == 1)
+        if (desiredWeaponAimingRigWeight == 1)
         {
             float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
             weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
         }
-        else if(desiredWeaponAimingRigWeight == 0)
+        else if (desiredWeaponAimingRigWeight == 0)
         {
             float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
             weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
         }
 
-
-
         #endregion
 
-       /* #region Handle  Hand IK'S
-        //maybe expand it later to use both arms as iks here - for a bow for example?
-
-        //check if the weapon aiming rig has gone through a treshold
-        if (aimWeapon)
-        {
-            if (!aimingIKEnabled)
-            {
-                if (weaponAimingRig.weight > aimingRigThresholdToStartEnablingAimingIK)
-                {
-                    aimingIKEnabled = true;
-                    ChangeIKWeightsOnChangeFromIdleToAiming();
-                }
-            }
-        }
-        else
-        {
-            if (aimingIKEnabled)
-            {
-                if (weaponAimingRig.weight < aimingRigThresholdToStartDisablingAimingIK)
-                {
-                    aimingIKEnabled = false;
-                    ChangeIKWeightsOnChangeFromAimingToIdle();
-                }
-            }
-        }
-
-
-        float changeSpeedLeft = changeIKWeightsSpeed * Time.deltaTime;
-        leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeedLeft, changeSpeedLeft);
-
-        leftHandIKTarget.position = weapon.leftHandIKPosition.position;
-        leftHandIKTarget.rotation = weapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
-
-
-        float changeSpeedRight = changeIKWeightsSpeed * Time.deltaTime;
-        rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeedRight, changeSpeedRight);
-
-        rightHandIKTarget.position = weapon.rightHandIKPosition.position;
-        rightHandIKTarget.rotation = weapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
-
-
-
-        #endregion*/
     }
 
     /*public void AimInDirection(Vector3 direction)
@@ -364,130 +272,21 @@ public class EC_HumanoidAimingController : EntityComponent
     public void AimWeaponAtTarget()
     {
         aimWeapon = true;
-
         currentWeaponAimDirection = currentSpineDirection;
-
-        // Modify the compensation weight to achieve correct weapon aim and correct hand ik's
-        // cause LookAt modifies the hand and arm positions in LateUpdate
-        Debug.Log("set lookAtTo new Values 1");
-        /*lookAtCompensationWeightBeforeAimingWeapon = fLookAnimator.CompensationWeight;
-        lookAtCompensatiePositionsBeforeAimingWeapon = fLookAnimator.CompensatePositions;
-
-        fLookAnimator.CompensationWeight = 1;
-        fLookAnimator.CompensatePositions = 1;*/
-
         desiredWeaponAimingRigWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
     {
         aimWeapon = false;
-
-        // Modify fLookATWeights to their values before aiming the weapon.
-        Debug.Log("set lookAtToPreviousValues");
-       // fLookAnimator.CompensationWeight = lookAtCompensationWeightBeforeAimingWeapon;
-        //fLookAnimator.CompensatePositions = lookAtCompensatiePositionsBeforeAimingWeapon;
-
         desiredWeaponAimingRigWeight = 0;
     }
 
-   
-
-    /*void ChangeIKWeightsOnChangeFromAimingToIdle()
-    {
-        if (currentIKSettings.idleIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.idleIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }
-    
-    void ChangeIKWeightsOnChangeFromIdleToAiming()
-    {
-        if (currentIKSettings.aimingIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.aimingIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }
-
-    void ChangeIKWeightsOnWeaponChange()
-    {
-        Debug.Log("change weights to : " + currentIKSettings.weaponInteractionType);
-
-        if (currentIKSettings.idleIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.idleIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.aimingIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.aimingIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }*/
-
     public void OnChangeWeapon(Weapon newWeapon)
     {
-        if(newWeapon == null)
+        if (newWeapon == null)
         {
             weapon = null;
-
-            //idleIKLeft = false;
-            //idleIKRight = false;
-            //aimingIKLeft = false;
-            //aimingIKRight = false;
-
-            //currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
 
             fLookAnimator.CompensationWeight = lookAtCompensationWeightWithoutWeapon;
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithoutWeapon;
@@ -499,29 +298,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
             fLookAnimator.CompensationWeight = lookAtCompensationWeightWithWeapon;
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;
-
-
-            /* for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
-             {
-                 if(iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newWeapon.weaponInteractionType)
-                 {
-                     currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[i];
-                 }
-             }*/
-            //set the bools according to the weapon:  but where do we save informations when to use what ik on this weapon? - in interaction manager ? because its also taking care of animation?
-            //idleIKLeft = false;
-            //idleIKRight = false;
-            //aimingIKLeft = false;
-            //aimingIKRight = false;
         }
-
-        /*if (aimWeapon)
-        {
-            ChangeIKWeightsOnChangeFromIdleToAiming();
-        }
-        else
-        {
-            ChangeIKWeightsOnChangeFromAimingToIdle();
-        }*/
     }
 }
