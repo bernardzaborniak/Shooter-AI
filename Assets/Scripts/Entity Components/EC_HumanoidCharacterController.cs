@@ -11,6 +11,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     public EC_HumanoidAnimationController animationController;
     public EC_HumanoidInterationController interactionController;
     public EC_HumanoidAimingController aimingController;
+    public EC_HumanoidHandsIKController handsIKController;
 
     [Header("Movement Speeds")]
     public float idleWalkingSpeed;
@@ -131,6 +132,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
+        handsIKController.OnEnterIdleStance();
 
         StopAimAt();
 
@@ -145,6 +147,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
             movementController.SetAcceleration(combatStanceAcceleration);
             animationController.ChangeToCombatStance();
+            handsIKController.OnEnterCombatStance();
 
         }  
     }
@@ -156,6 +159,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(crouchAcceleration);
         animationController.ChangeToCrouchedStance();
+        handsIKController.OnEnterCombatStance();
 
     }
 

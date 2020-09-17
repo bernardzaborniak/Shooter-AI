@@ -4,8 +4,8 @@
 public enum WeaponInteractionType
 {
     BareHands,
-    Pistol,
-    Rifle
+    Rifle,
+    Pistol 
 }
 
 public class EC_HumanoidInterationController : EntityComponent
@@ -14,6 +14,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public EC_HumanoidAimingController aimingController;
     public EC_HumanoidAnimationController animationController;
+    public EC_HumanoidHandsIKController handsIKController;
 
 
     public int currentSelectedWeaponID;
@@ -120,6 +121,7 @@ public class EC_HumanoidInterationController : EntityComponent
         animationController.ChangeWeaponInteractionState(1);
         
         aimingController.OnChangeWeapon(inventory[currentSelectedWeaponID]);
+        handsIKController.OnChangeWeapon(inventory[currentSelectedWeaponID]);
     }
 
     void FinishPullingOutWeapon()
@@ -158,6 +160,7 @@ public class EC_HumanoidInterationController : EntityComponent
             animationController.ChangeItemInHand(0);
 
             aimingController.OnChangeWeapon(null);
+            handsIKController.OnChangeWeapon(null);
         }
     }
 
