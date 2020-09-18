@@ -29,7 +29,7 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 aimAtPosition;
     Transform aimAtTransform;
 
-    bool aimAtActive;
+    bool aimingSpine;
 
     Vector3 pointToAimAt;
     Vector3 directionToAim;
@@ -93,7 +93,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
     public Rig weaponAimingRig;
 
-    bool aimWeapon;
+    bool aimingWeapon;
 
     float desiredWeaponAimingRigWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
@@ -128,7 +128,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         #region Aiming Spine
 
-        if (aimAtActive)
+        if (aimingSpine)
         {
             // ---------------  1. Calculate Point to aim at -----------
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
@@ -202,7 +202,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Weapon
 
-        if (aimWeapon)
+        if (aimingWeapon)
         {
             // Calculate & Rotate Weapon Aim Direction
             desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
@@ -247,15 +247,15 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimSpineAtTransform(Transform transform)
     {
-        aimAtActive = true;
+        aimingSpine = true;
         currentAimAtTargetingMethod = AimAtTargetingMethod.Transform;
         movementController.manualRotation = true;
         aimAtTransform = transform;
     }
 
-    public void StopAimSpineAt()
+    public void StopAimSpineAtTarget()
     {
-        aimAtActive = false;
+        aimingSpine = false;
         movementController.manualRotation = false;
     }
 
@@ -271,14 +271,14 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponAtTarget()
     {
-        aimWeapon = true;
+        aimingWeapon = true;
         currentWeaponAimDirection = currentSpineDirection;
         desiredWeaponAimingRigWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
     {
-        aimWeapon = false;
+        aimingWeapon = false;
         desiredWeaponAimingRigWeight = 0;
     }
 
@@ -301,8 +301,18 @@ public class EC_HumanoidAimingController : EntityComponent
         }
     }
 
-    public bool IsCharacterAiming()
+    public bool IsCharacterAimingWeapon()
     {
-        return aimWeapon;
+        return aimingWeapon;
+    }
+
+    public bool IsCharacterAimingSpine()
+    {
+        return aimingSpine;
+    }
+
+    public bool IsCharacterLookingAtTarget()
+    {
+        return fLookAnimator.ObjectToFollow != null;
     }
 }

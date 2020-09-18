@@ -64,20 +64,19 @@ public class EC_HumanoidCharacterController : EntityComponent
         // -------- Weapons -------
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-           // interactionController.SelectRifle();
-            interactionController.ChangeItemInHand(1);
+            EquipItem(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            interactionController.ChangeItemInHand(2);
+            EquipItem(2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            interactionController.ChangeItemInHand(3);
+            EquipItem(3);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            interactionController.ChangeItemInHand(0);
+            EquipItem(0);
         }
 
         // -------- Aiming & Look at -------
@@ -196,14 +195,37 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 sprint = false;
             }
-            else if (IsAiming())
+            else // if (IsAimingSpine())
             {
                 StopAimAt();
+                //StopAimingWeapon();
+                //StopAimingSpine();
+                //StopLookAt();
             }
         }
 
         movementController.MoveTo(destination, sprint);
     }
+
+    #region Aiming Weapon Spine And Look at
+
+    public void AimAt(Transform traget)
+    {
+        if (DoesCurrentStanceAllowAiming())
+        {
+            LookAt(traget);
+            AimSpineAtTarget(traget);
+            AimWeaponAtTarget();
+        }
+    }
+
+    public void StopAimAt()
+    {
+        StopLookAt();
+        StopAimingSpine();
+        StopAimingWeapon();
+    }
+
 
     public void LookAt(Transform target)
     {
@@ -215,31 +237,51 @@ public class EC_HumanoidCharacterController : EntityComponent
         aimingController.StopLookAt();
     }
 
-    public void AimAt(Transform traget)
+
+    public void AimSpineAtTarget(Transform target)
     {
-        if (DoesCurrentStanceAllowAiming())
-        {
-            aimingController.LookAtTransform(traget);
-            aimingController.AimSpineAtTransform(traget);
-            aimingController.AimWeaponAtTarget();
-        }  
+        aimingController.AimSpineAtTransform(target);
     }
 
-    public bool IsAiming()
+    public void StopAimingSpine()
     {
-        return aimingController.IsCharacterAiming();
+        aimingController.StopAimSpineAtTarget();
     }
 
-    public void StopAimAt()
+    //automaticly takes the spine target
+    public void AimWeaponAtTarget()
     {
-        aimingController.StopLookAt();
-        aimingController.StopAimSpineAt();
+        aimingController.AimWeaponAtTarget();
+    }
+
+    public void StopAimingWeapon()
+    {
         aimingController.StopAimingWeaponAtTarget();
     }
 
+
+
+    public bool IsAimingWeapon()
+    {
+        return aimingController.IsCharacterAimingWeapon();
+    }
+
+    public bool IsAimingSpine()
+    {
+        return aimingController.IsCharacterAimingSpine();
+    }
+
+    public bool IsLookingAtTarget()
+    {
+        return aimingController.IsCharacterLookingAtTarget();
+    }
+
+    #endregion
+
     public void EquipItem(int inventoryID)
     {
-
+        //stop aiming weapon if here
+        interactionController.ChangeItemInHand(inventoryID);
     }
 
     public void ShootWeapon()
@@ -249,9 +291,9 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-        if (IsAiming())
+        if (IsAimingWeapon())
         {
-            StopAimAt();
+            StopAimingWeapon();
         }
 
         interactionController.StartReloadingWeapon();
