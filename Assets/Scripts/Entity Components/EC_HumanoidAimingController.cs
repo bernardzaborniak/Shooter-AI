@@ -90,7 +90,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Aiming the Weapon")]
 
     public Transform weaponAimTarget;
-    public Weapon weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
+    public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
     public Rig weaponAimingRig;
 
     bool aimWeapon;
@@ -282,7 +282,7 @@ public class EC_HumanoidAimingController : EntityComponent
         desiredWeaponAimingRigWeight = 0;
     }
 
-    public void OnChangeWeapon(Weapon newWeapon)
+    public void OnChangeWeapon(Gun newWeapon)
     {
         if (newWeapon == null)
         {

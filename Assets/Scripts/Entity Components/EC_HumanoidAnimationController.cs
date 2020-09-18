@@ -80,6 +80,7 @@ public class EC_HumanoidAnimationController : EntityComponent
     NoItem,            0
     Rifle,             1
     Pistol             2
+    Grenade            3
 
     ---WeaponInteractionState ID's-----
     

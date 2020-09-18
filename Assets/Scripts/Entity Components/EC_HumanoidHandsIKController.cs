@@ -8,7 +8,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 {
     [Header("Hand IK")]
 
-    Weapon ikTargetWeapon;
+    Gun ikTargetWeapon;
 
     public float changeIKWeightsSpeed;
 
@@ -27,7 +27,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Serializable]
     public class IKSettingsCorrespondingToWeaponInteractionType
     {
-        public WeaponInteractionType weaponInteractionType;
+        public ItemInteractionType weaponInteractionType;
 
         public bool idleIKLeft = false;
         public bool idleIKRight = false;
@@ -82,7 +82,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     }
 
 
-    public void OnChangeWeapon(Weapon newWeapon)
+    public void OnChangeWeapon(Gun newWeapon)
     {
         ikTargetWeapon = newWeapon;
 
@@ -94,7 +94,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
             {
-                if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newWeapon.weaponInteractionType)
+                if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newWeapon.itemInteractionType)
                 {
                     currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[i];
                 }

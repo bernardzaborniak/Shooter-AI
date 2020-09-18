@@ -65,15 +65,19 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
            // interactionController.SelectRifle();
-            interactionController.ChangeWeapon(1);
+            interactionController.ChangeItemInHand(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            interactionController.ChangeWeapon(2);
+            interactionController.ChangeItemInHand(2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            interactionController.ChangeWeapon(0);
+            interactionController.ChangeItemInHand(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            interactionController.ChangeItemInHand(0);
         }
 
         // -------- Aiming & Look at -------
