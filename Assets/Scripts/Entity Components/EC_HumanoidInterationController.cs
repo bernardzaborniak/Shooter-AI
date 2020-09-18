@@ -23,7 +23,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public Item[] inventory;
 
-    enum WeaponInteractionState
+    enum ItemInteractionState
     {
         Idle,
         PullingOutWeapon,
@@ -33,7 +33,7 @@ public class EC_HumanoidInterationController : EntityComponent
         //CockBoltAction //doing this lever thingy on snipers
     }
 
-    WeaponInteractionState weaponInteractionState;
+    ItemInteractionState itemInteractionState;
 
     float hidingWeaponEndTime;
     float pullingOutWeaponEndTime;
@@ -45,6 +45,11 @@ public class EC_HumanoidInterationController : EntityComponent
     public float reloadTimeSkillMultiplier = 1;
     float reloadingEndTime;
 
+    //Needs to be able to change later, is calculatet based on current target and throwGrenadeMaxRange
+    public float throwGrenadeVelocity;
+    public float throwGrenadeMaxRange;
+    float throwingGrenadeEndTime;
+
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -55,26 +60,34 @@ public class EC_HumanoidInterationController : EntityComponent
     public override void UpdateComponent()
     {
 
-        if (weaponInteractionState == WeaponInteractionState.HidingWeapon)
+        if (itemInteractionState == ItemInteractionState.HidingWeapon)
         {
             if(Time.time > hidingWeaponEndTime)
             {
                 FinishHidingItem();
             }
         }
-        else if (weaponInteractionState == WeaponInteractionState.PullingOutWeapon)
+        else if (itemInteractionState == ItemInteractionState.PullingOutWeapon)
         {
             if (Time.time > pullingOutWeaponEndTime)
             {
                 FinishPullingOutItem();
             }
-        }else if(weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        }
+        else if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
             Debug.Log("reloading");
             if(Time.time > reloadingEndTime)
             {
                 FinishReloadingWeapon();
             }
+        }
+        else if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
+        {
+            if (Time.time > throwingGrenadeEndTime)
+            {
+                FinishThrowingGrenade();
+            }   
         }
     }
 
@@ -84,9 +97,9 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         desiredSelectedWeaponID = newWeaponInventoryID;
 
-        if(weaponInteractionState == WeaponInteractionState.Idle || weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        if(itemInteractionState == ItemInteractionState.Idle || itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
-            if(weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+            if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
             {
                 AbortReloadingWeapon();
             }
@@ -109,7 +122,7 @@ public class EC_HumanoidInterationController : EntityComponent
                     StartHidingItem(1);
                 }
             }
-        }else if(weaponInteractionState == WeaponInteractionState.PullingOutWeapon)
+        }else if(itemInteractionState == ItemInteractionState.PullingOutWeapon)
         {
             if (desiredSelectedWeaponID != currentSelectedItemID)
             {
@@ -117,7 +130,7 @@ public class EC_HumanoidInterationController : EntityComponent
                 StartHidingItem(percentageAlreadyPulledOut);
             }
         }
-        else if(weaponInteractionState == WeaponInteractionState.HidingWeapon)
+        else if(itemInteractionState == ItemInteractionState.HidingWeapon)
         {
             if(desiredSelectedWeaponID == currentSelectedItemID)
             {
@@ -136,7 +149,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         pullingOutWeaponEndTime = Time.time + inventory[currentSelectedItemID].pullOutItemTime * percentageAlreadyHidden;
 
-        weaponInteractionState = WeaponInteractionState.PullingOutWeapon;
+        itemInteractionState = ItemInteractionState.PullingOutWeapon;
 
         animationController.ChangeItemInHand(inventory[currentSelectedItemID].GetItemInteractionTypeID());
         animationController.AdjustPullOutAnimationSpeedAndOffset(inventory[currentSelectedItemID].pullOutItemTime, 1-percentageAlreadyHidden);
@@ -157,7 +170,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     void FinishPullingOutItem()
     {
-        weaponInteractionState = WeaponInteractionState.Idle;
+        itemInteractionState = ItemInteractionState.Idle;
 
         animationController.ChangeWeaponInteractionState(0);
     }
@@ -168,7 +181,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         hidingWeaponEndTime = Time.time + inventory[currentSelectedItemID].hideItemTime * pulledOutPercentage;
 
-        weaponInteractionState = WeaponInteractionState.HidingWeapon;
+        itemInteractionState = ItemInteractionState.HidingWeapon;
 
         animationController.AdjustHideAnimationSpeedAndOffset(inventory[currentSelectedItemID].hideItemTime, 1 - pulledOutPercentage);
         animationController.ChangeWeaponInteractionState(2);
@@ -186,7 +199,7 @@ public class EC_HumanoidInterationController : EntityComponent
         {
             currentSelectedItemID = desiredSelectedWeaponID;
             
-            weaponInteractionState = WeaponInteractionState.Idle;
+            itemInteractionState = ItemInteractionState.Idle;
             animationController.ChangeWeaponInteractionState(0);
             animationController.ChangeItemInHand(0);
 
@@ -213,7 +226,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void ShootWeapon()
     {
-        if(weaponInteractionState == WeaponInteractionState.Idle)
+        if(itemInteractionState == ItemInteractionState.Idle)
         {
             if (inventory[currentSelectedItemID] is Gun)
             {
@@ -224,11 +237,11 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-        if(weaponInteractionState == WeaponInteractionState.Idle)
+        if(itemInteractionState == ItemInteractionState.Idle)
         {
             if (inventory[currentSelectedItemID] is Gun)
             {
-                weaponInteractionState = WeaponInteractionState.ReloadingWeapon;
+                itemInteractionState = ItemInteractionState.ReloadingWeapon;
 
                 //calculate reload animation duration & speed
                 float reloadDuration = (inventory[currentSelectedItemID] as Gun).defaultReloadDuration * reloadTimeSkillMultiplier;
@@ -247,11 +260,11 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void AbortReloadingWeapon()
     {
-        if (weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        if (itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
             if (inventory[currentSelectedItemID] is Gun)
             {
-                weaponInteractionState = WeaponInteractionState.Idle;
+                itemInteractionState = ItemInteractionState.Idle;
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
@@ -262,11 +275,11 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void FinishReloadingWeapon()
     {
-        if (weaponInteractionState == WeaponInteractionState.ReloadingWeapon)
+        if (itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
             if (inventory[currentSelectedItemID] is Gun)
             {
-                weaponInteractionState = WeaponInteractionState.Idle;
+                itemInteractionState = ItemInteractionState.Idle;
                 (inventory[currentSelectedItemID] as Gun).RefillBulletsInMagazine();
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
@@ -274,6 +287,43 @@ public class EC_HumanoidInterationController : EntityComponent
                 handsIKController.ReenableIKs();
             }
         }
+    }
+
+    #endregion
+
+    #region Other Item Commands
+
+    public void ThrowGrenade()
+    {
+        if(itemInteractionState == ItemInteractionState.Idle)
+        {
+            if (inventory[currentSelectedItemID] is Grenade)
+            {
+                itemInteractionState = ItemInteractionState.ThrowingGrenade;
+                throwingGrenadeEndTime = Time.time + (inventory[currentSelectedItemID] as Grenade).throwingTime;
+
+                animationController.StartThrowingGrenade((inventory[currentSelectedItemID] as Grenade).throwingTime);
+            }
+        }
+    }
+
+    void FinishThrowingGrenade()
+    {
+        itemInteractionState = ItemInteractionState.Idle;
+        Debug.Log("throw direction: " + aimingController.GetCurrentAimDirection());
+        (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentAimDirection(), throwGrenadeVelocity);
+        inventory[currentSelectedItemID] = null; //Remove grenade from inventory
+        animationController.AbortThrowingGrenade();
+    }
+
+    public void AbortThrowingGrenade()
+    {
+        //can only be caused by stagger or flinch or something?
+    }
+
+    public Item GetCurrentSelecteditem()
+    {
+        return inventory[currentSelectedItemID];
     }
 
     #endregion

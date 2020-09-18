@@ -110,6 +110,12 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             AbortReloadingWeapon();
         }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            ThrowGrenade();
+        }
+
+        
 
 
 
@@ -215,7 +221,12 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             LookAt(traget);
             AimSpineAtTarget(traget);
-            AimWeaponAtTarget();
+
+            if(interactionController.GetCurrentSelecteditem() is Gun)
+            {
+                AimWeaponAtTarget();
+            }
+            
         }
     }
 
@@ -306,6 +317,11 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void AbortReloadingWeapon()
     {
         interactionController.AbortReloadingWeapon();
+    }
+
+    public void ThrowGrenade()
+    {
+        interactionController.ThrowGrenade();
     }
 
     bool DoesCurrentStanceAllowSprinting()

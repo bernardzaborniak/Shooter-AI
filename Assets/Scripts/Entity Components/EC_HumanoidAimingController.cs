@@ -315,4 +315,8 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         return fLookAnimator.ObjectToFollow != null;
     }
+    public Vector3 GetCurrentAimDirection()
+    {
+        return directionToAim;
+    }
 }

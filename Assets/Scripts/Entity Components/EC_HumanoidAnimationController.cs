@@ -64,6 +64,18 @@ public class EC_HumanoidAnimationController : EntityComponent
     public float reloadRifleStandingAnimationLength;
     public float reloadRifleCrouchingAnimationLength;
 
+    [Header("Throw Grenade")]
+    public string throwGrenadeParam;
+    int throwGrenadeParamID;
+
+    public string throwGrenadeSpeedMultiplierParam;
+    int throwGrenadeSpeedMultiplierParamID;
+
+    public float throwingGrenadeAnimationLength;
+
+
+
+
 
 
 
@@ -117,22 +129,15 @@ public class EC_HumanoidAnimationController : EntityComponent
         //reloading wepaon
         reloadWeaponParamID = Animator.StringToHash(reloadWeaponParam);
         reloadWeaponSpeedMultiplierParamID = Animator.StringToHash(reloadWeaponSpeedMultiplierParam);
+
+        //throwing grenade
+        throwGrenadeParamID = Animator.StringToHash(throwGrenadeParam);
+        throwGrenadeSpeedMultiplierParamID = Animator.StringToHash(throwGrenadeSpeedMultiplierParam);
     }
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            animator.SetInteger(itemInHandParamID, 3);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            animator.SetBool("Throwing Grenade", true);
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            animator.SetBool("Throwing Grenade", false);
-        }
+
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
@@ -225,9 +230,6 @@ public class EC_HumanoidAnimationController : EntityComponent
             animator.SetFloat(reloadWeaponSpeedMultiplierParamID, reloadRifleStandingAnimationLength / animationDuration);
         }
 
-      
-
-
         //set bool true
         animator.SetBool(reloadWeaponParamID, true);
     }
@@ -235,5 +237,19 @@ public class EC_HumanoidAnimationController : EntityComponent
     public void AbortReloadingWeapon()
     {
         animator.SetBool(reloadWeaponParamID, false);
+    }
+
+    public void StartThrowingGrenade(float animationDuration)
+    {
+        Debug.Log("start throwing anim");
+        animator.SetBool(throwGrenadeParamID, true);
+
+        animator.SetFloat(throwGrenadeSpeedMultiplierParamID, throwingGrenadeAnimationLength / animationDuration);
+    }
+
+    public void AbortThrowingGrenade()
+    {
+        Debug.Log("Stop throwing anim");
+        animator.SetBool(throwGrenadeParamID, false);
     }
 }

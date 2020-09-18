@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Grenade : Item
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Rigidbody rigidbody;
 
-    // Update is called once per frame
-    void Update()
+    [Tooltip("How long does the throwing animation takes place? - or how long does the delay between ordering the action and the action being executed takes place")]
+    public float throwingTime;
+
+    public void Throw(Vector3 direction, float throwVelocity)
     {
-        
+        transform.SetParent(null);
+        rigidbody.isKinematic = false;
+
+        rigidbody.velocity = direction.normalized * throwVelocity;
     }
 }
