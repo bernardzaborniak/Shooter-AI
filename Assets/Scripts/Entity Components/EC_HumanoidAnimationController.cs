@@ -124,6 +124,14 @@ public class EC_HumanoidAnimationController : EntityComponent
         {
             animator.SetInteger(itemInHandParamID, 3);
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            animator.SetBool("Throwing Grenade", true);
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            animator.SetBool("Throwing Grenade", false);
+        }
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
