@@ -120,7 +120,10 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public override void UpdateComponent()
     {
-
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            animator.SetInteger(itemInHandParamID, 3);
+        }
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)

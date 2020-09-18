@@ -132,7 +132,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForIdle()
     {
-        Debug.Log("set for idle");
         if (currentIKSettings.idleIKLeft)
         {
             desiredLeftHandIKRigWeight = 1;
