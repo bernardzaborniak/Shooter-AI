@@ -280,6 +280,10 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void EquipItem(int inventoryID)
     {
+        if (IsAimingWeapon())
+        {
+            StopAimingWeapon();
+        }
         //stop aiming weapon if here
         interactionController.ChangeItemInHand(inventoryID);
     }
