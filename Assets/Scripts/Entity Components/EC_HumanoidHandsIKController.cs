@@ -57,11 +57,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         base.SetUpComponent(entity);
 
-        currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
-        SetIKWeightsForIdle();
-
-        leftHandIKConstraint.weight = 0;
-        rightHandIKConstraint.weight = 0;
+        DisableIKs();
     }
 
     public override void UpdateComponent()
@@ -84,14 +80,18 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnChangeWeapon(Gun newWeapon)
     {
+        Debug.Log("on change weapon: new weapon: " + newWeapon);
         ikTargetWeapon = newWeapon;
 
         if (newWeapon == null)
         {
-            currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+            //currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+            DisableIKs();
         }
         else
         {
+            ReenableIKs();
+
             for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
             {
                 if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newWeapon.itemInteractionType)
@@ -100,17 +100,19 @@ public class EC_HumanoidHandsIKController : EntityComponent
                 }
             }
 
+            if (iKStance == IKStance.Idle)
+            {
+                SetIKWeightsForIdle();
+            }
+            else if (iKStance == IKStance.Combat)
+            {
+                SetIKWeightsForCombat();
+            }
+
         }
 
 
-        if(iKStance == IKStance.Idle)
-        {
-            SetIKWeightsForIdle();
-        }
-        else if(iKStance == IKStance.Combat)
-        {
-            SetIKWeightsForCombat();
-        }
+       
     }
 
     
@@ -177,7 +179,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         disableIKs = true;
 
         desiredLeftHandIKRigWeight = 0;
-        desiredLeftHandIKRigWeight = 0;
+        desiredRightHandIKRigWeight = 0;
     }
 
     public void ReenableIKs()
@@ -191,9 +193,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
         else
         {
             SetIKWeightsForCombat();
-        }
-
-
-      
+        } 
     }
 }
