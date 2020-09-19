@@ -73,13 +73,21 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public float throwingGrenadeAnimationLength;
 
-    [Header("Flinch & Stagger")]
+    [Header("Flinch")]
     public string flinchParam;
     int flinchParamID;
     public string flinchIDParam;
     int flinchIDParamID;
     [Tooltip("What is the maximum value the flinchID can have - how many different flinch animations do we have?")]
     public int numberOdFlinchAnimationVariations;
+
+    [Header("Stagger")]
+    public string staggerParam;
+    int staggerParamID;
+    public string staggerIDParam;
+    int staggerIDParamID;
+    [Tooltip("What is the maximum value the staggerID can have - how many different stagger animations do we have?")]
+    public int numberOdStaggerAnimationVariations;
 
 
 
@@ -143,6 +151,10 @@ public class EC_HumanoidAnimationController : EntityComponent
         //flinch
         flinchParamID = Animator.StringToHash(flinchParam);
         flinchIDParamID = Animator.StringToHash(flinchIDParam);
+
+        //stagger
+        staggerParamID = Animator.StringToHash(staggerParam);
+        staggerIDParamID = Animator.StringToHash(staggerIDParam);
     }
 
     public override void UpdateComponent()
@@ -276,6 +288,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void Stagger()
     {
-        animator.SetTrigger("Stagger");
+        animator.SetInteger(staggerIDParamID, Random.Range(0, numberOdStaggerAnimationVariations));
+        animator.SetTrigger(staggerParamID);
     }
 }
