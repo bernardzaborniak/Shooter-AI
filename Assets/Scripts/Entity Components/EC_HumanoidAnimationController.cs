@@ -76,8 +76,10 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Header("Flinch & Stagger")]
     public string flinchParam;
     int flinchParamID;
-
-
+    public string flinchIDParam;
+    int flinchIDParamID;
+    [Tooltip("What is the maximum value the flinchID can have - how many different flinch animations do we have?")]
+    public int numberOdFlinchAnimationVariations;
 
 
 
@@ -140,11 +142,12 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         //flinch
         flinchParamID = Animator.StringToHash(flinchParam);
+        flinchIDParamID = Animator.StringToHash(flinchIDParam);
     }
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             Flinch();
         }
@@ -265,6 +268,9 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void Flinch()
     {
+        //select a random flinch Animation
+        animator.SetInteger(flinchIDParamID, Random.Range(0, numberOdFlinchAnimationVariations));
+
         animator.SetTrigger(flinchParamID);
     }
 }
