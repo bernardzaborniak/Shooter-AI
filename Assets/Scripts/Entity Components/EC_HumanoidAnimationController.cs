@@ -73,6 +73,10 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public float throwingGrenadeAnimationLength;
 
+    [Header("Flinch & Stagger")]
+    public string flinchParam;
+    int flinchParamID;
+
 
 
 
@@ -133,11 +137,17 @@ public class EC_HumanoidAnimationController : EntityComponent
         //throwing grenade
         throwGrenadeParamID = Animator.StringToHash(throwGrenadeParam);
         throwGrenadeSpeedMultiplierParamID = Animator.StringToHash(throwGrenadeSpeedMultiplierParam);
+
+        //flinch
+        flinchParamID = Animator.StringToHash(flinchParam);
     }
 
     public override void UpdateComponent()
     {
-
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Flinch();
+        }
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
@@ -251,5 +261,10 @@ public class EC_HumanoidAnimationController : EntityComponent
     {
         Debug.Log("Stop throwing anim");
         animator.SetBool(throwGrenadeParamID, false);
+    }
+
+    public void Flinch()
+    {
+        animator.SetTrigger(flinchParamID);
     }
 }

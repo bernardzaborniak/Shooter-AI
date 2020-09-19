@@ -76,7 +76,6 @@ public class EC_HumanoidInterationController : EntityComponent
         }
         else if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
-            Debug.Log("reloading");
             if(Time.time > reloadingEndTime)
             {
                 FinishReloadingWeapon();
