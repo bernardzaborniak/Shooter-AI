@@ -149,7 +149,7 @@ public class EC_HumanoidAnimationController : EntityComponent
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Flinch();
+            Stagger();
         }
     }
 
@@ -272,5 +272,10 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetInteger(flinchIDParamID, Random.Range(0, numberOdFlinchAnimationVariations));
 
         animator.SetTrigger(flinchParamID);
+    }
+
+    public void Stagger()
+    {
+        animator.SetTrigger("Stagger");
     }
 }
