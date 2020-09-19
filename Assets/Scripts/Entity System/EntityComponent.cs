@@ -31,8 +31,8 @@ public class EntityComponent : MonoBehaviour
 
     }
 
-    /*public virtual void OnTakeDamage(DamageInfo damageInfo)
+    public virtual void OnTakeDamage(ref DamageInfo damageInfo)
     {
 
-    }*/
+    }
 }

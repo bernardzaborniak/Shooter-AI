@@ -23,6 +23,10 @@ public class EC_HumanoidCharacterController : EntityComponent
     public float crouchSpeed;
     public float crouchAcceleration;
 
+    [Header("Damage Reactions")]
+    public float damageThresholdForFlinch;
+    public float damageThresholdForStagger;
+
 
     enum CharacterStance
     {
@@ -345,6 +349,24 @@ public class EC_HumanoidCharacterController : EntityComponent
         else
         {
             return true;
+        }
+    }
+
+    public override void OnTakeDamage(ref DamageInfo damageInfo)
+    {
+        Debug.Log("Damage Input 3");
+
+        if (damageInfo.damage > damageThresholdForStagger)
+        {
+            //Stagger
+        }
+        else if(damageInfo.damage > damageThresholdForFlinch)
+        {
+            animationController.Flinch();
+        }
+        else
+        {
+            //nothing ?  maybe tell the AI Controller that he was hit 
         }
     }
 

@@ -63,13 +63,13 @@ public class GameEntity : MonoBehaviour
         return (transform.position);
     }
 
-    /*public virtual void OnTakeDamage(DamageInfo damageInfo)
+    public virtual void OnTakeDamage(ref DamageInfo damageInfo)
     {
         foreach (EntityComponent component in components)
         {
-            component.OnTakeDamage(damageInfo);
+            component.OnTakeDamage(ref damageInfo);
         }
-    }*/
+    }
 
     public virtual void OnDie()//GameEntity killer)
     {
