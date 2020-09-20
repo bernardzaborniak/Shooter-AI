@@ -140,6 +140,12 @@ public class EC_HumanoidInterationController : EntityComponent
 
     }
 
+    public void AbortChangingItemInHand()
+    {
+        Debug.Log("abort: " + currentSelectedItemID);
+        ChangeItemInHand(currentSelectedItemID);
+    }
+
     void StartPullingOutItem(int newInventoryID, float percentageAlreadyHidden)
     {
 
@@ -317,7 +323,14 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void AbortThrowingGrenade()
     {
-        //can only be caused by stagger or flinch or something?
+        if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
+        {
+            //can only be caused by stagger or flinch or something?
+            itemInteractionState = ItemInteractionState.Idle;
+            (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentAimDirection(), Random.Range(-3, 3));  //is this the proper way
+            inventory[currentSelectedItemID] = null; //Remove grenade from inventory
+            animationController.AbortThrowingGrenade();
+        }  
     }
 
     public Item GetCurrentSelecteditem()

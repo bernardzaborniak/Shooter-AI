@@ -576,15 +576,21 @@ MonoBehaviour:
   aimingController: {fileID: 7366031314207611040}
   handsIKController: {fileID: 7399303670798280785}
   idleWalkingSpeed: 1.4
+  idleSprintingSpeed: 7
   idleStationaryTurnSpeed: 90
   idleAcceleration: 10
   combatStanceWalkingSpeed: 2
+  combatStanceSprintingSpeed: 7
   combatStationaryTurnSpeed: 140
   combatStanceAcceleration: 12
   crouchSpeed: 0.9
   crouchAcceleration: 2
+  stunnedMovementSpeed: 1
+  stunnedSprintingSpeed: 5
+  stunnedCrouchedMovementSpeed: 0.5
   damageThresholdForFlinch: 10
-  damageThresholdForStagger: 60
+  damageThresholdForStagger: 50
+  staggerDuration: 1.5
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
 --- !u!114 &6119667436294565816
@@ -710,6 +716,11 @@ MonoBehaviour:
   staggerParam: Stagger
   staggerIDParam: Stagger ID
   numberOdStaggerAnimationVariations: 3
+  staggerSpeedMultiplierParam: Stagger Speed Modifier
+  staggerAnimationsLengths:
+  - 0.833
+  - 1.333
+  - 1.233
 --- !u!114 &7399303670798280785
 MonoBehaviour:
   m_ObjectHideFlags: 0

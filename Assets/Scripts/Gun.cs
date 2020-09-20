@@ -34,7 +34,7 @@ public class Gun : Item
     }
 
     //"kind of animation played for this item - 0 is bare hands, 1 is rifle, 2 is pistol"
-   
+    
 
     public void Shoot()
     {

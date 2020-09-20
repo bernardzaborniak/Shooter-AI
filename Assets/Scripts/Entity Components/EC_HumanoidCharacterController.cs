@@ -15,19 +15,28 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     [Header("Movement Speeds")]
     public float idleWalkingSpeed;
+    public float idleSprintingSpeed;
     public float idleStationaryTurnSpeed;
     public float idleAcceleration;
+
     public float combatStanceWalkingSpeed;
+    public float combatStanceSprintingSpeed;
     public float combatStationaryTurnSpeed;
     public float combatStanceAcceleration;
+
     public float crouchSpeed;
     public float crouchAcceleration;
+
+    public float stunnedMovementSpeed;
+    public float stunnedSprintingSpeed;
+    public float stunnedCrouchedMovementSpeed;
 
     [Header("Damage Reactions")]
     public float damageThresholdForFlinch;
     public float damageThresholdForStagger;
+    public float staggerDuration;
 
-
+    // ---------- States & Stances ---------
     enum CharacterStance
     {
         Idle,
@@ -35,6 +44,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         Crouching,
     }
     CharacterStance currentStance;
+
+    bool stunned;
+    float nextEndStunTime;
+
+
 
     [Header("For development only")]
     public Transform aimAtTarget;
@@ -68,19 +82,19 @@ public class EC_HumanoidCharacterController : EntityComponent
         // -------- Weapons -------
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            EquipItem(1);
+            ChangeSelectedItem(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            EquipItem(2);
+            ChangeSelectedItem(2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            EquipItem(3);
+            ChangeSelectedItem(3);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            EquipItem(0);
+            ChangeSelectedItem(0);
         }
 
         // -------- Aiming & Look at -------
@@ -149,6 +163,30 @@ public class EC_HumanoidCharacterController : EntityComponent
 
         #endregion
 
+        // Disable Stun after Time
+        if (stunned)
+        {
+            if(Time.time> nextEndStunTime)
+            {
+                stunned = false;
+
+                //reset speds
+                if(currentStance == CharacterStance.Idle)
+                {
+                    movementController.SetDefaultSpeed(idleWalkingSpeed);
+                    movementController.SetSprintSpeed(idleSprintingSpeed);
+                }
+                else if (currentStance == CharacterStance.CombatStance)
+                {
+                    movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
+                    movementController.SetSprintSpeed(combatStanceSprintingSpeed);
+                }
+                else if (currentStance == CharacterStance.Crouching)
+                {
+                    movementController.SetDefaultSpeed(crouchSpeed);
+                }
+            }
+        }
     }
 
 
@@ -156,6 +194,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         currentStance = CharacterStance.Idle;
         movementController.SetDefaultSpeed(idleWalkingSpeed);
+        movementController.SetSprintSpeed(idleSprintingSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
@@ -171,6 +210,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             currentStance = CharacterStance.CombatStance;
             movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
+            movementController.SetSprintSpeed(combatStanceSprintingSpeed);
             movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
             movementController.SetAcceleration(combatStanceAcceleration);
             animationController.ChangeToCombatStance();
@@ -194,43 +234,54 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination)
     {
-        movementController.MoveTo(destination);
+        if (!stunned)
+        {
+            movementController.MoveTo(destination);
+        } 
     }
 
     public void MoveTo(Vector3 destination, bool sprint)
     {
-        if (sprint)
+        if (!stunned)
         {
-            if (!DoesCurrentStanceAllowSprinting())
+            if (sprint)
             {
-                sprint = false;
+                if (!DoesCurrentStanceAllowSprinting())
+                {
+                    sprint = false;
+                }
+                else 
+                {
+                    StopAimAt();
+                }
             }
-            else // if (IsAimingSpine())
-            {
-                StopAimAt();
-                //StopAimingWeapon();
-                //StopAimingSpine();
-                //StopLookAt();
-            }
-        }
 
-        movementController.MoveTo(destination, sprint);
+            movementController.MoveTo(destination, sprint);
+        }
+    }
+
+    public void StopMoving()
+    {
+        movementController.AbortMoving();
     }
 
     #region Aiming Weapon Spine And Look at
 
     public void AimAt(Transform traget)
     {
-        if (DoesCurrentStanceAllowAiming())
+        if (!stunned)
         {
-            LookAt(traget);
-            AimSpineAtTarget(traget);
-
-            if(interactionController.GetCurrentSelecteditem() is Gun)
+            if (DoesCurrentStanceAllowAiming())
             {
-                AimWeaponAtTarget();
+                LookAt(traget);
+                AimSpineAtTarget(traget);
+
+                if (interactionController.GetCurrentSelecteditem() is Gun)
+                {
+                    AimWeaponAtTarget();
+                }
+
             }
-            
         }
     }
 
@@ -244,7 +295,10 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void LookAt(Transform target)
     {
-        aimingController.LookAtTransform(target);
+        if (!stunned)
+        {
+            aimingController.LookAtTransform(target);
+        }   
     }
 
     public void StopLookAt()
@@ -255,7 +309,11 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineAtTarget(Transform target)
     {
-        aimingController.AimSpineAtTransform(target);
+        if (!stunned)
+        {
+            aimingController.AimSpineAtTransform(target);
+        }
+        
     }
 
     public void StopAimingSpine()
@@ -266,7 +324,10 @@ public class EC_HumanoidCharacterController : EntityComponent
     //automaticly takes the spine target
     public void AimWeaponAtTarget()
     {
-        aimingController.AimWeaponAtTarget();
+        if (!stunned)
+        {
+            aimingController.AimWeaponAtTarget();
+        }
     }
 
     public void StopAimingWeapon()
@@ -293,29 +354,43 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #endregion
 
-    public void EquipItem(int inventoryID)
+    public void ChangeSelectedItem(int inventoryID)
     {
-        if (IsAimingWeapon())
+        if (!stunned)
         {
-            StopAimingWeapon();
+            if (IsAimingWeapon())
+            {
+                StopAimingWeapon();
+            }
+            //stop aiming weapon if here
+            interactionController.ChangeItemInHand(inventoryID);
         }
-        //stop aiming weapon if here
-        interactionController.ChangeItemInHand(inventoryID);
+    }
+
+    public void AbortChangingSelectedItem()
+    {
+        interactionController.AbortChangingItemInHand();
     }
 
     public void ShootWeapon()
     {
-        interactionController.ShootWeapon();
+        if (!stunned)
+        {
+            interactionController.ShootWeapon();
+        }
     }
 
     public void StartReloadingWeapon()
     {
-        if (IsAimingWeapon())
+        if (!stunned)
         {
-            StopAimingWeapon();
-        }
+            if (IsAimingWeapon())
+            {
+                StopAimingWeapon();
+            }
 
-        interactionController.StartReloadingWeapon();
+            interactionController.StartReloadingWeapon();
+        }
     }
 
     public void AbortReloadingWeapon()
@@ -325,7 +400,15 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ThrowGrenade()
     {
-        interactionController.ThrowGrenade();
+        if (!stunned)
+        {
+            interactionController.ThrowGrenade();
+        }  
+    }
+
+    public void AbortThrowingGrenade()
+    {
+        interactionController.AbortThrowingGrenade();
     }
 
     bool DoesCurrentStanceAllowSprinting()
@@ -352,13 +435,39 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    void Stagger(float staggerDuration)
+    {
+        animationController.Stagger(staggerDuration);
+        stunned = true;
+        nextEndStunTime = Time.time + staggerDuration;
+
+        AbortReloadingWeapon();
+        StopAimAt();
+        AbortChangingSelectedItem();
+        AbortThrowingGrenade();
+
+
+        if(currentStance == CharacterStance.Crouching)
+        {
+            movementController.SetDefaultSpeed(stunnedCrouchedMovementSpeed);
+        }
+        else
+        {
+            movementController.SetDefaultSpeed(stunnedMovementSpeed);
+            movementController.SetSprintSpeed(stunnedSprintingSpeed);
+        }
+      
+
+
+    }
+
     public override void OnTakeDamage(ref DamageInfo damageInfo)
     {
-        Debug.Log("Damage Input 3");
 
         if (damageInfo.damage > damageThresholdForStagger)
         {
             //Stagger
+            Stagger(staggerDuration);
         }
         else if(damageInfo.damage > damageThresholdForFlinch)
         {
@@ -366,6 +475,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
         else
         {
+           
             //nothing ?  maybe tell the AI Controller that he was hit 
         }
     }

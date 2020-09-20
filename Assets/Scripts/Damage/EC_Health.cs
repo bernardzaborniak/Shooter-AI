@@ -49,7 +49,6 @@ public class EC_Health : EntityComponent
 
     public bool TakeDamage(ref DamageInfo damageInfo)
     {
-        Debug.Log("Damage Input 2");
         //returns true if health falls below 0
         currentHealth -= damageInfo.damage;
 

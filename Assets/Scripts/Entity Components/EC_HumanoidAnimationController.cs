@@ -89,6 +89,11 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Tooltip("What is the maximum value the staggerID can have - how many different stagger animations do we have?")]
     public int numberOdStaggerAnimationVariations;
 
+    public string staggerSpeedMultiplierParam;
+    int staggerSpeedMultiplierParamID;
+    [Tooltip("Used for modifying the speed modifier, the ids here correspond with the ids in the animator")]
+    public float[] staggerAnimationsLengths;
+
 
 
 
@@ -155,14 +160,12 @@ public class EC_HumanoidAnimationController : EntityComponent
         //stagger
         staggerParamID = Animator.StringToHash(staggerParam);
         staggerIDParamID = Animator.StringToHash(staggerIDParam);
+        staggerSpeedMultiplierParamID = Animator.StringToHash(staggerSpeedMultiplierParam);
     }
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            Stagger();
-        }
+
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
@@ -286,9 +289,14 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetTrigger(flinchParamID);
     }
 
-    public void Stagger()
+    public void Stagger(float animationDuration)
     {
-        animator.SetInteger(staggerIDParamID, Random.Range(0, numberOdStaggerAnimationVariations));
+        int currentStaggerID = Random.Range(0, numberOdStaggerAnimationVariations);
+
+        animator.SetFloat(staggerSpeedMultiplierParamID, staggerAnimationsLengths[currentStaggerID]/ animationDuration);
+        animator.SetInteger(staggerIDParamID, currentStaggerID);
+
+
         animator.SetTrigger(staggerParamID);
     }
 }
