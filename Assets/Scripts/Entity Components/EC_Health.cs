@@ -18,13 +18,11 @@ public class EC_Health : EntityComponent
     public float changeColorTime = 0.2f;
     float nextGoBackToNormalColorTime;
 
+    [Header("Hitbox Logic")]
     public Hitbox[] hitboxes;
 
-    //[Header("DeathEffect")]
-    //performance wise better not, but is used by players for example
-    //public bool instantateDeathEffect;
-
-    //public DeathEffect deathEffect;
+    [Header("Death Effect")]
+    public HumanoidDeathEffect humanoidDeathEffect;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -178,5 +176,10 @@ public class EC_Health : EntityComponent
         {
             healthBarFill.fillAmount = currentHealth / maxHealth;
         }
+    }
+
+    public override void OnDie()
+    {
+        humanoidDeathEffect.EnableDeathEffect();
     }
 }
