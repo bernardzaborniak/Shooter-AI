@@ -26,7 +26,7 @@ public class EntityComponent : MonoBehaviour
 
     }
 
-    public virtual void OnDie()//GameEntity killer)
+    public virtual void OnDie(ref DamageInfo damageInfo)
     {
 
     }

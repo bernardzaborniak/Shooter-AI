@@ -12,8 +12,6 @@ public class EC_HumanoidMovementController : EntityComponent
     [SerializeField]
     protected NavMeshAgent agent;
     [SerializeField]
-    protected Rigidbody rb;
-    [SerializeField]
     protected EC_HumanoidAnimationController humanoidAnimationController;
 
 
@@ -245,6 +243,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
         transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
         angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
+
     }
 
     public void SetDesiredForward(Vector3 direction)
@@ -316,6 +315,11 @@ public class EC_HumanoidMovementController : EntityComponent
     public virtual Vector3 GetCurrentVelocity()
     {
         return agent.velocity;
+    }
+
+    public Vector3 GetCurrentAngularVelocity()
+    {
+        return angularVelocity;
     }
 
     public float GetMaxSpeed()

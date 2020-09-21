@@ -142,7 +142,6 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public void AbortChangingItemInHand()
     {
-        Debug.Log("abort: " + currentSelectedItemID);
         ChangeItemInHand(currentSelectedItemID);
     }
 

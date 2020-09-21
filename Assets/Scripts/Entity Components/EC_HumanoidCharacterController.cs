@@ -55,6 +55,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     public Transform lookAtTarget;
     //add a bool to character stance which tells if stance allows sprinting or not
 
+    [Header("Death Effect")]
+    public HumanoidDeathEffect humanoidDeathEffect;
+
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -118,7 +121,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         // -------Shooting & Reloading -----
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ShootWeapon();
+            //ShootWeapon();
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -478,6 +481,11 @@ public class EC_HumanoidCharacterController : EntityComponent
            
             //nothing ?  maybe tell the AI Controller that he was hit 
         }
+    }
+
+    public override void OnDie(ref DamageInfo damageInfo)
+    {
+        humanoidDeathEffect.EnableDeathEffect(movementController.GetCurrentVelocity(), movementController.GetCurrentAngularVelocity(), ref damageInfo);
     }
 
 

@@ -71,12 +71,12 @@ public class GameEntity : MonoBehaviour
         }
     }
 
-    public virtual void OnDie()//GameEntity killer)
+    public virtual void OnDie(ref DamageInfo damageInfo)
     {
         onDieEvent.Invoke();
         foreach (EntityComponent component in components)
         {
-            component.OnDie();//killer);
+            component.OnDie(ref damageInfo);
         }
         if(destroyOnDie)Destroy(gameObject);
     }

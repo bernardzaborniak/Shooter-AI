@@ -21,8 +21,7 @@ public class EC_Health : EntityComponent
     [Header("Hitbox Logic")]
     public Hitbox[] hitboxes;
 
-    [Header("Death Effect")]
-    public HumanoidDeathEffect humanoidDeathEffect;
+   
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -54,42 +53,8 @@ public class EC_Health : EntityComponent
         {
             currentHealth = 0;
 
-            myEntity.OnDie();
+            myEntity.OnDie(ref damageInfo);
             return true;
-
-            #region previous code
-            /*if (!instantateDeathEffect)
-            {
-                if (deathEffect != null)
-                {
-                    if (damageInfo.appliesForce)
-                    {
-                        deathEffect.OnDie(damageInfo.killPushForce);
-                    }
-                    else
-                    {
-                        deathEffect.OnDie();
-                    }
-                }
-            }
-            else
-            {
-                Debug.Log("instantiate");
-                //DeathEffect instantiatedDeathEffect = Instantiate(deathEffect,transform.position,transform.rotation).GetComponent<DeathEffect>();
-
-                if (damageInfo.appliesForce)
-                {
-                    instantiatedDeathEffect.OnDie(damageInfo.killPushForce);
-                }
-                else
-                {
-                    instantiatedDeathEffect.OnDie();
-                }
-            }*/
-
-            //Debug.Log("calling on Die: health");
-            //myEntity.Die(damageInfo.damageGiver);
-            #endregion
         }
         else
         {
@@ -178,8 +143,5 @@ public class EC_Health : EntityComponent
         }
     }
 
-    public override void OnDie()
-    {
-        humanoidDeathEffect.EnableDeathEffect();
-    }
+    
 }
