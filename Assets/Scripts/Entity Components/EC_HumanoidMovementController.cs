@@ -13,6 +13,8 @@ public class EC_HumanoidMovementController : EntityComponent
     protected NavMeshAgent agent;
     [SerializeField]
     protected EC_HumanoidAnimationController humanoidAnimationController;
+    [SerializeField]
+    protected NavMeshAgentLinkMover navMeshAgentLinkMover;
 
 
     protected enum PushingState
@@ -142,7 +144,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
         agent.updateRotation = false;
         desiredForward = transform.forward;
-        
+
     }
 
     public override void UpdateComponent()
@@ -182,6 +184,16 @@ public class EC_HumanoidMovementController : EntityComponent
         Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
 
         if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
+
+        //Navmesh Link Check
+        if (!navMeshAgentLinkMover.isTraversingLink)
+        {
+            if (agent.isOnOffMeshLink)
+            {
+                Debug.Log("agent is on offmesh link");
+                navMeshAgentLinkMover.TraverseOffMeshLink();
+            }
+        }
 
     }
 
