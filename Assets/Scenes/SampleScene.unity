@@ -2447,18 +2447,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &454337710 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5190789059555327762, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7366031315917638809}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e94ab844336ce07488c99d71f9f3f401, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &455585570
 GameObject:
   m_ObjectHideFlags: 0
@@ -8360,6 +8348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1317806717}
   - component: {fileID: 1317806718}
+  - component: {fileID: 1317806719}
   m_Layer: 0
   m_Name: Link One (1)
   m_TagString: Untagged
@@ -8401,6 +8390,21 @@ MonoBehaviour:
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
   m_Area: 0
+--- !u!114 &1317806719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317806716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6353556a7ffe8bf449864a9aa032279a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshLinkType: 0
+  obstacleHeight: 0
+  traverseDuration: 1
 --- !u!1 &1332456986 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100078, guid: 6996385895b383749b266464bf872c69,
@@ -13445,11 +13449,6 @@ PrefabInstance:
       propertyPath: lookAtTarget
       value: 
       objectReference: {fileID: 182164734}
-    - target: {fileID: 7366031314207611041, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: navMeshAgentLinkMover
-      value: 
-      objectReference: {fileID: 454337710}
     - target: {fileID: 7366031314207611042, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: playerCamera

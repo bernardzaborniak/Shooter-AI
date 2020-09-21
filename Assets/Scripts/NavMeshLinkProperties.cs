@@ -20,4 +20,6 @@ public class NavMeshLinkProperties : MonoBehaviour
     public NavMeshLinkType navMeshLinkType;
     [Tooltip("only used if type is JumpOverObstacle")]
     public float obstacleHeight;
+    [Tooltip("How long should a human be traversing this obstacle?")]
+    public float traverseDuration;
 }

@@ -84,9 +84,13 @@ public class NavMeshAgentLinkMover : MonoBehaviour
 
 
     public OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
-    OffMeshLinkData currentLinkData;
+    //OffMeshLinkData currentLinkData;
     NavMeshLinkProperties currentNavMeshLinkProperties;
     Vector3 currentLinkEndPosition;
+    Vector3 currentLinkStartPosition;
+    float currentLinkTraverseDuration;
+    //float currentTraversingStartTime;
+    float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
     NavMeshAgent agent;
 
     void Start()
@@ -101,17 +105,22 @@ public class NavMeshAgentLinkMover : MonoBehaviour
 
             if (agent.transform.position != currentLinkEndPosition)
             {
+                currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
+
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
-                    agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    //agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverHole)
                 {
-                    agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    // agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
                 {
-                    agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    // agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
             }
             else
@@ -126,15 +135,22 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     {
         isTraversingLink = true;
         OffMeshLinkData data = agent.currentOffMeshLinkData;
-        currentNavMeshLinkProperties = data.offMeshLink.gameObject.GetComponent<NavMeshLinkProperties>();
+        currentNavMeshLinkProperties = ((UnityEngine.AI.NavMeshLink)agent.navMeshOwner).gameObject.GetComponent<NavMeshLinkProperties>();       // use this instead of "data.offMeshLink.gameObject.GetComponent<NavMeshLinkProperties>();" because of a unity bug where the navmeshlink is returned null by the navmeshLinkData?
+        currentLinkStartPosition = agent.transform.position;
         currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
 
-        if(currentNavMeshLinkProperties == null)
+        currentTraversalNormalizedTime = 0;
+
+        if (currentNavMeshLinkProperties == null)
         {
+            currentLinkTraverseDuration = 1;
+
             StartTraversingLinearly();
         }
         else
         {
+            currentLinkTraverseDuration = currentNavMeshLinkProperties.traverseDuration;
+
             if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpOverObstacle)
             {
                 StartTraversingLinearly();
