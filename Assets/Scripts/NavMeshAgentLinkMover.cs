@@ -88,10 +88,15 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     NavMeshLinkProperties currentNavMeshLinkProperties;
     Vector3 currentLinkEndPosition;
     Vector3 currentLinkStartPosition;
+    float currentDistanceToTraverse;
     float currentLinkTraverseDuration;
     //float currentTraversingStartTime;
     float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
     NavMeshAgent agent;
+
+    //For calculating the jump curve
+   // public AnimationCurve curve = new AnimationCurve();
+   // float distanceHeightRation = 0.2f; //how much the length is the height of the jump going to be?
 
     void Start()
     {
@@ -102,10 +107,12 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     {
         if (isTraversingLink)
         {
+            currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
 
-            if (agent.transform.position != currentLinkEndPosition)
+            //float squaredDistanceDifference = (agent.transform.position - currentLinkEndPosition).sqrMagnitude;
+            if (currentTraversalNormalizedTime <1)
             {
-                currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
+                
 
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
@@ -114,8 +121,8 @@ public class NavMeshAgentLinkMover : MonoBehaviour
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverHole)
                 {
-                    // agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
-                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
+                    float yOffset = currentDistanceToTraverse * 0.25f * (currentTraversalNormalizedTime - currentTraversalNormalizedTime * currentTraversalNormalizedTime);  //the cureve caluclation could be different?
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
                 {
@@ -127,6 +134,8 @@ public class NavMeshAgentLinkMover : MonoBehaviour
             {
                 isTraversingLink = false;
                 agent.CompleteOffMeshLink();
+
+                Debug.Log("finished traversing");
             }
         }
     }
@@ -138,6 +147,7 @@ public class NavMeshAgentLinkMover : MonoBehaviour
         currentNavMeshLinkProperties = ((UnityEngine.AI.NavMeshLink)agent.navMeshOwner).gameObject.GetComponent<NavMeshLinkProperties>();       // use this instead of "data.offMeshLink.gameObject.GetComponent<NavMeshLinkProperties>();" because of a unity bug where the navmeshlink is returned null by the navmeshLinkData?
         currentLinkStartPosition = agent.transform.position;
         currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+        currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
 
         currentTraversalNormalizedTime = 0;
 
@@ -157,7 +167,7 @@ public class NavMeshAgentLinkMover : MonoBehaviour
             }
             else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpOverHole)
             {
-                StartTraversingLinearly();
+                StartTraversingLinkJumpOverHole();
             }
             else if(currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.DefaultLinearLink)
             {
@@ -182,6 +192,11 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     void StartTraversingLinkJumpOverHole()
     {
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverHole;
+    }
+
+    void GetPointOnSphericalCurve(float amount)
+    {
+        Vector3.Slerp(currentLinkStartPosition, currentLinkEndPosition, amount);
     }
 
 
