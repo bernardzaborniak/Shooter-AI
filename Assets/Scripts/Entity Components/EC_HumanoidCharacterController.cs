@@ -45,8 +45,16 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     CharacterStance currentStance;
 
-    bool stunned;
-    float nextEndStunTime;
+    enum CharacterPreventionType
+    {
+        NoPrevention,
+        Stunned,
+        JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
+    }
+
+    CharacterPreventionType characterPreventionType;
+    //bool stunned;
+    float endStunTime;
 
 
 
@@ -167,14 +175,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         #endregion
 
         // Disable Stun after Time
-        if (stunned)
+        if (characterPreventionType == CharacterPreventionType.Stunned)
         {
-            if(Time.time> nextEndStunTime)
+            if(Time.time> endStunTime)
             {
-                stunned = false;
+                characterPreventionType = CharacterPreventionType.NoPrevention;
 
                 //reset speds
-                if(currentStance == CharacterStance.Idle)
+                if (currentStance == CharacterStance.Idle)
                 {
                     movementController.SetDefaultSpeed(idleWalkingSpeed);
                     movementController.SetSprintSpeed(idleSprintingSpeed);
@@ -237,7 +245,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             movementController.MoveTo(destination);
         } 
@@ -245,7 +253,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination, bool sprint)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (sprint)
             {
@@ -272,7 +280,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimAt(Transform traget)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -298,7 +306,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void LookAt(Transform target)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             aimingController.LookAtTransform(target);
         }   
@@ -312,7 +320,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineAtTarget(Transform target)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             aimingController.AimSpineAtTransform(target);
         }
@@ -327,7 +335,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     //automaticly takes the spine target
     public void AimWeaponAtTarget()
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             aimingController.AimWeaponAtTarget();
         }
@@ -359,7 +367,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ChangeSelectedItem(int inventoryID)
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (IsAimingWeapon())
             {
@@ -377,7 +385,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ShootWeapon()
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             interactionController.ShootWeapon();
         }
@@ -385,7 +393,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (IsAimingWeapon())
             {
@@ -403,7 +411,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ThrowGrenade()
     {
-        if (!stunned)
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             interactionController.ThrowGrenade();
         }  
@@ -441,8 +449,8 @@ public class EC_HumanoidCharacterController : EntityComponent
     void Stagger(float staggerDuration)
     {
         animationController.Stagger(staggerDuration);
-        stunned = true;
-        nextEndStunTime = Time.time + staggerDuration;
+        characterPreventionType = CharacterPreventionType.Stunned;
+        endStunTime = Time.time + staggerDuration;
 
         AbortReloadingWeapon();
         StopAimAt();
@@ -486,6 +494,24 @@ public class EC_HumanoidCharacterController : EntityComponent
     public override void OnDie(ref DamageInfo damageInfo)
     {
         humanoidDeathEffect.EnableDeathEffect(movementController.GetCurrentVelocity(), movementController.GetCurrentAngularVelocity(), ref damageInfo);
+    }
+
+    public void OnStartTraversingOffMeshLink()
+    {
+        characterPreventionType = CharacterPreventionType.JumpingToTraverseOffMeshLink;
+
+        AbortReloadingWeapon();
+        StopAimAt();
+        AbortChangingSelectedItem();
+        //AbortThrowingGrenade();
+    }
+
+    public void OnStopTraversingOffMeshLink()
+    {
+        if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        {
+            characterPreventionType = CharacterPreventionType.NoPrevention;
+        }
     }
 
 

@@ -13,8 +13,9 @@ public class EC_HumanoidMovementController : EntityComponent
     protected NavMeshAgent agent;
     [SerializeField]
     protected EC_HumanoidAnimationController humanoidAnimationController;
-   // [SerializeField]
-    //protected NavMeshAgentLinkMover navMeshAgentLinkMover;
+    [Tooltip("Only used to inform the character controller if its currently traversing an offmeshLink")]
+    [SerializeField]
+    protected EC_HumanoidCharacterController characterController;
 
 
     protected enum MovementState
@@ -421,6 +422,10 @@ public class EC_HumanoidMovementController : EntityComponent
             }
         }
 
+        // Inform Character Controler
+        characterController.OnStartTraversingOffMeshLink();
+
+        // Inform Animation Controller
 
     }
 
@@ -430,6 +435,11 @@ public class EC_HumanoidMovementController : EntityComponent
         movementState = MovementState.Default;
 
         offMeshLinkTraversalVelocity = Vector3.zero;
+
+        // Inform Character Controler
+        characterController.OnStopTraversingOffMeshLink();
+
+        // Inform Animation Controller
     }
 
     void StartTraversingLinkLinearly()
