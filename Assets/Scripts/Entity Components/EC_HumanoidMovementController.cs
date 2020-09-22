@@ -13,16 +13,17 @@ public class EC_HumanoidMovementController : EntityComponent
     protected NavMeshAgent agent;
     [SerializeField]
     protected EC_HumanoidAnimationController humanoidAnimationController;
-    [SerializeField]
-    protected NavMeshAgentLinkMover navMeshAgentLinkMover;
+   // [SerializeField]
+    //protected NavMeshAgentLinkMover navMeshAgentLinkMover;
 
 
-    protected enum PushingState
+    protected enum MovementState
     {
         Default,
-        BeingPushed,
+        TraversingOffMeshLink,
+        BeingPushed
     }
-    protected PushingState movementState;
+    protected MovementState movementState;
 
     // Represents an information container about the current order, does not do any logic by itself
     class MovementOrder
@@ -133,6 +134,36 @@ public class EC_HumanoidMovementController : EntityComponent
     public float sprintingSpeed;
     public float defaultSpeed;
 
+    [Header("Traversing Off Mesh Links")]
+    // For calculating the jump over hole or up and down curve
+    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownCuve = new AnimationCurve();
+    public AnimationCurve jumpingUpCurve = new AnimationCurve();
+    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
+    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
+    float currentJumpOverHoleHeight;
+
+    // For jumping over obstacle
+    float currentObstacleHeight;
+    public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
+
+    // Infos about Current Link
+    NavMeshLinkProperties currentNavMeshLinkProperties;
+    Vector3 currentLinkEndPosition;
+    Vector3 currentLinkStartPosition;
+    float currentDistanceToTraverse;
+    float currentLinkTraverseDuration;
+    float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
+
+    enum OffMeshLinkMoveMethod
+    {
+        JumpOverObstacle,
+        JumpUpDownOrHorizontal,
+        Linear
+    }
+    OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
+
+
 
     #endregion
 
@@ -144,56 +175,91 @@ public class EC_HumanoidMovementController : EntityComponent
 
         agent.updateRotation = false;
         desiredForward = transform.forward;
+        movementState = MovementState.Default;
 
     }
 
     public override void UpdateComponent()
     {
-        // 1. Update movement according to movement Order 
-        if (currentMovementOrder.IsWaitingForExecution())
+        if(movementState == MovementState.Default)
         {
-            agent.isStopped = false;
-
-            agent.SetDestination(currentMovementOrder.destination);
-            UpdateAgentSpeed(currentMovementOrder.sprint);
-            currentMovementOrder.OnExecute();
-        }
-        else if (currentMovementOrder.IsBeingExecuted())
-        {
-            float dist = agent.remainingDistance;
-            if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
+            // 1. Update movement according to movement Order 
+            if (currentMovementOrder.IsWaitingForExecution())
             {
-                currentMovementOrder.OnFinishedExecuting();
+                agent.isStopped = false;
+
+                agent.SetDestination(currentMovementOrder.destination);
+                UpdateAgentSpeed(currentMovementOrder.sprint);
+                currentMovementOrder.OnExecute();
+            }
+            else if (currentMovementOrder.IsBeingExecuted())
+            {
+                float dist = agent.remainingDistance;
+                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
+                {
+                    currentMovementOrder.OnFinishedExecuting();
+                }
+            }
+
+            // 2. Update rotation according to movement direction or externally set direction if manualRotation=true
+            if (!manualRotation)
+            {
+                if (agent.desiredVelocity != Vector3.zero)
+                {
+                    desiredForward = agent.desiredVelocity;
+                }
+            }
+
+            RotateTowards(desiredForward);
+
+            //3. Update animation
+
+            //calculate forward and sideways velocity;
+            Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
+
+            if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
+
+            // 4. Navmesh Link Check
+            //if (!navMeshAgentLinkMover.isTraversingLink)
+            //{
+                if (agent.isOnOffMeshLink)
+                {
+                    Debug.Log("agent is on offmesh link");
+                //navMeshAgentLinkMover.TraverseOffMeshLink();
+                     StartTraversingOffMeshLink();
+                }
+            //}
+        }
+        else if(movementState == MovementState.TraversingOffMeshLink)
+        {
+            currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
+
+            if (currentTraversalNormalizedTime < 1)
+            {
+
+
+                if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
+                {
+                    float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                }
+                else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpUpDownOrHorizontal)
+                {
+                    float yOffset = currentCurveForJumpingUpDownOrHorizontal.Evaluate(currentTraversalNormalizedTime) * currentJumpOverHoleHeight;
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                }
+                else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
+                {
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
+                }
+            }
+            else
+            {
+                FinishTraversingOffMeshLink();
             }
         }
 
-        // 2. Update rotation according to movement direction or externally set direction if manualRotation=true
-        if (!manualRotation)
-        {
-            if (agent.desiredVelocity != Vector3.zero)
-            {
-                desiredForward = agent.desiredVelocity;
-            }
-        }
-
-        RotateTowards(desiredForward);
-
-        //3. Update animation
-
-        //calculate forward and sideways velocity;
-        Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
-
-        if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
-
-        //Navmesh Link Check
-        if (!navMeshAgentLinkMover.isTraversingLink)
-        {
-            if (agent.isOnOffMeshLink)
-            {
-                Debug.Log("agent is on offmesh link");
-                navMeshAgentLinkMover.TraverseOffMeshLink();
-            }
-        }
+      
 
     }
 
@@ -308,6 +374,98 @@ public class EC_HumanoidMovementController : EntityComponent
     public void SetStationaryTurnSpeed(float newStationaryTurnSpeed)
     {
         stationaryTurnSpeed = newStationaryTurnSpeed;
+    }
+
+
+    #endregion
+
+    #region Traversing Off Mesh Link
+
+    void StartTraversingOffMeshLink()
+    {
+        movementState = MovementState.TraversingOffMeshLink;
+
+        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        currentNavMeshLinkProperties = ((UnityEngine.AI.NavMeshLink)agent.navMeshOwner).gameObject.GetComponent<NavMeshLinkProperties>();       // use this instead of "data.offMeshLink.gameObject.GetComponent<NavMeshLinkProperties>();" because of a unity bug where the navmeshlink is returned null by the navmeshLinkData?
+        currentLinkStartPosition = agent.transform.position;
+        currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+        currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
+
+
+
+
+        currentTraversalNormalizedTime = 0;
+
+        if (currentNavMeshLinkProperties == null)
+        {
+            currentLinkTraverseDuration = 1;
+
+            StartTraversingLinkLinearly();
+        }
+        else
+        {
+            currentLinkTraverseDuration = currentNavMeshLinkProperties.traverseDuration;
+
+
+            if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpOverObstacle)
+            {
+                StartTraversingLinkJumpOverObstacle();
+            }
+            else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpDownUpOrHorizontal)
+            {
+                StartTraversingLinkJumpOverHole();
+            }
+            else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.DefaultLinearLink)
+            {
+                StartTraversingLinkLinearly();
+            }
+        }
+
+
+    }
+
+    void FinishTraversingOffMeshLink()
+    {
+        agent.CompleteOffMeshLink();
+        movementState = MovementState.Default;
+    }
+
+    void StartTraversingLinkLinearly()
+    {
+        currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.Linear;
+    }
+
+    void StartTraversingLinkJumpOverObstacle()
+    {
+        currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverObstacle;
+
+        currentObstacleHeight = currentNavMeshLinkProperties.obstacleHeight;
+    }
+
+    void StartTraversingLinkJumpOverHole()
+    {
+        currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpUpDownOrHorizontal;
+
+        currentJumpOverHoleHeight = currentDistanceToTraverse * distanceHeightRatio;
+
+        float heightDifference = currentLinkEndPosition.y - currentLinkStartPosition.y;
+
+        //if the distance between the point in y is big, we adjust the jumpOverHoleHeight based on the highest:
+        if (heightDifference > 0.5f)
+        {
+            //if going up
+            currentCurveForJumpingUpDownOrHorizontal = jumpingUpCurve;
+
+        }
+        else if (heightDifference < -0.5f)
+        {
+            heightDifference = -heightDifference;
+            currentCurveForJumpingUpDownOrHorizontal = jumpingDownCuve;
+        }
+        else
+        {
+            currentCurveForJumpingUpDownOrHorizontal = horizontalJumpCurve;
+        }
     }
 
 
