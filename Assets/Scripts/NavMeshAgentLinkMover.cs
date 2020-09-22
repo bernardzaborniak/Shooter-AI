@@ -11,7 +11,7 @@ public enum OffMeshLinkMoveMethod
     //Parabola,
     //Curve
     JumpOverObstacle,
-    JumpOverHole,
+    JumpUpDownOrHorizontal,
     Linear
 }
 
@@ -94,9 +94,17 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
     NavMeshAgent agent;
 
-    //For calculating the jump curve
-   // public AnimationCurve curve = new AnimationCurve();
-   // float distanceHeightRation = 0.2f; //how much the length is the height of the jump going to be?
+    //For calculating the jump over hole or up and down curve
+    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownCuve = new AnimationCurve();
+    public AnimationCurve jumpingUpCurve = new AnimationCurve();
+    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
+    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
+    float currentJumpOverHoleHeight;
+
+    //FOr jumping over obstacle
+    float currentObstacleHeight;
+    public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
 
     void Start()
     {
@@ -109,24 +117,22 @@ public class NavMeshAgentLinkMover : MonoBehaviour
         {
             currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
 
-            //float squaredDistanceDifference = (agent.transform.position - currentLinkEndPosition).sqrMagnitude;
             if (currentTraversalNormalizedTime <1)
             {
                 
 
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
-                    //agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
-                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
+                    float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
+                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
-                else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverHole)
-                {
-                    float yOffset = currentDistanceToTraverse * 0.25f * (currentTraversalNormalizedTime - currentTraversalNormalizedTime * currentTraversalNormalizedTime);  //the cureve caluclation could be different?
+                else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpUpDownOrHorizontal)
+                {                    
+                    float yOffset = currentCurveForJumpingUpDownOrHorizontal.Evaluate(currentTraversalNormalizedTime) * currentJumpOverHoleHeight;
                     agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
                 {
-                    // agent.transform.position = Vector3.MoveTowards(agent.transform.position, currentLinkEndPosition, agent.speed * Time.deltaTime);
                     agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
             }
@@ -134,8 +140,6 @@ public class NavMeshAgentLinkMover : MonoBehaviour
             {
                 isTraversingLink = false;
                 agent.CompleteOffMeshLink();
-
-                Debug.Log("finished traversing");
             }
         }
     }
@@ -148,6 +152,9 @@ public class NavMeshAgentLinkMover : MonoBehaviour
         currentLinkStartPosition = agent.transform.position;
         currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
         currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
+        
+       
+
 
         currentTraversalNormalizedTime = 0;
 
@@ -161,11 +168,12 @@ public class NavMeshAgentLinkMover : MonoBehaviour
         {
             currentLinkTraverseDuration = currentNavMeshLinkProperties.traverseDuration;
 
+
             if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpOverObstacle)
             {
-                StartTraversingLinearly();
+                StartTraversingLinkJumpOverObstacle();
             }
-            else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpOverHole)
+            else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpDownUpOrHorizontal)
             {
                 StartTraversingLinkJumpOverHole();
             }
@@ -187,11 +195,34 @@ public class NavMeshAgentLinkMover : MonoBehaviour
     void StartTraversingLinkJumpOverObstacle()
     {
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverObstacle;
+
+        currentObstacleHeight = currentNavMeshLinkProperties.obstacleHeight;
     }
 
     void StartTraversingLinkJumpOverHole()
     {
-        currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverHole;
+        currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpUpDownOrHorizontal;
+
+        currentJumpOverHoleHeight = currentDistanceToTraverse * distanceHeightRatio;
+
+        float heightDifference = currentLinkEndPosition.y - currentLinkStartPosition.y;
+
+        //if the distance between the point in y is big, we adjust the jumpOverHoleHeight based on the highest:
+        if (heightDifference > 0.5f)
+        {
+            //if going up
+            currentCurveForJumpingUpDownOrHorizontal = jumpingUpCurve;
+
+        }
+        else if (heightDifference < -0.5f)
+        {
+            heightDifference = -heightDifference;
+            currentCurveForJumpingUpDownOrHorizontal = jumpingDownCuve;
+        }
+        else
+        {
+            currentCurveForJumpingUpDownOrHorizontal = horizontalJumpCurve;
+        }
     }
 
     void GetPointOnSphericalCurve(float amount)

@@ -8,10 +8,10 @@ public enum NavMeshLinkType
 {
     DefaultLinearLink,
     JumpOverObstacle,
-    JumpOverHole,
+    JumpDownUpOrHorizontal,
     //Maybe to add later or they are the same as jump over hole
-    JumpDown,
-    JumpUp
+    //JumpDown,
+    //JumpUp
 }
 
 [RequireComponent(typeof(NavMeshLink))]
