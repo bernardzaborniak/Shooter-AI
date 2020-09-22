@@ -12,7 +12,7 @@ public class EC_HumanoidMovementController : EntityComponent
     [SerializeField]
     protected NavMeshAgent agent;
     [SerializeField]
-    protected EC_HumanoidAnimationController humanoidAnimationController;
+    protected EC_HumanoidAnimationController animationController;
     [Tooltip("Only used to inform the character controller if its currently traversing an offmeshLink")]
     [SerializeField]
     protected EC_HumanoidCharacterController characterController;
@@ -221,7 +221,7 @@ public class EC_HumanoidMovementController : EntityComponent
             //calculate forward and sideways velocity;
             Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
 
-            if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
+            if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
             // 4. Navmesh Link Check
 
@@ -426,6 +426,7 @@ public class EC_HumanoidMovementController : EntityComponent
         characterController.OnStartTraversingOffMeshLink();
 
         // Inform Animation Controller
+        animationController.StartJumpingOverObstacle();
 
     }
 

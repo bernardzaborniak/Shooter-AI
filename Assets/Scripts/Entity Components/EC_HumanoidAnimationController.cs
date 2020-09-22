@@ -299,4 +299,14 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         animator.SetTrigger(staggerParamID);
     }
+
+    public void StartJumpingOverObstacle()
+    {
+        animator.SetTrigger("Jump Over");
+    }
+
+    public void StopJumpingOverObstacle()
+    {
+
+    }
 }
