@@ -253,6 +253,7 @@ public class EC_HumanoidMovementController : EntityComponent
                 }
 
                 offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
+                RotateTowards(new Vector3(offMeshLinkTraversalVelocity.x,0,offMeshLinkTraversalVelocity.z));
                 agent.transform.position = newPosition;
             }
             else
@@ -260,9 +261,6 @@ public class EC_HumanoidMovementController : EntityComponent
                 FinishTraversingOffMeshLink();
             }
         }
-
-      
-
     }
 
     #region Movement Orders
@@ -491,6 +489,7 @@ public class EC_HumanoidMovementController : EntityComponent
         if(movementState == MovementState.Default)
         {
             return agent.velocity;
+            
 
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
