@@ -441,6 +441,7 @@ public class EC_HumanoidMovementController : EntityComponent
         characterController.OnStopTraversingOffMeshLink();
 
         // Inform Animation Controller
+        animationController.StopJumpingOverObstacle();
     }
 
     void StartTraversingLinkLinearly()

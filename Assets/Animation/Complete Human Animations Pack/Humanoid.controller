@@ -725,6 +725,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 2
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3867683074523262931}
   m_Solo: 0
@@ -1452,6 +1455,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 2
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4579939569728658163}
   m_Solo: 0
@@ -2090,7 +2096,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e86d8e40f725ada43b0299577dba7b6b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 83ab64f4a9ea04e428483aa981fc60a2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -2226,7 +2232,7 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: Jump Over
-    m_Type: 9
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -2324,6 +2330,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 1
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8510143210055713004}
   m_Solo: 0
@@ -3013,6 +3022,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2730563227011856034}
   m_Solo: 0
@@ -3561,6 +3573,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 1
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 84820860325781797}
   m_Solo: 0
@@ -3589,6 +3604,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 3
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7301949492771049725}
   m_Solo: 0
@@ -3694,6 +3712,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6798681209142587698}
@@ -3840,6 +3861,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 3
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7622142614464811747}
   m_Solo: 0
@@ -3986,6 +4010,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 1
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1594055110837618004}
   m_Solo: 0
@@ -4041,6 +4068,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: Item In Hand ID
     m_EventTreshold: 2
+  - m_ConditionMode: 2
+    m_ConditionEvent: Jump Over
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 120579294973183573}
   m_Solo: 0

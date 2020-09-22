@@ -302,11 +302,11 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void StartJumpingOverObstacle()
     {
-        animator.SetTrigger("Jump Over");
+        animator.SetBool("Jump Over", true);
     }
 
     public void StopJumpingOverObstacle()
     {
-
+        animator.SetBool("Jump Over", false);
     }
 }
