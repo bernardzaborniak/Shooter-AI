@@ -163,6 +163,9 @@ public class EC_HumanoidMovementController : EntityComponent
     }
     OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
 
+    // Saved For Ragdolls or others
+    Vector3 offMeshLinkTraversalVelocity;
+
 
 
     #endregion
@@ -220,15 +223,11 @@ public class EC_HumanoidMovementController : EntityComponent
             if (humanoidAnimationController) humanoidAnimationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
             // 4. Navmesh Link Check
-            //if (!navMeshAgentLinkMover.isTraversingLink)
-            //{
-                if (agent.isOnOffMeshLink)
-                {
-                    Debug.Log("agent is on offmesh link");
-                //navMeshAgentLinkMover.TraverseOffMeshLink();
-                     StartTraversingOffMeshLink();
-                }
-            //}
+
+            if (agent.isOnOffMeshLink)
+            {
+                StartTraversingOffMeshLink();
+            }
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
         {
@@ -236,22 +235,25 @@ public class EC_HumanoidMovementController : EntityComponent
 
             if (currentTraversalNormalizedTime < 1)
             {
-
+                Vector3 newPosition = Vector3.zero;
 
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
                     float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
-                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpUpDownOrHorizontal)
                 {
                     float yOffset = currentCurveForJumpingUpDownOrHorizontal.Evaluate(currentTraversalNormalizedTime) * currentJumpOverHoleHeight;
-                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
                 {
-                    agent.transform.position = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
+                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
+
+                offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
+                agent.transform.position = newPosition;
             }
             else
             {
@@ -428,6 +430,8 @@ public class EC_HumanoidMovementController : EntityComponent
     {
         agent.CompleteOffMeshLink();
         movementState = MovementState.Default;
+
+        offMeshLinkTraversalVelocity = Vector3.zero;
     }
 
     void StartTraversingLinkLinearly()
@@ -474,16 +478,26 @@ public class EC_HumanoidMovementController : EntityComponent
     #region Status Checks
     public virtual bool IsMoving()
     {
-        return agent.velocity.magnitude > agent.speed / 2;
+        return GetCurrentVelocityMagnitude() > agent.speed / 2;
     }
 
     public float GetCurrentVelocityMagnitude()
     {
-        return agent.velocity.magnitude;
+        return GetCurrentVelocity().magnitude;
     }
 
     public virtual Vector3 GetCurrentVelocity()
     {
+        if(movementState == MovementState.Default)
+        {
+            return agent.velocity;
+
+        }
+        else if(movementState == MovementState.TraversingOffMeshLink)
+        {
+            return offMeshLinkTraversalVelocity;
+        }
+
         return agent.velocity;
     }
 
