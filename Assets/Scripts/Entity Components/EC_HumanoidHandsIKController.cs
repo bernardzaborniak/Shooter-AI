@@ -81,26 +81,18 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnChangeItemInHand(Item newItem)
     {
-        Debug.Log("IK on change weapon: new weapon: " + newItem);
-
-
         if (newItem == null)
         {
-            Debug.Log("IK 1");
-
            currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
             DisableIKs();
             currentIKTargetItem = null;
         }
         else
         {
-            Debug.Log("IK 2");
-
             currentIKTargetItem = newItem.GetComponent<IItemWithIKHandPositions>();
 
             if(currentIKTargetItem != null)
             {
-                Debug.Log("IK 2 a");
                 for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
                 {
                     if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newItem.itemInteractionType)
@@ -113,7 +105,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
             }
             else
             {
-                Debug.Log("IK 2 b");
                 currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
                 DisableIKs();
             }  

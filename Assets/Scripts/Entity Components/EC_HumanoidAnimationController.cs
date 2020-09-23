@@ -41,6 +41,10 @@ public class EC_HumanoidAnimationController : EntityComponent
     public float pullOutPistolAnimationLength;
     [Tooltip("How long is the original animaiton in seconds?")]
     public float hidePistolAnimationLength;
+    [Tooltip("How long is the original animaiton in seconds?")]
+    public float pullOutGrenadeAnimationLength;
+    [Tooltip("How long is the original animaiton in seconds?")]
+    public float hideGrenadeAnimationLength;
 
 
     // pull out / hide weapon speed & offset adjusters
@@ -247,6 +251,10 @@ public class EC_HumanoidAnimationController : EntityComponent
         {
             animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutPistolAnimationLength / animationDuration);
         }
+        else if (weaponAnimationID == 3)
+        {
+            animator.SetFloat(pullOutWeaponSpeedMultiplierParamID, pullOutGrenadeAnimationLength / animationDuration);
+        }
 
         animator.SetFloat(pullOutWeaponStartOffsetID, animationOffset);
     }
@@ -263,6 +271,10 @@ public class EC_HumanoidAnimationController : EntityComponent
         else if (weaponAnimationID == 2)
         {
             animator.SetFloat(hideWeaponSpeedMultiplierParamID, hidePistolAnimationLength / animationDuration);
+        }
+        else if(weaponAnimationID == 3)
+        {
+            animator.SetFloat(hideWeaponSpeedMultiplierParamID, hideGrenadeAnimationLength / animationDuration);
         }
 
         animator.SetFloat(hideWeaponStartOffsetID, animationOffset);
@@ -336,9 +348,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         else
         {
             float horizontalDistance = Vector3.Distance(new Vector3(startPointPosition.x,0, startPointPosition.z), new Vector3(endPointPosition.x, 0, endPointPosition.z));
-            Debug.Log("horizontalDistance: " + horizontalDistance);
             float verticalDistance = Mathf.Abs(startPointPosition.y - endPointPosition.y);
-            Debug.Log("verticalDistance: " + verticalDistance);
 
             bool jumpingDown = endPointPosition.y < startPointPosition.y;
 
@@ -346,28 +356,24 @@ public class EC_HumanoidAnimationController : EntityComponent
             if (horizontalDistance>3 || verticalDistance < 0.4f)
             {
                 animator.SetInteger(jumpOverIDParamID, 1);
-                Debug.Log("selected ID 1");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpHorizontallyAnimationDuration / traversalDuration);
             }
             //jump up small ledge
             else if (!jumpingDown)
             {
                 animator.SetInteger(jumpOverIDParamID, 2);
-                Debug.Log("selected ID 2");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpUpSmallLedgeAnimationDuration / traversalDuration);
             }
             //jump down small ledge
             else if (verticalDistance < 1.3f)
             {
                 animator.SetInteger(jumpOverIDParamID, 3);
-                Debug.Log("selected ID 3");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownSmallLedgeAnimationDuration / traversalDuration);
             }
             //jump down big ledge
             else
             {
                 animator.SetInteger(jumpOverIDParamID, 4);
-                Debug.Log("selected ID 4");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownLedgeAnimationDuration / traversalDuration);
             }
 

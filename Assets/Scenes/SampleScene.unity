@@ -8130,7 +8130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshLinkType: 1
   obstacleHeight: 1
-  traverseDuration: 1
+  traverseDuration: 0.8
 --- !u!114 &1186353579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14325,16 +14325,6 @@ PrefabInstance:
         type: 3}
       propertyPath: turnValueNormalizationRealSpeed
       value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611044, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: jumpOverObstacleAnimationDuration
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611044, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: jumpDownLedgeAnimationDuration
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
