@@ -284,7 +284,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             if (DoesCurrentStanceAllowAiming())
             {
-                LookAt(traget);
+                //LookAt(traget);
                 AimSpineAtTarget(traget);
 
                 if (interactionController.GetCurrentSelecteditem() is Gun)
@@ -298,7 +298,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StopAimAt()
     {
-        StopLookAt();
+        //StopLookAt();
         StopAimingSpine();
         StopAimingWeapon();
     }

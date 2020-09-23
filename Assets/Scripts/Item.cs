@@ -10,15 +10,6 @@ public class Item : MonoBehaviour
     public float pullOutItemTime;
     public float hideItemTime;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 
     public int GetItemInteractionTypeID()
     {

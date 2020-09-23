@@ -7717,7 +7717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshLinkType: 2
   obstacleHeight: 0
-  traverseDuration: 1
+  traverseDuration: 0.7
 --- !u!114 &1098827296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10073,8 +10073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573795295}
   m_LocalRotation: {x: -0, y: 0.7071062, z: -0, w: 0.7071074}
-  m_LocalPosition: {x: 20.79, y: 0.5, z: 10.98}
-  m_LocalScale: {x: 0.5, y: 1, z: 6}
+  m_LocalPosition: {x: 20.79, y: 0.55, z: 10.98}
+  m_LocalScale: {x: 0.5, y: 1.1, z: 6}
   m_Children: []
   m_Father: {fileID: 1336974866}
   m_RootOrder: 10
@@ -14330,6 +14330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: jumpOverObstacleAnimationDuration
       value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366031314207611044, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: jumpDownLedgeAnimationDuration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
