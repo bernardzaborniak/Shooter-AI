@@ -146,6 +146,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     // For jumping over obstacle
     float currentObstacleHeight;
+    float currentRelativeObstacleOffset; //the offset betwen currentObstacleHeight and the animatedObstacleHeight - 0.8m;
     public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
 
     // Infos about Current Link
@@ -240,7 +241,8 @@ public class EC_HumanoidMovementController : EntityComponent
 
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
-                    float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
+                    //float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
+                    float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentRelativeObstacleOffset;
                     newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpUpDownOrHorizontal)
@@ -454,6 +456,7 @@ public class EC_HumanoidMovementController : EntityComponent
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverObstacle;
 
         currentObstacleHeight = currentNavMeshLinkProperties.obstacleHeight;
+        currentRelativeObstacleOffset =  currentObstacleHeight - 0.65f;
     }
 
     void StartTraversingLinkJumpOverHole()

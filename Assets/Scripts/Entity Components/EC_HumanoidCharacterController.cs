@@ -504,6 +504,9 @@ public class EC_HumanoidCharacterController : EntityComponent
         StopAimAt();
         AbortChangingSelectedItem();
         //AbortThrowingGrenade();
+        handsIKController.DisableIKs();
+
+
     }
 
     public void OnStopTraversingOffMeshLink()
@@ -511,6 +514,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
             characterPreventionType = CharacterPreventionType.NoPrevention;
+            handsIKController.ReenableIKs();
         }
     }
 
