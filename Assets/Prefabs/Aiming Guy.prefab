@@ -1764,6 +1764,11 @@ MonoBehaviour:
   rightHandIKConstraint: {fileID: 7366031315530497497}
   rightHandIKTarget: {fileID: 7366031314958711222}
   iKSettingsCorrespondingToWeaponInteractionTypes:
+  - weaponInteractionType: 0
+    idleIKLeft: 0
+    idleIKRight: 0
+    combatIKLeft: 0
+    combatIKRight: 0
   - weaponInteractionType: 1
     idleIKLeft: 1
     idleIKRight: 0

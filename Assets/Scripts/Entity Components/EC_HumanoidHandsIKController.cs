@@ -8,7 +8,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
 {
     [Header("Hand IK")]
 
-    Gun ikTargetWeapon;
+    //Gun ikTargetWeapon;
+    IItemWithIKHandPositions currentIKTargetItem;
 
     public float changeIKWeightsSpeed;
 
@@ -67,52 +68,56 @@ public class EC_HumanoidHandsIKController : EntityComponent
         leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
         rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
 
-        if (ikTargetWeapon)
+        if (currentIKTargetItem != null)
         {
-            leftHandIKTarget.position = ikTargetWeapon.leftHandIKPosition.position;
-            leftHandIKTarget.rotation = ikTargetWeapon.leftHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+            leftHandIKTarget.position = currentIKTargetItem.GetLeftHandIKPosition();
+            leftHandIKTarget.rotation = currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
 
-            rightHandIKTarget.position = ikTargetWeapon.rightHandIKPosition.position;
-            rightHandIKTarget.rotation = ikTargetWeapon.rightHandIKPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+            rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
+            rightHandIKTarget.rotation = currentIKTargetItem.GetRightHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
         }
     }
 
 
-    public void OnChangeWeapon(Gun newWeapon)
+    public void OnChangeItemInHand(Item newItem)
     {
-        Debug.Log("on change weapon: new weapon: " + newWeapon);
-        ikTargetWeapon = newWeapon;
+        Debug.Log("IK on change weapon: new weapon: " + newItem);
 
-        if (newWeapon == null)
+
+        if (newItem == null)
         {
-            //currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+            Debug.Log("IK 1");
+
+           currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
             DisableIKs();
+            currentIKTargetItem = null;
         }
         else
         {
-            ReenableIKs();
+            Debug.Log("IK 2");
 
-            for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
+            currentIKTargetItem = newItem.GetComponent<IItemWithIKHandPositions>();
+
+            if(currentIKTargetItem != null)
             {
-                if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newWeapon.itemInteractionType)
+                Debug.Log("IK 2 a");
+                for (int i = 0; i < iKSettingsCorrespondingToWeaponInteractionTypes.Length; i++)
                 {
-                    currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[i];
+                    if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newItem.itemInteractionType)
+                    {
+                        currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[i];
+                    }
                 }
-            }
 
-            if (iKStance == IKStance.Idle)
+                ReenableIKs();
+            }
+            else
             {
-                SetIKWeightsForIdle();
-            }
-            else if (iKStance == IKStance.Combat)
-            {
-                SetIKWeightsForCombat();
-            }
-
-        }
-
-
-       
+                Debug.Log("IK 2 b");
+                currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+                DisableIKs();
+            }  
+        } 
     }
 
     

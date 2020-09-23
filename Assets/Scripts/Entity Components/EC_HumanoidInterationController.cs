@@ -162,12 +162,12 @@ public class EC_HumanoidInterationController : EntityComponent
         if(inventory[currentSelectedItemID] is Gun)
         {
             aimingController.OnChangeWeapon(inventory[currentSelectedItemID] as Gun);
-            handsIKController.OnChangeWeapon(inventory[currentSelectedItemID] as Gun);
+            //handsIKController.OnChangeWeapon(inventory[currentSelectedItemID] as Gun);
         }
         else
         {
             aimingController.OnChangeWeapon(null);
-            handsIKController.OnChangeWeapon(null);
+           // handsIKController.OnChangeWeapon(null);
         }
         
     }
@@ -177,6 +177,17 @@ public class EC_HumanoidInterationController : EntityComponent
         itemInteractionState = ItemInteractionState.Idle;
 
         animationController.ChangeWeaponInteractionState(0);
+
+        /*if (inventory[currentSelectedItemID] is Gun)
+        {
+            handsIKController.OnChangeWeapon(inventory[currentSelectedItemID] as Gun);
+        }
+        else if()
+        else
+        {
+            handsIKController.OnChangeWeapon(null);
+        }*/
+        handsIKController.OnChangeItemInHand(inventory[currentSelectedItemID]);
     }
 
     void StartHidingItem(float pulledOutPercentage)
@@ -189,6 +200,8 @@ public class EC_HumanoidInterationController : EntityComponent
 
         animationController.AdjustHideAnimationSpeedAndOffset(inventory[currentSelectedItemID].hideItemTime, 1 - pulledOutPercentage);
         animationController.ChangeWeaponInteractionState(2);
+
+        handsIKController.DisableIKs();
     }
 
     void FinishHidingItem()
@@ -208,7 +221,7 @@ public class EC_HumanoidInterationController : EntityComponent
             animationController.ChangeItemInHand(0);
 
             aimingController.OnChangeWeapon(null);
-            handsIKController.OnChangeWeapon(null);
+            handsIKController.OnChangeItemInHand(null);
         }
     }
 

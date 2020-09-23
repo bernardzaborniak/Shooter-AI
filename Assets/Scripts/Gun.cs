@@ -5,10 +5,12 @@ using UnityEngine;
 
 
 
-public class Gun : Item
+public class Gun : Item, IItemWithIKHandPositions
 {
-    public Transform rightHandIKPosition;
-    public Transform leftHandIKPosition;
+    [SerializeField]
+    Transform rightHandIKPosition;
+    [SerializeField]
+    Transform leftHandIKPosition;
 
     [Tooltip("Will be read when by aimingController when equipping a weapon, makes sure the offset between weapon and shoulder is correct")]
     public Vector3 weaponAimParentLocalAdjusterOffset;
@@ -69,5 +71,25 @@ public class Gun : Item
     public void RefillBulletsInMagazine()
     {
         bulletsInMagazine = magazineSize;
+    }
+
+    public Vector3 GetRightHandIKPosition()
+    {
+        return rightHandIKPosition.position;
+    }
+
+    public Vector3 GetLeftHandIKPosition()
+    {
+        return leftHandIKPosition.position;
+    }
+
+    public Quaternion GetRightHandIKRotation()
+    {
+        return rightHandIKPosition.rotation;
+    }
+
+    public Quaternion GetLeftHandIKRotation()
+    {
+        return leftHandIKPosition.rotation;
     }
 }
