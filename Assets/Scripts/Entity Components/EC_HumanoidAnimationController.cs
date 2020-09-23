@@ -94,6 +94,19 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Tooltip("Used for modifying the speed modifier, the ids here correspond with the ids in the animator")]
     public float[] staggerAnimationsLengths;
 
+    [Header("Jump Over")]
+    public string jumpOverParam;
+    int jumpOverParamID;
+    public string jumpOverIDParam;
+    int jumpOverIDParamID;
+    public string jumpOverSpeedMultiplierParam;
+    int jumpOverSpeedMultiplierParamID;
+
+    public float jumpOverObstacleAnimationDuration;
+    public float jumpHorizontallyAnimationDuration;
+    public float jumpUpSmallLedgeAnimationDuration;
+    public float jumpDownSmallLedgeAnimationDuration;
+    public float jumpDownLedgeAnimationDuration;
 
 
 
@@ -118,7 +131,14 @@ public class EC_HumanoidAnimationController : EntityComponent
      Idle,              0
      PullingOutWeapon,  1
      HidingWeapon       2
+
+    --- Jump Over ID's-----
     
+     Jump Over Obstacle     0
+     Jump Horizontally      1
+     Jump Up Small Ledge    2
+     Jump Down Small Ledge  3
+     Jump Down Ledge        4
 
     */
 
@@ -161,6 +181,11 @@ public class EC_HumanoidAnimationController : EntityComponent
         staggerParamID = Animator.StringToHash(staggerParam);
         staggerIDParamID = Animator.StringToHash(staggerIDParam);
         staggerSpeedMultiplierParamID = Animator.StringToHash(staggerSpeedMultiplierParam);
+
+        //jump over
+        jumpOverParamID = Animator.StringToHash(jumpOverParam);
+        jumpOverIDParamID = Animator.StringToHash(jumpOverIDParam);
+        jumpOverSpeedMultiplierParamID = Animator.StringToHash(jumpOverSpeedMultiplierParam);
     }
 
     public override void UpdateComponent()
@@ -300,13 +325,54 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetTrigger(staggerParamID);
     }
 
-    public void StartJumpingOverObstacle()
+    public void StartJumpingOverObstacle(bool jumpOverObstacle, Vector3 startPointPosition, Vector3 endPointPosition, float traversalDuration)
     {
-        animator.SetBool("Jump Over", true);
+        // 1. Determine which aniamtion to use, set jumpOverID & jumpOverSpeedModifier
+        if (jumpOverObstacle)
+        {
+            animator.SetInteger(jumpOverIDParamID, 0);
+            animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpOverObstacleAnimationDuration / traversalDuration);
+        }
+        else
+        {
+            float horizontalDistance = Vector3.Distance(new Vector3(startPointPosition.x,0, startPointPosition.z), new Vector3(endPointPosition.x, 0, endPointPosition.z));
+            float verticalDistance = Mathf.Abs(startPointPosition.y - endPointPosition.y);
+            bool jumpingDown = endPointPosition.y < startPointPosition.y;
+
+            // we jump horzintally if the distance is bigger than 3 or the difference in height smaller than 0.3f
+            if (horizontalDistance>3 || verticalDistance < 0.4f)
+            {
+                animator.SetInteger(jumpOverIDParamID, 1);
+                animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpHorizontallyAnimationDuration / traversalDuration);
+            }
+            //jump up small ledge
+            else if (!jumpingDown)
+            {
+                animator.SetInteger(jumpOverIDParamID, 2);
+                animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpUpSmallLedgeAnimationDuration / traversalDuration);
+            }
+            //jump down small ledge
+            else if (verticalDistance < 1.3f)
+            {
+                animator.SetInteger(jumpOverIDParamID, 3);
+                animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownSmallLedgeAnimationDuration / traversalDuration);
+            }
+            //jump down big ledge
+            else
+            {
+                animator.SetInteger(jumpOverIDParamID, 4);
+                animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownLedgeAnimationDuration / traversalDuration);
+            }
+
+        }
+       
+
+        // 2. Set The bool
+        animator.SetBool(jumpOverParamID, true);
     }
 
     public void StopJumpingOverObstacle()
     {
-        animator.SetBool("Jump Over", false);
+        animator.SetBool(jumpOverParamID, false);
     }
 }

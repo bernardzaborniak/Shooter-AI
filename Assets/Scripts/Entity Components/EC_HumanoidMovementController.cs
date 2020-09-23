@@ -426,7 +426,7 @@ public class EC_HumanoidMovementController : EntityComponent
         characterController.OnStartTraversingOffMeshLink();
 
         // Inform Animation Controller
-        animationController.StartJumpingOverObstacle();
+        animationController.StartJumpingOverObstacle(currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle, currentLinkStartPosition, currentLinkEndPosition, currentLinkTraverseDuration);
 
     }
 
