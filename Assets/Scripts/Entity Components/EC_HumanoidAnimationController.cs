@@ -336,31 +336,38 @@ public class EC_HumanoidAnimationController : EntityComponent
         else
         {
             float horizontalDistance = Vector3.Distance(new Vector3(startPointPosition.x,0, startPointPosition.z), new Vector3(endPointPosition.x, 0, endPointPosition.z));
+            Debug.Log("horizontalDistance: " + horizontalDistance);
             float verticalDistance = Mathf.Abs(startPointPosition.y - endPointPosition.y);
+            Debug.Log("verticalDistance: " + verticalDistance);
+
             bool jumpingDown = endPointPosition.y < startPointPosition.y;
 
             // we jump horzintally if the distance is bigger than 3 or the difference in height smaller than 0.3f
             if (horizontalDistance>3 || verticalDistance < 0.4f)
             {
                 animator.SetInteger(jumpOverIDParamID, 1);
+                Debug.Log("selected ID 1");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpHorizontallyAnimationDuration / traversalDuration);
             }
             //jump up small ledge
             else if (!jumpingDown)
             {
                 animator.SetInteger(jumpOverIDParamID, 2);
+                Debug.Log("selected ID 2");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpUpSmallLedgeAnimationDuration / traversalDuration);
             }
             //jump down small ledge
             else if (verticalDistance < 1.3f)
             {
                 animator.SetInteger(jumpOverIDParamID, 3);
+                Debug.Log("selected ID 3");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownSmallLedgeAnimationDuration / traversalDuration);
             }
             //jump down big ledge
             else
             {
                 animator.SetInteger(jumpOverIDParamID, 4);
+                Debug.Log("selected ID 4");
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownLedgeAnimationDuration / traversalDuration);
             }
 
