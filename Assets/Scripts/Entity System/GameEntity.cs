@@ -11,16 +11,21 @@ using UnityEngine.Events;
 // Some Examples: Soldier, Tank, Monster, Turrent, DamageableRock?.
 public class GameEntity : MonoBehaviour
 {
+    [Header("Team")]
     public int teamID;
+    [Header("Components to Update")]
     public EntityComponent[] components;
-    //[Tooltip("Every Unit should have its origin in the ground, the aiming corrector should be a vector in the y direction with halfe the units height as length, so other units can aim into the middle of this unit")]
-    //public Vector3 aimingCorrector;  //replace this with a transform tracked to a bone or something?
+
+    [Header("Death")]
     public bool destroyOnDie;
     public UnityEvent onDieEvent;
     public float width;
 
-    //public EC_Health health;
     bool isDead = false; //to prevent calling onDie more than once
+
+    [Header("For Aiming of Enemies")]
+    public Transform aimPosition;
+    public Transform criticalAimPosition;
 
     #region Handling Entity Components
 
@@ -58,11 +63,17 @@ public class GameEntity : MonoBehaviour
 
     #endregion
 
-    public Vector3 GetPositionForAiming()
+    public Vector3 GetAimPosition()
     {
-       // return (transform.position + aimingCorrector);
-        return (transform.position);
+        return aimPosition.position;
     }
+
+    public Vector3 GetCriticalAimPosition()
+    {
+        return criticalAimPosition.position;
+    }
+
+
 
     public virtual void OnTakeDamage(ref DamageInfo damageInfo)
     {

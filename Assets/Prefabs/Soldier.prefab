@@ -1414,7 +1414,7 @@ GameObject:
   - component: {fileID: 3435694260906315833}
   - component: {fileID: 7366031314207611054}
   m_Layer: 0
-  m_Name: Aiming Guy
+  m_Name: Soldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1463,6 +1463,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   width: 0
+  aimPosition: {fileID: 0}
+  criticalAimPosition: {fileID: 0}
 --- !u!114 &6597338694826147279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4796,6 +4798,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8935648264140596062, guid: 676232849e2e19d4f81ab3716ffa92b8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a192a381b2779a048ad8a60269650546, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 676232849e2e19d4f81ab3716ffa92b8, type: 3}
 --- !u!4 &5230040203859478102 stripped
