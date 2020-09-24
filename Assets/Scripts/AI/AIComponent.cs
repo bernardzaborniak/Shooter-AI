@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIComponent : MonoBehaviour
 {
-    GameEntity myEntity;
+    protected GameEntity myEntity;
 
     public virtual void SetUpComponent(GameEntity entity)
     {

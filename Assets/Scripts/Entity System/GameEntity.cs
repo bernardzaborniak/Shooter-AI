@@ -19,13 +19,13 @@ public class GameEntity : MonoBehaviour
     [Header("Death")]
     public bool destroyOnDie;
     public UnityEvent onDieEvent;
-    public float width;
 
     bool isDead = false; //to prevent calling onDie more than once
 
     [Header("For Aiming of Enemies")]
     public Transform aimPosition;
     public Transform criticalAimPosition;
+    public float width;
 
     #region Handling Entity Components
 
