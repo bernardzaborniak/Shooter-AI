@@ -20,7 +20,7 @@ public class GameEntity : MonoBehaviour
     public bool destroyOnDie;
     public UnityEvent onDieEvent;
 
-    bool isDead = false; //to prevent calling onDie more than once
+    public bool isDead = false; //to prevent calling onDie more than once
 
     [Header("For Aiming of Enemies")]
     public Transform aimPosition;

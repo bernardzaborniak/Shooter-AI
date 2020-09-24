@@ -419,6 +419,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         interactionController.AbortReloadingWeapon();
     }
 
+    public int GetAmmoRemainingInMagazine()
+    {
+        return  interactionController.GetAmmoRemainingInMagazine();
+    }
+
     public void ThrowGrenade()
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)

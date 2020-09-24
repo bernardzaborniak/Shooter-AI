@@ -260,7 +260,16 @@ public class EC_HumanoidInterationController : EntityComponent
                 handsIKController.DisableIKs();
             }
         }
+    }
 
+    public int GetAmmoRemainingInMagazine()
+    {
+        if(inventory[currentSelectedItemID] is Gun)
+        {
+            return (inventory[currentSelectedItemID] as Gun).GetBulletsInMagazineLeft();
+        }
+
+        return 0;
 
     }
 
@@ -334,7 +343,7 @@ public class EC_HumanoidInterationController : EntityComponent
         }  
     }
 
-    public Item GetCurrentSelecteditem()
+    public Item GetCurrentSelectedItem()
     {
         return inventory[currentSelectedItemID];
     }

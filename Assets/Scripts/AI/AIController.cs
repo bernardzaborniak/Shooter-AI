@@ -7,12 +7,23 @@ public class AIController : MonoBehaviour
     public GameEntity entityAttachedTo;
     public AIComponent[] aIComponents;
 
+    public EC_HumanoidCharacterController characterController;
+    public AIC_HumanSensing sensing;
+    public AIC_AimingController aimingController;
+
+    public float maxRangeToEnemy;
+    public float minRangeToEnemy;
+    public float desiredRangeToEnemy;
+
+
     void Start()
     {
         for (int i = 0; i < aIComponents.Length; i++)
         {
             aIComponents[i].SetUpComponent(entityAttachedTo);
         }
+
+        
     }
 
     void Update()
@@ -20,6 +31,32 @@ public class AIController : MonoBehaviour
         for (int i = 0; i < aIComponents.Length; i++)
         {
             aIComponents[i].UpdateComponent();
+        }
+
+        characterController.ChangeSelectedItem(1);
+        characterController.ChangeCharacterStanceToCombatStance();
+
+        GameEntity nearestEnemy = sensing.nearestEnemy;
+
+        if (nearestEnemy)
+        {
+            characterController.AimSpineAtTarget(nearestEnemy.transform);
+            characterController.AimWeaponAtTarget();
+
+            if(characterController.GetAmmoRemainingInMagazine() > 0)
+            {
+                characterController.ShootWeapon();
+            }
+            else
+            {
+                characterController.StartReloadingWeapon();
+            }
+            
+        }
+        else
+        {
+            characterController.StopAimingSpine();
+            characterController.StopAimingWeapon();
         }
     }
 }
