@@ -1638,7 +1638,7 @@ MonoBehaviour:
   spineConstraint2: {fileID: 7366031315213232072}
   spineConstraint3: {fileID: 7366031314846552353}
   spineConstraintDirectionChangeSmoothTime: 0.1
-  spineConstraintWeightChangeSpeed: 0.5
+  spineConstraintWeightChangeSpeed: 1.5
   fLookAnimator: {fileID: 7366031315838806102}
   lookAtCompensationWeightWithoutWeapon: 0.5
   lookAtCompensatiePositionsWithoutWeapon: 0.1
@@ -3277,7 +3277,7 @@ MonoBehaviour:
   projectile: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
     type: 3}
   shootPoint: {fileID: 13081423688178975}
-  magazineSize: 10
+  magazineSize: 30
   defaultReloadDuration: 3
   rateOfFire: 500
 --- !u!1 &7366031315934918497
