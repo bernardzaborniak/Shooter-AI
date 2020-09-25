@@ -385,6 +385,34 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public void AimWeaponAtPosition(Vector3 position)
+    {
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        {
+            if (DoesCurrentStanceAllowAiming())
+            {
+                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+                {
+                    aimingController.AimWeaponAtPosition(position);
+                }
+            }
+        }
+    }
+
+    public void AimWeaponInDirection(Vector3 direction)
+    {
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        {
+            if (DoesCurrentStanceAllowAiming())
+            {
+                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+                {
+                    aimingController.AimWeaponInDirection(direction);
+                }
+            }
+        }
+    }
+
     public void StopAimingWeapon()
     {
         aimingController.StopAimingWeaponAtTarget();

@@ -28,18 +28,19 @@ public class EC_HumanoidAimingController : EntityComponent
 
     //For Spine Aiming
     bool aimingSpine;
-    Vector3 spineAimDirection;
-    Vector3 spinePositionToAimAt;
-    Transform spineTransformToAimAt;
+    //Vector3 spineAimDirection;
+    Vector3 spineDirectionToTarget;
+    Vector3 spinePositionOfTarget;
+    Transform spineTransformOfTarget;
 
     //for Weapon Aiming
     bool aimingWeapon; 
-    Vector3 weaponAimDirection;
-    Vector3 weaponPositionToAimAt;
-    Transform weaponTransformToAimAt;
+    Vector3 weaponDirectionToTarget;
+    Vector3 weaponPositionOfTarget;
+    Transform weaponTransformOfTarget;
 
 
-    Vector3 directionToAimSpineAt;
+    
     //Vector3 pointToAimAt;
     //Vector3 directionToAim;
 
@@ -117,7 +118,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("The smaller this value, the faster the weapon aims, it uses vector3.smoothDamp to smooth the movement a little bit")]
     public float aimingWeaponSmoothTime = 0.05f;
     Vector3 currentWeaponAimDirection;
-    Vector3 desiredWeaponAimDirection;
+    Vector3 desiredWeaponDirection;
     Vector3 weaponAimSpeedRef;
 
     #endregion
@@ -135,42 +136,39 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         #region Aiming Spine
 
+        #region Calculate desiredSpineDirection and spineConstraintTargetWeights
+
         if (aimingSpine)
         {
-            //Vector3 pointToAimSpineAt; //basically unnecessary - as we will work with direction?
-            
-
-            // ---------------  1. Calculate Point to aim at -----------
+            // ---------------  1. Calculate Direction to aim at -----------
             // Basically all aim At Modes work the same that we have a point we are looking at in space, just the calculation of this point differs
-            //pointToAimSpineAt = Vector3.zero;
 
             if (currentSpineTargetingMethod == AimAtTargetingMethod.Direction)
             {
                 //pointToAimSpineAt = aimingReferencePointOnBody.position + spineAimDirection * defaultDirectionAimDistance;
-                directionToAimSpineAt = spineAimDirection;
+                spineDirectionToTarget = spineDirectionToTarget;
             }
             else if (currentSpineTargetingMethod == AimAtTargetingMethod.Position)
             {
                 //pointToAimSpineAt = spinePositionToAimAt;
-                directionToAimSpineAt = spinePositionToAimAt - aimingReferencePointOnBody.position;
+                spineDirectionToTarget = spinePositionOfTarget - aimingReferencePointOnBody.position;
             }
             else if (currentSpineTargetingMethod == AimAtTargetingMethod.Transform)
             {
                 //pointToAimSpineAt = spineTransformToAimAt.position;
-                directionToAimSpineAt = spineTransformToAimAt.position - aimingReferencePointOnBody.position;
+                spineDirectionToTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
             }
-
-            //directionToAimSpineAt = pointToAimSpineAt - aimingReferencePointOnBody.position;
 
 
             // -------------   2. Rotate Horizontally  -----------
-            movementController.SetDesiredForward(directionToAimSpineAt.normalized); //do we need to normalize?
+            movementController.SetDesiredForward(spineDirectionToTarget.normalized); //do we need to normalize?
+
 
             // -------------   3. Calculate vertical desiredSpineDirection & set Weights ----------------
 
             // 3.1 Limit to rotation on the x axis only
             //We are kind of rotating the vector to point in the Forward Direction
-            desiredSpineDirection = new Vector3(0, directionToAimSpineAt.y, new Vector2(directionToAimSpineAt.x, directionToAimSpineAt.z).magnitude);
+            desiredSpineDirection = new Vector3(0, spineDirectionToTarget.y, new Vector2(spineDirectionToTarget.x, spineDirectionToTarget.z).magnitude);
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
             // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
@@ -198,6 +196,10 @@ public class EC_HumanoidAimingController : EntityComponent
             spineConstraint3TargetWeight = 0f;
         }
 
+        #endregion
+
+        #region Smoothly rotate spine towards desiredSpineDirection and smooth out the spineConstraint weights
+
         //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
         spineConstraintTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
@@ -213,16 +215,50 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #endregion
 
+        #endregion
+
         #region Aiming Weapon
 
+        #region Calculate desiredWeaponAimDirection 
         if (aimingWeapon)
         {
+            // ---------------  1. Calculate Direction to aim at -----------
+
+            if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
+            {
+                //pointToAimSpineAt = aimingReferencePointOnBody.position + spineAimDirection * defaultDirectionAimDistance;
+                weaponDirectionToTarget = weaponDirectionToTarget;
+            }
+            else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Position)
+            {
+                //pointToAimSpineAt = spinePositionToAimAt;
+                weaponDirectionToTarget = weaponPositionOfTarget - aimingReferencePointOnBody.position;
+            }
+            else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Transform)
+            {
+                //pointToAimSpineAt = spineTransformToAimAt.position;
+                weaponDirectionToTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;
+            }
+
+
+
             // Calculate & Rotate Weapon Aim Direction
-            desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAimSpineAt, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-            currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
-            weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponAimDirection;
+            //desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, spineDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
+            desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
+           
 
         }
+        else
+        {
+            desiredWeaponDirection = transform.forward;
+        }
+
+        #endregion
+
+        #region Smoothly rotate the weapon towards desiredWeaponDirection & smooth out change in weaponAimingRig.weight
+
+        currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
+        weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponAimDirection;
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
@@ -239,6 +275,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #endregion
 
+        #endregion
     }
 
     public void AimSpineInDirection(Vector3 direction)
@@ -246,7 +283,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
         movementController.manualRotation = true;
-        spineAimDirection = direction;
+        spineDirectionToTarget = direction;
     }
 
     public void AimSpineAtPosition(Vector3 position)
@@ -254,7 +291,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Position;
         movementController.manualRotation = true;
-        spinePositionToAimAt = position;
+        spinePositionOfTarget = position;
 
     }
 
@@ -263,7 +300,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Transform;
         movementController.manualRotation = true;
-        spineTransformToAimAt = transform;
+        spineTransformOfTarget = transform;
     }
 
     public void StopAimSpineAtTarget()
@@ -285,21 +322,24 @@ public class EC_HumanoidAimingController : EntityComponent
     public void AimWeaponInDirection(Vector3 direction)
     {
         aimingWeapon = true;
-        currentWeaponAimDirection = direction;
+        currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
+        weaponDirectionToTarget = direction;
         desiredWeaponAimingRigWeight = 1;
     }
 
-    public void AimWeaponInPosition(Vector3 position)
+    public void AimWeaponAtPosition(Vector3 position)
     {
         aimingWeapon = true;
-        currentWeaponAimDirection = currentSpineDirection;
+        currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
+        weaponPositionOfTarget = position;
         desiredWeaponAimingRigWeight = 1;
     }
 
     public void AimWeaponAtTransform(Transform transform)
     {
         aimingWeapon = true;
-        currentWeaponAimDirection = currentSpineDirection;
+        currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
+        weaponTransformOfTarget = transform;
         desiredWeaponAimingRigWeight = 1;
     }
 
@@ -344,6 +384,6 @@ public class EC_HumanoidAimingController : EntityComponent
     }
     public Vector3 GetCurrentAimDirection()
     {
-        return spineAimDirection;
+        return spineDirectionToTarget;
     }
 }
