@@ -71,12 +71,12 @@ public class HumanoidDeathEffect : MonoBehaviour
     void ApplyImpactForce(ref DamageInfo damageInfo)
     {
         
-        Debug.Log("damageDealPoint: " + damageInfo.damageDealPoint);
+        //Debug.Log("damageDealPoint: " + damageInfo.damageDealPoint);
 
         if (damageInfo.force != Vector3.zero)
         {
             //rigidBodyToApplyAngularVelocityTo.AddForceAtPosition(damageInfo.force * 100000, damageInfo.damageDealPoint, ForceMode.Impulse);
-            Debug.Log("damageInfo.force: " + damageInfo.force);
+            //Debug.Log("damageInfo.force: " + damageInfo.force);
             foreach (Rigidbody rb in ragdollRigidbodys)
             {
 

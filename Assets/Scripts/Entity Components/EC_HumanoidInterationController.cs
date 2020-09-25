@@ -23,7 +23,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     public Item[] inventory;
 
-    enum ItemInteractionState
+    public enum ItemInteractionState
     {
         Idle,
         PullingOutItemInHand,
@@ -33,7 +33,7 @@ public class EC_HumanoidInterationController : EntityComponent
         //CockBoltAction //doing this lever thingy on snipers
     }
 
-    ItemInteractionState itemInteractionState;
+    public ItemInteractionState itemInteractionState;
 
     float hidingWeaponEndTime;
     float pullingOutWeaponEndTime;
@@ -88,6 +88,9 @@ public class EC_HumanoidInterationController : EntityComponent
                 FinishThrowingGrenade();
             }   
         }
+
+        //Debug.Log(gameObject.name + "Update  " + itemInteractionState);
+
     }
 
     #region Change Item in Hand
@@ -98,13 +101,13 @@ public class EC_HumanoidInterationController : EntityComponent
 
         if(itemInteractionState == ItemInteractionState.Idle || itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
-            if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
-            {
-                AbortReloadingWeapon();
-            }
-
             if (desiredSelectedItemID != currentSelectedItemID)
             {
+                if (itemInteractionState == ItemInteractionState.ReloadingWeapon)
+                {
+                    AbortReloadingWeapon();
+                }
+
                 if (inventory[currentSelectedItemID] == null)
                 {
                     if (inventory[desiredSelectedItemID] != null)
@@ -204,7 +207,7 @@ public class EC_HumanoidInterationController : EntityComponent
         else
         {
             currentSelectedItemID = desiredSelectedItemID;
-            
+
             itemInteractionState = ItemInteractionState.Idle;
             animationController.ChangeWeaponInteractionState(0);
             animationController.ChangeItemInHand(0);
@@ -257,6 +260,8 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.StartReloadingWeapon(reloadDuration);
 
                 //todo djust hands IK here
+                Debug.Log(gameObject.name + " hands IK Disable");
+                //This is called but the hands are silll attached - why? TODO
                 handsIKController.DisableIKs();
             }
         }
@@ -283,6 +288,7 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
+                Debug.Log(gameObject.name + " hands IK Reenable on Abort Reloading");
                 handsIKController.ReenableIKs();
             }
         }
@@ -299,6 +305,7 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
+                Debug.Log(gameObject.name + " hands IK Reenable on Finish Reloading");
                 handsIKController.ReenableIKs();
             }
         }

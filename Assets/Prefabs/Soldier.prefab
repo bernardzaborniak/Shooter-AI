@@ -1614,6 +1614,7 @@ MonoBehaviour:
   - {fileID: 7366031315910803148}
   - {fileID: 7366031314584728135}
   - {fileID: 1573985985855596651}
+  itemInteractionState: 0
   reloadTimeSkillMultiplier: 1
   throwGrenadeVelocity: 10
   throwGrenadeMaxRange: 15
@@ -3276,7 +3277,7 @@ MonoBehaviour:
   projectile: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
     type: 3}
   shootPoint: {fileID: 13081423688178975}
-  magazineSize: 30
+  magazineSize: 10
   defaultReloadDuration: 3
   rateOfFire: 500
 --- !u!1 &7366031315934918497

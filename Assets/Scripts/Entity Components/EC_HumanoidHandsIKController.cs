@@ -101,6 +101,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
                     }
                 }
 
+                Debug.Log(gameObject.name + "Change ItemInhand IK");
                 ReenableIKs();
             }
             else
@@ -116,7 +117,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         iKStance = IKStance.Idle;
 
-
+        Debug.Log(gameObject.name + "enteridleStance IK");
         SetIKWeightsForIdle();
     }
 
@@ -124,7 +125,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         iKStance = IKStance.Combat;
 
-
+        Debug.Log(gameObject.name + "enterCombatStance IK");
         SetIKWeightsForCombat();
     }
 
@@ -180,6 +181,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void ReenableIKs()
     {
+        Debug.Log(gameObject.name + "reenabled iks");
         disableIKs = false;
 
         if(iKStance == IKStance.Idle)

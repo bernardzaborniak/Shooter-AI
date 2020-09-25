@@ -47,16 +47,17 @@ public class AIController : MonoBehaviour
             {
                 characterController.ShootWeapon();
             }
-            else
-            {
-                characterController.StartReloadingWeapon();
-            }
             
         }
         else
         {
             characterController.StopAimingSpine();
             characterController.StopAimingWeapon();
+        }
+
+        if (!(characterController.GetAmmoRemainingInMagazine() > 0))
+        {
+            characterController.StartReloadingWeapon();
         }
     }
 }

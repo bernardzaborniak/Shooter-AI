@@ -208,44 +208,51 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ChangeCharacterStanceToIdle()
     {
-        currentStance = CharacterStance.Idle;
-        movementController.SetDefaultSpeed(idleWalkingSpeed);
-        movementController.SetSprintSpeed(idleSprintingSpeed);
-        movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
-        movementController.SetAcceleration(idleAcceleration);
-        animationController.ChangeToIdleStance();
-        handsIKController.OnEnterIdleStance();
+        if (currentStance != CharacterStance.Idle)
+        {
+            currentStance = CharacterStance.Idle;
+            movementController.SetDefaultSpeed(idleWalkingSpeed);
+            movementController.SetSprintSpeed(idleSprintingSpeed);
+            movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+            movementController.SetAcceleration(idleAcceleration);
+            animationController.ChangeToIdleStance();
+            handsIKController.OnEnterIdleStance();
 
-        //StopAimAt();
-        StopAimingSpine();
-        StopAimingWeapon();
-
+            //StopAimAt();
+            StopAimingSpine();
+            StopAimingWeapon();
+        }
     }
 
     public void ChangeCharacterStanceToCombatStance()
     {
-        if (interactionController.DoesCurrentItemInHandAllowCombatStance())
+        
+        if (currentStance != CharacterStance.CombatStance)
         {
-            currentStance = CharacterStance.CombatStance;
-            movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
-            movementController.SetSprintSpeed(combatStanceSprintingSpeed);
-            movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
-            movementController.SetAcceleration(combatStanceAcceleration);
-            animationController.ChangeToCombatStance();
-            handsIKController.OnEnterCombatStance();
-
+            if(interactionController.DoesCurrentItemInHandAllowCombatStance())
+            {
+                currentStance = CharacterStance.CombatStance;
+                movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
+                movementController.SetSprintSpeed(combatStanceSprintingSpeed);
+                movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
+                movementController.SetAcceleration(combatStanceAcceleration);
+                animationController.ChangeToCombatStance();
+                handsIKController.OnEnterCombatStance();
+            }
         }  
     }
 
     public void ChangeCharacterStanceToCrouchingStance()
     {
-        currentStance = CharacterStance.Crouching;
-        movementController.SetDefaultSpeed(crouchSpeed);
-        movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
-        movementController.SetAcceleration(crouchAcceleration);
-        animationController.ChangeToCrouchedStance();
-        handsIKController.OnEnterCombatStance();
-
+        if (currentStance != CharacterStance.Crouching)
+        {
+            currentStance = CharacterStance.Crouching;
+            movementController.SetDefaultSpeed(crouchSpeed);
+            movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+            movementController.SetAcceleration(crouchAcceleration);
+            animationController.ChangeToCrouchedStance();
+            handsIKController.OnEnterCombatStance();
+        }
     }
 
 
@@ -465,13 +472,13 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
+
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (IsAimingWeapon())
             {
                 StopAimingWeapon();
             }
-
             interactionController.StartReloadingWeapon();
         }
     }
