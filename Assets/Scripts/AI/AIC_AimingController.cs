@@ -11,10 +11,15 @@ public class AIC_AimingController : AIComponent
     [Header("Skillbased Error")]
     public float maxAimError;
 
-    //public float minChangeErrorInterval;
-    //public float maxChangeErrorInterval;
-    //public lfoat nextChangeErrorTime
+    public float minChangeErrorInterval;
+    public float maxChangeErrorInterval;
+    float nextChangeErrorTime;
 
+    Quaternion currentAimingError;
+
+    [Header("Hands Shaking")]
+    public bool handsShake;
+    public float handsShakingIntensity;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -28,12 +33,37 @@ public class AIC_AimingController : AIComponent
 
     public Vector3 GetDirectionToAimAtTarget(GameEntity target)
     {
-        Vector3 aimingVector = target.GetAimPosition() - aimingReference.position;
+        if (Time.time > nextChangeErrorTime)
+        {
+            ChangeAimingError();
 
-        Quaternion errorRotater = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
+            nextChangeErrorTime = Time.time + Random.Range(minChangeErrorInterval, maxChangeErrorInterval);
+        }
 
-        aimingVector =  errorRotater * aimingVector;
+        if (handsShake)
+        {
+            Quaternion handsShakingRotation = Quaternion.Euler(Random.Range(-handsShakingIntensity, handsShakingIntensity), Random.Range(-handsShakingIntensity, handsShakingIntensity), Random.Range(-handsShakingIntensity, handsShakingIntensity));
+            return handsShakingRotation * currentAimingError * (target.GetAimPosition() - aimingReference.position);
+        }
+        else
+        {
+            return currentAimingError * (target.GetAimPosition() - aimingReference.position);
+        }
 
-        return aimingVector;
+
+
+        //Vector3 aimingVector = currentAimingError * (target.GetAimPosition() - aimingReference.position);
+        
+
+       // Quaternion errorRotater = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
+
+        //aimingVector = currentAimingError * aimingVector;
+
+        //return aimingVector;
+    }
+
+    void ChangeAimingError()
+    {
+        currentAimingError = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
     }
 }
