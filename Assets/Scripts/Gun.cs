@@ -19,6 +19,7 @@ public class Gun : Item, IItemWithIKHandPositions
     [Header("Shooting")]
     public GameObject projectile;
     public Transform shootPoint;
+    public float projectileLaunchVelocity;
     public int magazineSize;
     int bulletsInMagazine;
     [Tooltip("How long is this weapon being reloaded in seconds?")]
@@ -27,6 +28,9 @@ public class Gun : Item, IItemWithIKHandPositions
     public float rateOfFire;
     float shootInterval;
     float nextShootTime;
+
+    [Tooltip("If the bullet drops fast due to gravity, have this ticked as true, then the aiming Ai will calculate the aiming direction according to the projectile flight arc")]
+    public bool aimWithAngledShotCalculation;
 
 
     private void Start()
@@ -44,7 +48,9 @@ public class Gun : Item, IItemWithIKHandPositions
         {
             if(Time.time> nextShootTime)
             {
-                Instantiate(projectile, shootPoint.position, shootPoint.rotation);
+                GameObject projectileGO = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
+                Rigidbody projectileGORB = projectileGO.GetComponent<Rigidbody>();
+                projectileGORB.velocity = projectileGORB.transform.forward * projectileLaunchVelocity;
                 nextShootTime = Time.time + shootInterval;
                 bulletsInMagazine--;
             }

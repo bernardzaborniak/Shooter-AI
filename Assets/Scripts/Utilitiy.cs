@@ -114,4 +114,54 @@ public static class Utility
 
 
     #endregion
+
+    //Formel von  https://gamedev.stackexchange.com/questions/53552/how-can-i-find-a-projectiles-launch-angle
+    
+    public static float CalculateProjectileLaunchAngle(float launchVelocity, Vector3 startPosition, Vector3 targetPosition, bool directShot = true)
+    {
+        Vector3 distDelta = targetPosition - startPosition;
+
+        return CalculateProjectileLaunchAngle(launchVelocity, new Vector3(distDelta.x, 0f, distDelta.z).magnitude, distDelta.y, directShot);
+    }
+
+    public static float CalculateProjectileLaunchAngle(float speed, float horizontalDistance, float heightDifference, bool directShoot)
+    {
+        //directShoot i true dann nehmen wir die niedrigere Schussbahn, wenn false, dann eine kurvigere die mehr nach oben geht
+        float theta = 0f;
+        float gravityConstant = Physics.gravity.magnitude;
+
+        if (directShoot)
+        {
+            theta = Mathf.Atan((Mathf.Pow(speed, 2) - Mathf.Sqrt(Mathf.Pow(speed, 4) - gravityConstant * (gravityConstant * Mathf.Pow(horizontalDistance, 2) + 2 * heightDifference * Mathf.Pow(speed, 2)))) / (gravityConstant * horizontalDistance));
+        }
+        else
+        {
+            theta = Mathf.Atan((Mathf.Pow(speed, 2) + Mathf.Sqrt(Mathf.Pow(speed, 4) - gravityConstant * (gravityConstant * Mathf.Pow(horizontalDistance, 2) + 2 * heightDifference * Mathf.Pow(speed, 2)))) / (gravityConstant * horizontalDistance));
+        }
+
+        return (theta * (180 / Mathf.PI));  //change into degrees
+    }
+
+    public static float CalculateTimeOfFlightOfProjectileLaunchedAtAnAngle(float projectileLaunchVelocity, float launchAngleInDegrees, Vector3 projectileLaunchPosition, Vector3 targetPosition)
+    {
+        float timeInAir;
+        float g = Physics.gravity.magnitude;
+        float vY = projectileLaunchVelocity * Mathf.Sin(launchAngleInDegrees * (Mathf.PI / 180));
+
+        float startH = projectileLaunchPosition.y;
+        float finalH = targetPosition.y;
+
+        if (finalH < startH)
+        {
+            timeInAir = (vY + Mathf.Sqrt((float)(Mathf.Pow(vY, 2) - 4 * (0.5 * g) * (-(startH - finalH))))) / g;
+        }
+        else
+        {
+            float vX = projectileLaunchVelocity * Mathf.Cos(launchAngleInDegrees * (Mathf.PI / 180));
+            float distanceX = Vector3.Distance(projectileLaunchPosition, targetPosition);
+            timeInAir = distanceX / vX;
+        }
+
+        return timeInAir;
+    }
 }

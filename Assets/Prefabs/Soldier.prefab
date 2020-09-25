@@ -2181,9 +2181,11 @@ MonoBehaviour:
   projectile: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
     type: 3}
   shootPoint: {fileID: 4741318957554337410}
+  projectileLaunchVelocity: 0
   magazineSize: 7
   defaultReloadDuration: 1.5
   rateOfFire: 100
+  aimWithAngledShotCalculation: 0
 --- !u!1 &7366031314609754848
 GameObject:
   m_ObjectHideFlags: 0
@@ -3277,9 +3279,11 @@ MonoBehaviour:
   projectile: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
     type: 3}
   shootPoint: {fileID: 13081423688178975}
+  projectileLaunchVelocity: 17
   magazineSize: 30
   defaultReloadDuration: 3
   rateOfFire: 500
+  aimWithAngledShotCalculation: 1
 --- !u!1 &7366031315934918497
 GameObject:
   m_ObjectHideFlags: 0

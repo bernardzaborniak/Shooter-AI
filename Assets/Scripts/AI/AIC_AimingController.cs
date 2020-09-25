@@ -31,8 +31,38 @@ public class AIC_AimingController : AIComponent
 
     }
 
-    public Vector3 GetDirectionToAimAtTarget(GameEntity target)
+    public Vector3 GetDirectionToAimAtTarget(GameEntity target, Item currentlySelectedItem) // , Vector3 targetMovementVelocity
     {
+        Vector3 aimDirection = Vector3.zero;
+       
+        bool projectileShotAtAnArc = false;
+        Gun equippedGun = null;
+
+        if (currentlySelectedItem)
+        {
+            if(currentlySelectedItem is Gun)
+            {
+                equippedGun = (currentlySelectedItem as Gun);
+                if (equippedGun.aimWithAngledShotCalculation)
+                {
+                    projectileShotAtAnArc = true;
+                }
+            }
+        }
+
+        if (projectileShotAtAnArc)
+        {
+            Vector3 aimDirectionNoY = target.GetAimPosition() - aimingReference.position;
+            aimDirectionNoY.y = 0;
+            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGun.projectileLaunchVelocity, aimingReference.position, target.GetAimPosition());
+            aimDirection = Quaternion.AngleAxis(-launchAngle, aimingReference.right) * aimDirectionNoY;
+        }
+        else
+        {
+            aimDirection = target.GetAimPosition() - aimingReference.position;
+        }
+        
+        
         if (Time.time > nextChangeErrorTime)
         {
             ChangeAimingError();
@@ -43,11 +73,11 @@ public class AIC_AimingController : AIComponent
         if (handsShake)
         {
             Quaternion handsShakingRotation = Quaternion.Euler(Random.Range(-handsShakingIntensity, handsShakingIntensity), Random.Range(-handsShakingIntensity, handsShakingIntensity), Random.Range(-handsShakingIntensity, handsShakingIntensity));
-            return handsShakingRotation * currentAimingError * (target.GetAimPosition() - aimingReference.position);
+            return handsShakingRotation * currentAimingError * aimDirection;
         }
         else
         {
-            return currentAimingError * (target.GetAimPosition() - aimingReference.position);
+            return currentAimingError * aimDirection;
         }
 
 
@@ -66,4 +96,9 @@ public class AIC_AimingController : AIComponent
     {
         currentAimingError = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
     }
+
+    /*public void UpdateCurrentSelectedItem(Item currentlySelectedItem)
+    {
+        this.currentlySelectedItem = currentlySelectedItem;
+    }*/
 }

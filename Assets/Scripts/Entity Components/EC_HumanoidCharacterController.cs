@@ -133,7 +133,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         // -------Shooting & Reloading -----
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //ShootWeapon();
+            ShootWeapon();
            
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -455,6 +455,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             //stop aiming weapon if here
             interactionController.ChangeItemInHand(inventoryID);
         }
+    }
+
+    public Item GetCurrentlySelectedItem()
+    {
+        return interactionController.GetCurrentSelectedItem();
     }
 
     public void AbortChangingSelectedItem()

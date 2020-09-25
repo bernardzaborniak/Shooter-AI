@@ -36,12 +36,13 @@ public class AIController : MonoBehaviour
         characterController.ChangeSelectedItem(1);
         characterController.ChangeCharacterStanceToCombatStance();
 
+
         GameEntity nearestEnemy = sensing.nearestEnemy;
 
         if (nearestEnemy)
         {
             characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-            characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy));
+            characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy, characterController.GetCurrentlySelectedItem()));
 
             if(characterController.GetAmmoRemainingInMagazine() > 0)
             {
