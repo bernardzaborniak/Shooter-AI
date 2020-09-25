@@ -16,6 +16,8 @@ public class EC_HumanoidAnimationController : EntityComponent
     public string angularVelocityParam;
     int angularVelocityParamID;
 
+    
+
     public string stanceParam;
     int stanceParamID;
 
@@ -25,6 +27,10 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Header("Adjusting Animtion Layers etc..")]
     [Tooltip("Turn animation override layer is only played below this velocity")]
     public float turnAnimationVelocityThreshold;
+    //[Tooltip("We smooth the angular velocity value to prevent it from jerking too much")]
+    //public float angularVelocityMaxAcceleration;
+    //float desiredAngularVelocity;
+    //float smoothedAngularVelocity;
 
     [Header("Changing Weapons")]
 
@@ -198,7 +204,9 @@ public class EC_HumanoidAnimationController : EntityComponent
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
-    {  
+    {
+        //smoothedAngularVelocity += Mathf.Clamp((angularVelocity - smoothedAngularVelocity),  - angularVelocityMaxAcceleration * Time.deltaTime, angularVelocityMaxAcceleration * Time.deltaTime);
+
         animator.SetFloat(sidewaysVelocityParamID, sidewaysVelocity);
         animator.SetFloat(forwardVelocityParamID, forwardVelocity);
         animator.SetFloat(angularVelocityParamID, angularVelocity);

@@ -351,6 +351,20 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
+    public void AimSpineInDirection(Vector3 direction)
+    {
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        {
+            if (DoesCurrentStanceAllowAiming())
+            {
+                aimingController.AimSpineInDirection(direction);
+            }
+        }
+
+    }
+
+    
+
     public void StopAimingSpine()
     {
         aimingController.StopAimSpineAtTarget();

@@ -584,7 +584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07a5aeb1dcb02340aeb177b476bd3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimingReference: {fileID: 0}
+  aimingReference: {fileID: 8606268059406528053}
+  maxAimError: 60
 --- !u!1 &3033485311553759571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,6 +1831,7 @@ MonoBehaviour:
   stanceParam: Stance ID
   itemInHandParam: Item In Hand ID
   turnAnimationVelocityThreshold: 1
+  angularVelocityMaxAcceleration: 10
   weaponInteractionStateParam: Weapon Interaction State ID
   pullOutRifleAnimationLength: 1.333
   hideRifleAnimationLength: 1.333
