@@ -259,9 +259,6 @@ public class EC_HumanoidInterationController : EntityComponent
 
                 animationController.StartReloadingWeapon(reloadDuration);
 
-                //todo djust hands IK here
-                Debug.Log(gameObject.name + " hands IK Disable");
-                //This is called but the hands are silll attached - why? TODO
                 handsIKController.DisableIKs();
             }
         }
@@ -288,7 +285,6 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
-                Debug.Log(gameObject.name + " hands IK Reenable on Abort Reloading");
                 handsIKController.ReenableIKs();
             }
         }
@@ -305,7 +301,6 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
-                Debug.Log(gameObject.name + " hands IK Reenable on Finish Reloading");
                 handsIKController.ReenableIKs();
             }
         }
