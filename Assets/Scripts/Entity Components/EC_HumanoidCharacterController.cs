@@ -120,8 +120,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (Input.GetKeyDown(KeyCode.J))
         {
             //AimAt(aimAtTarget);
-            AimSpineAtPosition(aimAtTarget.position);
-            AimWeapon();
+            AimSpineAtTransform(aimAtTarget);
+            AimWeaponAtTransform(aimAtTarget);
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
@@ -371,7 +371,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
     //automaticly takes the spine target
-    public void AimWeapon()
+    public void AimWeaponAtTransform(Transform target)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
@@ -379,7 +379,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
-                    aimingController.AimWeaponAtTarget();
+                    aimingController.AimWeaponAtTransform(target);
                 }  
             }
         }

@@ -41,7 +41,7 @@ public class AIController : MonoBehaviour
         if (nearestEnemy)
         {
             characterController.AimSpineInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy));
-            characterController.AimWeapon();
+            characterController.AimWeaponAtTransform(nearestEnemy.transform);
 
             if(characterController.GetAmmoRemainingInMagazine() > 0)
             {
