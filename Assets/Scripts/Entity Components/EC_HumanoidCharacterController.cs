@@ -120,16 +120,21 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (Input.GetKeyDown(KeyCode.J))
         {
             //AimAt(aimAtTarget);
+            AimSpineAtPosition(aimAtTarget.position);
+            AimWeapon();
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
             //StopAimAt();
+            StopAimingSpine();
+            StopAimingWeapon();
         }
 
         // -------Shooting & Reloading -----
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //ShootWeapon();
+           
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -322,7 +327,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
 
-    public void AimSpineAtTarget(Transform target)
+    public void AimSpineAtTransform(Transform target)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
@@ -334,19 +339,34 @@ public class EC_HumanoidCharacterController : EntityComponent
         
     }
 
+    public void AimSpineAtPosition(Vector3 position)
+    {
+        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        {
+            if (DoesCurrentStanceAllowAiming())
+            {
+                aimingController.AimSpineAtPosition(position);
+            }
+        }
+
+    }
+
     public void StopAimingSpine()
     {
         aimingController.StopAimSpineAtTarget();
     }
 
     //automaticly takes the spine target
-    public void AimWeaponAtTarget()
+    public void AimWeapon()
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (DoesCurrentStanceAllowAiming())
             {
-                aimingController.AimWeaponAtTarget();
+                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+                {
+                    aimingController.AimWeaponAtTarget();
+                }  
             }
         }
     }

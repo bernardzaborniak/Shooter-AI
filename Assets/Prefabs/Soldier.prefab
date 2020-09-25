@@ -1548,6 +1548,7 @@ MonoBehaviour:
   onDieEvent:
     m_PersistentCalls:
       m_Calls: []
+  isDead: 0
   aimPosition: {fileID: 8465268459489776125}
   criticalAimPosition: {fileID: 367354858759370807}
   width: 0
@@ -1623,10 +1624,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultDirectionAimDistance: 10
+  defaultDirectionAimDistance: 20
   movementController: {fileID: 7366031314207611041}
   spineConstraintTarget: {fileID: 7366031314609754851}
-  aimingDistanceReferencePoint: {fileID: 8606268059406528053}
+  aimingReferencePointOnBody: {fileID: 8606268059406528053}
   spineConstraint1: {fileID: 7366031315901497406}
   spineConstraint2: {fileID: 7366031315213232072}
   spineConstraint3: {fileID: 7366031314846552353}
@@ -1919,7 +1920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
-  maxHealth: 100
+  maxHealth: 500
   healthBarFill: {fileID: 0}
   changeColorOnDamage: 0
   damageMaterial: {fileID: 0}

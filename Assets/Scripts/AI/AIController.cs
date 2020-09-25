@@ -40,8 +40,8 @@ public class AIController : MonoBehaviour
 
         if (nearestEnemy)
         {
-            characterController.AimSpineAtTarget(nearestEnemy.transform);
-            characterController.AimWeaponAtTarget();
+            characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+            characterController.AimWeapon();
 
             if(characterController.GetAmmoRemainingInMagazine() > 0)
             {

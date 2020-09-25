@@ -46,7 +46,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
     public Transform spineConstraintTarget;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
-    public Transform aimingDistanceReferencePoint; //could be spine 3
+    public Transform aimingReferencePointOnBody; //could be spine 3
     Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
     Vector3 currentSpineDirectionChangeVelocity;
@@ -136,7 +136,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
             if (currentAimAtTargetingMethod == AimAtTargetingMethod.Direction)
             {
-                pointToAimAt = aimingDistanceReferencePoint.position + aimDirection * defaultDirectionAimDistance;
+                pointToAimAt = aimingReferencePointOnBody.position + aimDirection * defaultDirectionAimDistance;
             }
             else if (currentAimAtTargetingMethod == AimAtTargetingMethod.Position)
             {
@@ -147,7 +147,7 @@ public class EC_HumanoidAimingController : EntityComponent
                 pointToAimAt = aimAtTransform.position;
             }
 
-            directionToAim = pointToAimAt - aimingDistanceReferencePoint.position;
+            directionToAim = pointToAimAt - aimingReferencePointOnBody.position;
 
 
             // -------------   2. Rotate Horizontally  -----------
@@ -161,7 +161,7 @@ public class EC_HumanoidAimingController : EntityComponent
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
             // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
-            if (spineConstraintTarget.position.y > aimingDistanceReferencePoint.position.y)
+            if (spineConstraintTarget.position.y > aimingReferencePointOnBody.position.y)
             {
                 // aiming Up 
                 spineConstraint1TargetWeight = 0.05f;
@@ -187,7 +187,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
-        spineConstraintTarget.position = aimingDistanceReferencePoint.position + currentSpineDirection;
+        spineConstraintTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
         // -----------   5 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
@@ -207,7 +207,7 @@ public class EC_HumanoidAimingController : EntityComponent
             // Calculate & Rotate Weapon Aim Direction
             desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, directionToAim, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
             currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponAimDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
-            weaponAimTarget.position = aimingDistanceReferencePoint.position + currentWeaponAimDirection;
+            weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponAimDirection;
 
         }
 
@@ -228,22 +228,22 @@ public class EC_HumanoidAimingController : EntityComponent
 
     }
 
-    /*public void AimInDirection(Vector3 direction)
+    public void AimSpineInDirection(Vector3 direction)
     {
-        aimAtActive = true;
+        aimingSpine = true;
         currentAimAtTargetingMethod = AimAtTargetingMethod.Direction;
         movementController.manualRotation = true;
         aimDirection = direction;
     }
 
-    public void AimAtPosition(Vector3 position)
+    public void AimSpineAtPosition(Vector3 position)
     {
-        aimAtActive = true;
+        aimingSpine = true;
         currentAimAtTargetingMethod = AimAtTargetingMethod.Position;
         movementController.manualRotation = true;
         aimAtPosition = position;
 
-    }*/
+    }
 
     public void AimSpineAtTransform(Transform transform)
     {

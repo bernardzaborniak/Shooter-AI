@@ -349,4 +349,9 @@ public class EC_HumanoidInterationController : EntityComponent
     }
 
     #endregion
+
+    public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
+    {
+        return itemInteractionState == ItemInteractionState.Idle;
+    }
 }
