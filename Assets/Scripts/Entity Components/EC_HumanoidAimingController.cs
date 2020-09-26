@@ -117,7 +117,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public float weaponAimRotationSpeed;
     [Tooltip("The smaller this value, the faster the weapon aims, it uses vector3.smoothDamp to smooth the movement a little bit")]
     public float aimingWeaponSmoothTime = 0.05f;
-    Vector3 currentWeaponAimDirection;
+    Vector3 currentWeaponDirection;
     Vector3 desiredWeaponDirection;
     Vector3 weaponAimSpeedRef;
 
@@ -257,8 +257,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Smoothly rotate the weapon towards desiredWeaponDirection & smooth out change in weaponAimingRig.weight
 
-        currentWeaponAimDirection = Vector3.SmoothDamp(currentWeaponAimDirection, desiredWeaponDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
-        weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponAimDirection;
+        currentWeaponDirection = Vector3.SmoothDamp(currentWeaponDirection, desiredWeaponDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
+        weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponDirection;
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
@@ -280,6 +280,9 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
+        Debug.Log("aim direction 3: " + direction);
+        Debug.Log("aim direction 3: currentDirection" + currentSpineDirection);
+        Debug.Log("aim direction 3: currentDirection" + desiredSpineDirection);
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
         movementController.manualRotation = true;
@@ -382,8 +385,24 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         return fLookAnimator.ObjectToFollow != null;
     }
-    public Vector3 GetCurrentAimDirection()
+    public Vector3 GetCurrentSpineAimDirection()
     {
-        return spineDirectionToTarget;
+        return currentSpineDirection;
+    }
+
+    // What is the difference between desired and current spine direction
+    public float GetCurrentSpineAimingErrorAngle()
+    {
+        return Vector3.Angle(desiredSpineDirection,currentSpineDirection);
+    }
+
+    public Vector3 GetCurrentWeaponAimDirection()
+    {
+        return currentWeaponDirection;
+    }
+
+    public float GetCurrentWeaponAimingErrorAngle()
+    {
+        return Vector3.Angle(desiredWeaponDirection, currentWeaponDirection);
     }
 }

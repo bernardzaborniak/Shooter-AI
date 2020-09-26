@@ -21,6 +21,15 @@ public class AIC_AimingController : AIComponent
     public bool handsShake;
     public float handsShakingIntensity;
 
+    enum DirectionToAimCalculationMode
+    {
+        StraightGun,
+        GunWithArc,
+        Grenade
+    }
+
+    DirectionToAimCalculationMode directionToAimCalculationMode;
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -35,8 +44,13 @@ public class AIC_AimingController : AIComponent
     {
         Vector3 aimDirection = Vector3.zero;
        
-        bool projectileShotAtAnArc = false;
+        //bool projectileShotAtAnArc = false;
         Gun equippedGun = null;
+        Grenade equippedGrenade = null;
+
+        #region Determin directionToAimCalculationMode 
+
+        directionToAimCalculationMode = DirectionToAimCalculationMode.StraightGun;
 
         if (currentlySelectedItem)
         {
@@ -45,24 +59,46 @@ public class AIC_AimingController : AIComponent
                 equippedGun = (currentlySelectedItem as Gun);
                 if (equippedGun.aimWithAngledShotCalculation)
                 {
-                    projectileShotAtAnArc = true;
+                    directionToAimCalculationMode = DirectionToAimCalculationMode.GunWithArc;
+                    //projectileShotAtAnArc = true;
                 }
+            }
+            else if(currentlySelectedItem is Grenade)
+            {
+                equippedGrenade = currentlySelectedItem as Grenade;
+                directionToAimCalculationMode = DirectionToAimCalculationMode.Grenade;
+                //projectileShotAtAnArc = true;
             }
         }
 
-        if (projectileShotAtAnArc)
+        #endregion
+
+
+        #region Calculate Aim Direction
+        if (directionToAimCalculationMode == DirectionToAimCalculationMode.StraightGun)
+        {
+            aimDirection = target.GetAimPosition() - aimingReference.position;
+        }
+        else if(directionToAimCalculationMode == DirectionToAimCalculationMode.GunWithArc)
         {
             Vector3 aimDirectionNoY = target.GetAimPosition() - aimingReference.position;
             aimDirectionNoY.y = 0;
             float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGun.projectileLaunchVelocity, aimingReference.position, target.GetAimPosition());
             aimDirection = Quaternion.AngleAxis(-launchAngle, aimingReference.right) * aimDirectionNoY;
         }
-        else
+        else if(directionToAimCalculationMode == DirectionToAimCalculationMode.Grenade)
         {
-            aimDirection = target.GetAimPosition() - aimingReference.position;
+            //calculate proper launch velocity too here
+            Vector3 aimDirectionNoY = target.GetAimPosition() - aimingReference.position;
+            aimDirectionNoY.y = 0;
+            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGrenade.maxThrowVelocity, aimingReference.position, target.GetAimPosition());
+            aimDirection = Quaternion.AngleAxis(-launchAngle, aimingReference.right) * aimDirectionNoY;
         }
-        
-        
+
+        #endregion
+
+        #region Add Hand Shake and Aiming Error based on Skill
+
         if (Time.time > nextChangeErrorTime)
         {
             ChangeAimingError();
@@ -80,16 +116,9 @@ public class AIC_AimingController : AIComponent
             return currentAimingError * aimDirection;
         }
 
+        #endregion
 
 
-        //Vector3 aimingVector = currentAimingError * (target.GetAimPosition() - aimingReference.position);
-        
-
-       // Quaternion errorRotater = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
-
-        //aimingVector = currentAimingError * aimingVector;
-
-        //return aimingVector;
     }
 
     void ChangeAimingError()

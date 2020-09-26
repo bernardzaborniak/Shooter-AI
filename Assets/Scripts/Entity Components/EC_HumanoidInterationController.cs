@@ -46,8 +46,8 @@ public class EC_HumanoidInterationController : EntityComponent
     float reloadingEndTime;
 
     //Needs to be able to change later, is calculatet based on current target and throwGrenadeMaxRange
-    public float throwGrenadeVelocity;
-    public float throwGrenadeMaxRange;
+    float currentGrenadeThrowVelocity;
+    //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
 
 
@@ -310,12 +310,14 @@ public class EC_HumanoidInterationController : EntityComponent
 
     #region Other Item Commands
 
-    public void ThrowGrenade()
+    public void ThrowGrenade(float currentGrenadeThrowVelocity)
     {
         if(itemInteractionState == ItemInteractionState.Idle)
         {
             if (inventory[currentSelectedItemID] is Grenade)
             {
+                this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
+
                 itemInteractionState = ItemInteractionState.ThrowingGrenade;
                 throwingGrenadeEndTime = Time.time + (inventory[currentSelectedItemID] as Grenade).throwingTime;
 
@@ -327,8 +329,8 @@ public class EC_HumanoidInterationController : EntityComponent
     void FinishThrowingGrenade()
     {
         itemInteractionState = ItemInteractionState.Idle;
-        Debug.Log("throw direction: " + aimingController.GetCurrentAimDirection());
-        (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentAimDirection(), throwGrenadeVelocity);
+        Debug.Log("throw direction: " + aimingController.GetCurrentSpineAimDirection());
+        (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
     }
@@ -339,7 +341,7 @@ public class EC_HumanoidInterationController : EntityComponent
         {
             //can only be caused by stagger or flinch or something?
             itemInteractionState = ItemInteractionState.Idle;
-            (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentAimDirection(), Random.Range(-3, 3));  //is this the proper way
+            (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), Random.Range(-3, 3));  //is this the proper way
             inventory[currentSelectedItemID] = null; //Remove grenade from inventory
             animationController.AbortThrowingGrenade();
         }  
@@ -348,6 +350,11 @@ public class EC_HumanoidInterationController : EntityComponent
     public Item GetCurrentSelectedItem()
     {
         return inventory[currentSelectedItemID];
+    }
+
+    public Item GetItemInInventory(int inventoryPosition)
+    {
+        return inventory[inventoryPosition];
     }
 
     #endregion

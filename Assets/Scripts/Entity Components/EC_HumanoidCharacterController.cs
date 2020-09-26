@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -146,7 +147,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            ThrowGrenade();
+            //ThrowGrenade();
         }
 
         
@@ -292,7 +293,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.AbortMoving();
     }
 
-    #region Aiming Weapon Spine And Look at
+    #region Aiming Weapon & Spine And LookAt
 
     /*public void AimAt(Transform traget)
     {
@@ -360,6 +361,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
+        Debug.Log("aim direction 2: " + direction);
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (DoesCurrentStanceAllowAiming())
@@ -370,11 +372,14 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
-    
-
     public void StopAimingSpine()
     {
         aimingController.StopAimSpineAtTarget();
+    }
+
+    public float GetCurrentSpineAimingErrorAngle()
+    {
+        return aimingController.GetCurrentSpineAimingErrorAngle();
     }
 
     //automaticly takes the spine target
@@ -420,12 +425,15 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public float GetCurrentWeaponAimingErrorAngle()
+    {
+        return aimingController.GetCurrentWeaponAimingErrorAngle();
+    }
+
     public void StopAimingWeapon()
     {
         aimingController.StopAimingWeaponAtTarget();
     }
-
-
 
     public bool IsAimingWeapon()
     {
@@ -460,6 +468,11 @@ public class EC_HumanoidCharacterController : EntityComponent
     public Item GetCurrentlySelectedItem()
     {
         return interactionController.GetCurrentSelectedItem();
+    }
+
+    public Item GetItemInInventory(int inventoryPosition)
+    {
+        return interactionController.GetItemInInventory(inventoryPosition);
     }
 
     public void AbortChangingSelectedItem()
@@ -498,11 +511,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         return  interactionController.GetAmmoRemainingInMagazine();
     }
 
-    public void ThrowGrenade()
+    public void ThrowGrenade(float throwVelocity)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
-            interactionController.ThrowGrenade();
+            interactionController.ThrowGrenade(throwVelocity);
         }  
     }
 
@@ -534,6 +547,8 @@ public class EC_HumanoidCharacterController : EntityComponent
             return true;
         }
     }
+
+    #region Damage And Death Reactions
 
     void Stagger(float staggerDuration)
     {
@@ -587,6 +602,10 @@ public class EC_HumanoidCharacterController : EntityComponent
         humanoidDeathEffect.EnableDeathEffect(movementController.GetCurrentVelocity(), movementController.GetCurrentAngularVelocity(), ref damageInfo);
     }
 
+    #endregion
+
+    #region Traversing Offmesh Links
+
     public void OnStartTraversingOffMeshLink()
     {
         characterPreventionType = CharacterPreventionType.JumpingToTraverseOffMeshLink;
@@ -610,6 +629,8 @@ public class EC_HumanoidCharacterController : EntityComponent
             handsIKController.ReenableIKs();
         }
     }
+
+    #endregion
 
 
 

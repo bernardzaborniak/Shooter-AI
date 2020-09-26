@@ -16,6 +16,8 @@ public class AIController : MonoBehaviour
     public float desiredRangeToEnemy;
 
 
+    //public float throwGrenadeVelocity;
+
     void Start()
     {
         for (int i = 0; i < aIComponents.Length; i++)
@@ -33,7 +35,34 @@ public class AIController : MonoBehaviour
             aIComponents[i].UpdateComponent();
         }
 
-        characterController.ChangeSelectedItem(1);
+        GameEntity nearestEnemy = sensing.nearestEnemy;
+        characterController.ChangeCharacterStanceToCombatStance();
+
+        if (characterController.GetItemInInventory(3) != null)
+        {
+            characterController.ChangeSelectedItem(3);
+
+            if (nearestEnemy)
+            {
+                if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3))
+                {
+                    characterController.AimSpineInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy, characterController.GetCurrentlySelectedItem()));
+                    Debug.Log("aim direction 1: " + aimingController.GetDirectionToAimAtTarget(nearestEnemy, characterController.GetCurrentlySelectedItem()));
+
+                    if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
+                    {
+                        characterController.ThrowGrenade((characterController.GetCurrentlySelectedItem() as Grenade).maxThrowVelocity);
+                    }
+
+                }
+            }
+            
+        }
+
+       
+
+        //shot weapon
+        /*characterController.ChangeSelectedItem(1);
         characterController.ChangeCharacterStanceToCombatStance();
 
 
@@ -59,6 +88,6 @@ public class AIController : MonoBehaviour
         if (!(characterController.GetAmmoRemainingInMagazine() > 0))
         {
             characterController.StartReloadingWeapon();
-        }
+        }*/
     }
 }
