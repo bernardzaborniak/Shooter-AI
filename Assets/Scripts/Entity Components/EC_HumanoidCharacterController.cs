@@ -361,7 +361,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
-        Debug.Log("aim direction 2: " + direction);
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             if (DoesCurrentStanceAllowAiming())

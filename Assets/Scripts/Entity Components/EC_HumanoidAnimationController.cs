@@ -314,7 +314,6 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void StartThrowingGrenade(float animationDuration)
     {
-        Debug.Log("start throwing anim");
         animator.SetBool(throwGrenadeParamID, true);
 
         animator.SetFloat(throwGrenadeSpeedMultiplierParamID, throwingGrenadeAnimationLength / animationDuration);
@@ -322,7 +321,6 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public void AbortThrowingGrenade()
     {
-        Debug.Log("Stop throwing anim");
         animator.SetBool(throwGrenadeParamID, false);
     }
 

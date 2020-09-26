@@ -331,7 +331,6 @@ public class EC_HumanoidInterationController : EntityComponent
     void FinishThrowingGrenade()
     {
         itemInteractionState = ItemInteractionState.Idle;
-        Debug.Log("throw direction: " + aimingController.GetCurrentSpineAimDirection());
         (inventory[currentSelectedItemID] as Grenade).Throw(currentGrenadeThrowDirection, currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
