@@ -1289,7 +1289,7 @@ MonoBehaviour:
   hideItemTime: 0.7
   rigidbody: {fileID: 302837561609101712}
   throwingTime: 2.5
-  maxThrowVelocity: 15
+  throwVelocityAt10mDistance: 10
 --- !u!135 &8490229596256771244
 SphereCollider:
   m_ObjectHideFlags: 0

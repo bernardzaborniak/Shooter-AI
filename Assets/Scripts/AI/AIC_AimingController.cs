@@ -40,7 +40,7 @@ public class AIC_AimingController : AIComponent
 
     }
 
-    public Vector3 GetDirectionToAimAtTarget(GameEntity target, Item currentlySelectedItem) // , Vector3 targetMovementVelocity
+    public Vector3 GetDirectionToAimAtTarget(Vector3 target, Item currentlySelectedItem) // , Vector3 targetMovementVelocity
     {
         Vector3 aimDirection = Vector3.zero;
        
@@ -77,21 +77,21 @@ public class AIC_AimingController : AIComponent
         #region Calculate Aim Direction
         if (directionToAimCalculationMode == DirectionToAimCalculationMode.StraightGun)
         {
-            aimDirection = target.GetAimPosition() - aimingReference.position;
+            aimDirection = target - aimingReference.position;
         }
         else if(directionToAimCalculationMode == DirectionToAimCalculationMode.GunWithArc)
         {
-            Vector3 aimDirectionNoY = target.GetAimPosition() - aimingReference.position;
+            Vector3 aimDirectionNoY = target - aimingReference.position;
             aimDirectionNoY.y = 0;
-            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGun.projectileLaunchVelocity, aimingReference.position, target.GetAimPosition());
+            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGun.projectileLaunchVelocity, aimingReference.position, target);
             aimDirection = Quaternion.AngleAxis(-launchAngle, aimingReference.right) * aimDirectionNoY;
         }
         else if(directionToAimCalculationMode == DirectionToAimCalculationMode.Grenade)
         {
             //calculate proper launch velocity too here
-            Vector3 aimDirectionNoY = target.GetAimPosition() - aimingReference.position;
+            Vector3 aimDirectionNoY = target - aimingReference.position;
             aimDirectionNoY.y = 0;
-            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGrenade.maxThrowVelocity, aimingReference.position, target.GetAimPosition());
+            float launchAngle = Utility.CalculateProjectileLaunchAngle(equippedGrenade.throwVelocityAt10mDistance, aimingReference.position, target);
             aimDirection = Quaternion.AngleAxis(-launchAngle, aimingReference.right) * aimDirectionNoY;
         }
 
@@ -124,6 +124,17 @@ public class AIC_AimingController : AIComponent
     void ChangeAimingError()
     {
         currentAimingError = Quaternion.Euler(Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError), Random.Range(-maxAimError, maxAimError));
+    }
+
+    public float DetermineThrowingObjectVelocity(Item throwingObject, Vector3 target)//float throwVelocityAt10mDistance, Vector3 target)
+    {
+        float distance = (target - aimingReference.position).magnitude;
+        if(throwingObject is Grenade)
+        {
+            float velocityAt10m = (throwingObject as Grenade).throwVelocityAt10mDistance;
+            return distance / 10 * velocityAt10m;
+        }
+        return 0;
     }
 
     /*public void UpdateCurrentSelectedItem(Item currentlySelectedItem)

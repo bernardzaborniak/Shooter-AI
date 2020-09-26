@@ -46,12 +46,12 @@ public class AIController : MonoBehaviour
             {
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3))
                 {
-                    characterController.AimSpineInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy, characterController.GetCurrentlySelectedItem()));
-                    Debug.Log("aim direction 1: " + aimingController.GetDirectionToAimAtTarget(nearestEnemy, characterController.GetCurrentlySelectedItem()));
+                    characterController.AimSpineInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), characterController.GetCurrentlySelectedItem()));
+                    Debug.Log("aim direction 1: " + aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), characterController.GetCurrentlySelectedItem()));
 
                     if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
                     {
-                        characterController.ThrowGrenade((characterController.GetCurrentlySelectedItem() as Grenade).maxThrowVelocity);
+                        characterController.ThrowGrenade((characterController.GetCurrentlySelectedItem() as Grenade).throwVelocityAt10mDistance);
                     }
 
                 }
