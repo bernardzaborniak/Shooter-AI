@@ -54,7 +54,7 @@ public class AIController : MonoBehaviour
                 {
                     Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
                     float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);
-                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, true, grenadeThrowingVelocity, false);
+                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, Vector3.zero, true, grenadeThrowingVelocity, false);
                     Vector3 grenadeThrowingDirection = aimingController.AddAimErrorAndHandShakeToAimDirection(aimSpineDirection);
 
                     characterController.AimSpineInDirection(aimSpineDirection);

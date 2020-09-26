@@ -45,7 +45,7 @@ public class AIC_AimingController : AIComponent
         }
     }
 
-    public Vector3 GetDirectionToAimAtTarget(Vector3 target, bool launchProjectileInArc = false, float projectileLaunchVelocity = 0, bool directShot = false, bool addAimErrorAndhandShakeToDirection = false) // , Vector3 targetMovementVelocity
+    public Vector3 GetDirectionToAimAtTarget(Vector3 target, Vector3 currentTargetVelocity, bool launchProjectileInArc = false, float projectileLaunchVelocity = 0, bool directShot = false, bool addAimErrorAndhandShakeToDirection = false) // , Vector3 targetMovementVelocity
     {
         Vector3 aimDirection = Vector3.zero;
 
