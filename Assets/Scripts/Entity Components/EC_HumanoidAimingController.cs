@@ -280,9 +280,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
-        Debug.Log("aim direction 3: " + direction);
-        Debug.Log("aim direction 3: currentDirection" + currentSpineDirection);
-        Debug.Log("aim direction 3: currentDirection" + desiredSpineDirection);
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
         movementController.manualRotation = true;

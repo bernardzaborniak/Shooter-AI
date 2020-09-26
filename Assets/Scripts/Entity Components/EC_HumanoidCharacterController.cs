@@ -511,11 +511,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         return  interactionController.GetAmmoRemainingInMagazine();
     }
 
-    public void ThrowGrenade(float throwVelocity)
+    public void ThrowGrenade(float throwVelocity, Vector3 throwDirection)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
-            interactionController.ThrowGrenade(throwVelocity);
+            interactionController.ThrowGrenade(throwVelocity, throwDirection);
         }  
     }
 

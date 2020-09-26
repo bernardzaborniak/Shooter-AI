@@ -36,6 +36,12 @@ public class AIController : MonoBehaviour
         }
 
         GameEntity nearestEnemy = sensing.nearestEnemy;
+        float distanceToNearestEnemy = 0;
+        if (nearestEnemy)
+        {
+            distanceToNearestEnemy = (nearestEnemy.transform.position - transform.position).magnitude;
+        }
+       
         characterController.ChangeCharacterStanceToCombatStance();
 
         if (characterController.GetItemInInventory(3) != null)
@@ -46,12 +52,17 @@ public class AIController : MonoBehaviour
             {
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3))
                 {
-                    characterController.AimSpineInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), characterController.GetCurrentlySelectedItem()));
-                    Debug.Log("aim direction 1: " + aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), characterController.GetCurrentlySelectedItem()));
+                    Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
+                    float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);
+                    Debug.Log("distance: " + distanceToNearestEnemy);
+                    Debug.Log("throwVelocity: " + grenadeThrowingVelocity);
+
+                    Vector3 grenadeThrowingDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, true, grenadeThrowingVelocity, false);
+                    characterController.AimSpineInDirection(grenadeThrowingDirection);
 
                     if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
                     {
-                        characterController.ThrowGrenade((characterController.GetCurrentlySelectedItem() as Grenade).throwVelocityAt10mDistance);
+                        characterController.ThrowGrenade(grenadeThrowingVelocity, grenadeThrowingDirection);
                     }
 
                 }

@@ -33,7 +33,7 @@ public class AIC_HumanSensing : AIComponent
             
             enemiesInSensingRadius.Clear();
 
-            float closestDistance = Mathf.Infinity;
+            float smallestDistance = Mathf.Infinity;
             float currentDistance;
             GameEntity currentEntity;
             Vector3 myPosition = transform.position;
@@ -48,9 +48,9 @@ public class AIC_HumanSensing : AIComponent
                         enemiesInSensingRadius.Add(currentEntity);
 
                         currentDistance = (myPosition - currentEntity.transform.position).sqrMagnitude;
-                        if (currentDistance < closestDistance)
+                        if (currentDistance < smallestDistance)
                         {
-                            closestDistance = currentDistance;
+                            smallestDistance = currentDistance;
                             nearestEnemy = currentEntity;
                         }
                     }           

@@ -47,6 +47,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     //Needs to be able to change later, is calculatet based on current target and throwGrenadeMaxRange
     float currentGrenadeThrowVelocity;
+    Vector3 currentGrenadeThrowDirection;
     //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
 
@@ -310,13 +311,14 @@ public class EC_HumanoidInterationController : EntityComponent
 
     #region Other Item Commands
 
-    public void ThrowGrenade(float currentGrenadeThrowVelocity)
+    public void ThrowGrenade(float currentGrenadeThrowVelocity, Vector3 currentGrenadeThrowDirection)
     {
         if(itemInteractionState == ItemInteractionState.Idle)
         {
             if (inventory[currentSelectedItemID] is Grenade)
             {
                 this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
+                this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
 
                 itemInteractionState = ItemInteractionState.ThrowingGrenade;
                 throwingGrenadeEndTime = Time.time + (inventory[currentSelectedItemID] as Grenade).throwingTime;
@@ -330,7 +332,7 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         itemInteractionState = ItemInteractionState.Idle;
         Debug.Log("throw direction: " + aimingController.GetCurrentSpineAimDirection());
-        (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), currentGrenadeThrowVelocity);
+        (inventory[currentSelectedItemID] as Grenade).Throw(currentGrenadeThrowDirection, currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
     }
