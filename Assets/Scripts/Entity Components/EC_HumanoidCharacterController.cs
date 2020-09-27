@@ -67,114 +67,123 @@ public class EC_HumanoidCharacterController : EntityComponent
     [Header("Death Effect")]
     public HumanoidDeathEffect humanoidDeathEffect;
 
+    public bool controllByPlayer;
+
 
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
-        ChangeCharacterStanceToIdle();
+
+        SetUpCharacter();
     }
     public override void UpdateComponent()
     {
         #region Keyboard Input for Development
-
-        // -------- Stances -------
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (controllByPlayer)
         {
-            ChangeCharacterStanceToIdle();
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ChangeCharacterStanceToCombatStance();
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            ChangeCharacterStanceToCrouchingStance();
-        }
-
-        // -------- Weapons -------
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangeSelectedItem(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeSelectedItem(2);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ChangeSelectedItem(3);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            ChangeSelectedItem(0);
-        }
-
-        // -------- Aiming & Look at -------
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LookAt(lookAtTarget);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            StopLookAt();
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            //AimAt(aimAtTarget);
-            AimSpineAtTransform(aimAtTarget);
-            AimWeaponAtTransform(aimAtTarget);
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            //StopAimAt();
-            StopAimingSpine();
-            StopAimingWeapon();
-        }
-
-        // -------Shooting & Reloading -----
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ShootWeapon();
-           
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartReloadingWeapon();
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            AbortReloadingWeapon();
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            //ThrowGrenade();
-        }
-
-        
 
 
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            // -------- Stances -------
+            if (Input.GetKeyDown(KeyCode.Y))
             {
-                MoveTo(hit.point);
+                ChangeCharacterStanceToIdle();
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ChangeCharacterStanceToCombatStance();
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                ChangeCharacterStanceToCrouchingStance();
+            }
+
+            // -------- Weapons -------
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ChangeSelectedItem(1);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ChangeSelectedItem(2);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                ChangeSelectedItem(3);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                ChangeSelectedItem(0);
+            }
+
+            // -------- Aiming & Look at -------
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                LookAt(lookAtTarget);
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                StopLookAt();
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                //AimAt(aimAtTarget);
+                AimSpineAtTransform(aimAtTarget);
+                AimWeaponAtTransform(aimAtTarget);
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                //StopAimAt();
+                StopAimingSpine();
+                StopAimingWeapon();
+            }
+
+            // -------Shooting & Reloading -----
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ShootWeapon();
 
             }
-        }
-
-        if (Input.GetMouseButtonDown(2))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                MoveTo(hit.point, true);
+                StartReloadingWeapon();
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                AbortReloadingWeapon();
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                //ThrowGrenade();
+            }
 
+
+
+
+
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Debug.Log("g: " + gameObject.name + " move to ");
+                    MoveTo(hit.point);
+
+                }
+            }
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    MoveTo(hit.point, true);
+
+                }
             }
         }
 
@@ -183,7 +192,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         // Disable Stun after Time
         if (characterPreventionType == CharacterPreventionType.Stunned)
         {
-            if(Time.time> endStunTime)
+            if (Time.time > endStunTime)
             {
                 characterPreventionType = CharacterPreventionType.NoPrevention;
 
@@ -207,6 +216,22 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
 
+    void SetUpCharacter()
+    {
+        // the same as ChangeCharacterStanceToIdle but isnt blocked if already in idle stance
+        currentStance = CharacterStance.Idle;
+        movementController.SetDefaultSpeed(idleWalkingSpeed);
+        movementController.SetSprintSpeed(idleSprintingSpeed);
+        movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
+        movementController.SetAcceleration(idleAcceleration);
+        animationController.ChangeToIdleStance();
+        handsIKController.OnEnterIdleStance();
+
+        //StopAimAt();
+        StopAimingSpine();
+        StopAimingWeapon();
+    }
+
     public void ChangeCharacterStanceToIdle()
     {
         if (currentStance != CharacterStance.Idle)
@@ -227,10 +252,10 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ChangeCharacterStanceToCombatStance()
     {
-        
+
         if (currentStance != CharacterStance.CombatStance)
         {
-            if(interactionController.DoesCurrentItemInHandAllowCombatStance())
+            if (interactionController.DoesCurrentItemInHandAllowCombatStance())
             {
                 currentStance = CharacterStance.CombatStance;
                 movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
@@ -240,7 +265,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 animationController.ChangeToCombatStance();
                 handsIKController.OnEnterCombatStance();
             }
-        }  
+        }
     }
 
     public void ChangeCharacterStanceToCrouchingStance()
@@ -262,8 +287,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
+            Debug.Log("move 2");
             movementController.MoveTo(destination);
-        } 
+        }
     }
 
     public void MoveTo(Vector3 destination, bool sprint)
@@ -276,7 +302,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 {
                     sprint = false;
                 }
-                else 
+                else
                 {
                     //StopAimAt();
                     StopAimingSpine();
@@ -326,7 +352,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             aimingController.LookAtTransform(target);
-        }   
+        }
     }
 
     public void StopLookAt()
@@ -344,7 +370,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 aimingController.AimSpineAtTransform(target);
             }
         }
-        
+
     }
 
     public void AimSpineAtPosition(Vector3 position)
@@ -391,7 +417,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponAtTransform(target);
-                }  
+                }
             }
         }
     }
@@ -507,7 +533,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public int GetAmmoRemainingInMagazine()
     {
-        return  interactionController.GetAmmoRemainingInMagazine();
+        return interactionController.GetAmmoRemainingInMagazine();
     }
 
     public void ThrowGrenade(float throwVelocity, Vector3 throwDirection)
@@ -515,7 +541,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             interactionController.ThrowGrenade(throwVelocity, throwDirection);
-        }  
+        }
     }
 
     public void AbortThrowingGrenade()
@@ -525,7 +551,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     bool DoesCurrentStanceAllowSprinting()
     {
-        if(currentStance == CharacterStance.Crouching)
+        if (currentStance == CharacterStance.Crouching)
         {
             return false;
         }
@@ -556,14 +582,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         endStunTime = Time.time + staggerDuration;
 
         AbortReloadingWeapon();
-       // StopAimAt();
+        // StopAimAt();
         AbortChangingSelectedItem();
         AbortThrowingGrenade();
         StopAimingSpine();
         StopAimingWeapon();
 
 
-        if(currentStance == CharacterStance.Crouching)
+        if (currentStance == CharacterStance.Crouching)
         {
             movementController.SetDefaultSpeed(stunnedCrouchedMovementSpeed);
         }
@@ -572,7 +598,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetDefaultSpeed(stunnedMovementSpeed);
             movementController.SetSprintSpeed(stunnedSprintingSpeed);
         }
-      
+
 
 
     }
@@ -585,13 +611,13 @@ public class EC_HumanoidCharacterController : EntityComponent
             //Stagger
             Stagger(staggerDuration);
         }
-        else if(damageInfo.damage > damageThresholdForFlinch)
+        else if (damageInfo.damage > damageThresholdForFlinch)
         {
             animationController.Flinch();
         }
         else
         {
-           
+
             //nothing ?  maybe tell the AI Controller that he was hit 
         }
     }
@@ -622,7 +648,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void OnStopTraversingOffMeshLink()
     {
-        if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
             characterPreventionType = CharacterPreventionType.NoPrevention;
             handsIKController.ReenableIKs();

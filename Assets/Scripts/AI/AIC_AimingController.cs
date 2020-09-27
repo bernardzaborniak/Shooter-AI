@@ -51,15 +51,37 @@ public class AIC_AimingController : AIComponent
 
         if (!launchProjectileInArc)
         {
-            aimDirection = target - aimingReference.position;
+            if (currentTargetVelocity != Vector3.zero)
+            {
+                
+                Vector3 directionToTarget = target - aimingReference.position;
+                float projectileTimeOfFlight = directionToTarget.magnitude / projectileLaunchVelocity;
+                aimDirection = (target + currentTargetVelocity * projectileTimeOfFlight) - aimingReference.position;
+            }
+            else
+            {
+                aimDirection = target - aimingReference.position; 
+            }
+           
         }
         else
         {
             Vector3 directionToTarget = target - aimingReference.position;
             Vector3 directionToTargetNoY = new Vector3(directionToTarget.x, 0, directionToTarget.z);
-
             float launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
+
+            if (currentTargetVelocity != Vector3.zero)
+            {
+                
+                float projectileTimeOfFlight = Utility.CalculateTimeOfFlightOfProjectileLaunchedAtAnAngle(projectileLaunchVelocity, launchAngle, aimingReference.position, target);
+                
+                directionToTarget = (target + currentTargetVelocity * projectileTimeOfFlight) - aimingReference.position ;
+                directionToTargetNoY = new Vector3(directionToTarget.x, 0, directionToTarget.z);
+                launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
+            }
+
             aimDirection = Quaternion.AngleAxis(-launchAngle, transform.right) * directionToTargetNoY;
+
         }
 
         if (addAimErrorAndhandShakeToDirection)

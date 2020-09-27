@@ -4,7 +4,7 @@ using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EC_HumanoidMovementController : EntityComponent
+public class EC_HumanoidMovementController : EntityComponent, IMoveable
 {
     #region Fields
 
@@ -270,6 +270,7 @@ public class EC_HumanoidMovementController : EntityComponent
 
     public void MoveTo(Vector3 destination)
     {
+        Debug.Log("move 3");
         currentMovementOrder.SetCurrentOrder(destination, false);
     }
 
