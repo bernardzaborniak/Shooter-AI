@@ -269,9 +269,10 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         if(inventory[currentSelectedItemID] is Gun)
         {
+            
             return (inventory[currentSelectedItemID] as Gun).GetBulletsInMagazineLeft();
         }
-
+        Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
         return 0;
 
     }
@@ -364,4 +365,5 @@ public class EC_HumanoidInterationController : EntityComponent
     {
         return itemInteractionState == ItemInteractionState.Idle;
     }
+
 }

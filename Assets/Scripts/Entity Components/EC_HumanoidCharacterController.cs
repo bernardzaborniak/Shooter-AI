@@ -428,7 +428,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             if (DoesCurrentStanceAllowAiming())
             {
-                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+                if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponAtPosition(position);
                 }
@@ -442,7 +442,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             if (DoesCurrentStanceAllowAiming())
             {
-                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+                if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponInDirection(direction);
                 }
@@ -571,6 +571,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             return true;
         }
+    }
+
+    public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
+    {
+        return interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon();
     }
 
     #region Damage And Death Reactions

@@ -15,6 +15,10 @@ public class AIController : MonoBehaviour
     public float minRangeToEnemy;
     public float desiredRangeToEnemy;
 
+    //For MY bad ai so far
+    bool changedToPistol;
+    bool grenadeThrown;
+
 
     //public float throwGrenadeVelocity;
     //only basic AI for now
@@ -33,7 +37,7 @@ public class AIController : MonoBehaviour
             aIComponents[i].SetUpComponent(entityAttachedTo);
         }
 
-        
+        aIState = AIState.FiringSMG;
     }
 
     void Update()
@@ -44,59 +48,128 @@ public class AIController : MonoBehaviour
         }
 
 
-        #region AI State update
-        /*
-        //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
-        //shot weapon
-        characterController.ChangeSelectedItem(1);
-        characterController.ChangeCharacterStanceToCombatStance();
 
+
+        #region AI State update
+
+        #region Set needed Variables
 
         GameEntity nearestEnemy = sensing.nearestEnemy;
 
+        //----------Set selectedGun & selectedGrenade-----------------
+        Gun selectedGun = null;
+        Grenade selectedGrenade = null;
+        if ((characterController.GetCurrentlySelectedItem() is Gun))
+        {
+            selectedGun = (characterController.GetCurrentlySelectedItem() as Gun);
+        }
+        else if((characterController.GetCurrentlySelectedItem() is Grenade))
+        {
+            selectedGrenade = (characterController.GetCurrentlySelectedItem() as Grenade);
+        }
+
+        //-----------Set enemyMovementSpeed----------------
+        Vector3 enemyMovementSpeed = Vector3.zero;
         if (nearestEnemy)
         {
-            float launchVelocity = 0;
-            bool launchAtAnArc = false;
-            if ((characterController.GetCurrentlySelectedItem() is Gun))
-            {
-                Gun gun = (characterController.GetCurrentlySelectedItem() as Gun);
-                launchVelocity = gun.projectileLaunchVelocity;
-                launchAtAnArc = gun.aimWithAngledShotCalculation;
-            }
-
-
-
-            Vector3 enemyMovementSpeed = Vector3.zero;
             IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
-
             if (movement != null)
             {
                 enemyMovementSpeed = movement.GetCurrentVelocity();
             }
-            characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-            characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, launchAtAnArc, launchVelocity, true));
+        }
+       
 
-            if (characterController.GetAmmoRemainingInMagazine() > 0)
+        #endregion
+
+        if (aIState == AIState.FiringSMG)
+        {
+            characterController.ChangeSelectedItem(1);
+            characterController.ChangeCharacterStanceToCombatStance();
+
+            if(characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(1) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
             {
-                characterController.ShootWeapon();
+                if (nearestEnemy)
+                {
+                    characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+                    characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+
+                    if (characterController.GetAmmoRemainingInMagazine() > 0)
+                    {
+                        characterController.ShootWeapon();
+                    }
+                }
+                else
+                {
+                    characterController.StopAimingSpine();
+                    characterController.StopAimingWeapon();
+                }
+
+                if (!(characterController.GetAmmoRemainingInMagazine() > 0))
+                {
+                    Debug.Log("ammo in magazine: " + characterController.GetAmmoRemainingInMagazine());
+                    Debug.Log("current gun  " + characterController.GetCurrentlySelectedItem());
+                    
+                    if (!changedToPistol)
+                    {
+                        if (Random.Range(0f, 1f) < 0.5f)
+                        {
+                            characterController.StartReloadingWeapon();
+                        }
+                        else
+                        {
+                            changedToPistol = true;
+                            aIState = AIState.FiringPistol;
+                            Debug.Log("changing to pistol");
+                        }
+                    }
+                    else
+                    {
+                        characterController.StartReloadingWeapon();
+                    }
+                    
+
+                }
             }
-
+            
         }
-        else
+        else if(aIState == AIState.FiringPistol)
         {
-            characterController.StopAimingSpine();
-            characterController.StopAimingWeapon();
+            characterController.ChangeSelectedItem(2);
+            characterController.ChangeCharacterStanceToCombatStance();
+
+            if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(2) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
+            {
+                if (nearestEnemy)
+                {
+                    characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+                    characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+
+                    if (characterController.GetAmmoRemainingInMagazine() > 0)
+                    {
+                        characterController.ShootWeapon();
+                    }
+                }
+                else
+                {
+                    characterController.StopAimingSpine();
+                    characterController.StopAimingWeapon();
+                }
+
+                if (!(characterController.GetAmmoRemainingInMagazine() > 0))
+                {
+                        aIState = AIState.FiringSMG;
+                }
+            }
         }
 
-        if (!(characterController.GetAmmoRemainingInMagazine() > 0))
-        {
-            characterController.StartReloadingWeapon();
-        }*/
+        //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
+        //shot weapon
+       
         #endregion
 
         
-        GameEntity nearestEnemy = sensing.nearestEnemy;
+        /*GameEntity nearestEnemy = sensing.nearestEnemy;
         float distanceToNearestEnemy = 0;
         if (nearestEnemy)
         {
@@ -140,7 +213,7 @@ public class AIController : MonoBehaviour
                 }
             }
             
-        }
+        }*/
 
 
 
