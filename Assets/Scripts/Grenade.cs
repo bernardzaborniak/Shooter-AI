@@ -4,20 +4,113 @@ using UnityEngine;
 
 public class Grenade : Item
 {
-    public Rigidbody rigidbody;
+    [Header("Damage & Explosion Logic")]
+    public float explosionRadius;
+    //damage is descending linearly for now
+    public float explosionDamageAtCenter;
+    public float explosionForceAtCenter;
+    public enum GrenadeType
+    {
+        TimeDelay,
+        Impact
+    }
+    public GrenadeType grenadeType;
+    //Expand later so frag grenade has a numer of pieces and thus resulting a percentage of how many pieces hit you where and their damage
+    bool armed;// rename it when i introduce proper grenade logic for vr
+    float explosionTime;
+    public float grenadeExplosionTimeDelay;
+    bool exploded;
 
+    [Header ("Throwing & Collision")]
+
+    public Rigidbody rigidbody;
     [Tooltip("How long does the throwing animation takes place? - or how long does the delay between ordering the action and the action being executed takes place")]
     public float throwingTime;
-
     public float throwVelocityAt10mDistance;
-    //TODo Improve this for it to be a variable
+    [Tooltip("I apply my own friction")]
+    public float customFriction;
 
+    [Header("Explosion Effect")]
+    public ParticleSystem explosionEffect;
 
     public void Throw(Vector3 direction, float throwVelocity)
     {
+        armed = true;
         transform.SetParent(null);
         rigidbody.isKinematic = false;
 
         rigidbody.velocity = direction.normalized * throwVelocity;
+
+        if(grenadeType == GrenadeType.TimeDelay)
+        {
+            explosionTime = Time.time + grenadeExplosionTimeDelay;
+        }
+    }
+
+    private void Update()
+    {
+        if (!exploded)
+        {
+            if (armed)
+            {
+                if (grenadeType == GrenadeType.TimeDelay)
+                {
+                    if (Time.time > explosionTime)
+                    {
+                        Explode();
+                    }
+                }
+            }
+           
+        }  
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        Vector3 velocityHorizontalOnly = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
+        float velocityMagnitude = velocityHorizontalOnly.magnitude;
+        //rigidbody.velocity += -rigidbody.velocity.normalized * Mathf.Clamp(velocityMagnitude, -customFriction * Time.time, customFriction * Time.time);
+        rigidbody.velocity += Vector3.ClampMagnitude(-velocityHorizontalOnly.normalized * customFriction * Time.time, velocityMagnitude);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (armed)
+        {
+            if (grenadeType == GrenadeType.Impact)
+            {
+                Explode();
+            }
+        } 
+    }
+
+    void Explode()
+    {
+        exploded = true;
+        explosionEffect.Play();
+
+        //damage
+        Collider[] collidersInExplosionRange;
+        collidersInExplosionRange = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        Vector3 grenadePosition = transform.position;
+
+        for (int i = 0; i < collidersInExplosionRange.Length; i++)
+        {
+            IDamageable<DamageInfo> damageable = collidersInExplosionRange[i].gameObject.GetComponent<IDamageable<DamageInfo>>();
+
+            if (damageable != null)
+            {
+                Vector3 directionFromGrenade = collidersInExplosionRange[i].gameObject.transform.position - grenadePosition;
+                float distance = directionFromGrenade.magnitude;
+                float damageAndForceModifier = 1 - (distance / explosionRadius);
+                DamageInfo damInfo = new DamageInfo(explosionDamageAtCenter * damageAndForceModifier, null, directionFromGrenade.normalized * explosionForceAtCenter * damageAndForceModifier);
+                damageable.TakeDamage(ref damInfo);
+
+
+
+            }
+        }
+
     }
 }

@@ -526,8 +526,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         return agent.speed;
     }
 
-
-
     #endregion
 
     #region Debug

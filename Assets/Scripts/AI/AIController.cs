@@ -35,7 +35,7 @@ public class AIController : MonoBehaviour
             aIComponents[i].UpdateComponent();
         }
 
-        /*GameEntity nearestEnemy = sensing.nearestEnemy;
+        GameEntity nearestEnemy = sensing.nearestEnemy;
         float distanceToNearestEnemy = 0;
         if (nearestEnemy)
         {
@@ -78,12 +78,12 @@ public class AIController : MonoBehaviour
                 }
             }
             
-        }*/
+        }
 
        
 
         //shot weapon
-        characterController.ChangeSelectedItem(1);
+        /*characterController.ChangeSelectedItem(1);
         characterController.ChangeCharacterStanceToCombatStance();
 
 
@@ -127,6 +127,6 @@ public class AIController : MonoBehaviour
         if (!(characterController.GetAmmoRemainingInMagazine() > 0))
         {
             characterController.StartReloadingWeapon();
-        }
+        }*/
     }
 }
