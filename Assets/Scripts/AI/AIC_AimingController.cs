@@ -108,7 +108,7 @@ public class AIC_AimingController : AIComponent
         }
     }
 
-
+    // DOes not account for target movement yet - a bit too complex?
     public float DetermineThrowingObjectVelocity(Item throwingObject, float distanceToTarget) //we can throw it low or high in most cases, both have different velocities?
     {
         if(throwingObject is Grenade)
@@ -120,4 +120,15 @@ public class AIC_AimingController : AIComponent
 
         return 0;
     }
+
+    //change this to this
+    /*public float DetermineThrowingObjectVelocity(float desiredAngle, float distanceToTarget, float targetVelocity) //we can throw it low or high in most cases, both have different velocities?
+    {
+        if (throwingObject is Grenade)
+        {
+
+        }
+
+        return 0;
+    }*/
 }

@@ -17,6 +17,14 @@ public class AIController : MonoBehaviour
 
 
     //public float throwGrenadeVelocity;
+    //only basic AI for now
+    enum AIState
+    {
+        FiringSMG,
+        FiringPistol,
+        ThrowingGrenade
+    }
+    AIState aIState;
 
     void Start()
     {
@@ -35,6 +43,59 @@ public class AIController : MonoBehaviour
             aIComponents[i].UpdateComponent();
         }
 
+
+        #region AI State update
+        /*
+        //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
+        //shot weapon
+        characterController.ChangeSelectedItem(1);
+        characterController.ChangeCharacterStanceToCombatStance();
+
+
+        GameEntity nearestEnemy = sensing.nearestEnemy;
+
+        if (nearestEnemy)
+        {
+            float launchVelocity = 0;
+            bool launchAtAnArc = false;
+            if ((characterController.GetCurrentlySelectedItem() is Gun))
+            {
+                Gun gun = (characterController.GetCurrentlySelectedItem() as Gun);
+                launchVelocity = gun.projectileLaunchVelocity;
+                launchAtAnArc = gun.aimWithAngledShotCalculation;
+            }
+
+
+
+            Vector3 enemyMovementSpeed = Vector3.zero;
+            IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
+
+            if (movement != null)
+            {
+                enemyMovementSpeed = movement.GetCurrentVelocity();
+            }
+            characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+            characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, launchAtAnArc, launchVelocity, true));
+
+            if (characterController.GetAmmoRemainingInMagazine() > 0)
+            {
+                characterController.ShootWeapon();
+            }
+
+        }
+        else
+        {
+            characterController.StopAimingSpine();
+            characterController.StopAimingWeapon();
+        }
+
+        if (!(characterController.GetAmmoRemainingInMagazine() > 0))
+        {
+            characterController.StartReloadingWeapon();
+        }*/
+        #endregion
+
+        
         GameEntity nearestEnemy = sensing.nearestEnemy;
         float distanceToNearestEnemy = 0;
         if (nearestEnemy)
@@ -53,7 +114,6 @@ public class AIController : MonoBehaviour
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3))
                 {
                     Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
-                    float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);
 
                     Vector3 enemyMovementSpeed = Vector3.zero;
                     IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
@@ -63,10 +123,12 @@ public class AIController : MonoBehaviour
                         enemyMovementSpeed = movement.GetCurrentVelocity();
                     }
 
+                    float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);//we add 2just to fix some errors - needs refactoring later
 
-                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, enemyMovementSpeed, true, grenadeThrowingVelocity, false);
-                    Vector3 grenadeThrowingDirection = aimingController.AddAimErrorAndHandShakeToAimDirection(aimSpineDirection);
-                    //Vector3 grenadeThrowingDirection = aimSpineDirection;
+
+                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
+                    //Vector3 grenadeThrowingDirection = aimingController.AddAimErrorAndHandShakeToAimDirection(aimSpineDirection);
+                    Vector3 grenadeThrowingDirection = aimSpineDirection;
 
                     characterController.AimSpineInDirection(aimSpineDirection);
 
@@ -80,53 +142,8 @@ public class AIController : MonoBehaviour
             
         }
 
-       
-
-        //shot weapon
-        /*characterController.ChangeSelectedItem(1);
-        characterController.ChangeCharacterStanceToCombatStance();
 
 
-        GameEntity nearestEnemy = sensing.nearestEnemy;
 
-        if (nearestEnemy)
-        {
-            float launchVelocity = 0;
-            bool launchAtAnArc = false;
-            if ((characterController.GetCurrentlySelectedItem() is Gun))
-            {
-                Gun gun = (characterController.GetCurrentlySelectedItem() as Gun);
-                launchVelocity = gun.projectileLaunchVelocity;
-                launchAtAnArc = gun.aimWithAngledShotCalculation;
-            }
-
-            
-
-            Vector3 enemyMovementSpeed = Vector3.zero;
-            IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
-
-            if (movement != null)
-            {
-                enemyMovementSpeed = movement.GetCurrentVelocity();
-            }
-            characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-            characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, launchAtAnArc, launchVelocity, true ));
-
-            if(characterController.GetAmmoRemainingInMagazine() > 0)
-            {
-                characterController.ShootWeapon();
-            }
-            
-        }
-        else
-        {
-            characterController.StopAimingSpine();
-            characterController.StopAimingWeapon();
-        }
-
-        if (!(characterController.GetAmmoRemainingInMagazine() > 0))
-        {
-            characterController.StartReloadingWeapon();
-        }*/
     }
 }
