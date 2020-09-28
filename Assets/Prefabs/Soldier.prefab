@@ -438,9 +438,9 @@ MonoBehaviour:
   characterController: {fileID: 6597338694826147279}
   sensing: {fileID: 7864116541130220572}
   aimingController: {fileID: 3586266366417383842}
-  maxRangeToEnemy: 0
-  minRangeToEnemy: 0
-  desiredRangeToEnemy: 0
+  maxRangeToEnemy: 20
+  minRangeToEnemy: 8
+  desiredRangeToEnemy: 14
   targetPosition: {fileID: 0}
   targetMaxOffset: 0
 --- !u!114 &7864116541130220572
@@ -457,7 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nearestEnemy: {fileID: 0}
   sensingInterval: 0.5
-  sensingRadius: 15
+  sensingRadius: 25
   sensingLayerMask:
     serializedVersion: 2
     m_Bits: 16777216

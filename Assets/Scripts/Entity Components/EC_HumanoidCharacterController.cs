@@ -288,7 +288,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
         {
             Debug.Log("move 2");
-            movementController.MoveTo(destination);
+            movementController.MoveTo(destination, false);
         }
     }
 

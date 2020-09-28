@@ -65,10 +65,12 @@ public class AIController : MonoBehaviour
 
         GameEntity nearestEnemy = sensing.nearestEnemy;
 
+        Vector3 directionToNearestEnemy = Vector3.zero;
         float distanceToNearestEnemy = 0;
         if (nearestEnemy)
         {
-            distanceToNearestEnemy = (nearestEnemy.transform.position - transform.position).magnitude;
+            directionToNearestEnemy = (nearestEnemy.transform.position - transform.position);
+            distanceToNearestEnemy = directionToNearestEnemy.magnitude;
         }
 
         //----------Set selectedGun & selectedGrenade-----------------
@@ -97,13 +99,20 @@ public class AIController : MonoBehaviour
 
         #endregion
 
-        if (aIState == AIState.FiringSMG)
+        if (nearestEnemy)
         {
-            characterController.ChangeSelectedItem(1);
-            characterController.ChangeCharacterStanceToCombatStance();
-
-            if (nearestEnemy)
+            //Go At The Desired Distance
+            if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
             {
+                characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
+            }
+
+            if (aIState == AIState.FiringSMG)
+            {
+                characterController.ChangeSelectedItem(1);
+                characterController.ChangeCharacterStanceToCombatStance();
+
+
                 characterController.StopMoving();
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(1) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
@@ -122,7 +131,7 @@ public class AIController : MonoBehaviour
                     }
 
 
-                    if(Time.time> nextCheckGrenadeTime)
+                    if (Time.time > nextCheckGrenadeTime)
                     {
                         nextCheckGrenadeTime = Time.time + grenadeThrowInterval;
                         if (Random.Range(0f, 1f) < 0.05f)
@@ -131,7 +140,7 @@ public class AIController : MonoBehaviour
                             {
                                 aIState = AIState.ThrowingGrenade;
                             }
-                        } 
+                        }
                     }
 
 
@@ -162,24 +171,17 @@ public class AIController : MonoBehaviour
 
                     }
                 }
+
+
+
             }
-            else
+            else if (aIState == AIState.FiringPistol)
             {
-                //sprint to point + random position offset - which is set at start
-                characterController.StopAimingSpine();
-                characterController.StopAimingWeapon();
-                characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
-            }
 
-        }
-        else if (aIState == AIState.FiringPistol)
-        {
+                characterController.ChangeSelectedItem(2);
+                characterController.ChangeCharacterStanceToCombatStance();
 
-            characterController.ChangeSelectedItem(2);
-            characterController.ChangeCharacterStanceToCombatStance();
 
-            if (nearestEnemy)
-            {
                 characterController.StopMoving();
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(2) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
@@ -204,29 +206,22 @@ public class AIController : MonoBehaviour
                         aIState = AIState.FiringSMG;
                     }
                 }
-            }
-            else
-            {
-                //sprint to point + random position offset - which is set at start
-                characterController.StopAimingSpine();
-                characterController.StopAimingWeapon();
-                characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
-            }
-        }
-        else if(aIState == AIState.ThrowingGrenade)
-        {
-            characterController.ChangeSelectedItem(3);
-            characterController.ChangeCharacterStanceToCombatStance();
 
-            if (characterController.GetItemInInventory(3) == null)
-            {
-                grenadeThrown = false;
-                aIState = AIState.FiringSMG;
-                return;
-            }
 
-            if (nearestEnemy)
+            }
+            else if (aIState == AIState.ThrowingGrenade)
             {
+                characterController.ChangeSelectedItem(3);
+                characterController.ChangeCharacterStanceToCombatStance();
+
+                if (characterController.GetItemInInventory(3) == null)
+                {
+                    grenadeThrown = false;
+                    aIState = AIState.FiringSMG;
+                    return;
+                }
+
+
                 characterController.StopMoving();
 
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
@@ -234,7 +229,7 @@ public class AIController : MonoBehaviour
 
                     Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
 
-                   // enemyMovementSpeed = Vector3.zero;
+                    // enemyMovementSpeed = Vector3.zero;
                     IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
 
                     if (movement != null)
@@ -262,15 +257,20 @@ public class AIController : MonoBehaviour
                         characterController.ThrowGrenade(grenadeThrowingVelocity, grenadeThrowingDirection);
                     }
                 }
-            }
-            else
-            {
-                //sprint to point + random position offset - which is set at start
-                characterController.StopAimingSpine();
-                characterController.StopAimingWeapon();
-                characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
+
+
             }
         }
+        else
+        {
+            characterController.ChangeSelectedItem(1);
+            characterController.ChangeCharacterStanceToIdle();
+            characterController.StopAimingSpine();
+            characterController.StopAimingWeapon();
+            characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
+        }
+
+
 
         //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
         //shot weapon
