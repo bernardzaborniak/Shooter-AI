@@ -77,10 +77,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soldier Team 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7707927966087681382, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7858432883023514998, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: da3c8ef6ba01a9443a4d31ffb34b09ba, type: 2}
+      objectReference: {fileID: 2100000, guid: a92a067b8465bab488933944caf32ba1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}

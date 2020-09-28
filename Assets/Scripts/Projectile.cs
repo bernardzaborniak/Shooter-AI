@@ -31,7 +31,10 @@ public class Projectile : MonoBehaviour
             DamageInfo damageInfo = new DamageInfo(damage, null, velocityLastFrame * rb.mass, collision.contacts[0].point, collision.contacts[0].normal);
 
             damageable.TakeDamage(ref damageInfo);
+
         }
+
+        Destroy(gameObject);
     }
 
 

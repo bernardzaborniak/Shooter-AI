@@ -112,5 +112,7 @@ public class Grenade : Item
             }
         }
 
+        Destroy(gameObject, 5);
+
     }
 }

@@ -18,8 +18,14 @@ public class HumanoidDeathEffect : MonoBehaviour
     [Tooltip("angular Velocity will only be applied to the hips]")]
     public Rigidbody rigidBodyToApplyAngularVelocityTo;
 
+    public float delayAfterWhichToDeactivateRigidBodies;
+    float deactivateTime;
 
-    //public Rigidbody
+    public GameObject bakedMeshRendererGO;
+    public SkinnedMeshRenderer skinnedMeshRender;
+    public GameObject skeleton;
+    public bool destroySkeletonAndCollidersToImprovePerformance;
+
 
     void Start()
     {
@@ -28,7 +34,12 @@ public class HumanoidDeathEffect : MonoBehaviour
 
     void Update()
     {
-        
+        if(Time.time > deactivateTime)
+        {
+            OptimiseDeathEffect();
+            Destroy(this);
+        }
+
     }
 
     public void EnableDeathEffect(Vector3 movementVelocityAtTimeOfDeath, Vector3 angularVelocityAtTimeOfDeath, ref DamageInfo damageInfo)
@@ -44,8 +55,8 @@ public class HumanoidDeathEffect : MonoBehaviour
 
         ApplyImpactForce(ref damageInfo);
 
-       
 
+        deactivateTime = Time.time + delayAfterWhichToDeactivateRigidBodies;
     }
 
     void CopyOriginalBonePositionsToCorpse()
@@ -84,5 +95,40 @@ public class HumanoidDeathEffect : MonoBehaviour
                 //rb.AddExplosionForce(damageInfo.force.magnitude, damageInfo.damageDealPoint, 10);
             }
         } 
+    }
+
+    void OptimiseDeathEffect()
+    {
+        //1. destroy rigidbodies
+        foreach (Rigidbody rb in ragdollRigidbodys)
+        {
+            CharacterJoint cj = rb.gameObject.GetComponent<CharacterJoint>();
+            if (cj)
+            {
+                Destroy(cj);
+            }
+
+            Destroy(rb);
+        }
+
+        //2. bake skinned mesh into normal mesh
+        Mesh staticMesh = new Mesh();
+        skinnedMeshRender.BakeMesh(staticMesh);
+        Material mat = skinnedMeshRender.material;
+        Destroy(skinnedMeshRender);
+
+        MeshFilter mF = bakedMeshRendererGO.AddComponent<MeshFilter>();
+        mF.mesh = staticMesh;
+        MeshRenderer mr = bakedMeshRendererGO.AddComponent<MeshRenderer>();
+        mr.material = mat;
+
+        if (destroySkeletonAndCollidersToImprovePerformance)
+        {
+            Destroy(skeleton);
+        }
+
+
+
+
     }
 }

@@ -147,9 +147,6 @@ public class AIController : MonoBehaviour
 
                     if (!(characterController.GetAmmoRemainingInMagazine() > 0))
                     {
-                        Debug.Log("ammo in magazine: " + characterController.GetAmmoRemainingInMagazine());
-                        Debug.Log("current gun  " + characterController.GetCurrentlySelectedItem());
-
                         if (!changedToPistol)
                         {
                             if (Random.Range(0f, 1f) < 0.5f)
@@ -160,7 +157,6 @@ public class AIController : MonoBehaviour
                             {
                                 changedToPistol = true;
                                 aIState = AIState.FiringPistol;
-                                Debug.Log("changing to pistol");
                             }
                         }
                         else
