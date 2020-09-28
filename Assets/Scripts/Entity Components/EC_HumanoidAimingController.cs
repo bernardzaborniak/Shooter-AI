@@ -202,6 +202,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
+       
         spineConstraintTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
         // -----------   5 Smooth out Spine Constraints weight change ----------

@@ -441,6 +441,8 @@ MonoBehaviour:
   maxRangeToEnemy: 0
   minRangeToEnemy: 0
   desiredRangeToEnemy: 0
+  targetPosition: {fileID: 0}
+  targetMaxOffset: 0
 --- !u!114 &7864116541130220572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,7 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nearestEnemy: {fileID: 0}
   sensingInterval: 0.5
-  sensingRadius: 45
+  sensingRadius: 15
   sensingLayerMask:
     serializedVersion: 2
     m_Bits: 16777216
