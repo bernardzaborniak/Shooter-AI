@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityTemplateProjects;
 
+
 public class PlayerController : MonoBehaviour
 {
     public SimpleCameraController simpleCameraController;
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [Header("For Camera Gun")]
     public GameObject projectilePrefab;
     public Transform shootPoint;
+
 
     enum PlayerControllerMode
     {
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         ChangeToFlyMode();
+
     }
 
     void Update()
