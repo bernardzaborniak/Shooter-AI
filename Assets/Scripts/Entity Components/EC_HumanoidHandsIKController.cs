@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
+//using UnityEngine.Animations.Rigging;
 using System;
 
 public class EC_HumanoidHandsIKController : EntityComponent
@@ -16,11 +16,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
-    public TwoBoneIKConstraint leftHandIKConstraint;
+    //public TwoBoneIKConstraint leftHandIKConstraint;
     float desiredLeftHandIKRigWeight;
     public Transform leftHandIKTarget;
 
-    public TwoBoneIKConstraint rightHandIKConstraint;
+    //public TwoBoneIKConstraint rightHandIKConstraint;
     float desiredRightHandIKRigWeight;
     public Transform rightHandIKTarget;
 
@@ -65,8 +65,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         float changeSpeed = changeIKWeightsSpeed * Time.deltaTime;
 
-        leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
+       // leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
+       // rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
 
         if (currentIKTargetItem != null)
         {

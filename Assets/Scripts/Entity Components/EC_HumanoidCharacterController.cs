@@ -128,13 +128,13 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 //AimAt(aimAtTarget);
                 AimSpineAtTransform(aimAtTarget);
-                AimWeaponAtTransform(aimAtTarget);
+                //AimWeaponAtTransform(aimAtTarget);
             }
             if (Input.GetKeyDown(KeyCode.H))
             {
                 //StopAimAt();
                 StopAimingSpine();
-                StopAimingWeapon();
+               // StopAimingWeapon();
             }
 
             // -------Shooting & Reloading -----
@@ -362,13 +362,13 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineAtTransform(Transform target)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
-        {
-            if (DoesCurrentStanceAllowAiming())
-            {
+       // if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        //{
+            //if (DoesCurrentStanceAllowAiming())
+           // {
                 aimingController.AimSpineAtTransform(target);
-            }
-        }
+            //}
+        //}
 
     }
 
