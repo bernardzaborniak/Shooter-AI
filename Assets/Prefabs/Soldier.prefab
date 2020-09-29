@@ -624,7 +624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1822445957814018765}
   m_Layer: 0
-  m_Name: LookAtTarget
+  m_Name: LookAt Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +785,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7707363000070997972}
   weight: 0
-  executeAfterAnimator: 1
 --- !u!114 &2598193871390268841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,7 +799,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7707363000070997972}
   weight: 0
-  executeAfterAnimator: 1
 --- !u!65 &7848464942766954963
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -828,7 +826,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7707363000070997972}
   weight: 0
-  executeAfterAnimator: 1
 --- !u!114 &3189990536396909773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1330,7 +1327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultDirectionAimDistance: 20
-  spineConstraintTarget: {fileID: 7707363000070997972}
+  spineConstraintLocalTarget: {fileID: 7707363000070997972}
   movementController: {fileID: 7366031314207611041}
   aimingReferencePointOnBody: {fileID: 8606268059406528053}
   spineConstraint1: {fileID: 4701984822382107086}
@@ -1338,13 +1335,14 @@ MonoBehaviour:
   spineConstraint3: {fileID: 2598193871390268841}
   spineConstraintDirectionChangeSmoothTime: 0.1
   spineConstraintWeightChangeSpeed: 1.5
-  lookAtTarget: {fileID: 0}
+  lookAtLocalTarget: {fileID: 1822445957814018765}
   fLookAnimator: {fileID: 7366031315838806102}
+  lookAtDisableDelay: 3
   lookAtCompensationWeightWithoutWeapon: 0.5
   lookAtCompensatiePositionsWithoutWeapon: 0.1
   lookAtCompensationWeightWithWeapon: 1
   lookAtCompensatiePositionsWithWeapon: 1
-  weaponAimTarget: {fileID: 6750380158517121211}
+  weaponAimLocalTarget: {fileID: 6750380158517121211}
   weapon: {fileID: 7366031315910803148}
   changeFromAimingToIdleRigSpeed: 2
   changeFromIdleToAimingRigSpeed: 5
@@ -1887,7 +1885,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7707927966087681382}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e83668c454b4396488081147cb5c9176, type: 3}
   m_Name: 

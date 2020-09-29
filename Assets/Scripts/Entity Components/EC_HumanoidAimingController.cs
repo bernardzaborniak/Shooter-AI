@@ -55,7 +55,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Spine Constraint for Aiming up/down")]
 
     [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
-    public Transform spineConstraintTarget;
+    public Transform spineConstraintLocalTarget;
     [Tooltip("The movement Controller is used to rotate to the sides")]
     public EC_HumanoidMovementController movementController;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
@@ -90,7 +90,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Look At")]
 
     [Tooltip("Target in This Objects Local Space")]
-    public Transform lookAtTarget;
+    public Transform lookAtLocalTarget;
     public FLookAnimator fLookAnimator;
 
     Vector3 lookAtDirectionToTarget;
@@ -126,7 +126,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
     [Header("Aiming the Weapon")]
 
-    public Transform weaponAimTarget;
+    public Transform weaponAimLocalTarget;
     public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
   //  public Rig weaponAimingRig;
 
@@ -165,23 +165,38 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Update current lookAtTargetPosition
 
-        if (currentLookAtTargetingMethod == AimAtTargetingMethod.Direction)
+        if(lookAtState == LookAtState.Enabled)
         {
-            lookAtTarget.position = aimingReferencePointOnBody.position + lookAtDirectionToTarget * defaultDirectionAimDistance;
+            if (currentLookAtTargetingMethod == AimAtTargetingMethod.Direction)
+            {
+                lookAtLocalTarget.position = aimingReferencePointOnBody.position + lookAtDirectionToTarget * defaultDirectionAimDistance;
+            }
+            else if (currentLookAtTargetingMethod == AimAtTargetingMethod.Position)
+            {
+                lookAtLocalTarget.position = lookAtPositionOfTarget;
+            }
+            else if (currentLookAtTargetingMethod == AimAtTargetingMethod.Transform)
+            {
+                lookAtLocalTarget.position = lookAtTransformToTarget.position;
+            }
         }
-        else if (currentLookAtTargetingMethod == AimAtTargetingMethod.Position)
+       
+        #endregion
+
+        #region Disable LookAt Component after Delay if sheduled for disabling
+
+        else if(lookAtState == LookAtState.SheduledForDisabling)
         {
-            lookAtTarget.position = lookAtPositionOfTarget;
+            if(Time.time > nextLookAtDisableTime)
+            {
+                fLookAnimator.enabled = false;
+                lookAtState = LookAtState.Disabled;
+            }
         }
-        else if (currentLookAtTargetingMethod == AimAtTargetingMethod.Transform)
-        {
-            lookAtTarget.position = lookAtTransformToTarget.position;
-        }
-    
 
         #endregion
 
-        #region
+        #endregion
 
         #region Aiming Spine
 
@@ -221,7 +236,7 @@ public class EC_HumanoidAimingController : EntityComponent
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
             // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
-            if (spineConstraintTarget.position.y > aimingReferencePointOnBody.position.y)
+            if (spineConstraintLocalTarget.position.y > aimingReferencePointOnBody.position.y)
             {
                 // aiming Up 
                 spineConstraint1TargetWeight = 0.05f;
@@ -252,7 +267,7 @@ public class EC_HumanoidAimingController : EntityComponent
         //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
        
-        spineConstraintTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
+        spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
         // -----------   5 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
@@ -308,7 +323,7 @@ public class EC_HumanoidAimingController : EntityComponent
         #region Smoothly rotate the weapon towards desiredWeaponDirection & smooth out change in weaponAimingRig.weight
 
         currentWeaponDirection = Vector3.SmoothDamp(currentWeaponDirection, desiredWeaponDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
-        weaponAimTarget.position = aimingReferencePointOnBody.position + currentWeaponDirection;
+        weaponAimLocalTarget.position = aimingReferencePointOnBody.position + currentWeaponDirection;
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
@@ -363,29 +378,41 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         currentLookAtTargetingMethod = AimAtTargetingMethod.Transform;
         lookAtTransformToTarget = target;
-        lookAtTarget.position = target.position;
-        fLookAnimator.ObjectToFollow = lookAtTarget;
+        lookAtLocalTarget.position = lookAtTransformToTarget.position;
+        fLookAnimator.ObjectToFollow = lookAtLocalTarget;
+
+        fLookAnimator.enabled = true;
+        lookAtState = LookAtState.Enabled;
     }
 
     public void LookAtPosition(Vector3 position)
     {
         currentLookAtTargetingMethod = AimAtTargetingMethod.Position;
         lookAtPositionOfTarget = position;
-        lookAtTarget.position = position;
-        fLookAnimator.ObjectToFollow = lookAtTarget;
+        lookAtLocalTarget.position = position;
+        fLookAnimator.ObjectToFollow = lookAtLocalTarget;
+
+        fLookAnimator.enabled = true;
+        lookAtState = LookAtState.Enabled;
     }
 
     public void LookInDirection(Vector3 direction)
     {
         currentLookAtTargetingMethod = AimAtTargetingMethod.Direction;
         lookAtDirectionToTarget = direction;
-        lookAtTarget.position = aimingReferencePointOnBody.position + direction * defaultDirectionAimDistance;
-        fLookAnimator.ObjectToFollow = lookAtTarget;
+        lookAtLocalTarget.position = aimingReferencePointOnBody.position + direction * defaultDirectionAimDistance;
+        fLookAnimator.ObjectToFollow = lookAtLocalTarget;
+
+        fLookAnimator.enabled = true;
+        lookAtState = LookAtState.Enabled;
     }
 
     public void StopLookAt()
     {
         fLookAnimator.ObjectToFollow = null;
+
+        lookAtState = LookAtState.SheduledForDisabling;
+        nextLookAtDisableTime = Time.time + lookAtDisableDelay;
     }
 
     public void AimWeaponInDirection(Vector3 direction)
