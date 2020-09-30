@@ -1,4 +1,5 @@
-﻿using FIMSpace.FLook;
+﻿using DitzelGames.FastIK;
+using FIMSpace.FLook;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,12 +27,32 @@ public class HumanoidConstraintController : MonoBehaviour
     public float weaponAimWeight;
     Quaternion weaponAimLocalStartRotation;
 
+    [Header("4. Hand IK's")]
+    public FastIKFabric leftHandIK;
+    public FastIKFabric rightHandIK;
+    [Space(10)]
+    public Transform leftHandIKWeightedTarget;
+    public Transform leftHandIKDesiredTarget;
+    public Transform leftHandTransform;
+    [Space(10)]
+    public Transform rightHandIKWeightedTarget;  // lerp between current and desired by weight
+    public Transform rightHandIKDesiredTarget;
+    public Transform rightHandTransform;
+    [Space(10)]
+    public float leftHandIKWeight;
+    public float rightHandIKWeight;
+
 
     //one object which takes care of all constraints on a character
 
     void Start()
     {
         weaponAimLocalStartRotation = weaponAimTransform.localRotation;
+
+        lookAtAnimator.updateAutomaticlyInLateUpdate = false;
+
+        leftHandIK.automaticlyUpdateInLateUpdate = false;
+        rightHandIK.automaticlyUpdateInLateUpdate = false;
     }
 
     void LateUpdate()
@@ -83,6 +104,20 @@ public class HumanoidConstraintController : MonoBehaviour
         Quaternion rotationDifferenceW = targetRotationW * Quaternion.Inverse(weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
         weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
 
+
+        #endregion
+
+        #region 4. Update The IK's
+
+        //set the positions according to weight
+        leftHandIKWeightedTarget.position = Vector3.Lerp(leftHandTransform.position, leftHandIKDesiredTarget.position, leftHandIKWeight);
+        leftHandIKWeightedTarget.rotation = Quaternion.Slerp(leftHandTransform.rotation, leftHandIKDesiredTarget.rotation, leftHandIKWeight);
+
+        rightHandIKWeightedTarget.position = Vector3.Lerp(rightHandTransform.position, rightHandIKDesiredTarget.position, rightHandIKWeight);
+        rightHandIKWeightedTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation, rightHandIKDesiredTarget.rotation, rightHandIKWeight);
+
+        leftHandIK.ResolveIK();
+        rightHandIK.ResolveIK();
 
         #endregion
     }

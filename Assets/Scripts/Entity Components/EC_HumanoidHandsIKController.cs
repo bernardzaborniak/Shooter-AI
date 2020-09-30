@@ -9,6 +9,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Header("Hand IK")]
 
     //Gun ikTargetWeapon;
+    public HumanoidConstraintController constraintController;
     IItemWithIKHandPositions currentIKTargetItem;
 
     public float changeIKWeightsSpeed;
@@ -65,8 +66,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         float changeSpeed = changeIKWeightsSpeed * Time.deltaTime;
 
-       // leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-       // rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
+        // leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
+        // rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
+
+        constraintController.leftHandIKWeight += Mathf.Clamp((desiredLeftHandIKRigWeight - constraintController.leftHandIKWeight), -changeSpeed, changeSpeed);
+        constraintController.rightHandIKWeight += Mathf.Clamp((desiredRightHandIKRigWeight - constraintController.rightHandIKWeight), -changeSpeed, changeSpeed);
 
         if (currentIKTargetItem != null)
         {
