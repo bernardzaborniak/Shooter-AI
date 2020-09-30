@@ -41,7 +41,6 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 weaponPositionOfTarget;
     Transform weaponTransformOfTarget;
 
-   
 
 
 
@@ -70,9 +69,11 @@ public class EC_HumanoidAimingController : EntityComponent
     //public AimConstraint spineConstraint2;
     // public MultiAimConstraint spineConstraint3;
     //public AimConstraint spineConstraint3;
-    public CustomAimConstraint spineConstraint1;
-    public CustomAimConstraint spineConstraint2;
-    public CustomAimConstraint spineConstraint3;
+    // public CustomAimConstraint spineConstraint1;
+    //public CustomAimConstraint spineConstraint2;
+    //public CustomAimConstraint spineConstraint3;
+    public HumanoidSpineConstraintController spineConstraintController;
+
 
     float spineConstraint1TargetWeight;
     float spineConstraint2TargetWeight;
@@ -128,9 +129,12 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public Transform weaponAimLocalTarget;
     public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
-  //  public Rig weaponAimingRig;
+                       //  public Rig weaponAimingRig;
+                       // public CustomAimConstraint weaponAimingConstraint;
+    public HuamnoidWeaponAimContraint weaponConstraintController;
 
-    float desiredWeaponAimingRigWeight;
+
+    float desiredWeaponAimingConstraintWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
     public float changeFromAimingToIdleRigSpeed;
     public float changeFromIdleToAimingRigSpeed;
@@ -271,12 +275,19 @@ public class EC_HumanoidAimingController : EntityComponent
 
         // -----------   5 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
-        spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
-        spineConstraint1.weight = spineConstraint1CurrentWeight;
-        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - spineConstraint2.weight), -maxSpeed, maxSpeed);
-        spineConstraint2.weight = spineConstraint2CurrentWeight;
-        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraint3.weight), -maxSpeed, maxSpeed);
-        spineConstraint3.weight = spineConstraint3CurrentWeight;
+        /* spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraint1.weight), -maxSpeed, maxSpeed);
+         spineConstraint1.weight = spineConstraint1CurrentWeight;
+         spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - spineConstraint2.weight), -maxSpeed, maxSpeed);
+         spineConstraint2.weight = spineConstraint2CurrentWeight;
+         spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraint3.weight), -maxSpeed, maxSpeed);
+         spineConstraint3.weight = spineConstraint3CurrentWeight;*/
+        
+        spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraintController.spine1Weight), -maxSpeed, maxSpeed);
+        spineConstraintController.spine1Weight = spineConstraint1CurrentWeight;
+        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - spineConstraintController.spine2Weight), -maxSpeed, maxSpeed);
+        spineConstraintController.spine2Weight = spineConstraint2CurrentWeight;
+        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraintController.spine3Weight), -maxSpeed, maxSpeed);
+        spineConstraintController.spine3Weight = spineConstraint3CurrentWeight;
 
         #endregion
 
@@ -327,16 +338,22 @@ public class EC_HumanoidAimingController : EntityComponent
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
-        if (desiredWeaponAimingRigWeight == 1)
+        float changeSpeed = 0;
+
+
+        if (desiredWeaponAimingConstraintWeight == 1)
         {
-            float changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
+            changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
            // weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
         }
-        else if (desiredWeaponAimingRigWeight == 0)
+        else if (desiredWeaponAimingConstraintWeight == 0)
         {
-            float changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
+            changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
            // weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
         }
+
+        //weaponAimingConstraint.weight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - weaponAimingConstraint.weight), -changeSpeed, changeSpeed);
+        weaponConstraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - weaponConstraintController.weaponAimWeight), -changeSpeed, changeSpeed);
 
         #endregion
 
@@ -420,7 +437,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingWeapon = true;
         currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
         weaponDirectionToTarget = direction;
-        desiredWeaponAimingRigWeight = 1;
+        desiredWeaponAimingConstraintWeight = 1;
     }
 
     public void AimWeaponAtPosition(Vector3 position)
@@ -428,7 +445,7 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingWeapon = true;
         currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
         weaponPositionOfTarget = position;
-        desiredWeaponAimingRigWeight = 1;
+        desiredWeaponAimingConstraintWeight = 1;
     }
 
     public void AimWeaponAtTransform(Transform transform)
@@ -436,13 +453,13 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingWeapon = true;
         currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
         weaponTransformOfTarget = transform;
-        desiredWeaponAimingRigWeight = 1;
+        desiredWeaponAimingConstraintWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
     {
         aimingWeapon = false;
-        desiredWeaponAimingRigWeight = 0;
+        desiredWeaponAimingConstraintWeight = 0;
     }
 
     public void OnChangeWeapon(Gun newWeapon)
