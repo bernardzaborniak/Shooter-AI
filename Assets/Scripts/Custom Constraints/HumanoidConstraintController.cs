@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using FIMSpace.FLook;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanoidSpineConstraintController : MonoBehaviour
+public class HumanoidConstraintController : MonoBehaviour
 {
-    [Header("Spine")]
+    [Header("1. Spine")]
     public Transform spineTarget;
 
     public Transform spineBone1;
@@ -15,16 +16,30 @@ public class HumanoidSpineConstraintController : MonoBehaviour
     public float spine2Weight;
     public float spine3Weight;
 
+    [Header("2- Look At Animator")]
+    public Transform lookAtTarget; //here?
+    public FLookAnimator lookAtAnimator;
+
+    [Header("3. Weapon Aiming")]
+    public Transform weaponAimTarget;
+    public Transform weaponAimTransform;
+    public float weaponAimWeight;
+    Quaternion weaponAimLocalStartRotation;
+
 
     //one object which takes care of all constraints on a character
 
-
+    void Start()
+    {
+        weaponAimLocalStartRotation = weaponAimTransform.localRotation;
+    }
 
     void LateUpdate()
     {
-        #region Orient the spine Constraints first
+        #region 1. Orient the spine Constraints first
 
         Vector3 spineTargetPosition = spineTarget.position; ;
+
 
         // Spine 1
         Vector3 directionToTargetS1 = spineTargetPosition - spineBone1.position;
@@ -49,7 +64,27 @@ public class HumanoidSpineConstraintController : MonoBehaviour
 
         #endregion
 
-       
+        #region 2. Update LookAtAnimator
+
+        if (lookAtAnimator.enabled)
+        {
+            lookAtAnimator.UpdateLookAnimator();
+        }
+        
+
+        #endregion
+
+        #region 3. Orient the Weapon Aim Constraint
+
+        Vector3 directionToTargetW = weaponAimTarget.position - weaponAimTransform.position;
+        Quaternion targetRotationW = Quaternion.LookRotation(directionToTargetW);
+
+
+        Quaternion rotationDifferenceW = targetRotationW * Quaternion.Inverse(weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
+        weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
+
+
+        #endregion
     }
 
 

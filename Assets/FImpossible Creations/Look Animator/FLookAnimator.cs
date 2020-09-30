@@ -15,6 +15,7 @@ namespace FIMSpace.FLook
     {
         // THIS IS PARTIAL CLASS: REST OF THE CODE INSIDE "Scripts" directory
 
+        public bool updateAutomaticlyInLateUpdate = true;  //added variable for better control over execution order
 
         #region Inspector Variables ---------------------------
 
@@ -311,10 +312,20 @@ namespace FIMSpace.FLook
             initialized = false;
 
             if (!StartAfterTPose) InitializeBaseVariables(); else startAfterTPoseCounter = 0;
+
+            //updateAutomaticlyInLateUpdate = true;
         }
 
 
         public virtual void LateUpdate()
+        {
+            if (updateAutomaticlyInLateUpdate)
+            {
+                UpdateLookAnimator();
+            }
+        }
+
+        public void UpdateLookAnimator()
         {
             #region Conditions to do any calculations for Look Animator
 

@@ -49,6 +49,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     #endregion
 
+    public HumanoidConstraintController constraintController;
+
     #region Other Fields
 
     [Header("Spine Constraint for Aiming up/down")]
@@ -72,7 +74,7 @@ public class EC_HumanoidAimingController : EntityComponent
     // public CustomAimConstraint spineConstraint1;
     //public CustomAimConstraint spineConstraint2;
     //public CustomAimConstraint spineConstraint3;
-    public HumanoidSpineConstraintController spineConstraintController;
+   
 
 
     float spineConstraint1TargetWeight;
@@ -131,7 +133,6 @@ public class EC_HumanoidAimingController : EntityComponent
     public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
                        //  public Rig weaponAimingRig;
                        // public CustomAimConstraint weaponAimingConstraint;
-    public HuamnoidWeaponAimContraint weaponConstraintController;
 
 
     float desiredWeaponAimingConstraintWeight;
@@ -282,12 +283,12 @@ public class EC_HumanoidAimingController : EntityComponent
          spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraint3.weight), -maxSpeed, maxSpeed);
          spineConstraint3.weight = spineConstraint3CurrentWeight;*/
         
-        spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - spineConstraintController.spine1Weight), -maxSpeed, maxSpeed);
-        spineConstraintController.spine1Weight = spineConstraint1CurrentWeight;
-        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - spineConstraintController.spine2Weight), -maxSpeed, maxSpeed);
-        spineConstraintController.spine2Weight = spineConstraint2CurrentWeight;
-        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - spineConstraintController.spine3Weight), -maxSpeed, maxSpeed);
-        spineConstraintController.spine3Weight = spineConstraint3CurrentWeight;
+        spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - constraintController.spine1Weight), -maxSpeed, maxSpeed);
+        constraintController.spine1Weight = spineConstraint1CurrentWeight;
+        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - constraintController.spine2Weight), -maxSpeed, maxSpeed);
+        constraintController.spine2Weight = spineConstraint2CurrentWeight;
+        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - constraintController.spine3Weight), -maxSpeed, maxSpeed);
+        constraintController.spine3Weight = spineConstraint3CurrentWeight;
 
         #endregion
 
@@ -353,7 +354,7 @@ public class EC_HumanoidAimingController : EntityComponent
         }
 
         //weaponAimingConstraint.weight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - weaponAimingConstraint.weight), -changeSpeed, changeSpeed);
-        weaponConstraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - weaponConstraintController.weaponAimWeight), -changeSpeed, changeSpeed);
+        constraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - constraintController.weaponAimWeight), -changeSpeed, changeSpeed);
 
         #endregion
 
@@ -468,16 +469,16 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             weapon = null;
 
-            fLookAnimator.CompensationWeight = lookAtCompensationWeightWithoutWeapon;
-            fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithoutWeapon;
+            /*fLookAnimator.CompensationWeight = lookAtCompensationWeightWithoutWeapon;
+            fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithoutWeapon;*/
         }
         else
         {
             weapon = newWeapon;
             weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
 
-            fLookAnimator.CompensationWeight = lookAtCompensationWeightWithWeapon;
-            fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;
+            /*fLookAnimator.CompensationWeight = lookAtCompensationWeightWithWeapon;
+            fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;*/
         }
     }
 
