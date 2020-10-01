@@ -9,7 +9,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Header("Hand IK")]
 
     //Gun ikTargetWeapon;
-    public HumanoidConstraintController constraintController;
+    //public HumanoidConstraintController constraintController;
     IItemWithIKHandPositions currentIKTargetItem;
 
     public float changeIKWeightsSpeed;
@@ -17,12 +17,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
-    //public TwoBoneIKConstraint leftHandIKConstraint;
     float desiredLeftHandIKRigWeight;
+    public WhireWhizTwoBoneIK leftHandIK;
     public Transform leftHandIKTarget;
 
-    //public TwoBoneIKConstraint rightHandIKConstraint;
     float desiredRightHandIKRigWeight;
+    public WhireWhizTwoBoneIK rightHandIK;
     public Transform rightHandIKTarget;
 
 
@@ -66,11 +66,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         float changeSpeed = changeIKWeightsSpeed * Time.deltaTime;
 
-        // leftHandIKConstraint.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIKConstraint.weight), -changeSpeed, changeSpeed);
-        // rightHandIKConstraint.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIKConstraint.weight), -changeSpeed, changeSpeed);
-
-        constraintController.leftHandIKWeight += Mathf.Clamp((desiredLeftHandIKRigWeight - constraintController.leftHandIKWeight), -changeSpeed, changeSpeed);
-        constraintController.rightHandIKWeight += Mathf.Clamp((desiredRightHandIKRigWeight - constraintController.rightHandIKWeight), -changeSpeed, changeSpeed);
+        leftHandIK.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
+        rightHandIK.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
 
         if (currentIKTargetItem != null)
         {

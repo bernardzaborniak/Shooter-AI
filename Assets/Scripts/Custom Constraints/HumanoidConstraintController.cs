@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class HumanoidConstraintController : MonoBehaviour
 {
+    //Makes sure that the constraints are applied in the correct order and optimizes
+
     [Header("1. Spine")]
     public Transform spineTarget;
 
@@ -28,22 +30,9 @@ public class HumanoidConstraintController : MonoBehaviour
     Quaternion weaponAimLocalStartRotation;
 
     [Header("4. Hand IK's")]
-    public FastIKFabricOtherRotation leftHandIK;
-    public FastIKFabricOtherRotation rightHandIK;
-    [Space(10)]
-    public Transform leftHandIKWeightedTarget;
-    public Transform leftHandIKDesiredTarget;
-    public Transform leftHandTransform;
-    [Space(10)]
-    public Transform rightHandIKWeightedTarget;  // lerp between current and desired by weight
-    public Transform rightHandIKDesiredTarget;
-    public Transform rightHandTransform;
-    [Space(10)]
-    public float leftHandIKWeight;
-    public float rightHandIKWeight;
+    public WhireWhizTwoBoneIK leftHandIK;
+    public WhireWhizTwoBoneIK rightHandIK;
 
-
-    //one object which takes care of all constraints on a character
 
     void Start()
     {
@@ -109,14 +98,10 @@ public class HumanoidConstraintController : MonoBehaviour
 
         #region 4. Update The IK's
 
-        //set the positions according to weight
-        leftHandIKWeightedTarget.position = Vector3.Lerp(leftHandTransform.position, leftHandIKDesiredTarget.position, leftHandIKWeight);
-        leftHandIKWeightedTarget.rotation = Quaternion.Slerp(leftHandTransform.rotation, leftHandIKDesiredTarget.rotation, leftHandIKWeight);
-
-        rightHandIKWeightedTarget.position = Vector3.Lerp(rightHandTransform.position, rightHandIKDesiredTarget.position, rightHandIKWeight);
-        rightHandIKWeightedTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation, rightHandIKDesiredTarget.rotation, rightHandIKWeight);
-
+        // I dont know why, but we need to resolve them twice to have a nice result
         leftHandIK.ResolveIK();
+        leftHandIK.ResolveIK();
+        rightHandIK.ResolveIK();
         rightHandIK.ResolveIK();
 
         #endregion

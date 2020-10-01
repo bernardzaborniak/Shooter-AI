@@ -13,16 +13,12 @@ public class EC_HumanoidInterationController : EntityComponent
 {
     // Is responsible for interactions like picking up/ changing weapons/reloading etc, communicates with animator  
 
+    [Header("References")]
     public EC_HumanoidAimingController aimingController;
     public EC_HumanoidAnimationController animationController;
     public EC_HumanoidHandsIKController handsIKController;
 
-
-    public int currentSelectedItemID;
-    int desiredSelectedItemID;
-
-    public Item[] inventory;
-
+ 
     public enum ItemInteractionState
     {
         Idle,
@@ -32,19 +28,31 @@ public class EC_HumanoidInterationController : EntityComponent
         ThrowingGrenade,
         //CockBoltAction //doing this lever thingy on snipers
     }
-
+    [Space(10)]
     public ItemInteractionState itemInteractionState;
 
-    float hidingWeaponEndTime;
-    float pullingOutWeaponEndTime;
+    [Header("Inventory Management")]
+    public int currentSelectedItemID;
+    int desiredSelectedItemID;
+
+    public Item[] inventory;
+
+    [Space(10)]
+    public Transform rightHandItemParent;
+    public Transform inventoryItemParent;
 
     float currentHideWeaponDuration;
     float currentPullingOutWeaponDuration;
 
+    float hidingWeaponEndTime;
+    float pullingOutWeaponEndTime;
+
+    [Header("Reloading")]
     [Tooltip("the reload time of weapons can be speed up by this value")]
     public float reloadTimeSkillMultiplier = 1;
     float reloadingEndTime;
 
+    [Header("Grenade Throwing")]
     //Needs to be able to change later, is calculatet based on current target and throwGrenadeMaxRange
     float currentGrenadeThrowVelocity;
     Vector3 currentGrenadeThrowDirection;
@@ -153,6 +161,9 @@ public class EC_HumanoidInterationController : EntityComponent
     {
 
         currentSelectedItemID = newInventoryID;
+        inventory[currentSelectedItemID].transform.SetParent(rightHandItemParent);
+        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
+        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
         inventory[currentSelectedItemID].gameObject.SetActive(true);
 
         pullingOutWeaponEndTime = Time.time + inventory[currentSelectedItemID].pullOutItemTime * percentageAlreadyHidden;
@@ -200,6 +211,9 @@ public class EC_HumanoidInterationController : EntityComponent
     void FinishHidingItem()
     {
         inventory[currentSelectedItemID].gameObject.SetActive(false);
+        inventory[currentSelectedItemID].transform.SetParent(inventoryItemParent);
+        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
+        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
 
         if (inventory[desiredSelectedItemID] != null)
         {

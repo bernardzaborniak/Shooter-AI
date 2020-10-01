@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class WhireWhizTwoBoneIK : MonoBehaviour
 {
+    public bool automaticlyUpdateInLateUpdate;
+    [Space(10)]
     [Range(0,1)]
     public float weight;
     [Space(10)]
@@ -33,6 +35,15 @@ public class WhireWhizTwoBoneIK : MonoBehaviour
 
     void LateUpdate()
     {
+        if (automaticlyUpdateInLateUpdate)
+        {
+            ResolveIK();
+        }
+       
+    }
+
+    public void ResolveIK()
+    {
         upperPosition = Upper.position;
         lowerPosition = Lower.position;
         targetPosition = Target.position;
@@ -46,7 +57,7 @@ public class WhireWhizTwoBoneIK : MonoBehaviour
         upperTargetRotation = Quaternion.LookRotation(targetPosition - upperPosition, Quaternion.AngleAxis(UpperElbowRotation, lowerPosition - upperPosition) * (en));
         upperTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, Lower.localPosition));
         upperTargetRotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * upperTargetRotation;
-        Upper.rotation = Quaternion.Slerp(Upper.rotation,upperTargetRotation,weight);
+        Upper.rotation = Quaternion.Slerp(Upper.rotation, upperTargetRotation, weight);
 
         //set the rotation of the lower arm
         lowerTargetRotation = Quaternion.LookRotation(targetPosition - lowerPosition, Quaternion.AngleAxis(LowerElbowRotation, End.position - lowerPosition) * (en));
