@@ -28,8 +28,8 @@ public class HumanoidConstraintController : MonoBehaviour
     Quaternion weaponAimLocalStartRotation;
 
     [Header("4. Hand IK's")]
-    public FastIKFabric leftHandIK;
-    public FastIKFabric rightHandIK;
+    public FastIKFabricOtherRotation leftHandIK;
+    public FastIKFabricOtherRotation rightHandIK;
     [Space(10)]
     public Transform leftHandIKWeightedTarget;
     public Transform leftHandIKDesiredTarget;
