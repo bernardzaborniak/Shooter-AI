@@ -1759,22 +1759,30 @@ MonoBehaviour:
   - weaponInteractionType: 0
     idleIKLeft: 0
     idleIKRight: 0
+    combatIKLeft: 0
+    combatIKRight: 0
     aimingIKLeft: 0
     aimingIKRight: 0
   - weaponInteractionType: 1
     idleIKLeft: 1
     idleIKRight: 0
-    aimingIKLeft: 0
-    aimingIKRight: 0
+    combatIKLeft: 1
+    combatIKRight: 0
+    aimingIKLeft: 1
+    aimingIKRight: 1
   - weaponInteractionType: 2
     idleIKLeft: 0
     idleIKRight: 0
-    aimingIKLeft: 0
-    aimingIKRight: 0
+    combatIKLeft: 1
+    combatIKRight: 0
+    aimingIKLeft: 1
+    aimingIKRight: 1
   currentIKSettings:
     weaponInteractionType: 0
     idleIKLeft: 0
     idleIKRight: 0
+    combatIKLeft: 0
+    combatIKRight: 0
     aimingIKLeft: 0
     aimingIKRight: 0
 --- !u!114 &3435694260906315833

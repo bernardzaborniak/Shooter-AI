@@ -225,7 +225,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
-        //handsIKController.OnEnterIdleStance();
+        handsIKController.OnEnterIdleStance();
 
         //StopAimAt();
         StopAimingSpine();
@@ -244,7 +244,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             animationController.ChangeToIdleStance();
             
             
-            //handsIKController.OnEnterIdleStance();
+            handsIKController.OnEnterIdleStance();
 
             //StopAimAt();
             StopAimingSpine();
@@ -266,7 +266,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 movementController.SetAcceleration(combatStanceAcceleration);
                 animationController.ChangeToCombatStance();
                
-                //handsIKController.OnEnterAimingWeaponStance();
+                handsIKController.OnEnterCombatStance();
             }
         }
     }
@@ -281,7 +281,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetAcceleration(crouchAcceleration);
             animationController.ChangeToCrouchedStance();
            
-            //handsIKController.OnEnterAimingWeaponStance();
+            handsIKController.OnEnterCombatStance();
         }
     }
 

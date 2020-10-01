@@ -438,7 +438,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimingWeapon = true;
 
-        handsIKController.OnEnterAimingWeaponStance();
+        handsIKController.OnStartAimingWeapon();
 
         currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
         weaponDirectionToTarget = direction;
@@ -449,7 +449,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimingWeapon = true;
 
-        handsIKController.OnEnterAimingWeaponStance();
+        handsIKController.OnStartAimingWeapon();
 
         currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
         weaponPositionOfTarget = position;
@@ -460,7 +460,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimingWeapon = true;
 
-        handsIKController.OnEnterAimingWeaponStance();
+        handsIKController.OnStartAimingWeapon();
 
         currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
         weaponTransformOfTarget = transform;
@@ -469,8 +469,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void StopAimingWeaponAtTarget()
     {
-        handsIKController.OnEnterIdleStance();
-
+        handsIKController.OnStopAimingWeapon();
 
         aimingWeapon = false;
         desiredWeaponAimingConstraintWeight = 0;
