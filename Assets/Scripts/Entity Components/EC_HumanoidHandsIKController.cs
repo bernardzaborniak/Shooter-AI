@@ -6,6 +6,7 @@ using System;
 
 public class EC_HumanoidHandsIKController : EntityComponent
 {
+    //this calss needs some refactoring - it isnt very clear, maybe also have an ik stance - disabled?
     [Header("Hand IK")]
 
     //Gun ikTargetWeapon;
@@ -25,6 +26,10 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public WhireWhizTwoBoneIK rightHandIK;
     public Transform rightHandIKTarget;
 
+    [Header("Aiming Weapon")]
+
+    public Transform aimingWeaponHandPosition;
+    bool aimingWeapon;
 
     [Serializable]
     public class IKSettingsCorrespondingToWeaponInteractionType
@@ -52,7 +57,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         CombatStance,
     }
 
-    bool aimingWeapon;
+  
 
     IKStance iKStance;
 
@@ -81,8 +86,14 @@ public class EC_HumanoidHandsIKController : EntityComponent
             leftHandIKTarget.position = currentIKTargetItem.GetLeftHandIKPosition();
             leftHandIKTarget.rotation = currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
 
-            rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
-            rightHandIKTarget.rotation = currentIKTargetItem.GetRightHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
+           // rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
+            //rightHandIKTarget.rotation = currentIKTargetItem.GetRightHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
+        }
+
+        if (aimingWeapon)
+        {
+            rightHandIKTarget.position = aimingWeaponHandPosition.position;
+            rightHandIKTarget.rotation = aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset);
         }
     }
 
@@ -122,7 +133,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
     
     public void OnEnterIdleStance()
     {
-        Debug.Log("on ente idle");
         iKStance = IKStance.Idle;
 
         SetIKWeightsForIdle();
@@ -137,7 +147,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartAimingWeapon()
     {
-        Debug.Log("on ente aiming");
         aimingWeapon = true;
 
         ReenableIKs();
@@ -215,7 +224,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void DisableIKs()
     {
-        Debug.Log("Disable");
         disableIKs = true;
 
         desiredLeftHandIKRigWeight = 0;
@@ -224,7 +232,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void ReenableIKs()
     {
-        Debug.Log("Enable");
         disableIKs = false;
 
         if (aimingWeapon)
