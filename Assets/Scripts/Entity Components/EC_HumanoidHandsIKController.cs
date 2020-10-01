@@ -1,33 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.Animations.Rigging;
 using System;
 
+// Modifies the desired Right And Left hand IK Weight
 public class EC_HumanoidHandsIKController : EntityComponent
 {
     //this calss needs some refactoring - it isnt very clear, maybe also have an ik stance - disabled?
+
+    #region Fields
+
     [Header("Hand IK")]
-
-    //Gun ikTargetWeapon;
-    //public HumanoidConstraintController constraintController;
-    IItemWithIKHandPositions currentIKTargetItem;
-
     public float changeIKWeightsSpeed;
-
+    IItemWithIKHandPositions currentIKTargetItem;
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
-    float desiredLeftHandIKRigWeight;
+    [Space(10)]
     public WhireWhizTwoBoneIK leftHandIK;
     public Transform leftHandIKTarget;
+    float desiredLeftHandIKRigWeight;
 
-    float desiredRightHandIKRigWeight;
+    [Space(10)]
     public WhireWhizTwoBoneIK rightHandIK;
     public Transform rightHandIKTarget;
+    float desiredRightHandIKRigWeight;
 
     [Header("Aiming Weapon")]
 
+    [Tooltip("position to which the right hand is being IK'eyd when aiming weapon - weapn is parented to the right hand")]
     public Transform aimingWeaponHandPosition;
     bool aimingWeapon;
 
@@ -45,9 +46,9 @@ public class EC_HumanoidHandsIKController : EntityComponent
         public bool aimingIKLeft = false;
         public bool aimingIKRight = false;
     }
-
+    [Space(10)]
     public IKSettingsCorrespondingToWeaponInteractionType[] iKSettingsCorrespondingToWeaponInteractionTypes;
-
+    [Space(10)]
     public IKSettingsCorrespondingToWeaponInteractionType currentIKSettings;
 
 
@@ -57,19 +58,17 @@ public class EC_HumanoidHandsIKController : EntityComponent
         CombatStance,
     }
 
-  
-
+ 
     IKStance iKStance;
 
     //overwrite weapon iks
     bool disableIKs; //for now overwriting just means disabling ik's
 
-
+    #endregion
 
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
-
 
         DisableIKs();
     }
@@ -96,7 +95,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
             rightHandIKTarget.rotation = aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset);
         }
     }
-
 
     public void OnChangeItemInHand(Item newItem)
     {
@@ -130,7 +128,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
         } 
     }
 
-    
     public void OnEnterIdleStance()
     {
         iKStance = IKStance.Idle;
@@ -138,7 +135,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         SetIKWeightsForIdle();
     }
 
-   public void OnEnterCombatStance()
+    public void OnEnterCombatStance()
    {
         iKStance = IKStance.CombatStance;
 

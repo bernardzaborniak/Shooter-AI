@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
+// Positions the spineAimTarget, weaponAimTarget and the lookAtTarget
 // Is responsible, together with the constraintController for the correct aiming of the spine bones together with hands and parenting of weapons
 public class EC_HumanoidAimingController : EntityComponent
 {
@@ -94,6 +95,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
     //to ensure that the look at has a smooth transition to the default position before disabling the component
     float nextLookAtDisableTime;
+    [Tooltip("The FLookAtScript is disabled after this delay after looka at was disabled -> ensures a smooth transition of the head to its initial position.")]
     public float lookAtDisableDelay;
 
     #endregion
@@ -111,7 +113,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("Weapons get parented to this object when aiming")]
     public Transform weaponAimParentLocalAdjuster;
 
-    [Header("Weapon aim target movement")]
+    [Header("Weapon Aim Target Smoothing & Constraint")]
     [Tooltip("Max Rotation difference between current character forward and the target he aims at, to prrevent aiming too far to the side")]
     public float maxWeaponRotDifference;
     [Tooltip("speed used for Quaternion.RotateTowards()")]
@@ -330,6 +332,8 @@ public class EC_HumanoidAimingController : EntityComponent
         #endregion
     }
 
+    #region Aim Spine Orders
+
     public void AimSpineInDirection(Vector3 direction)
     {
         aimingSpine = true;
@@ -360,6 +364,10 @@ public class EC_HumanoidAimingController : EntityComponent
         aimingSpine = false;
         movementController.manualRotation = false;
     }
+
+    #endregion
+
+    #region Look At Orders
 
     public void LookAtTransform(Transform target)
     {
@@ -402,6 +410,10 @@ public class EC_HumanoidAimingController : EntityComponent
         nextLookAtDisableTime = Time.time + lookAtDisableDelay;
     }
 
+    #endregion
+
+    #region Aim Weapon Orders
+
     public void AimWeaponInDirection(Vector3 direction)
     {
         aimingWeapon = true;
@@ -443,6 +455,8 @@ public class EC_HumanoidAimingController : EntityComponent
         desiredWeaponAimingConstraintWeight = 0;
     }
 
+    #endregion
+
     public void OnChangeWeapon(Gun newWeapon)
     {
         if (newWeapon == null)
@@ -462,6 +476,8 @@ public class EC_HumanoidAimingController : EntityComponent
         }
     }
 
+    #region Status Checks & Getters
+
     public bool IsCharacterAimingWeapon()
     {
         return aimingWeapon;
@@ -476,6 +492,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         return fLookAnimator.ObjectToFollow != null;
     }
+
     public Vector3 GetCurrentSpineAimDirection()
     {
         return currentSpineDirection;
@@ -496,4 +513,6 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         return Vector3.Angle(desiredWeaponDirection, currentWeaponDirection);
     }
+
+    #endregion
 }
