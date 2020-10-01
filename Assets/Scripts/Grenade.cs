@@ -40,8 +40,9 @@ public class Grenade : Item
         rigidbody.isKinematic = false;
 
         rigidbody.velocity = direction.normalized * throwVelocity;
+        rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
-        if(grenadeType == GrenadeType.TimeDelay)
+        if (grenadeType == GrenadeType.TimeDelay)
         {
             explosionTime = Time.time + grenadeExplosionTimeDelay;
         }

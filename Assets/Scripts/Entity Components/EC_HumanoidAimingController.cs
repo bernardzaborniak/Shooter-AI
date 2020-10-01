@@ -4,16 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
-//using UnityEngine.Animations.Rigging;
 
+// Is responsible, together with the constraintController for the correct aiming of the spine bones together with hands and parenting of weapons
 public class EC_HumanoidAimingController : EntityComponent
 {
-    // Is responsible for the correct aiming of the spine bones together with hands and parenting of weapons?  
+    [Header("References")]
+    public HumanoidConstraintController constraintController;
+    public EC_HumanoidHandsIKController handsIKController;
 
-    #region Calculate Aim At Position Fields
+    #region For Calculating the desired Direction in Different ways
 
-    [Header("Aim at Posiiton Calculation")]
-    // Used to determin desired aiming direction - is this really needed?
+    [Header("Aim at Position Calculation")]
+    // Used to determine desired aiming direction - is this really needed?
     [Tooltip("If we are aiming at a direction, we are aiming at a point which is the direction * this float value")]
     public float defaultDirectionAimDistance;
 
@@ -41,18 +43,9 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 weaponPositionOfTarget;
     Transform weaponTransformOfTarget;
 
-
-
-
-    //Vector3 pointToAimAt;
-    //Vector3 directionToAim;
-
     #endregion
 
-    public HumanoidConstraintController constraintController;
-    public EC_HumanoidHandsIKController handsIKController;
-
-    #region Other Fields
+    #region For Calculating Spine Target Position & Weight
 
     [Header("Spine Constraint for Aiming up/down")]
 
@@ -66,18 +59,6 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 currentSpineDirection;
     Vector3 currentSpineDirectionChangeVelocity;
 
-    // public MultiAimConstraint spineConstraint1;
-    // public AimConstraint spineConstraint1;
-    // public MultiAimConstraint spineConstraint2;
-    //public AimConstraint spineConstraint2;
-    // public MultiAimConstraint spineConstraint3;
-    //public AimConstraint spineConstraint3;
-    // public CustomAimConstraint spineConstraint1;
-    //public CustomAimConstraint spineConstraint2;
-    //public CustomAimConstraint spineConstraint3;
-   
-
-
     float spineConstraint1TargetWeight;
     float spineConstraint2TargetWeight;
     float spineConstraint3TargetWeight;
@@ -89,7 +70,9 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
+    #endregion
 
+    #region Calculating Look At Target And Enabling & Disabling of It
 
     [Header("Look At")]
 
@@ -108,33 +91,18 @@ public class EC_HumanoidAimingController : EntityComponent
         SheduledForDisabling
     }
     LookAtState lookAtState;
+
     //to ensure that the look at has a smooth transition to the default position before disabling the component
     float nextLookAtDisableTime;
     public float lookAtDisableDelay;
 
+    #endregion
 
-    // Look At distorts the weapon aiming when its 2 compensiation Weights are set on something different than 1, so we set the mto 1 while aiming ,and reset them afterwards.
-    public float lookAtCompensationWeightWithoutWeapon;
-    public float lookAtCompensatiePositionsWithoutWeapon;
-
-    public float lookAtCompensationWeightWithWeapon;
-    public float lookAtCompensatiePositionsWithWeapon;
-
-
-
-    [Header("Idle Weapon Holding")]
-
- //   public Rig idleWeaponHoldingRig;
-
-
-
+    #region Caulculating Aiming Weapon Target Weight etc...
     [Header("Aiming the Weapon")]
 
     public Transform weaponAimLocalTarget;
-    public Gun weapon; //TODO needs to be set up while changing weapons, together with the iks for idle and aiming
-                       //  public Rig weaponAimingRig;
-                       // public CustomAimConstraint weaponAimingConstraint;
-
+    public Gun weapon; 
 
     float desiredWeaponAimingConstraintWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]

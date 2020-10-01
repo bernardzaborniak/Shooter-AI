@@ -4,10 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Makes sure that the constraints are applied in the correct order (updates them) and (optimizes them - not yet implemented)
 public class HumanoidConstraintController : MonoBehaviour
 {
-    //Makes sure that the constraints are applied in the correct order and optimizes
-
     [Header("1. Spine")]
     public Transform spineTarget;
 
@@ -20,7 +19,6 @@ public class HumanoidConstraintController : MonoBehaviour
     public float spine3Weight;
 
     [Header("2- Look At Animator")]
-    public Transform lookAtTarget; //here?
     public FLookAnimator lookAtAnimator;
 
     [Header("3. Weapon Aiming")]
@@ -46,10 +44,9 @@ public class HumanoidConstraintController : MonoBehaviour
 
     void LateUpdate()
     {
-        #region 1. Orient the spine Constraints first
+        #region 1. Orient/Update the spine Constraints first
 
         Vector3 spineTargetPosition = spineTarget.position; ;
-
 
         // Spine 1
         Vector3 directionToTargetS1 = spineTargetPosition - spineBone1.position;
@@ -81,14 +78,12 @@ public class HumanoidConstraintController : MonoBehaviour
             lookAtAnimator.UpdateLookAnimator();
         }
         
-
         #endregion
 
         #region 3. Orient the Weapon Aim Constraint
 
         Vector3 directionToTargetW = weaponAimTarget.position - weaponAimTransform.position;
         Quaternion targetRotationW = Quaternion.LookRotation(directionToTargetW);
-
 
         Quaternion rotationDifferenceW = targetRotationW * Quaternion.Inverse(weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
         weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
