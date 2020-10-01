@@ -6,11 +6,16 @@ using UnityEngine;
 
 public class WhireWhizTwoBoneIK : MonoBehaviour
 {
+    [Range(0,1)]
+    public float weight;
+    [Space(10)]
     public Transform Upper;//root of upper arm
     public Transform Lower;//root of lower arm
     public Transform End;//root of hand
+    [Space(10)]
     public Transform Target;//target position of hand
     public Transform Pole;//direction to bend towards 
+    [Space(10)]
     public float UpperElbowRotation;//Rotation offsetts
     public float LowerElbowRotation;
 
@@ -20,9 +25,9 @@ public class WhireWhizTwoBoneIK : MonoBehaviour
     private Vector3 en;//Normal of plane we want our arm to be on
 
     //For optimising performance we cache some values
-    Quaternion upperRotation;
+    Quaternion upperTargetRotation;
     Vector3 upperPosition;
-    Quaternion lowerRotation;
+    Quaternion lowerTargetRotation;
     Vector3 lowerPosition;
     Vector3 targetPosition;
 
@@ -38,16 +43,17 @@ public class WhireWhizTwoBoneIK : MonoBehaviour
         en = Vector3.Cross(targetPosition - upperPosition, Pole.position - upperPosition);
 
         //Set the rotation of the upper arm
-        upperRotation = Quaternion.LookRotation(targetPosition - upperPosition, Quaternion.AngleAxis(UpperElbowRotation, lowerPosition - upperPosition) * (en));
-        upperRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, Lower.localPosition));
-        Upper.rotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * upperRotation;
+        upperTargetRotation = Quaternion.LookRotation(targetPosition - upperPosition, Quaternion.AngleAxis(UpperElbowRotation, lowerPosition - upperPosition) * (en));
+        upperTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, Lower.localPosition));
+        upperTargetRotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * upperTargetRotation;
+        Upper.rotation = Quaternion.Slerp(Upper.rotation,upperTargetRotation,weight);
 
         //set the rotation of the lower arm
-        lowerRotation = Quaternion.LookRotation(targetPosition - lowerPosition, Quaternion.AngleAxis(LowerElbowRotation, End.position - lowerPosition) * (en));
-        lowerRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, End.localPosition));
-        Lower.rotation = lowerRotation;
+        lowerTargetRotation = Quaternion.LookRotation(targetPosition - lowerPosition, Quaternion.AngleAxis(LowerElbowRotation, End.position - lowerPosition) * (en));
+        lowerTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, End.localPosition));
+        Lower.rotation = Quaternion.Slerp(Lower.rotation, lowerTargetRotation, weight);
 
-        End.rotation = Target.rotation;
+        End.rotation = Quaternion.Slerp(End.rotation, Target.rotation, weight);
         //Lower.LookAt(Lower, Pole.position - Upper.position);
         //Lower.rotation = Quaternion.AngleAxis(CosAngle(a, b, c), en);
     }
