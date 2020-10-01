@@ -50,6 +50,7 @@ public class EC_HumanoidAimingController : EntityComponent
     #endregion
 
     public HumanoidConstraintController constraintController;
+    public EC_HumanoidHandsIKController handsIKController;
 
     #region Other Fields
 
@@ -436,6 +437,9 @@ public class EC_HumanoidAimingController : EntityComponent
     public void AimWeaponInDirection(Vector3 direction)
     {
         aimingWeapon = true;
+
+        handsIKController.OnEnterAimingWeaponStance();
+
         currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
         weaponDirectionToTarget = direction;
         desiredWeaponAimingConstraintWeight = 1;
@@ -444,6 +448,9 @@ public class EC_HumanoidAimingController : EntityComponent
     public void AimWeaponAtPosition(Vector3 position)
     {
         aimingWeapon = true;
+
+        handsIKController.OnEnterAimingWeaponStance();
+
         currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
         weaponPositionOfTarget = position;
         desiredWeaponAimingConstraintWeight = 1;
@@ -452,6 +459,9 @@ public class EC_HumanoidAimingController : EntityComponent
     public void AimWeaponAtTransform(Transform transform)
     {
         aimingWeapon = true;
+
+        handsIKController.OnEnterAimingWeaponStance();
+
         currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
         weaponTransformOfTarget = transform;
         desiredWeaponAimingConstraintWeight = 1;
@@ -459,6 +469,9 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void StopAimingWeaponAtTarget()
     {
+        handsIKController.OnEnterIdleStance();
+
+
         aimingWeapon = false;
         desiredWeaponAimingConstraintWeight = 0;
     }

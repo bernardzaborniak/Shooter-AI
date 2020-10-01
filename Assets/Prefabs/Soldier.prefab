@@ -1497,6 +1497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultDirectionAimDistance: 20
   constraintController: {fileID: 6011648321845300601}
+  handsIKController: {fileID: 7399303670798280785}
   spineConstraintLocalTarget: {fileID: 7707363000070997972}
   movementController: {fileID: 7366031314207611041}
   aimingReferencePointOnBody: {fileID: 8606268059406528053}
@@ -1748,7 +1749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd573e8cb9953c41836ded16d22399b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  constraintController: {fileID: 6011648321845300601}
   changeIKWeightsSpeed: 10
   handIKRotationOffset: {x: 0, y: 0, z: 0}
   leftHandIK: {fileID: 7074038497521217696}
@@ -1759,24 +1759,24 @@ MonoBehaviour:
   - weaponInteractionType: 0
     idleIKLeft: 0
     idleIKRight: 0
-    combatIKLeft: 0
-    combatIKRight: 0
+    aimingIKLeft: 0
+    aimingIKRight: 0
   - weaponInteractionType: 1
     idleIKLeft: 1
     idleIKRight: 0
-    combatIKLeft: 1
-    combatIKRight: 0
+    aimingIKLeft: 0
+    aimingIKRight: 0
   - weaponInteractionType: 2
     idleIKLeft: 0
     idleIKRight: 0
-    combatIKLeft: 1
-    combatIKRight: 0
+    aimingIKLeft: 0
+    aimingIKRight: 0
   currentIKSettings:
     weaponInteractionType: 0
     idleIKLeft: 0
     idleIKRight: 0
-    combatIKLeft: 0
-    combatIKRight: 0
+    aimingIKLeft: 0
+    aimingIKRight: 0
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0

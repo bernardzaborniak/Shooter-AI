@@ -33,8 +33,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
         public bool idleIKLeft = false;
         public bool idleIKRight = false;
-        public bool combatIKLeft = false;
-        public bool combatIKRight = false;
+        public bool aimingIKLeft = false;
+        public bool aimingIKRight = false;
     }
 
     public IKSettingsCorrespondingToWeaponInteractionType[] iKSettingsCorrespondingToWeaponInteractionTypes;
@@ -45,7 +45,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     enum IKStance
     {
         Idle,
-        Combat
+        AimingWeapon
     }
 
     IKStance iKStance;
@@ -58,6 +58,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
+
 
         DisableIKs();
     }
@@ -115,20 +116,22 @@ public class EC_HumanoidHandsIKController : EntityComponent
     
     public void OnEnterIdleStance()
     {
+        Debug.Log("on ente ridle");
         iKStance = IKStance.Idle;
 
         SetIKWeightsForIdle();
     }
 
-    public void OnEnterCombatStance()
+    public void OnEnterAimingWeaponStance()
     {
-        iKStance = IKStance.Combat;
+        iKStance = IKStance.AimingWeapon;
 
-        SetIKWeightsForCombat();
+        SetIKWeightsForAiming();
     }
 
     void SetIKWeightsForIdle()
     {
+        Debug.Log("set for idle");
         if (currentIKSettings.idleIKLeft)
         {
             desiredLeftHandIKRigWeight = 1;
@@ -148,9 +151,10 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
     }
 
-    void SetIKWeightsForCombat()
+    void SetIKWeightsForAiming()
     {
-        if (currentIKSettings.combatIKLeft)
+        Debug.Log("set for aiming");
+        if (currentIKSettings.aimingIKLeft)
         {
             desiredLeftHandIKRigWeight = 1;
         }
@@ -159,7 +163,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
             desiredLeftHandIKRigWeight = 0;
         }
 
-        if (currentIKSettings.combatIKRight)
+        if (currentIKSettings.aimingIKRight)
         {
             desiredRightHandIKRigWeight = 1;
         }
@@ -171,6 +175,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void DisableIKs()
     {
+        Debug.Log("Disable");
         disableIKs = true;
 
         desiredLeftHandIKRigWeight = 0;
@@ -179,6 +184,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void ReenableIKs()
     {
+        Debug.Log("Enable");
         disableIKs = false;
 
         if(iKStance == IKStance.Idle)
@@ -187,7 +193,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
         else
         {
-            SetIKWeightsForCombat();
+            SetIKWeightsForAiming();
         } 
     }
 }

@@ -225,7 +225,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
         movementController.SetAcceleration(idleAcceleration);
         animationController.ChangeToIdleStance();
-        handsIKController.OnEnterIdleStance();
+        //handsIKController.OnEnterIdleStance();
 
         //StopAimAt();
         StopAimingSpine();
@@ -242,7 +242,9 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
             movementController.SetAcceleration(idleAcceleration);
             animationController.ChangeToIdleStance();
-            handsIKController.OnEnterIdleStance();
+            
+            
+            //handsIKController.OnEnterIdleStance();
 
             //StopAimAt();
             StopAimingSpine();
@@ -263,7 +265,8 @@ public class EC_HumanoidCharacterController : EntityComponent
                 movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
                 movementController.SetAcceleration(combatStanceAcceleration);
                 animationController.ChangeToCombatStance();
-                handsIKController.OnEnterCombatStance();
+               
+                //handsIKController.OnEnterAimingWeaponStance();
             }
         }
     }
@@ -277,7 +280,8 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
             movementController.SetAcceleration(crouchAcceleration);
             animationController.ChangeToCrouchedStance();
-            handsIKController.OnEnterCombatStance();
+           
+            //handsIKController.OnEnterAimingWeaponStance();
         }
     }
 
@@ -643,9 +647,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         //StopAimAt();
         AbortChangingSelectedItem();
         //AbortThrowingGrenade();
-        handsIKController.DisableIKs();
+        
         StopAimingSpine();
         StopAimingWeapon();
+
+        handsIKController.DisableIKs();
 
 
     }
