@@ -5,12 +5,12 @@ namespace FMODUnity
     [AddComponentMenu("FMOD Studio/FMOD Studio Listener")]
     public class StudioListener : MonoBehaviour
     {
-        Rigidbody rigidBody;
-        Rigidbody2D rigidBody2D;
-
         //added for occlusion with FMOD
         public LayerMask occlusionMask = -1;
 
+        Rigidbody rigidBody;
+        Rigidbody2D rigidBody2D;
+   
         public int ListenerNumber = -1;
 
         void OnEnable()
