@@ -17,6 +17,7 @@ public class EC_HumanoidInterationController : EntityComponent
     public EC_HumanoidAimingController aimingController;
     public EC_HumanoidAnimationController animationController;
     public EC_HumanoidHandsIKController handsIKController;
+    public RecoilManager recoilManager;
 
  
     public enum ItemInteractionState
@@ -255,6 +256,7 @@ public class EC_HumanoidInterationController : EntityComponent
             if (inventory[currentSelectedItemID] is Gun)
             {
                 (inventory[currentSelectedItemID] as Gun).Shoot();
+                //TODO if Shoot returns true - > apply recoil to recoil manager 
             }
         }
     }

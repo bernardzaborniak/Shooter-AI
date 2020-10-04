@@ -80,11 +80,11 @@ public class RecoilManager : MonoBehaviour
     float lastRecoilTime;
     #endregion
 
-    [Header("Debug")]
-    public bool debugVisualisation;
-    public GameObject visualRepresentation;
+    //[Header("Debug")]
+    //public bool debugVisualisation;
+    //public GameObject visualRepresentation;
 
-    private void Start()
+   /* private void Start()
     {
         if (debugVisualisation)
         {
@@ -94,7 +94,7 @@ public class RecoilManager : MonoBehaviour
         {
             visualRepresentation.SetActive(false);
         }
-    }
+    }*/
 
     public void AddRecoil(ref RecoilInfo recoilInfo)
     {
