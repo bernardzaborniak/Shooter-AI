@@ -37,6 +37,7 @@ public class FMODCustomAudioSource : MonoBehaviour
 
         if (occlusionEnabled)
         {
+           // Debug.Log("occlusion enabled: 1, next update: " + nextOcclusionUpdate + " current time: " + Time.time);
             if (Time.time > nextOcclusionUpdate)
             {
                 nextOcclusionUpdate = Time.time + FmodResonanceAudio.occlusionDetectionInterval;

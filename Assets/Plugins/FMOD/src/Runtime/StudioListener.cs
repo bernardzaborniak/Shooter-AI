@@ -6,7 +6,7 @@ namespace FMODUnity
     public class StudioListener : MonoBehaviour
     {
         //added for occlusion with FMOD
-        public LayerMask occlusionMask = -1;
+        public LayerMask occlusionMask;// = -1;
 
         Rigidbody rigidBody;
         Rigidbody2D rigidBody2D;
