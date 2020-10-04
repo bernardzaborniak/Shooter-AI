@@ -32,6 +32,8 @@ public class Gun : Item, IItemWithIKHandPositions
     [Tooltip("If the bullet drops fast due to gravity, have this ticked as true, then the aiming Ai will calculate the aiming direction according to the projectile flight arc")]
     public bool aimWithAngledShotCalculation;
 
+    public RecoilStatsGun recoilStats;
+
 
     private void Start()
     {
