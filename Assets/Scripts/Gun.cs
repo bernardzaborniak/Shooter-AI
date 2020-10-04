@@ -33,18 +33,27 @@ public class Gun : Item, IItemWithIKHandPositions
     public bool aimWithAngledShotCalculation;
 
     public RecoilStatsGun recoilStats;
+    RecoilInfo gunRecoilInfo;
 
 
     private void Start()
     {
         shootInterval = 1 / (rateOfFire / 60);
         bulletsInMagazine = magazineSize;
+
+        //Set up recoil Info
+        gunRecoilInfo = new RecoilInfo();
+        gunRecoilInfo.SetRecoilForces(recoilStats.recoilUpShootForce, recoilStats.recoilSideShootForce, recoilStats.recoilBackShootForce);
+        gunRecoilInfo.SetRecoilUpValues(recoilStats.maxReduceRecoilUpSpeedTwoHanded, recoilStats.maxReduceRecoilUpSpeedTwoHanded, recoilStats.maxReduceRecoilUpSpeedTwoHanded,recoilStats.maxRotationUpTwoHanded);
+        gunRecoilInfo.SetRecoilSideValues(recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxRotationSideTwoHanded);
+        gunRecoilInfo.SetRecoilBackValues(recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxPositionBackTwoHanded);
+        Debug.Log("Gun recoil info set up");
     }
 
     //"kind of animation played for this item - 0 is bare hands, 1 is rifle, 2 is pistol"
     
 
-    public void Shoot()
+    public bool Shoot()
     {
         if (bulletsInMagazine > 0)
         {
@@ -55,8 +64,12 @@ public class Gun : Item, IItemWithIKHandPositions
                 projectileGORB.velocity = projectileGORB.transform.forward * projectileLaunchVelocity;
                 nextShootTime = Time.time + shootInterval;
                 bulletsInMagazine--;
+
+                return true;
             }
         }
+
+        return false;
     }
 
     public int GetBulletsInMagazineLeft()
@@ -99,5 +112,10 @@ public class Gun : Item, IItemWithIKHandPositions
     public Quaternion GetLeftHandIKRotation()
     {
         return leftHandIKPosition.rotation;
+    }
+
+    public RecoilInfo GetRecoilInfo()
+    {
+        return gunRecoilInfo;
     }
 }

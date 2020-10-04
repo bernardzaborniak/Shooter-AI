@@ -126,33 +126,33 @@ MonoBehaviour:
   rateOfFire: 500
   aimWithAngledShotCalculation: 0
   recoilStats:
-    recoilUpShootForce: 0
-    maxRecoilUpSpeedOneHanded: 0
-    maxReduceRecoilUpAccelerationOneHanded: 0
-    maxReduceRecoilUpSpeedOneHanded: 0
-    maxRotationUpOneHanded: 0
-    maxRecoilUpSpeedTwoHanded: 0
-    maxReduceRecoilUpAccelerationTwoHanded: 0
-    maxReduceRecoilUpSpeedTwoHanded: 0
-    maxRotationUpTwoHanded: 0
-    recoilSideShootForce: 0
-    maxRecoilSideSpeedOneHanded: 0
-    maxReduceRecoilSideAccelerationOneHanded: 0
-    maxReduceRecoilSideSpeedOneHanded: 0
-    maxRotationSideOneHanded: 0
-    maxRecoilSideSpeedTwoHanded: 0
-    maxReduceRecoilSideAccelerationTwoHanded: 0
-    maxReduceRecoilSideSpeedTwoHanded: 0
-    maxRotationSideTwoHanded: 0
-    recoilBackShootForce: 0
-    maxRecoilBackSpeedOneHanded: 0
-    maxReduceRecoilBackAccelerationOneHanded: 0
-    maxReduceRecoilBackSpeedOneHanded: 0
-    maxPositionBackOneHanded: 0
-    maxRecoilBackSpeedTwoHanded: 0
-    maxReduceRecoilBackAccelerationTwoHanded: 0
-    maxReduceRecoilBackSpeedTwoHanded: 0
-    maxPositionBackTwoHanded: 0
+    recoilUpShootForce: 100
+    maxRecoilUpSpeedOneHanded: 60
+    maxReduceRecoilUpAccelerationOneHanded: 800
+    maxReduceRecoilUpSpeedOneHanded: 1000
+    maxRotationUpOneHanded: 40
+    maxRecoilUpSpeedTwoHanded: 20
+    maxReduceRecoilUpAccelerationTwoHanded: 300
+    maxReduceRecoilUpSpeedTwoHanded: 40
+    maxRotationUpTwoHanded: 7
+    recoilSideShootForce: 75
+    maxRecoilSideSpeedOneHanded: 60
+    maxReduceRecoilSideAccelerationOneHanded: 800
+    maxReduceRecoilSideSpeedOneHanded: 100
+    maxRotationSideOneHanded: 20
+    maxRecoilSideSpeedTwoHanded: 60
+    maxReduceRecoilSideAccelerationTwoHanded: 800
+    maxReduceRecoilSideSpeedTwoHanded: 100
+    maxRotationSideTwoHanded: 10
+    recoilBackShootForce: 3
+    maxRecoilBackSpeedOneHanded: 1
+    maxReduceRecoilBackAccelerationOneHanded: 5
+    maxReduceRecoilBackSpeedOneHanded: 1
+    maxPositionBackOneHanded: 0.05
+    maxRecoilBackSpeedTwoHanded: 1
+    maxReduceRecoilBackAccelerationTwoHanded: 3
+    maxReduceRecoilBackSpeedTwoHanded: 1
+    maxPositionBackTwoHanded: 0.025
 --- !u!1 &2688672497951761496
 GameObject:
   m_ObjectHideFlags: 0
