@@ -41,6 +41,9 @@ public class Gun : Item, IItemWithIKHandPositions
     bool usedByPlayer = false;
     GameEntity wieldingEntity;
 
+    [Header("Visuals")]
+    public ParticleSystem shootParticle;
+
 
     private void Start()
     {
@@ -91,6 +94,8 @@ public class Gun : Item, IItemWithIKHandPositions
 
                 nextShootTime = Time.time + shootInterval;
                 bulletsInMagazine--;
+
+                shootParticle.Play();
 
                 return true;
             }
