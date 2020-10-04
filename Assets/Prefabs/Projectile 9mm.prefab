@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 4418169066698541897}
   launchVelocity: 600
-  damage: 60
+  damage: 20
 --- !u!1 &4418169068056495488
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +137,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3972c6cb18f105c4487c579ce6b04c9c, type: 2}
+  - {fileID: 2100000, guid: 248ececc52cc86c4abce19a168fd8729, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

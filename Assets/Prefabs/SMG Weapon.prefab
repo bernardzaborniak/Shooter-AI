@@ -117,10 +117,11 @@ MonoBehaviour:
   rightHandIKPosition: {fileID: 2688672498561181487}
   leftHandIKPosition: {fileID: 2688672498049104216}
   weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.2}
-  projectile: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
-    type: 3}
+  ammoType: 0
   shootPoint: {fileID: 4847854983021419361}
+  damage: 20
   projectileLaunchVelocity: 600
+  bloom: 2
   magazineSize: 30
   defaultReloadDuration: 3
   rateOfFire: 500

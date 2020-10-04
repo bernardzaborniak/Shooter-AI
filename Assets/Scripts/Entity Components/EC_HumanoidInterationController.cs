@@ -178,7 +178,9 @@ public class EC_HumanoidInterationController : EntityComponent
 
         if(inventory[currentSelectedItemID] is Gun)
         {
-            aimingController.OnChangeWeapon(inventory[currentSelectedItemID] as Gun);
+            Gun gun = (inventory[currentSelectedItemID] as Gun);
+            gun.OnEquipWeapon(myEntity);
+            aimingController.OnChangeWeapon(gun);
         }
         else
         {
@@ -215,11 +217,19 @@ public class EC_HumanoidInterationController : EntityComponent
 
     void FinishHidingItem()
     {
+        // Reset Position & Visibility
         inventory[currentSelectedItemID].gameObject.SetActive(false);
         inventory[currentSelectedItemID].transform.SetParent(inventoryItemParent);
         inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
         inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
 
+        //If Gun - adjust Gun
+        if(inventory[currentSelectedItemID] is Gun)
+        {
+            (inventory[currentSelectedItemID] as Gun).OnReleaseWeapon();
+        }
+
+        // What next? - depending on which item is desired
         if (inventory[desiredSelectedItemID] != null)
         {
             StartPullingOutItem(desiredSelectedItemID,1);
