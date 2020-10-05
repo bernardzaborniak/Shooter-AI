@@ -215,16 +215,16 @@ public class EC_HumanoidAimingController : EntityComponent
             if (spineConstraintLocalTarget.position.y > aimingReferencePointOnBody.position.y)
             {
                 // aiming Up 
-                spineConstraint1TargetWeight = 0.05f;
-                spineConstraint2TargetWeight = 0.2f;
-                spineConstraint3TargetWeight = 0.4f;
+                spineConstraint1TargetWeight = 0.05f;//0.05f;
+                spineConstraint2TargetWeight = 0.2f;//0.2f;
+                spineConstraint3TargetWeight = -0.1f;//0.4f;
             }
             else
             {
                 // aiming Down
-                spineConstraint1TargetWeight = 0.2f;
-                spineConstraint2TargetWeight = 0.7f;
-                spineConstraint3TargetWeight = 1f;
+                spineConstraint1TargetWeight = 0.2f;//0.2f;
+                spineConstraint2TargetWeight = 0.5f;//0.7f;
+                spineConstraint3TargetWeight = -0.3f;//1f;
             }
         }
         else
