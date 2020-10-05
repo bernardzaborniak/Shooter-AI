@@ -68,6 +68,9 @@ public class HumanoidConstraintController : MonoBehaviour
     {
         #region 1. Orient/Update the spine Constraints first
 
+        // The recoil position is used to determine the roation of the spin, as it is the back movement of the gun which rotates the spine
+        Quaternion recoilRotationAdder = Quaternion.Slerp(Quaternion.identity, Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z*200,0,0), 0.5f); //used to add some recoil to spine
+
         Vector3 spineTargetPosition = spineTarget.position; ;
 
         // Spine 1
@@ -75,21 +78,21 @@ public class HumanoidConstraintController : MonoBehaviour
         Quaternion targetRotationS1 = Quaternion.LookRotation(directionToTargetS1);
 
         Quaternion rotationDifferenceS1 = targetRotationS1 * Quaternion.Inverse(spineBone1.rotation);
-        spineBone1.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS1, spine1Weight) * spineBone1.rotation;
+        spineBone1.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS1, spine1Weight) * spineBone1.rotation * recoilRotationAdder;
 
         // Spine 2
         Vector3 directionToTargetS2 = spineTargetPosition - spineBone2.position;
         Quaternion targetRotationS2 = Quaternion.LookRotation(directionToTargetS2);
 
         Quaternion rotationDifferenceS2 = targetRotationS2 * Quaternion.Inverse(spineBone2.rotation);
-        spineBone2.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS2, spine2Weight) * spineBone2.rotation;
+        spineBone2.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS2, spine2Weight) * spineBone2.rotation * recoilRotationAdder;
 
         // Spine 3
         Vector3 directionToTargetS3 = spineTargetPosition - spineBone3.position;
         Quaternion targetRotationS3 = Quaternion.LookRotation(directionToTargetS3);
 
         Quaternion rotationDifferenceS3 = targetRotationS3 * Quaternion.Inverse(spineBone3.rotation);
-        spineBone3.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS3, spine3Weight) * spineBone3.rotation;
+        spineBone3.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS3, spine3Weight) * spineBone3.rotation * Quaternion.Inverse(recoilRotationAdder);
 
         #endregion
 
