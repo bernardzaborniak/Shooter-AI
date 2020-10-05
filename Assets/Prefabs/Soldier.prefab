@@ -244,7 +244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407404317873391152}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.393, y: 0.8, z: -0.4}
+  m_LocalPosition: {x: 0.654, y: 0.444, z: -0.134}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2484737770802449003}
@@ -1751,6 +1751,7 @@ MonoBehaviour:
   constraintController: {fileID: 6011648321845300601}
   leftHandIK: {fileID: 7074038497521217696}
   rightHandIK: {fileID: 7560968261588369191}
+  rightHandTransform: {fileID: 3424196112152590634}
   aimingWeaponHandPosition: {fileID: 7366031314855643508}
   iKSettingsCorrespondingToWeaponInteractionTypes:
   - weaponInteractionType: 0
@@ -1782,7 +1783,6 @@ MonoBehaviour:
     combatIKRight: 0
     aimingIKLeft: 0
     aimingIKRight: 0
-  rightHandTransform: {fileID: 3424196112152590634}
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2132,11 +2132,11 @@ MonoBehaviour:
   weaponAimWeight: 0
   leftHandIK: {fileID: 7074038497521217696}
   rightHandIK: {fileID: 7560968261588369191}
+  transformToCopyRecoilFrom: {fileID: 1989794999708860853}
   leftHandTransform: {fileID: 479433091383233589}
   leftHandIKTarget: {fileID: 2133351232494822414}
   rightHandTransform: {fileID: 3424196112152590634}
   rightHandIKTarget: {fileID: 5874690323325081363}
-  transformToCopyRecoilFrom: {fileID: 1989794999708860853}
 --- !u!114 &7366031315838806102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2598,7 +2598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8083933162419942086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.427, y: 0.8, z: -0.4}
+  m_LocalPosition: {x: -0.593, y: 0.333, z: -0.457}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2484737770802449003}
