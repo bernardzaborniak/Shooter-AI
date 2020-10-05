@@ -21,6 +21,9 @@ public class Grenade : Item
     public float grenadeExplosionTimeDelay;
     bool exploded;
 
+    [Tooltip("This Layers block grenade damage")]
+    public LayerMask grenadeExplosionBlockingLayerMask;
+
     [Header ("Throwing & Collision")]
 
     public Rigidbody rigidbody;
@@ -103,13 +106,33 @@ public class Grenade : Item
             if (damageable != null)
             {
                 Vector3 directionFromGrenade = collidersInExplosionRange[i].gameObject.transform.position - grenadePosition;
-                float distance = directionFromGrenade.magnitude;
-                float damageAndForceModifier = 1 - (distance / explosionRadius);
-                DamageInfo damInfo = new DamageInfo(explosionDamageAtCenter * damageAndForceModifier, null, directionFromGrenade.normalized * explosionForceAtCenter * damageAndForceModifier);
-                damageable.TakeDamage(ref damInfo);
 
+                //check if no obstruction is there
+                bool grenadeFragmentBlockedByObstruction = false;
 
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position, directionFromGrenade, out hit, explosionRadius, grenadeExplosionBlockingLayerMask))
+                {
+                    Debug.Log("raycast 1");
+                    Debug.Log("hit objhet: " + hit.collider.gameObject);
+                    if(hit.collider.gameObject != collidersInExplosionRange[i].gameObject)
+                    {
+                        grenadeFragmentBlockedByObstruction = true;
+                        Debug.Log("raycast 2");
+                    }
+                }
+                else
+                {
+                    Debug.Log("no raycast hit");
+                }
 
+                if (!grenadeFragmentBlockedByObstruction)
+                {
+                    float distance = directionFromGrenade.magnitude;
+                    float damageAndForceModifier = 1 - (distance / explosionRadius);
+                    DamageInfo damInfo = new DamageInfo(explosionDamageAtCenter * damageAndForceModifier, null, directionFromGrenade.normalized * explosionForceAtCenter * damageAndForceModifier);
+                    damageable.TakeDamage(ref damInfo);
+                }
             }
         }
 

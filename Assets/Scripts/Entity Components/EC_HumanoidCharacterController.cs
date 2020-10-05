@@ -153,7 +153,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
             if (Input.GetKeyDown(KeyCode.G))
             {
-                //ThrowGrenade();
+                ThrowGrenade(5f, transform.forward);
             }
 
 
