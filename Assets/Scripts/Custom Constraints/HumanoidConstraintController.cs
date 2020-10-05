@@ -31,6 +31,28 @@ public class HumanoidConstraintController : MonoBehaviour
     public WhireWhizTwoBoneIK leftHandIK;
     public WhireWhizTwoBoneIK rightHandIK;
 
+    //the ik targets are set here in late update, cause sme ik targets are targeting the animated hand position - for recoil to work correctly
+    public Transform leftHandTransform;
+    public Transform leftHandIKTarget;
+    public Transform rightHandTransform;
+    public Transform rightHandIKTarget;
+
+    public enum IKTargetingMode
+    {
+        AnimatedHandPosition,
+        CustomPosition
+    }
+    IKTargetingMode leftHandIKTargetingMode;
+    IKTargetingMode rightHandIKTargetingMode;
+
+    Vector3 leftHandIKTargetPosition;
+    Vector3 rightHandIKTargetPosition;
+
+    Quaternion leftHandIKTargetRotation;
+    Quaternion rightHandIKTargetRotation;
+
+    public Transform transformToCopyRecoilFrom;
+
 
     void Start()
     {
@@ -93,6 +115,35 @@ public class HumanoidConstraintController : MonoBehaviour
 
         #region 4. Update The IK's
 
+        // Set The IK Positions
+
+        if(leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
+        {
+            leftHandIKTarget.position = leftHandIKTargetPosition;
+            leftHandIKTarget.rotation = leftHandIKTargetRotation;
+        }
+        else
+        {
+            leftHandIKTarget.position = leftHandTransform.position;
+            leftHandIKTarget.rotation = leftHandTransform.rotation;
+        }
+
+        //apply recoil only to right hand IK
+        if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
+        {
+            rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
+            rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Inverse(transformToCopyRecoilFrom.localRotation);
+        }
+        else
+        {
+            rightHandIKTarget.position = rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
+            rightHandIKTarget.rotation = rightHandTransform.rotation * Quaternion.Inverse(transformToCopyRecoilFrom.localRotation);
+        }
+
+
+
+        // Resolve IK's
+
         // I dont know why, but we need to resolve them twice to have a nice result
         leftHandIK.ResolveIK();
         leftHandIK.ResolveIK();
@@ -100,6 +151,37 @@ public class HumanoidConstraintController : MonoBehaviour
         rightHandIK.ResolveIK();
 
         #endregion
+    }
+
+
+    public void SetDesiredLeftIKTarget(IKTargetingMode targetingMode, Vector3 targetPosition, Quaternion targetRotation)
+    {
+        leftHandIKTargetingMode = targetingMode;
+
+        if (leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
+        {
+            leftHandIKTargetPosition = targetPosition;
+            leftHandIKTargetRotation = targetRotation;
+        }
+        /*else if(leftHandIKTargetingMode == IKTargetingMode.AnimatedHandPosition)
+        {
+            
+        }*/
+    }
+
+    public void SetDesiredRightIKTarget(IKTargetingMode targetingMode, Vector3 targetPosition, Quaternion targetRotation)
+    {
+        rightHandIKTargetingMode = targetingMode;
+
+        if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
+        {
+            rightHandIKTargetPosition = targetPosition;
+            rightHandIKTargetRotation = targetRotation;
+        }
+        /*else if (rightHandIKTargetingMode == IKTargetingMode.AnimatedHandPosition)
+        {
+
+        }*/
     }
 
 

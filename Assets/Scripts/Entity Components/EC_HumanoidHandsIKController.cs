@@ -16,14 +16,15 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Tooltip("depending on the specific model skeleton hand orientation?")]
     public Vector3 handIKRotationOffset;
 
+    public HumanoidConstraintController constraintController;
     [Space(10)]
     public WhireWhizTwoBoneIK leftHandIK;
-    public Transform leftHandIKTarget;
+    //public Transform leftHandIKTarget;
     float desiredLeftHandIKRigWeight;
 
     [Space(10)]
     public WhireWhizTwoBoneIK rightHandIK;
-    public Transform rightHandIKTarget;
+    //public Transform rightHandIKTarget;
     float desiredRightHandIKRigWeight;
 
     [Header("Aiming Weapon")]
@@ -50,6 +51,9 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public IKSettingsCorrespondingToWeaponInteractionType[] iKSettingsCorrespondingToWeaponInteractionTypes;
     [Space(10)]
     public IKSettingsCorrespondingToWeaponInteractionType currentIKSettings;
+
+    [Header("For Recoil")]
+    public Transform rightHandTransform;
 
 
     enum IKStance
@@ -82,17 +86,25 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
         if (currentIKTargetItem != null)
         {
-            leftHandIKTarget.position = currentIKTargetItem.GetLeftHandIKPosition();
-            leftHandIKTarget.rotation = currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
 
-           // rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
+            //set the positions via constraint manager - no targets needed as references anymore?
+            // leftHandIKTarget.position = currentIKTargetItem.GetLeftHandIKPosition();
+            //leftHandIKTarget.rotation = currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
+            constraintController.SetDesiredLeftIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, currentIKTargetItem.GetLeftHandIKPosition(), currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset));
+
+            // rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
             //rightHandIKTarget.rotation = currentIKTargetItem.GetRightHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
+
+            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AnimatedHandPosition, Vector3.zero, Quaternion.identity);
+
+
         }
 
         if (aimingWeapon)
         {
-            rightHandIKTarget.position = aimingWeaponHandPosition.position;
-            rightHandIKTarget.rotation = aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+            // rightHandIKTarget.position = aimingWeaponHandPosition.position;
+            //rightHandIKTarget.rotation = aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset);
+            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset));
         }
     }
 
