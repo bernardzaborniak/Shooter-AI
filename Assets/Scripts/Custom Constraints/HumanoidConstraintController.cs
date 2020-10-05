@@ -30,8 +30,8 @@ public class HumanoidConstraintController : MonoBehaviour
     [Header("4. Hand IK's")]
     public WhireWhizTwoBoneIK leftHandIK;
     public WhireWhizTwoBoneIK rightHandIK;
+    public Transform transformToCopyRecoilFrom;
 
-    //the ik targets are set here in late update, cause sme ik targets are targeting the animated hand position - for recoil to work correctly
     public Transform leftHandTransform;
     public Transform leftHandIKTarget;
     public Transform rightHandTransform;
@@ -51,9 +51,7 @@ public class HumanoidConstraintController : MonoBehaviour
     Quaternion leftHandIKTargetRotation;
     Quaternion rightHandIKTargetRotation;
 
-    public Transform transformToCopyRecoilFrom;
-
-
+   
     void Start()
     {
         weaponAimLocalStartRotation = weaponAimTransform.localRotation;
@@ -68,10 +66,10 @@ public class HumanoidConstraintController : MonoBehaviour
     {
         #region 1. Orient/Update the spine Constraints first
 
-        // The recoil position is used to determine the roation of the spin, as it is the back movement of the gun which rotates the spine
-        Quaternion recoilRotationAdder = Quaternion.Slerp(Quaternion.identity, Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z*200,0,0), 0.5f); //used to add some recoil to spine
+        // The recoil position is used to determine the roattion of the spine, as it is the back movement of the gun which rotates the spine
+        Quaternion recoilRotationAdder = Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z*400,0,0); //used to add some recoil to spine
 
-        Vector3 spineTargetPosition = spineTarget.position; ;
+        Vector3 spineTargetPosition = spineTarget.position;
 
         // Spine 1
         Vector3 directionToTargetS1 = spineTargetPosition - spineBone1.position;
@@ -92,7 +90,7 @@ public class HumanoidConstraintController : MonoBehaviour
         Quaternion targetRotationS3 = Quaternion.LookRotation(directionToTargetS3);
 
         Quaternion rotationDifferenceS3 = targetRotationS3 * Quaternion.Inverse(spineBone3.rotation);
-        spineBone3.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS3, spine3Weight) * spineBone3.rotation * Quaternion.Inverse(recoilRotationAdder);
+        spineBone3.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS3, spine3Weight) * spineBone3.rotation * Quaternion.Slerp(Quaternion.identity, recoilRotationAdder, 0.5f);
 
         #endregion
 
@@ -118,9 +116,11 @@ public class HumanoidConstraintController : MonoBehaviour
 
         #region 4. Update The IK's
 
-        // Set The IK Positions
+        // 1. Set The IK Positions
+        // The IK targets are set here in late update, cause some IK targets are targeting the animated hand position - for recoil to work correctly, so they need to be set after the animator updated the positions
 
-        if(leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
+
+        if (leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             leftHandIKTarget.position = leftHandIKTargetPosition;
             leftHandIKTarget.rotation = leftHandIKTargetRotation;
@@ -131,7 +131,7 @@ public class HumanoidConstraintController : MonoBehaviour
             leftHandIKTarget.rotation = leftHandTransform.rotation;
         }
 
-        //apply recoil only to right hand IK
+        // 2. Apply recoil only to right hand IK
         if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
@@ -145,7 +145,7 @@ public class HumanoidConstraintController : MonoBehaviour
 
 
 
-        // Resolve IK's
+        // 3. Resolve IK's
 
         // I dont know why, but we need to resolve them twice to have a nice result
         leftHandIK.ResolveIK();
@@ -155,7 +155,6 @@ public class HumanoidConstraintController : MonoBehaviour
 
         #endregion
     }
-
 
     public void SetDesiredLeftIKTarget(IKTargetingMode targetingMode, Vector3 targetPosition, Quaternion targetRotation)
     {

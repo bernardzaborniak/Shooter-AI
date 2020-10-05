@@ -6,26 +6,26 @@ using System;
 // Modifies the desired Right And Left hand IK Weight
 public class EC_HumanoidHandsIKController : EntityComponent
 {
-    //this calss needs some refactoring - it isnt very clear, maybe also have an ik stance - disabled?
+    //this class needs some refactoring - it isnt very clear, maybe also have an ik stance - disabled?
 
     #region Fields
 
     [Header("Hand IK")]
+
     public float changeIKWeightsSpeed;
     IItemWithIKHandPositions currentIKTargetItem;
-    [Tooltip("depending on the specific model skeleton hand orientation?")]
+    [Tooltip("Depending on the specific model skeleton hand orientation the ik target is rotated by this offset")]
     public Vector3 handIKRotationOffset;
-
+    [Tooltip("The IK Targets are being swet through the constraint controller - as they need to be set in LateUpdate")]
     public HumanoidConstraintController constraintController;
     [Space(10)]
     public WhireWhizTwoBoneIK leftHandIK;
-    //public Transform leftHandIKTarget;
     float desiredLeftHandIKRigWeight;
-
-    [Space(10)]
     public WhireWhizTwoBoneIK rightHandIK;
-    //public Transform rightHandIKTarget;
     float desiredRightHandIKRigWeight;
+
+    [Header("For Recoil")]
+    public Transform rightHandTransform;
 
     [Header("Aiming Weapon")]
 
@@ -52,9 +52,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Space(10)]
     public IKSettingsCorrespondingToWeaponInteractionType currentIKSettings;
 
-    [Header("For Recoil")]
-    public Transform rightHandTransform;
-
 
     enum IKStance
     {
@@ -62,7 +59,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
         CombatStance,
     }
 
- 
     IKStance iKStance;
 
     //overwrite weapon iks
@@ -86,24 +82,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
         if (currentIKTargetItem != null)
         {
-
-            //set the positions via constraint manager - no targets needed as references anymore?
-            // leftHandIKTarget.position = currentIKTargetItem.GetLeftHandIKPosition();
-            //leftHandIKTarget.rotation = currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
+            //set the positions via constraint manager - they need to be updated in late update
             constraintController.SetDesiredLeftIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, currentIKTargetItem.GetLeftHandIKPosition(), currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset));
-
-            // rightHandIKTarget.position = currentIKTargetItem.GetRightHandIKPosition();
-            //rightHandIKTarget.rotation = currentIKTargetItem.GetRightHandIKRotation() * Quaternion.Euler(handIKRotationOffset);
-
             constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AnimatedHandPosition, Vector3.zero, Quaternion.identity);
-
-
         }
-
         if (aimingWeapon)
         {
-            // rightHandIKTarget.position = aimingWeaponHandPosition.position;
-            //rightHandIKTarget.rotation = aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset);
             constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset));
         }
     }
