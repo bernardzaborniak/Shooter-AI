@@ -38,6 +38,10 @@ public class HumanoidConstraintController : MonoBehaviour
     public Transform rightHandTransform;
     public Transform rightHandIKTarget;
 
+    [Tooltip("Depending on the specific model skeleton hand orientation the ik target is rotated by this offset")]
+    public Vector3 handIKRotationOffset;
+    //[-90,0,180]
+
     public enum IKTargetingMode
     {
         AnimatedHandPosition,
@@ -68,7 +72,7 @@ public class HumanoidConstraintController : MonoBehaviour
         #region 1. Orient/Update the spine Constraints first
 
         // The recoil position is used to determine the roattion of the spine, as it is the back movement of the gun which rotates the spine
-        Quaternion recoilRotationAdder = Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z*200,0,0); //used to add some recoil to spine
+        Quaternion recoilRotationAdder = Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z*100,0,0); //used to add some recoil to spine
 
         Vector3 spineTargetPosition = spineTarget.position;
 
@@ -129,7 +133,7 @@ public class HumanoidConstraintController : MonoBehaviour
         if (leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             leftHandIKTarget.position = leftHandIKTargetPosition;
-            leftHandIKTarget.rotation = leftHandIKTargetRotation;
+            leftHandIKTarget.rotation = leftHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset);
         }
         else
         {
@@ -141,12 +145,12 @@ public class HumanoidConstraintController : MonoBehaviour
         if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
-            rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Inverse(transformToCopyRecoilFrom.localRotation);
+            rightHandIKTarget.rotation = transformToCopyRecoilFrom.localRotation * rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset);
         }
         else
         {
             rightHandIKTarget.position = rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
-            rightHandIKTarget.rotation = rightHandTransform.rotation * Quaternion.Inverse(transformToCopyRecoilFrom.localRotation);
+            rightHandIKTarget.rotation = transformToCopyRecoilFrom.localRotation  *  rightHandTransform.rotation;
         }
 
 

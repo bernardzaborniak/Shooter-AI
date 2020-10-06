@@ -14,8 +14,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public float changeIKWeightsSpeed;
     IItemWithIKHandPositions currentIKTargetItem;
-    [Tooltip("Depending on the specific model skeleton hand orientation the ik target is rotated by this offset")]
-    public Vector3 handIKRotationOffset;
+
     [Tooltip("The IK Targets are being swet through the constraint controller - as they need to be set in LateUpdate")]
     public HumanoidConstraintController constraintController;
     [Space(10)]
@@ -83,12 +82,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
         if (currentIKTargetItem != null)
         {
             //set the positions via constraint manager - they need to be updated in late update
-            constraintController.SetDesiredLeftIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, currentIKTargetItem.GetLeftHandIKPosition(), currentIKTargetItem.GetLeftHandIKRotation() * Quaternion.Euler(handIKRotationOffset));
+            constraintController.SetDesiredLeftIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, currentIKTargetItem.GetLeftHandIKPosition(), currentIKTargetItem.GetLeftHandIKRotation());
             constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AnimatedHandPosition, Vector3.zero, Quaternion.identity);
         }
         if (aimingWeapon)
         {
-            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation * Quaternion.Euler(handIKRotationOffset));
+            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation);
         }
     }
 
