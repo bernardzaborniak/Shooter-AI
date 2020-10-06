@@ -37,6 +37,9 @@ public class AIController : MonoBehaviour
     }
     AIState aIState;
 
+    bool crouching;
+    float crouchingPropability = 0.3f;
+
     void Start()
     {
         for (int i = 0; i < aIComponents.Length; i++)
@@ -109,8 +112,16 @@ public class AIController : MonoBehaviour
 
             if (aIState == AIState.FiringSMG)
             {
+                if (crouching)
+                {
+                    characterController.ChangeCharacterStanceToCrouchingStance();
+                }
+                else
+                {
+                    characterController.ChangeCharacterStanceToCombatStance();
+                }
                 characterController.ChangeSelectedItem(1);
-                characterController.ChangeCharacterStanceToCombatStance();
+                
 
 
                 characterController.StopMoving();
@@ -139,6 +150,14 @@ public class AIController : MonoBehaviour
                             if (!grenadeThrown)
                             {
                                 aIState = AIState.ThrowingGrenade;
+                                if (Random.Range(0, 1) < crouchingPropability)
+                                {
+                                    crouching = true;
+                                }
+                                else
+                                {
+                                    crouching = false;
+                                }
                             }
                         }
                     }
@@ -157,6 +176,14 @@ public class AIController : MonoBehaviour
                             {
                                 changedToPistol = true;
                                 aIState = AIState.FiringPistol;
+                                if (Random.Range(0f, 1f) < crouchingPropability)
+                                {
+                                    crouching = true;
+                                }
+                                else
+                                {
+                                    crouching = false;
+                                }
                             }
                         }
                         else
@@ -175,7 +202,14 @@ public class AIController : MonoBehaviour
             {
 
                 characterController.ChangeSelectedItem(2);
-                characterController.ChangeCharacterStanceToCombatStance();
+                if (crouching)
+                {
+                    characterController.ChangeCharacterStanceToCrouchingStance();
+                }
+                else
+                {
+                    characterController.ChangeCharacterStanceToCombatStance();
+                }
 
 
                 characterController.StopMoving();
@@ -200,6 +234,14 @@ public class AIController : MonoBehaviour
                     if (!(characterController.GetAmmoRemainingInMagazine() > 0))
                     {
                         aIState = AIState.FiringSMG;
+                        if (Random.Range(0f, 1f) < crouchingPropability)
+                        {
+                            crouching = true;
+                        }
+                        else
+                        {
+                            crouching = false;
+                        }
                     }
                 }
 
@@ -208,12 +250,27 @@ public class AIController : MonoBehaviour
             else if (aIState == AIState.ThrowingGrenade)
             {
                 characterController.ChangeSelectedItem(3);
-                characterController.ChangeCharacterStanceToCombatStance();
+                if (crouching)
+                {
+                    characterController.ChangeCharacterStanceToCrouchingStance();
+                }
+                else
+                {
+                    characterController.ChangeCharacterStanceToCombatStance();
+                }
 
                 if (characterController.GetItemInInventory(3) == null)
                 {
                     grenadeThrown = false;
                     aIState = AIState.FiringSMG;
+                    if (Random.Range(0f, 1f) < crouchingPropability)
+                    {
+                        crouching = true;
+                    }
+                    else
+                    {
+                        crouching = false;
+                    }
                     return;
                 }
 
