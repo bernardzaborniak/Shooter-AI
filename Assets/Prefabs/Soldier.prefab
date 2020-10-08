@@ -1758,30 +1758,22 @@ MonoBehaviour:
     idleIKRight: 0
     combatIKLeft: 0
     combatIKRight: 0
-    aimingIKLeft: 0
-    aimingIKRight: 0
   - weaponInteractionType: 1
     idleIKLeft: 1
     idleIKRight: 1
     combatIKLeft: 1
     combatIKRight: 1
-    aimingIKLeft: 1
-    aimingIKRight: 1
   - weaponInteractionType: 2
     idleIKLeft: 0
     idleIKRight: 1
     combatIKLeft: 1
     combatIKRight: 1
-    aimingIKLeft: 1
-    aimingIKRight: 1
   currentIKSettings:
     weaponInteractionType: 0
     idleIKLeft: 0
     idleIKRight: 0
     combatIKLeft: 0
     combatIKRight: 0
-    aimingIKLeft: 0
-    aimingIKRight: 0
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2056,6 +2048,7 @@ MonoBehaviour:
   rightHandTransform: {fileID: 3424196112152590634}
   rightHandIKTarget: {fileID: 5874690323325081363}
   handIKRotationOffset: {x: -90, y: 0, z: 180}
+  weaponInHandParentRotOffset: {x: -90, y: 90, z: 90}
 --- !u!114 &7366031315838806102
 MonoBehaviour:
   m_ObjectHideFlags: 0

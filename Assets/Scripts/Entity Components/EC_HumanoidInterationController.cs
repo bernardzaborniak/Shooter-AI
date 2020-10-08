@@ -188,7 +188,9 @@ public class EC_HumanoidInterationController : EntityComponent
         }
 
 
-        
+        //added
+        handsIKController.OnChangeItemInHand(inventory[currentSelectedItemID]);
+        handsIKController.OnStartPullingOutWeapon();
 
     }
 
@@ -198,7 +200,8 @@ public class EC_HumanoidInterationController : EntityComponent
 
         animationController.ChangeWeaponInteractionState(0);
 
-        handsIKController.OnChangeItemInHand(inventory[currentSelectedItemID]);
+        handsIKController.OnStopPullingOutWeapon();
+       // handsIKController.OnChangeItemInHand(inventory[currentSelectedItemID]);
     }
 
     void StartHidingItem(float pulledOutPercentage)
@@ -212,7 +215,8 @@ public class EC_HumanoidInterationController : EntityComponent
         animationController.AdjustHideAnimationSpeedAndOffset(inventory[currentSelectedItemID].hideItemTime, 1 - pulledOutPercentage);
         animationController.ChangeWeaponInteractionState(2);
 
-        handsIKController.DisableIKs();
+        //handsIKController.DisableIKs();
+        handsIKController.OnStartHidingWeapon();
     }
 
     void FinishHidingItem()
@@ -245,6 +249,8 @@ public class EC_HumanoidInterationController : EntityComponent
             aimingController.OnChangeWeapon(null);
             handsIKController.OnChangeItemInHand(null);
         }
+
+        handsIKController.OnStopHidingWeapon();
     }
 
     public bool DoesCurrentItemInHandAllowCombatStance()
@@ -295,7 +301,8 @@ public class EC_HumanoidInterationController : EntityComponent
 
                 animationController.StartReloadingWeapon(reloadDuration);
 
-                handsIKController.DisableIKs();
+                //handsIKController.DisableIKs();
+                handsIKController.OnStartReloadingWeapon();
             }
         }
     }
@@ -322,7 +329,8 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
-                handsIKController.ReenableIKs();
+                //handsIKController.EnableIKs();
+                handsIKController.OnStopReloadingWeapon();
             }
         }
     }
@@ -338,7 +346,8 @@ public class EC_HumanoidInterationController : EntityComponent
                 animationController.AbortReloadingWeapon();
                 //todo adjust hands IK here
 
-                handsIKController.ReenableIKs();
+                //handsIKController.EnableIKs();
+                handsIKController.OnStopReloadingWeapon();
             }
         }
     }

@@ -651,7 +651,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         StopAimingSpine();
         StopAimingWeapon();
 
-        handsIKController.DisableIKs();
+        //handsIKController.DisableIKs();
+        handsIKController.OnStartTraversingOffMeshLink();
 
 
     }
@@ -661,7 +662,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
             characterPreventionType = CharacterPreventionType.NoPrevention;
-            handsIKController.ReenableIKs();
+            //handsIKController.EnableIKs();
+            handsIKController.OnStopTraversingOffMeshLink();
         }
     }
 
