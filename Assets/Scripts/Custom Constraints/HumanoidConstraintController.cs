@@ -143,21 +143,17 @@ public class HumanoidConstraintController : MonoBehaviour
 
         //this is specific to the skeleton hand orientation - i dont know how to change it otherwise than hardcode here
         Quaternion recoil = Quaternion.Euler(-transformToCopyRecoilFrom.localRotation.eulerAngles.x, 0, transformToCopyRecoilFrom.localRotation.eulerAngles.y);
-            //Quaternion.Inverse(Quaternion.Euler(weaponInHandParentRotOffset)) * transformToCopyRecoilFrom.localRotation ;
 
         // 2. Apply recoil only to right hand IK
         if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
-            //rightHandIKTarget.rotation = transformToCopyRecoilFrom.localRotation * rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset);
-            
-            rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil;// * (transformToCopyRecoilFrom.localRotation * Quaternion.Euler(new Vector3(0, 180,0)) * Quaternion.Euler(new Vector3(-90, 0, 0)) ); //* (transformToCopyRecoilFrom.localRotation * Quaternion.Euler(weaponInHandParentRotOffset));
+            rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil;
         }
         else
         {
             rightHandIKTarget.position = rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
-            //rightHandIKTarget.rotation = transformToCopyRecoilFrom.localRotation  *  rightHandTransform.rotation;
-            rightHandIKTarget.rotation = rightHandTransform.rotation * recoil; //* (transformToCopyRecoilFrom.localRotation * Quaternion.Euler(weaponInHandParentRotOffset));
+            rightHandIKTarget.rotation = rightHandTransform.rotation * recoil;
         }
 
 
