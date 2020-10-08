@@ -113,17 +113,10 @@ public class Grenade : Item
                 RaycastHit hit;
                 if(Physics.Raycast(transform.position, directionFromGrenade, out hit, explosionRadius, grenadeExplosionBlockingLayerMask))
                 {
-                    Debug.Log("raycast 1");
-                    Debug.Log("hit objhet: " + hit.collider.gameObject);
                     if(hit.collider.gameObject != collidersInExplosionRange[i].gameObject)
                     {
                         grenadeFragmentBlockedByObstruction = true;
-                        Debug.Log("raycast 2");
                     }
-                }
-                else
-                {
-                    Debug.Log("no raycast hit");
                 }
 
                 if (!grenadeFragmentBlockedByObstruction)

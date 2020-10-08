@@ -150,7 +150,7 @@ public class AIController : MonoBehaviour
                             if (!grenadeThrown)
                             {
                                 aIState = AIState.ThrowingGrenade;
-                                if (Random.Range(0, 1) < crouchingPropability)
+                                if (Random.Range(0f, 1f) < crouchingPropability)
                                 {
                                     crouching = true;
                                 }
