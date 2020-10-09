@@ -1456,8 +1456,9 @@ MonoBehaviour:
   staggerDuration: 1.5
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
-  humanoidDeathEffect: {fileID: 3943937303858629962}
   controllByPlayer: 0
+  humanoidDeathEffect: {fileID: 3943937303858629962}
+  offMeshLinkFinishDelayTime: 0.5
 --- !u!114 &6119667436294565816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1649,31 +1650,40 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.30833334
-      value: 1.004717
-      inSlope: 0.14452001
-      outSlope: 0.14452001
-      tangentMode: 0
+      time: 0.6178486
+      value: 0.994309
+      inSlope: 0.038471583
+      outSlope: 0.038471583
+      tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.5731708
-    - serializedVersion: 3
-      time: 0.65
-      value: 1.0070754
-      inSlope: -0.12864527
-      outSlope: -0.12864527
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.53658533
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.975
-      value: 0.007075472
+      time: 0.7472483
+      value: 1.001496
       inSlope: 0
       outSlope: 0
       tangentMode: 136
       weightedMode: 0
       inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.86584276
+      value: 0.95186514
+      inSlope: -0.30362278
+      outSlope: -0.30362278
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0015341
+      value: -0.0015765275
+      inSlope: -0.41358674
+      outSlope: -0.41358674
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.4051776
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1746,10 +1756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd573e8cb9953c41836ded16d22399b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeIKWeightsSpeed: 10
   constraintController: {fileID: 6011648321845300601}
   leftHandIK: {fileID: 7074038497521217696}
   rightHandIK: {fileID: 7560968261588369191}
+  defaultChangeIKWeightsSpeed: 5
   rightHandTransform: {fileID: 3424196112152590634}
   aimingWeaponHandPosition: {fileID: 7366031314855643508}
   iKSettingsCorrespondingToWeaponInteractionTypes:
@@ -2048,7 +2058,6 @@ MonoBehaviour:
   rightHandTransform: {fileID: 3424196112152590634}
   rightHandIKTarget: {fileID: 5874690323325081363}
   handIKRotationOffset: {x: -90, y: 0, z: 180}
-  weaponInHandParentRotOffset: {x: -90, y: 90, z: 90}
 --- !u!114 &7366031315838806102
 MonoBehaviour:
   m_ObjectHideFlags: 0

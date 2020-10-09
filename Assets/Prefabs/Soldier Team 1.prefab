@@ -17,6 +17,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6ae2ed9604498e148a93751fd2178eb8, type: 2}
+    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: minRangeToEnemy
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: desiredRangeToEnemy
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: maxRangeToEnemy
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611043, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: teamID

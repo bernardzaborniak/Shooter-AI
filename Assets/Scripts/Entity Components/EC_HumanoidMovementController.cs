@@ -167,6 +167,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     // Saved For Ragdolls or others
     Vector3 offMeshLinkTraversalVelocity;
+    
 
 
 

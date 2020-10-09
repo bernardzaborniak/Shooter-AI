@@ -46,14 +46,14 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     CharacterStance currentStance;
 
-    enum CharacterPreventionType
+    public enum CharacterPreventionType
     {
         NoPrevention,
         Stunned,
         JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
     }
 
-    CharacterPreventionType characterPreventionType;
+    public CharacterPreventionType characterPreventionType;
     //bool stunned;
     float endStunTime;
 
@@ -62,12 +62,19 @@ public class EC_HumanoidCharacterController : EntityComponent
     [Header("For development only")]
     public Transform aimAtTarget;
     public Transform lookAtTarget;
+    public bool controllByPlayer;
     //add a bool to character stance which tells if stance allows sprinting or not
 
     [Header("Death Effect")]
     public HumanoidDeathEffect humanoidDeathEffect;
 
-    public bool controllByPlayer;
+
+
+    [Header("Traversing OffmeshLink prevention")]
+    [Tooltip("after the traversal of the offMeshLink is finished, we stop the state after a small delay for smoother aniamtions and look")]
+    public float offMeshLinkFinishDelayTime;
+    float nextOffMeshFinishTime;
+    bool onStopTraversingOffMeshLinkIsDelayed;
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -212,6 +219,19 @@ public class EC_HumanoidCharacterController : EntityComponent
                     movementController.SetDefaultSpeed(crouchSpeed);
                 }
             }
+        }else if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        {
+            if (onStopTraversingOffMeshLinkIsDelayed)
+            {
+                if (Time.time > nextOffMeshFinishTime)
+                {
+                    onStopTraversingOffMeshLinkIsDelayed = false;
+
+                    characterPreventionType = CharacterPreventionType.NoPrevention;
+                    //handsIKController.EnableIKs();
+                    handsIKController.OnStopTraversingOffMeshLink();
+                }
+            } 
         }
     }
 
@@ -659,12 +679,14 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void OnStopTraversingOffMeshLink()
     {
-        if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
-        {
-            characterPreventionType = CharacterPreventionType.NoPrevention;
-            //handsIKController.EnableIKs();
-            handsIKController.OnStopTraversingOffMeshLink();
+         if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+         {
+            onStopTraversingOffMeshLinkIsDelayed = true;
+            nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
+            //characterPreventionType = CharacterPreventionType.NoPrevention;
+            //handsIKController.OnStopTraversingOffMeshLink();
         }
+       
     }
 
     #endregion
