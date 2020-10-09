@@ -1510,8 +1510,7 @@ MonoBehaviour:
   lookAtDisableDelay: 3
   weaponAimLocalTarget: {fileID: 6750380158517121211}
   weapon: {fileID: 7366031315910803148}
-  changeFromAimingToIdleRigSpeed: 2
-  changeFromIdleToAimingRigSpeed: 5
+  aimingWeightChangeSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 7366031314855643508}
   maxWeaponRotDifference: 30
   weaponAimRotationSpeed: 40

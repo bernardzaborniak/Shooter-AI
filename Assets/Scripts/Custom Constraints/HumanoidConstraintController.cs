@@ -46,7 +46,7 @@ public class HumanoidConstraintController : MonoBehaviour
     {
         AnimatedHandPosition,
         CustomPosition,//used for secondary hand weapon ik for example
-        AimingWeapon
+       // AimingWeapon
     }
     IKTargetingMode leftHandIKTargetingMode;
     IKTargetingMode rightHandIKTargetingMode;
@@ -146,8 +146,20 @@ public class HumanoidConstraintController : MonoBehaviour
         //this is specific to the skeleton hand orientation - i dont know how to change it otherwise than hardcode here
         Quaternion recoil = Quaternion.Euler(-transformToCopyRecoilFrom.localRotation.eulerAngles.x, 0, transformToCopyRecoilFrom.localRotation.eulerAngles.y);
 
+        if(weaponAimWeight > 0)
+        {
+            rightHandIKTarget.position = Vector3.Lerp(rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), weaponAimWeight);
+            rightHandIKTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation * recoil, rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil, weaponAimWeight);
+        }
+        else
+        {
+            rightHandIKTarget.position = rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
+            rightHandIKTarget.rotation = rightHandTransform.rotation * recoil;
+        }
+
+
         // 2. Apply recoil only to right hand IK
-        if(rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
+        /*if(rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
         {
             //rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
             //rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil;
@@ -163,7 +175,7 @@ public class HumanoidConstraintController : MonoBehaviour
         {
             rightHandIKTarget.position = rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
             rightHandIKTarget.rotation = rightHandTransform.rotation * recoil;
-        }
+        }*/
 
 
 
@@ -202,11 +214,11 @@ public class HumanoidConstraintController : MonoBehaviour
             rightHandIKTargetPosition = targetPosition;
             rightHandIKTargetRotation = targetRotation;
         }
-        else if (rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
+       /* else if (rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
         {
             rightHandIKTargetPosition = targetPosition;
             rightHandIKTargetRotation = targetRotation;
-        }
+        }*/
     }
 
 

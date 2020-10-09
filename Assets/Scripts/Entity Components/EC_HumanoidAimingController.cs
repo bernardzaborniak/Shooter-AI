@@ -108,8 +108,9 @@ public class EC_HumanoidAimingController : EntityComponent
 
     float desiredWeaponAimingConstraintWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
-    public float changeFromAimingToIdleRigSpeed;
-    public float changeFromIdleToAimingRigSpeed;
+    public float aimingWeightChangeSpeed;
+    //public float changeFromAimingToIdleRigSpeed;
+    //public float changeFromIdleToAimingRigSpeed;
     [Tooltip("Weapons get parented to this object when aiming")]
     public Transform weaponAimParentLocalAdjuster;
 
@@ -310,10 +311,11 @@ public class EC_HumanoidAimingController : EntityComponent
 
         // Smooth out the change between aiming weapon and holding it idle
         //Two different speeds to prevent gun from floating around between hands
-        float changeSpeed = 0;
+        
+        float changeSpeed = aimingWeightChangeSpeed * Time.deltaTime;
 
 
-        if (desiredWeaponAimingConstraintWeight == 1)
+       /* if (desiredWeaponAimingConstraintWeight == 1)
         {
             changeSpeed = changeFromIdleToAimingRigSpeed * Time.deltaTime;
            // weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
@@ -322,9 +324,11 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             changeSpeed = changeFromAimingToIdleRigSpeed * Time.deltaTime;
            // weaponAimingRig.weight += Mathf.Clamp((desiredWeaponAimingRigWeight - weaponAimingRig.weight), -changeSpeed, changeSpeed);
-        }
+        }*/
 
         //weaponAimingConstraint.weight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - weaponAimingConstraint.weight), -changeSpeed, changeSpeed);
+        
+        //constraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - constraintController.weaponAimWeight), -changeSpeed, changeSpeed);
         constraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - constraintController.weaponAimWeight), -changeSpeed, changeSpeed);
 
         #endregion
