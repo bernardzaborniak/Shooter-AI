@@ -15,19 +15,20 @@ public class EC_HumanoidCharacterController : EntityComponent
     public EC_HumanoidHandsIKController handsIKController;
 
     [Header("Movement Speeds")]
+    [Space(5)]
     public float idleWalkingSpeed;
     public float idleSprintingSpeed;
     public float idleStationaryTurnSpeed;
     public float idleAcceleration;
-
+    [Space(5)]
     public float combatStanceWalkingSpeed;
     public float combatStanceSprintingSpeed;
     public float combatStationaryTurnSpeed;
     public float combatStanceAcceleration;
-
+    [Space(5)]
     public float crouchSpeed;
     public float crouchAcceleration;
-
+    [Space(5)]
     public float stunnedMovementSpeed;
     public float stunnedSprintingSpeed;
     public float stunnedCrouchedMovementSpeed;
@@ -46,14 +47,14 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     CharacterStance currentStance;
 
-    public enum CharacterPreventionType
+    enum CharacterPreventionType
     {
         NoPrevention,
         Stunned,
         JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
     }
 
-    public CharacterPreventionType characterPreventionType;
+    CharacterPreventionType characterPreventionType;
     //bool stunned;
     float endStunTime;
 

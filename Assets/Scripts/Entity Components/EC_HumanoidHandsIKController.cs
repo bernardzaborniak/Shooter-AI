@@ -103,7 +103,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
         if (secondaryIKStance == SecondaryIKStance.Aiming)
         {
-            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation);
+            constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AimingWeapon, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation);
         }
     }
 

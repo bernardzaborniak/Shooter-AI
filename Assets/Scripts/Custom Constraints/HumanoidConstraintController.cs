@@ -45,7 +45,8 @@ public class HumanoidConstraintController : MonoBehaviour
     public enum IKTargetingMode
     {
         AnimatedHandPosition,
-        CustomPosition
+        CustomPosition,//used for secondary hand weapon ik for example
+        AimingWeapon
     }
     IKTargetingMode leftHandIKTargetingMode;
     IKTargetingMode rightHandIKTargetingMode;
@@ -119,7 +120,8 @@ public class HumanoidConstraintController : MonoBehaviour
         Quaternion targetRotationW = Quaternion.LookRotation(directionToTargetW);
 
         Quaternion rotationDifferenceW = targetRotationW * Quaternion.Inverse(weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
-        weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
+        //weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation);
+        weaponAimTransform.rotation =  rotationDifferenceW * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation); //instead use the aimingWeight somewhere else
 
 
         #endregion
@@ -145,7 +147,14 @@ public class HumanoidConstraintController : MonoBehaviour
         Quaternion recoil = Quaternion.Euler(-transformToCopyRecoilFrom.localRotation.eulerAngles.x, 0, transformToCopyRecoilFrom.localRotation.eulerAngles.y);
 
         // 2. Apply recoil only to right hand IK
-        if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
+        if(rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
+        {
+            //rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
+            //rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil;
+            rightHandIKTarget.position = Vector3.Lerp(rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), weaponAimWeight);
+            rightHandIKTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation * recoil, rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil, weaponAimWeight);
+        }
+        else if (rightHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             rightHandIKTarget.position = rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition);
             rightHandIKTarget.rotation = rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil;
@@ -193,10 +202,11 @@ public class HumanoidConstraintController : MonoBehaviour
             rightHandIKTargetPosition = targetPosition;
             rightHandIKTargetRotation = targetRotation;
         }
-        /*else if (rightHandIKTargetingMode == IKTargetingMode.AnimatedHandPosition)
+        else if (rightHandIKTargetingMode == IKTargetingMode.AimingWeapon)
         {
-
-        }*/
+            rightHandIKTargetPosition = targetPosition;
+            rightHandIKTargetRotation = targetRotation;
+        }
     }
 
 

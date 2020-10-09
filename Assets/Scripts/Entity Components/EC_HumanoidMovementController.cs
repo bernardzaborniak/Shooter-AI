@@ -272,27 +272,40 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public void MoveTo(Vector3 destination)
     {
-        Debug.Log("move 3");
-        currentMovementOrder.SetCurrentOrder(destination, false);
+        if(movementState == MovementState.Default)
+        {
+            Debug.Log("move 3");
+            currentMovementOrder.SetCurrentOrder(destination, false);
+        }
+       
     }
 
     public void MoveTo(Vector3 destination, bool sprint)
     {
-        currentMovementOrder.SetCurrentOrder(destination, sprint);
+        if (movementState == MovementState.Default)
+        {
+            currentMovementOrder.SetCurrentOrder(destination, sprint);
+        }
     }
 
     public void AbortMoving()
     {
-        agent.ResetPath();
-        currentMovementOrder.OnAbort();
+        if (movementState == MovementState.Default)
+        {
+            agent.ResetPath();
+            currentMovementOrder.OnAbort();
+        }
     }
 
     public void PauseMoving()
     {
-        if (currentMovementOrder.IsBeingExecuted())
+        if (movementState == MovementState.Default)
         {
-            agent.isStopped = true;
-            currentMovementOrder.OnPause();
+            if (currentMovementOrder.IsBeingExecuted())
+            {
+                agent.isStopped = true;
+                currentMovementOrder.OnPause();
+            }
         }
     }
 
@@ -437,7 +450,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void FinishTraversingOffMeshLink()
     {
+        //agent.transform.position = currentLinkStartPosition;
+        agent.transform.position = currentLinkEndPosition;
         agent.CompleteOffMeshLink();
+        
+
         movementState = MovementState.Default;
 
         //offMeshLinkTraversalVelocity = Vector3.zero;

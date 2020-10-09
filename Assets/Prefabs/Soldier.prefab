@@ -1439,22 +1439,21 @@ MonoBehaviour:
   aimingController: {fileID: 7366031314207611040}
   handsIKController: {fileID: 7399303670798280785}
   idleWalkingSpeed: 1.4
-  idleSprintingSpeed: 7
+  idleSprintingSpeed: 6
   idleStationaryTurnSpeed: 90
-  idleAcceleration: 10
+  idleAcceleration: 9
   combatStanceWalkingSpeed: 2
-  combatStanceSprintingSpeed: 7
+  combatStanceSprintingSpeed: 6
   combatStationaryTurnSpeed: 140
-  combatStanceAcceleration: 12
+  combatStanceAcceleration: 9
   crouchSpeed: 0.9
   crouchAcceleration: 2
   stunnedMovementSpeed: 1
-  stunnedSprintingSpeed: 5
+  stunnedSprintingSpeed: 4.5
   stunnedCrouchedMovementSpeed: 0.5
   damageThresholdForFlinch: 10
   damageThresholdForStagger: 50
   staggerDuration: 1.5
-  characterPreventionType: 0
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
