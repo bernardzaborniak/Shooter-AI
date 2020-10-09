@@ -166,7 +166,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
 
     // Saved For Ragdolls or others
-    Vector3 offMeshLinkTraversalVelocity;
+     Vector3 offMeshLinkTraversalVelocity; 
+     Vector3 offMeshLinkTraversalDirection; 
     
 
 
@@ -257,7 +258,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 }
 
                 offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
-                RotateTowards(new Vector3(offMeshLinkTraversalVelocity.x,0,offMeshLinkTraversalVelocity.z));
+                //RotateTowards(new Vector3(offMeshLinkTraversalVelocity.x,0,offMeshLinkTraversalVelocity.z));
+                RotateTowards(offMeshLinkTraversalDirection);
                 agent.transform.position = newPosition;
             }
             else
@@ -396,7 +398,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
         currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
 
-
+        offMeshLinkTraversalDirection = currentLinkEndPosition- currentLinkStartPosition;
 
 
         currentTraversalNormalizedTime = 0;
@@ -439,7 +441,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         agent.CompleteOffMeshLink();
         movementState = MovementState.Default;
 
-        offMeshLinkTraversalVelocity = Vector3.zero;
+        //offMeshLinkTraversalVelocity = Vector3.zero;
+        offMeshLinkTraversalDirection = Vector3.zero;
 
         // Inform Character Controler
         characterController.OnStopTraversingOffMeshLink();
@@ -548,8 +551,21 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             }
         }
+
+        /*if(offMeshLinkTraversalVelocity != Vector3.zero)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position + Vector3.up, transform.position + offMeshLinkTraversalVelocity + Vector3.up);
+        }*/
+        
+        if (offMeshLinkTraversalDirection != Vector3.zero)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position + Vector3.up, transform.position + offMeshLinkTraversalDirection + Vector3.up);
+        }
     }
 
     #endregion
+
 }
 
