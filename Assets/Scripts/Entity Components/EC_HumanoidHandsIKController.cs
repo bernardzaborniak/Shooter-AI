@@ -137,13 +137,10 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void UpdateDesiredIKWeights()
     {
-        Debug.Log("update weights");
         if(secondaryIKStance == SecondaryIKStance.None)
         {
             if (primaryIKStance == PrimaryIKStance.Idle)
             {
-                Debug.Log("update weights 1.1");
-
                 SetIKWeightsForIdle();
             }
             else if (primaryIKStance == PrimaryIKStance.CombatStance)
@@ -164,8 +161,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
             //SetIKWeightsForPullingOutItem();
             if (primaryIKStance == PrimaryIKStance.Idle)
             {
-                Debug.Log("update weights 4.1");
-
                 SetIKWeightsForIdle();
             }
             else if (primaryIKStance == PrimaryIKStance.CombatStance)
@@ -202,12 +197,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStopAimingWeapon()
     {
-        Debug.Log("on stop aiming  ");
-
         if (secondaryIKStance == SecondaryIKStance.Aiming)
         {
-            Debug.Log("on stop aiming 2  ");
-
             SetSecondaryIKStance(SecondaryIKStance.None);
         }
          
@@ -215,16 +206,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartPullingOutWeapon()
     {
-        Debug.Log("on start pull ");
-
         SetSecondaryIKStance(SecondaryIKStance.PullingOutItem);
     }
 
     public void OnStopPullingOutWeapon()
     {
-        Debug.Log("on stop pull ");
-
-
         if (secondaryIKStance == SecondaryIKStance.PullingOutItem)
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
@@ -233,15 +219,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartHidingWeapon()
     {
-        Debug.Log("on start hiding ");
-
         SetSecondaryIKStance(SecondaryIKStance.HidingItem);
     }
 
     public void OnStopHidingWeapon()
     {
-        Debug.Log("on stop hiding ");
-
         if (secondaryIKStance == SecondaryIKStance.HidingItem)
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
@@ -250,15 +232,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartReloadingWeapon()
     {
-        Debug.Log("on start reload ");
-
         SetSecondaryIKStance(SecondaryIKStance.ReloadingWeapon);
     }
 
     public void OnStopReloadingWeapon()
     {
-        Debug.Log("on stop reload ");
-
         if (secondaryIKStance == SecondaryIKStance.ReloadingWeapon)
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
@@ -267,14 +245,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartTraversingOffMeshLink()
     {
-        Debug.Log("on start traversing");
         SetSecondaryIKStance(SecondaryIKStance.TraversingOffMeshLink);
        // delayedOnStopTraversingOffMeshLink = false;
     }
 
     public void OnStopTraversingOffMeshLink()
     {
-        Debug.Log("on stop traversing");
         SetSecondaryIKStance(SecondaryIKStance.None);
     }
 
@@ -284,15 +260,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetPrimaryIKStance(PrimaryIKStance newStance)
     {
-        Debug.Log("set primary stance");
         primaryIKStance = newStance;
         UpdateDesiredIKWeights();
     }
 
     void SetSecondaryIKStance(SecondaryIKStance newStance)
     {
-        Debug.Log("set secondary stance");
-
         secondaryIKStance = newStance;
         UpdateDesiredIKWeights();
     }
@@ -303,8 +276,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForIdle()
     {
-        Debug.Log("set weights for idle");
-
         if (currentIKSettings.idleIKLeft)
         {
             desiredLeftHandIKRigWeight = 1;
@@ -326,8 +297,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForCombat()
     {
-        Debug.Log("set weights for combat");
-
         if (currentIKSettings.combatIKLeft)
         {
             desiredLeftHandIKRigWeight = 1;
@@ -349,7 +318,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForAiming()
     {
-        Debug.Log("set weights for aiming");
 
         //if (currentIKSettings.aimingIKLeft)
         if (currentIKSettings.combatIKLeft)
@@ -374,7 +342,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForTraversingOffMeshLink()
     {
-        Debug.Log("set weights for traversing");
         desiredLeftHandIKRigWeight = 0;
         desiredRightHandIKRigWeight = 0;
     }
@@ -387,16 +354,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     void SetIKWeightsForHidingItem()
     {
-        Debug.Log("set weights for hiding");
-
         desiredLeftHandIKRigWeight = 0;
         desiredRightHandIKRigWeight = 0;
     }
 
     void SetIKWeightsForReloadingWeapon()
     {
-        Debug.Log("set weights for reloading");
-
         desiredLeftHandIKRigWeight = 0;
         desiredRightHandIKRigWeight = 0;
     }
