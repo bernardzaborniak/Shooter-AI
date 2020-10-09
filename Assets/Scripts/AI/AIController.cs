@@ -230,7 +230,7 @@ public class AIController : MonoBehaviour
 
                     if (characterController.GetAmmoRemainingInMagazine() > 0)
                     {
-                        if (characterController.GetCurrentWeaponAimingErrorAngle() < 5)
+                        if (characterController.GetCurrentWeaponAimingErrorAngle() < 3)
                         {
                             characterController.ShootWeapon();
                         }
@@ -312,7 +312,7 @@ public class AIController : MonoBehaviour
 
                     characterController.AimSpineInDirection(aimSpineDirection);
 
-                    if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
+                    if (characterController.GetCurrentSpineAimingErrorAngle() < 3)
                     {
                         characterController.ThrowGrenade(grenadeThrowingVelocity, grenadeThrowingDirection);
                     }
