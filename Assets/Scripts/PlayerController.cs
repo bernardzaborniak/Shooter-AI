@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        /*else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Time.timeScale = 0.1f;
         }
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Time.timeScale = 0.4f;
-        }
+        }*/
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             Time.timeScale = 0.5f;
@@ -77,11 +77,11 @@ public class PlayerController : MonoBehaviour
 
         if(playerControllerMode == PlayerControllerMode.Fly)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            /*if (Input.GetKeyDown(KeyCode.Space))
             {
                 GameObject projectileGO = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
                 projectileGO.GetComponent<Rigidbody>().velocity = projectileGO.transform.forward * 850;
-            }
+            }*/
         }
 
         #endregion
