@@ -1454,6 +1454,7 @@ MonoBehaviour:
   damageThresholdForFlinch: 10
   damageThresholdForStagger: 50
   staggerDuration: 1.5
+  characterPreventionType: 0
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
@@ -1744,6 +1745,8 @@ MonoBehaviour:
   jumpUpSmallLedgeAnimationDuration: 0.7
   jumpDownSmallLedgeAnimationDuration: 1
   jumpDownLedgeAnimationDuration: 1
+  turnLayerID: 1
+  traverseOffMeshLinksLayerID: 2
 --- !u!114 &7399303670798280785
 MonoBehaviour:
   m_ObjectHideFlags: 0

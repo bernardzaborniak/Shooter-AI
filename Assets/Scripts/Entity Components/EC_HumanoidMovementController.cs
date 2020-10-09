@@ -156,6 +156,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     float currentDistanceToTraverse;
     float currentLinkTraverseDuration;
     float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
+    Vector3 offMeshLinkTraversalDirection;
 
     enum OffMeshLinkMoveMethod
     {
@@ -167,9 +168,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     // Saved For Ragdolls or others
      Vector3 offMeshLinkTraversalVelocity; 
-     Vector3 offMeshLinkTraversalDirection; 
     
-
 
 
     #endregion
@@ -552,12 +551,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             }
         }
 
-        /*if(offMeshLinkTraversalVelocity != Vector3.zero)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position + Vector3.up, transform.position + offMeshLinkTraversalVelocity + Vector3.up);
-        }*/
-        
         if (offMeshLinkTraversalDirection != Vector3.zero)
         {
             Gizmos.color = Color.blue;

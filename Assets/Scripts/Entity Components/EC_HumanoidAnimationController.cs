@@ -104,7 +104,7 @@ public class EC_HumanoidAnimationController : EntityComponent
     [Tooltip("Used for modifying the speed modifier, the ids here correspond with the ids in the animator")]
     public float[] staggerAnimationsLengths;
 
-    [Header("Jump Over")]
+    [Header("Traversing Offmesh links")]
     public string jumpOverParam;
     int jumpOverParamID;
     public string jumpOverIDParam;
@@ -117,6 +117,12 @@ public class EC_HumanoidAnimationController : EntityComponent
     public float jumpUpSmallLedgeAnimationDuration;
     public float jumpDownSmallLedgeAnimationDuration;
     public float jumpDownLedgeAnimationDuration;
+
+    //the layerWeight is set to 0 after a small delay
+
+    [Header("Animation Override Layer IDs")]
+    public int turnLayerID = 1;
+    public int traverseOffMeshLinksLayerID = 1;
 
 
 
@@ -218,7 +224,7 @@ public class EC_HumanoidAnimationController : EntityComponent
         {
             weight = Utility.Remap(velocity, 0, turnAnimationVelocityThreshold, 1, 0);
         }
-        animator.SetLayerWeight(1, weight);      
+        animator.SetLayerWeight(turnLayerID, weight);      
     }
 
     public void ChangeToIdleStance()
@@ -388,10 +394,12 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         // 2. Set The bool
         animator.SetBool(jumpOverParamID, true);
+        //animator.SetLayerWeight(traverseOffMeshLinksLayerID, 1);
     }
 
     public void StopJumpingOverObstacle()
     {
         animator.SetBool(jumpOverParamID, false);
+        //animator.SetLayerWeight(traverseOffMeshLinksLayerID, 0);
     }
 }
