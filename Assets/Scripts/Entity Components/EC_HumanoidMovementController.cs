@@ -152,11 +152,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     // Infos about Current Link
     NavMeshLinkProperties currentNavMeshLinkProperties;
     Vector3 currentLinkEndPosition;
-    Vector3 currentLinkStartPosition;
+    Vector3 currentLinkStartPosition; 
     float currentDistanceToTraverse;
     float currentLinkTraverseDuration;
     float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
     Vector3 offMeshLinkTraversalDirection;
+
 
     enum OffMeshLinkMoveMethod
     {
@@ -187,7 +188,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public override void UpdateComponent()
     {
-        if(movementState == MovementState.Default)
+        if (movementState == MovementState.Default)
         {
             // 1. Update movement according to movement Order 
             if (currentMovementOrder.IsWaitingForExecution())
@@ -263,6 +264,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             }
             else
             {
+                
                 FinishTraversingOffMeshLink();
             }
         }
@@ -458,6 +460,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         movementState = MovementState.Default;
 
         //offMeshLinkTraversalVelocity = Vector3.zero;
+        currentTraversalNormalizedTime = 0;
         offMeshLinkTraversalDirection = Vector3.zero;
 
         // Inform Character Controler
@@ -572,6 +575,18 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(transform.position + Vector3.up, transform.position + offMeshLinkTraversalDirection + Vector3.up);
+        }
+
+        if(currentLinkStartPosition != Vector3.zero)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(currentLinkStartPosition, new Vector3(0.2f, 0.2f, 0.2f));
+        }
+
+        if (currentLinkEndPosition != Vector3.zero)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(currentLinkEndPosition, new Vector3(0.2f, 0.2f, 0.2f));
         }
     }
 
