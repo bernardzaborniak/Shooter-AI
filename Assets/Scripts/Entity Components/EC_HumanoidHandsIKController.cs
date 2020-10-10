@@ -159,18 +159,23 @@ public class EC_HumanoidHandsIKController : EntityComponent
         else if(secondaryIKStance == SecondaryIKStance.PullingOutItem)
         {
             //SetIKWeightsForPullingOutItem();
-            if (primaryIKStance == PrimaryIKStance.Idle)
+            /*if (primaryIKStance == PrimaryIKStance.Idle)
             {
                 SetIKWeightsForIdle();
             }
             else if (primaryIKStance == PrimaryIKStance.CombatStance)
             {
                 SetIKWeightsForCombat();
-            }
+            }*/
+            desiredLeftHandIKRigWeight = 0;
+            desiredRightHandIKRigWeight = 0;
+
         }
         else if (secondaryIKStance == SecondaryIKStance.HidingItem)
         {
-            SetIKWeightsForHidingItem();
+            //SetIKWeightsForHidingItem();
+            desiredLeftHandIKRigWeight = 0;
+            desiredRightHandIKRigWeight = 0;
         }
         else if (secondaryIKStance == SecondaryIKStance.ReloadingWeapon)
         {
@@ -256,7 +261,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     #endregion
 
-    #region Change States internal
+    #region Change States Internal
 
     void SetPrimaryIKStance(PrimaryIKStance newStance)
     {
