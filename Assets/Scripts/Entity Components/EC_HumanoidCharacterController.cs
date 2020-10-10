@@ -474,9 +474,9 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
-    public float GetCurrentWeaponAimingErrorAngle()
+    public float GetCurrentWeaponAimingErrorAngle(bool ignoreRecoil)
     {
-        return aimingController.GetCurrentWeaponAimingErrorAngle();
+        return aimingController.GetCurrentWeaponAimingErrorAngle(ignoreRecoil);
     }
 
     public void StopAimingWeapon()

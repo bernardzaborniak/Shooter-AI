@@ -138,7 +138,7 @@ public class AIController : MonoBehaviour
 
                     if (characterController.GetAmmoRemainingInMagazine() > 0)
                     {
-                        if (characterController.GetCurrentWeaponAimingErrorAngle() < 5)
+                        if (characterController.GetCurrentWeaponAimingErrorAngle(false) < 10)
                         {
                             characterController.ShootWeapon();
                         }
@@ -230,7 +230,7 @@ public class AIController : MonoBehaviour
 
                     if (characterController.GetAmmoRemainingInMagazine() > 0)
                     {
-                        if (characterController.GetCurrentWeaponAimingErrorAngle() < 3)
+                        if (characterController.GetCurrentWeaponAimingErrorAngle(false) < 10)
                         {
                             characterController.ShootWeapon();
                         }

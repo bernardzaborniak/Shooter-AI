@@ -493,9 +493,17 @@ public class EC_HumanoidAimingController : EntityComponent
         return currentWeaponDirection;
     }
 
-    public float GetCurrentWeaponAimingErrorAngle()
+    public float GetCurrentWeaponAimingErrorAngle(bool ignoreRecoil)
     {
-        return Vector3.Angle(desiredWeaponDirection, currentWeaponDirection);
+        if (ignoreRecoil)
+        {
+            return Vector3.Angle(desiredWeaponDirection, currentWeaponDirection);
+        }
+        else
+        {
+            return Vector3.Angle(desiredWeaponDirection, weapon.transform.forward);
+        }
+        
     }
 
     #endregion
