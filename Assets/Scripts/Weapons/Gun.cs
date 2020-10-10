@@ -53,9 +53,9 @@ public class Gun : Item, IItemWithIKHandPositions
         //Set up recoil Info
         gunRecoilInfo = new RecoilInfo();
         gunRecoilInfo.SetRecoilForces(recoilStats.recoilUpShootForce, recoilStats.recoilSideShootForce, recoilStats.recoilBackShootForce);
-        gunRecoilInfo.SetRecoilUpValues(recoilStats.maxReduceRecoilUpSpeedTwoHanded, recoilStats.maxReduceRecoilUpSpeedTwoHanded, recoilStats.maxReduceRecoilUpSpeedTwoHanded,recoilStats.maxRotationUpTwoHanded);
-        gunRecoilInfo.SetRecoilSideValues(recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxRotationSideTwoHanded);
-        gunRecoilInfo.SetRecoilBackValues(recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxPositionBackTwoHanded);
+        gunRecoilInfo.SetRecoilUpValues(recoilStats.maxRecoilUpSpeedTwoHanded, recoilStats.maxReduceRecoilUpAccelerationTwoHanded, recoilStats.maxReduceRecoilUpSpeedTwoHanded,recoilStats.maxRotationUpTwoHanded);
+        gunRecoilInfo.SetRecoilSideValues(recoilStats.maxRecoilSideSpeedTwoHanded, recoilStats.maxReduceRecoilSideAccelerationTwoHanded, recoilStats.maxReduceRecoilSideSpeedTwoHanded, recoilStats.maxRotationSideTwoHanded);
+        gunRecoilInfo.SetRecoilBackValues(recoilStats.maxRecoilBackSpeedTwoHanded, recoilStats.maxReduceRecoilBackAccelerationTwoHanded, recoilStats.maxReduceRecoilBackSpeedTwoHanded, recoilStats.maxPositionBackTwoHanded);
     }
 
     //"kind of animation played for this item - 0 is bare hands, 1 is rifle, 2 is pistol"
