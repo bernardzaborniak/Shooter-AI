@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: c194fcb596d1546409a8cc21b052dbfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   hideItemTime: 0.9
   rightHandIKPosition: {fileID: 5414721129847952668}
   leftHandIKPosition: {fileID: 5414721129011632210}
-  weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.3}
+  weaponAimParentLocalAdjusterOffset: {x: -0.1, y: 0.05, z: 0.35}
   ammoType: 1
   shootPoint: {fileID: 7841081555297796298}
   damage: 50

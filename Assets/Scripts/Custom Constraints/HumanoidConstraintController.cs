@@ -39,7 +39,10 @@ public class HumanoidConstraintController : MonoBehaviour
     public Transform rightHandIKTarget;
 
     [Tooltip("Depending on the specific model skeleton hand orientation the ik target is rotated by this offset")]
-    public Vector3 handIKRotationOffset;
+    public Vector3 leftHandIKRotationOffset;
+    public Vector3 rightHandIKRotationOffset;
+    //right [-90,180,0]
+    //left [90,0,0]
     //[-90,0,180]
 
     public enum IKTargetingMode
@@ -133,7 +136,7 @@ public class HumanoidConstraintController : MonoBehaviour
         if (leftHandIKTargetingMode == IKTargetingMode.CustomPosition)
         {
             leftHandIKTarget.position = leftHandIKTargetPosition;
-            leftHandIKTarget.rotation = leftHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset);
+            leftHandIKTarget.rotation = leftHandIKTargetRotation * Quaternion.Euler(leftHandIKRotationOffset);
         }
         else
         {
@@ -148,7 +151,7 @@ public class HumanoidConstraintController : MonoBehaviour
         if(weaponAimWeight > 0)
         {
             rightHandIKTarget.position = Vector3.Lerp(rightHandTransform.position + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), rightHandIKTargetPosition + transformToCopyRecoilFrom.parent.TransformVector(transformToCopyRecoilFrom.localPosition), weaponAimWeight);
-            rightHandIKTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation * recoil, rightHandIKTargetRotation * Quaternion.Euler(handIKRotationOffset) * recoil, weaponAimWeight);
+            rightHandIKTarget.rotation = Quaternion.Slerp(rightHandTransform.rotation * recoil, rightHandIKTargetRotation * Quaternion.Euler(rightHandIKRotationOffset) * recoil, weaponAimWeight);
         }
         else
         {

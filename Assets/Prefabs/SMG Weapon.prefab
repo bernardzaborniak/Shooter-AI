@@ -117,7 +117,7 @@ MonoBehaviour:
   hideItemTime: 1
   rightHandIKPosition: {fileID: 2688672498561181487}
   leftHandIKPosition: {fileID: 2688672498049104216}
-  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.2}
+  weaponAimParentLocalAdjusterOffset: {x: 0, y: 0, z: 0.26}
   ammoType: 0
   shootPoint: {fileID: 4847854983021419361}
   damage: 20
@@ -215,7 +215,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: c194fcb596d1546409a8cc21b052dbfb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -260,8 +260,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2688672498049104217}
-  m_LocalRotation: {x: -0.3668987, y: -0.23374437, z: -0.71651936, w: -0.5452971}
-  m_LocalPosition: {x: -0.0471, y: -0.007, z: 0.1225}
+  m_LocalRotation: {x: -0.3113789, y: -0.17355946, z: -0.7435199, w: -0.5657725}
+  m_LocalPosition: {x: -0.0713, y: -0.0067, z: 0.0861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2688672497443298560}

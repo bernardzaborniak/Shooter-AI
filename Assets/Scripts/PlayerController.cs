@@ -30,10 +30,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         #region Slowmo Input
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Time.timeScale = 1f;
-        }
+        
         /*else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Time.timeScale = 0.1f;
@@ -49,7 +46,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             Time.timeScale = 0.4f;
-        }*/
+        }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             Time.timeScale = 0.5f;
@@ -58,24 +55,28 @@ public class PlayerController : MonoBehaviour
         {
             Time.timeScale = 0.6f;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        else */if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            Time.timeScale = 0.7f;
+            Time.timeScale = 0f;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            Time.timeScale = 0.8f;
+            Time.timeScale = 0.2f;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            Time.timeScale = 0.9f;
+            Time.timeScale = 0.5f;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Time.timeScale = 1f;
         }
 
         #endregion
 
         #region FlyGun
 
-        if(playerControllerMode == PlayerControllerMode.Fly)
+        if (playerControllerMode == PlayerControllerMode.Fly)
         {
             /*if (Input.GetKeyDown(KeyCode.Space))
             {

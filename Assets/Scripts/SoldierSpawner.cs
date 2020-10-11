@@ -10,7 +10,9 @@ public class SoldierSpawner : MonoBehaviour
     public GameObject team1Soldier;
     public GameObject team2Soldier;
 
-    public Transform targetPosition;
+    public Transform team1TargetPosition;
+    public Transform team2TargetPosition;
+
 
     [Header("Timing & Scaling")]
     public float spawnIntervalMin;
@@ -42,7 +44,7 @@ public class SoldierSpawner : MonoBehaviour
 
         //set the target
         AIController aiController = soldier.transform.GetChild(0).GetComponent<AIController>();
-        aiController.targetPosition = targetPosition;
+        aiController.targetPosition = team1TargetPosition;
     }
 
     void SpawnTeam2Soldier()
@@ -53,6 +55,6 @@ public class SoldierSpawner : MonoBehaviour
 
         //set the target
         AIController aiController = soldier.transform.GetChild(0).GetComponent<AIController>();
-        aiController.targetPosition = targetPosition;
+        aiController.targetPosition = team2TargetPosition;
     }
 }

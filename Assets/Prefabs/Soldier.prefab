@@ -1703,7 +1703,7 @@ MonoBehaviour:
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
   humanoidDeathEffect: {fileID: 3943937303858629962}
-  offMeshLinkFinishDelayTime: 0.5
+  offMeshLinkFinishDelayTime: 0.3
 --- !u!114 &6119667436294565816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2237,7 +2237,8 @@ MonoBehaviour:
   leftHandIKTarget: {fileID: 2133351232494822414}
   rightHandTransform: {fileID: 2617185220004434608}
   rightHandIKTarget: {fileID: 5874690323325081363}
-  handIKRotationOffset: {x: 90, y: 0, z: 0}
+  leftHandIKRotationOffset: {x: 90, y: 0, z: 0}
+  rightHandIKRotationOffset: {x: -90, y: 180, z: 0}
 --- !u!114 &7040072253816882034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3541,11 +3542,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7366031315089746461}
     m_Modifications:
-    - target: {fileID: 5414721128516502283, guid: 786e5b93288a467459c7753f35e61b8b,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5414721130269733900, guid: 786e5b93288a467459c7753f35e61b8b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3702,11 +3698,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2688672497951761446, guid: 03249259da7cf0d43831b8e5cbc649c1,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03249259da7cf0d43831b8e5cbc649c1, type: 3}
@@ -3882,6 +3873,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1578373571446707184, guid: 6be324008b89e6e46b59b621e2b6386c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b992302cfee91a94f9654a5265aaf13f, type: 2}
     - target: {fileID: 919132149155446097, guid: 6be324008b89e6e46b59b621e2b6386c,
         type: 3}
       propertyPath: m_Name
