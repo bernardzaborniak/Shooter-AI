@@ -13,6 +13,9 @@ public class HumanoidDeathEffect : MonoBehaviour
     }
 
     public BoneTransformCopyHelper[] boneTransformCopyHelpers;
+    public BoneTransformCopyHelper[] fingersBoneTransformCopyHelpers;
+    [Tooltip("We may want to ignore the fingers to improve performance")]
+    public bool copyFingerBones;
 
     public Rigidbody[] ragdollRigidbodys;
     [Tooltip("angular Velocity will only be applied to the hips]")]
@@ -66,6 +69,15 @@ public class HumanoidDeathEffect : MonoBehaviour
         {
             helper.corpseBone.position = helper.originalBone.position;
             helper.corpseBone.rotation = helper.originalBone.rotation;
+        }
+
+        if (copyFingerBones)
+        {
+            foreach (BoneTransformCopyHelper helper in fingersBoneTransformCopyHelpers)
+            {
+                helper.corpseBone.position = helper.originalBone.position;
+                helper.corpseBone.rotation = helper.originalBone.rotation;
+            }
         }
     }
 
