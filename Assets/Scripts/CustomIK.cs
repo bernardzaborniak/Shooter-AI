@@ -91,7 +91,7 @@ public class CustomIK : MonoBehaviour
         }
     }
 
-
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Transform currentBone = tip;
@@ -106,5 +106,7 @@ public class CustomIK : MonoBehaviour
             currentBone = currentBone.parent;
         }
     }
+
+#endif
 
 }

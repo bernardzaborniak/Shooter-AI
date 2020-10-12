@@ -25,12 +25,17 @@ PrefabInstance:
     - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: desiredRangeToEnemy
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: maxRangeToEnemy
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
+        type: 3}
+      propertyPath: targetMaxOffset
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7366031314207611043, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
