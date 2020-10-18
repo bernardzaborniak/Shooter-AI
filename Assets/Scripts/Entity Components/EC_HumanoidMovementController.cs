@@ -549,6 +549,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         return agent.speed;
     }
 
+    public float GetRemainingDistance()
+    {
+        return agent.remainingDistance;
+    }
+
     #endregion
 
     #region Debug

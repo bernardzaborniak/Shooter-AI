@@ -78,6 +78,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     bool onStopTraversingOffMeshLinkIsDelayed;
 
 
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -568,6 +569,10 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+
+
+    #region Info Getters
+
     public void AbortThrowingGrenade()
     {
         interactionController.AbortThrowingGrenade();
@@ -597,10 +602,34 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public bool IsCrouched()
+    {
+        if (currentStance == CharacterStance.Crouching)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool IsMoving()
+    {
+        return movementController.IsMoving();
+    }
+
+    public float GetRemainingDistanceToCurrentMovementTarget()
+    {
+        return movementController.GetRemainingDistance();
+    }
+
     public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
     {
         return interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon();
     }
+
+    #endregion
 
     #region Damage And Death Reactions
 

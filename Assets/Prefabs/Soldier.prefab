@@ -723,6 +723,9 @@ MonoBehaviour:
   sensingLayerMask:
     serializedVersion: 2
     m_Bits: 16777216
+  postSensingLayerMask:
+    serializedVersion: 2
+    m_Bits: 33554432
 --- !u!114 &3586266366417383842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1661,7 +1664,19 @@ MonoBehaviour:
   destroyOnDie: 1
   onDieEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6567086041650918770}
+        m_TargetAssemblyTypeName: AIController, Assembly-CSharp
+        m_MethodName: OnDie
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   isDead: 0
   aimPosition: {fileID: 1832169487545923482}
   criticalAimPosition: {fileID: 6816590221810525297}
@@ -1757,7 +1772,7 @@ MonoBehaviour:
   weapon: {fileID: 7366031315910803148}
   aimingWeightChangeSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
-  maxWeaponRotDifference: 30
+  maxWeaponRotDifference: 10
   weaponAimRotationSpeed: 40
   aimingWeaponSmoothTime: 0.05
 --- !u!114 &7366031314207611041

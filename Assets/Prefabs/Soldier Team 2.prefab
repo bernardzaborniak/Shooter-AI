@@ -19,21 +19,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: da3c8ef6ba01a9443a4d31ffb34b09ba, type: 2}
     - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
-      propertyPath: minRangeToEnemy
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: desiredRangeToEnemy
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: maxRangeToEnemy
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6567086041650918770, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
       propertyPath: targetMaxOffset
       value: 15
       objectReference: {fileID: 0}
@@ -112,11 +97,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a92a067b8465bab488933944caf32ba1, type: 2}
-    - target: {fileID: 7864116541130220572, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
-      propertyPath: sensingRadius
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 8228326833641565411, guid: 8f7b5b55361f19e48b964aa9188bf50c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

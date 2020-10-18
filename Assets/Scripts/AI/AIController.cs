@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 //using UnityEditorInternal;
 using UnityEngine;
@@ -29,16 +30,29 @@ public class AIController : MonoBehaviour
 
     //public float throwGrenadeVelocity;
     //only basic AI for now
-    enum AIState
+    enum WeaponState
     {
         FiringSMG,
         FiringPistol,
         ThrowingGrenade
     }
-    AIState aIState;
+    WeaponState aIState;
+
+    enum PositioningState
+    {
+        OpenField,
+        MovingIntoCover,
+        InCover,
+    }
+    PositioningState positioningState;
+
+    Post targetPost;
+    Post usedPost;
 
     bool crouching;
     float crouchingPropability = 0.3f;
+
+    
 
     void Start()
     {
@@ -47,9 +61,9 @@ public class AIController : MonoBehaviour
             aIComponents[i].SetUpComponent(entityAttachedTo);
         }
 
-        aIState = AIState.FiringSMG;
+        aIState = WeaponState.FiringSMG;
 
-        currentTargetOffset = new Vector3(Random.Range(-targetMaxOffset, targetMaxOffset), 0, Random.Range(-targetMaxOffset, targetMaxOffset));
+        currentTargetOffset = new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
     }
 
     void Update()
@@ -99,19 +113,25 @@ public class AIController : MonoBehaviour
             }
         }
 
+        //cover
+        HashSet<Tuple<Post,float>> possiblePosts = sensing.postsInSensingRadius;
+
 
         #endregion
 
         if (nearestEnemy)
         {
-            //Go At The Desired Distance
-            if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
-            {
-                characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
-            }
+           
 
-            if (aIState == AIState.FiringSMG)
+
+            if(positioningState == PositioningState.OpenField)
             {
+                //Go At The Desired Distance
+                if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
+                {
+                    characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
+                }
+
                 if (crouching)
                 {
                     characterController.ChangeCharacterStanceToCrouchingStance();
@@ -120,11 +140,92 @@ public class AIController : MonoBehaviour
                 {
                     characterController.ChangeCharacterStanceToCombatStance();
                 }
+
+                //discard if the direction isnt good enough, find the closest one of the remaining
+                //HashSet<Tuple<Post, float>> postsDiscardedBecauseOfDirection;
+               
+                if(possiblePosts.Count > 0)
+                {
+                    Post closestPost = null;
+                    float closestDistance = Mathf.Infinity;
+                    Vector3 myPos = transform.position;
+
+                    foreach (Tuple<Post,float> postTuple in possiblePosts)
+                    {
+                        //check angle
+                        Vector3 directionFromCoverToEnemy = nearestEnemy.transform.position - postTuple.Item1.GetPostPosition();
+                        float angle = Vector3.Angle(directionFromCoverToEnemy, postTuple.Item1.transform.forward);
+
+                        if (angle < 80)
+                        {
+                            if (postTuple.Item2 < closestDistance)
+                            {
+                                closestDistance = postTuple.Item2;
+                                closestPost = postTuple.Item1;
+                            }
+                        }
+                    }
+
+                    if (closestPost)
+                    {
+                        positioningState = PositioningState.MovingIntoCover;
+                        targetPost = closestPost;
+                        characterController.MoveTo(targetPost.GetPostPosition());
+                    }
+                }
+            }
+            else if (positioningState == PositioningState.MovingIntoCover)
+            {
+                if (targetPost.used)
+                {
+                    targetPost = null;
+                    positioningState = PositioningState.OpenField;
+                    characterController.StopMoving();
+                }
+                else
+                {
+                    if (characterController.GetRemainingDistanceToCurrentMovementTarget() < 0.5f)
+                    {
+                        positioningState = PositioningState.InCover;
+                        //code for entering cover
+                        EnterCoverPost(targetPost as CoverPost);
+                    }
+                    if (!characterController.IsMoving())
+                    {
+                        characterController.MoveTo(targetPost.GetPostPosition());
+                    }
+                }
+
+               
+            }
+            else if (positioningState == PositioningState.InCover)
+            {
+                if((usedPost as CoverPost).stanceType == 0)
+                {
+                    characterController.ChangeCharacterStanceToCombatStance();
+                }
+                else if((usedPost as CoverPost).stanceType == 1)
+                {
+                    characterController.ChangeCharacterStanceToCrouchingStance();
+                }
+
+                //check if the current cover isnt as good as it was anymore
+                if (Vector3.Angle(directionToNearestEnemy,usedPost.transform.forward)>80)
+                {
+                    ExitCoverPost();
+                    positioningState = PositioningState.OpenField;
+                }
+
+            }
+
+
+            #region Weapon Change
+
+            if (aIState == WeaponState.FiringSMG)
+            {
+               
                 characterController.ChangeSelectedItem(1);
                 
-
-
-                characterController.StopMoving();
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(1) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
 
@@ -149,12 +250,12 @@ public class AIController : MonoBehaviour
                     if (Time.time > nextCheckGrenadeTime)
                     {
                         nextCheckGrenadeTime = Time.time + grenadeThrowInterval;
-                        if (Random.Range(0f, 1f) < 0.05f)
+                        if (UnityEngine.Random.Range(0f, 1f) < 0.05f)
                         {
                             if (!grenadeThrown)
                             {
-                                aIState = AIState.ThrowingGrenade;
-                                if (Random.Range(0f, 1f) < crouchingPropability)
+                                aIState = WeaponState.ThrowingGrenade;
+                                if (UnityEngine.Random.Range(0f, 1f) < crouchingPropability)
                                 {
                                     crouching = true;
                                 }
@@ -172,15 +273,15 @@ public class AIController : MonoBehaviour
                     {
                         if (!changedToPistol)
                         {
-                            if (Random.Range(0f, 1f) < 0.5f)
+                            if (UnityEngine.Random.Range(0f, 1f) < 0.5f)
                             {
                                 characterController.StartReloadingWeapon();
                             }
                             else
                             {
                                 changedToPistol = true;
-                                aIState = AIState.FiringPistol;
-                                if (Random.Range(0f, 1f) < crouchingPropability)
+                                aIState = WeaponState.FiringPistol;
+                                if (UnityEngine.Random.Range(0f, 1f) < crouchingPropability)
                                 {
                                     crouching = true;
                                 }
@@ -202,21 +303,13 @@ public class AIController : MonoBehaviour
 
 
             }
-            else if (aIState == AIState.FiringPistol)
+            else if (aIState == WeaponState.FiringPistol)
             {
 
                 characterController.ChangeSelectedItem(2);
-                if (crouching)
-                {
-                    characterController.ChangeCharacterStanceToCrouchingStance();
-                }
-                else
-                {
-                    characterController.ChangeCharacterStanceToCombatStance();
-                }
+               
 
 
-                characterController.StopMoving();
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(2) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
 
@@ -240,8 +333,8 @@ public class AIController : MonoBehaviour
 
                     if (!(characterController.GetAmmoRemainingInMagazine() > 0))
                     {
-                        aIState = AIState.FiringSMG;
-                        if (Random.Range(0f, 1f) < crouchingPropability)
+                        aIState = WeaponState.FiringSMG;
+                        if (UnityEngine.Random.Range(0f, 1f) < crouchingPropability)
                         {
                             crouching = true;
                         }
@@ -254,23 +347,16 @@ public class AIController : MonoBehaviour
 
 
             }
-            else if (aIState == AIState.ThrowingGrenade)
+            else if (aIState == WeaponState.ThrowingGrenade)
             {
                 characterController.ChangeSelectedItem(3);
-                if (crouching)
-                {
-                    characterController.ChangeCharacterStanceToCrouchingStance();
-                }
-                else
-                {
-                    characterController.ChangeCharacterStanceToCombatStance();
-                }
+               
 
                 if (characterController.GetItemInInventory(3) == null)
                 {
                     grenadeThrown = false;
-                    aIState = AIState.FiringSMG;
-                    if (Random.Range(0f, 1f) < crouchingPropability)
+                    aIState = WeaponState.FiringSMG;
+                    if (UnityEngine.Random.Range(0f, 1f) < crouchingPropability)
                     {
                         crouching = true;
                     }
@@ -281,8 +367,11 @@ public class AIController : MonoBehaviour
                     return;
                 }
 
-
-                characterController.StopMoving();
+                if (characterController.IsCrouched())
+                {
+                    characterController.StopMoving();
+                }
+                
 
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
@@ -320,9 +409,18 @@ public class AIController : MonoBehaviour
 
 
             }
+
+            #endregion 
         }
         else
         {
+            if (positioningState == PositioningState.InCover)
+            {
+                ExitCoverPost();
+                positioningState = PositioningState.OpenField;
+            }
+
+
             characterController.ChangeSelectedItem(1);
             characterController.ChangeCharacterStanceToIdle();
             characterController.StopAimingSpine();
@@ -384,8 +482,33 @@ public class AIController : MonoBehaviour
             
         }*/
 
+        
 
+    }
 
+    void EnterCoverPost(CoverPost post)
+    {
+        if (!post.used)
+        {
+            usedPost = post;
+            post.used = true;
+            post.usingEntity = entityAttachedTo;
+        }
+    }
 
+    void ExitCoverPost()
+    {
+       
+        usedPost.used = false;
+        usedPost.usingEntity = null;
+        usedPost = null;
+    }
+
+    public void OnDie()
+    {
+        if (positioningState == PositioningState.InCover)
+        {
+            ExitCoverPost();
+        }      
     }
 }

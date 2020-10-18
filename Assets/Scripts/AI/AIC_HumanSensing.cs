@@ -84,9 +84,11 @@ public class AIC_HumanSensing : AIComponent
                 currentPost = collidersInRadius[i].GetComponent<Post>();
                 if (currentPost)
                 {
-                    currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
-                    postsInSensingRadius.Add(new Tuple<Post, float>(currentPost, currentDistanceSqr));
-
+                    if (!currentPost.used)
+                    {
+                        currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
+                        postsInSensingRadius.Add(new Tuple<Post, float>(currentPost, currentDistanceSqr));
+                    }
                 }
             }
 

@@ -22,4 +22,9 @@ public class Post : MonoBehaviour
     {
         
     }
+
+    public Vector3 GetPostPosition()
+    {
+        return transform.position;
+    }
 }
