@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,13 +14,19 @@ public class AIC_HumanSensing : AIComponent
     public float sensingRadius;
     public LayerMask sensingLayerMask;
 
+    public HashSet<Tuple<Post,float>> postsInSensingRadius = new HashSet<Tuple<Post, float>>();
+    public LayerMask postSensingLayerMask;
+
     int myTeamID;
+
+
+
 
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
 
-        nextSensingTime = Time.time + Random.Range(0, sensingInterval);
+        nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
         myTeamID = myEntity.teamID;
     }
 
@@ -29,12 +36,14 @@ public class AIC_HumanSensing : AIComponent
         {
             nextSensingTime = Time.time + sensingInterval;
 
+            #region scan for enemies
+
             collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, sensingLayerMask);
             
             enemiesInSensingRadius.Clear();
 
-            float smallestDistance = Mathf.Infinity;
-            float currentDistance;
+            float smallestDistanceSqr = Mathf.Infinity;
+            float currentDistanceSqr;
             GameEntity currentEntity;
             Vector3 myPosition = transform.position;
 
@@ -47,15 +56,41 @@ public class AIC_HumanSensing : AIComponent
                     {
                         enemiesInSensingRadius.Add(currentEntity);
 
-                        currentDistance = (myPosition - currentEntity.transform.position).sqrMagnitude;
-                        if (currentDistance < smallestDistance)
+                        currentDistanceSqr = (myPosition - currentEntity.transform.position).sqrMagnitude;
+                        if (currentDistanceSqr < smallestDistanceSqr)
                         {
-                            smallestDistance = currentDistance;
+                            smallestDistanceSqr = currentDistanceSqr;
                             nearestEnemy = currentEntity;
                         }
                     }           
                 }
             }
+
+            #endregion
+
+            #region Scan for Posts
+
+            collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, postSensingLayerMask);
+
+            postsInSensingRadius.Clear();
+
+            smallestDistanceSqr = Mathf.Infinity;
+            currentDistanceSqr = 0;
+            Post currentPost;
+            myPosition = transform.position;
+
+            for (int i = 0; i < collidersInRadius.Length; i++)
+            {
+                currentPost = collidersInRadius[i].GetComponent<Post>();
+                if (currentPost)
+                {
+                    currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
+                    postsInSensingRadius.Add(new Tuple<Post, float>(currentPost, currentDistanceSqr));
+
+                }
+            }
+
+            #endregion
 
         }
     }
