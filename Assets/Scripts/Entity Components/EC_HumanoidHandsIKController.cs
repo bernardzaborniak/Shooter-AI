@@ -27,6 +27,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
     [Header("IK Weight Change Speeds")]
     [Tooltip("the default speed used for most changes")]
     public float defaultChangeIKWeightsSpeed;
+    public float enterCombatStanceChangeIKWeightsSpeed;
+    public float currentChangeIKWeightsSpeed;
 
 
     [Header("For Recoil")]
@@ -86,11 +88,13 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
+
+        currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
     }
 
     public override void UpdateComponent()
     {
-        float changeSpeed = defaultChangeIKWeightsSpeed * Time.deltaTime;
+        float changeSpeed = currentChangeIKWeightsSpeed * Time.deltaTime;
         leftHandIK.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
         rightHandIK.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
 
@@ -188,12 +192,14 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public void OnEnterIdleStance()
     {
         SetPrimaryIKStance(PrimaryIKStance.Idle);
+        currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
     }
 
     public void OnEnterCombatStance()
    {
         SetPrimaryIKStance(PrimaryIKStance.CombatStance);
-   }
+        currentChangeIKWeightsSpeed = enterCombatStanceChangeIKWeightsSpeed;
+    }
 
     public void OnStartAimingWeapon()
     {
@@ -205,6 +211,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         if (secondaryIKStance == SecondaryIKStance.Aiming)
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
+            currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
         }
          
     }
