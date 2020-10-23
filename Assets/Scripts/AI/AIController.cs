@@ -27,6 +27,8 @@ public class AIController : MonoBehaviour
     public float targetMaxOffset;
     Vector3 currentTargetOffset;
 
+    GameEntity nearestEnemyLastFrame;
+
 
     //public float throwGrenadeVelocity;
     //only basic AI for now
@@ -121,16 +123,22 @@ public class AIController : MonoBehaviour
 
         if (nearestEnemy)
         {
-           
 
 
-            if(positioningState == PositioningState.OpenField)
+            #region Positioning 
+            if (positioningState == PositioningState.OpenField)
             {
+                if (nearestEnemyLastFrame)
+                {
+                    characterController.StopMoving();
+                }
+
                 //Go At The Desired Distance
                 if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
                 {
                     characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
                 }
+
 
                 if (crouching)
                 {
@@ -218,6 +226,7 @@ public class AIController : MonoBehaviour
 
             }
 
+            #endregion
 
             #region Weapon Change
 
@@ -428,6 +437,8 @@ public class AIController : MonoBehaviour
             characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
         }
 
+        nearestEnemyLastFrame = nearestEnemy;
+
 
 
         //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
@@ -482,7 +493,7 @@ public class AIController : MonoBehaviour
             
         }*/
 
-        
+
 
     }
 

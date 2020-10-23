@@ -619,6 +619,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         return movementController.IsMoving();
     }
 
+    public bool IsSprinting()
+    {
+        return movementController.IsSprinting();
+    }
+
     public float GetRemainingDistanceToCurrentMovementTarget()
     {
         return movementController.GetRemainingDistance();

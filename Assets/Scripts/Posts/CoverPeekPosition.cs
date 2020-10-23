@@ -36,7 +36,8 @@ public class CoverPeekPosition : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(1,0.45f,0f,0.8f);
-        Gizmos.DrawMesh(cylinderMeshForGizmos, 0, transform.position, transform.rotation, new Vector3(gizmoScale, 0.02f, gizmoScale));
+        //Gizmos.DrawMesh(cylinderMeshForGizmos, 0, transform.position, transform.rotation, new Vector3(gizmoScale, 0.015f, gizmoScale));
+        Gizmos.DrawMesh(cylinderMeshForGizmos, 0, transform.position, transform.rotation, new Vector3(0.1f, 0.015f, 0.1f));
     }
 #endif
 }

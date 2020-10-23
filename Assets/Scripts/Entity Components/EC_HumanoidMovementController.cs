@@ -480,7 +480,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverObstacle;
 
         currentObstacleHeight = currentNavMeshLinkProperties.obstacleHeight;
-        currentRelativeObstacleOffset =  currentObstacleHeight - 0.65f;
+        currentRelativeObstacleOffset = currentObstacleHeight - 0.75f;//0.65f;
     }
 
     void StartTraversingLinkJumpOverHole()
@@ -552,6 +552,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     public float GetRemainingDistance()
     {
         return agent.remainingDistance;
+    }
+
+    public bool IsSprinting()
+    {
+        return currentMovementOrder.sprint;
     }
 
     #endregion

@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class EC_HumanoidAnimationController : EntityComponent
 {
+    #region Fields
+
     [Header("References")]
     public Animator animator;
 
@@ -157,6 +159,8 @@ public class EC_HumanoidAnimationController : EntityComponent
      Jump Down Ledge        4
 
     */
+
+    #endregion
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -394,12 +398,10 @@ public class EC_HumanoidAnimationController : EntityComponent
 
         // 2. Set The bool
         animator.SetBool(jumpOverParamID, true);
-        //animator.SetLayerWeight(traverseOffMeshLinksLayerID, 1);
     }
 
     public void StopJumpingOverObstacle()
     {
         animator.SetBool(jumpOverParamID, false);
-        //animator.SetLayerWeight(traverseOffMeshLinksLayerID, 0);
     }
 }
