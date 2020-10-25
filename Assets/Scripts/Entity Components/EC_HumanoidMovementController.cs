@@ -19,7 +19,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     [SerializeField]
     protected EC_HumanoidCharacterController characterController;
 
-
+    //[Header("State Management")]
     protected enum MovementState
     {
         Default,
@@ -27,6 +27,89 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         BeingPushed
     }
     protected MovementState movementState;
+
+  
+    [Header("Rotation")]
+    float averageAngularVelocity;
+    public float angularAccelerationDistance;
+    Vector3 angularVelocity;
+    float angularSmoothTime;
+
+    Quaternion targetRotation;
+    Quaternion currentRotation;
+    Quaternion derivQuaternion;
+
+    public float stationaryTurnSpeed;
+    public float runningTurnSpeed;
+
+    Vector3 desiredForward;
+    [Tooltip("If false, the agent will rotate towards his movement direction")]
+    public bool manualRotation;
+
+
+    [Header("Movement")]
+    public float sprintingSpeed;
+    public float defaultSpeed;
+    float currentDesiredSpeed; //set the agent.speed as desiredSpeed * speedModifiers
+    float currentSpeed;
+
+    //Speed Modifiers:
+    HashSet<MovementSpeedModifier> activeSpeedModifiers = new HashSet<MovementSpeedModifier>();
+
+
+    [Header("Traversing Off Mesh Links")]
+    #region Traversung NavmeshLink Fields
+
+    // For calculating the jump over hole or up and down curve
+    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownCuve = new AnimationCurve();
+    public AnimationCurve jumpingUpCurve = new AnimationCurve();
+    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
+    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
+    float currentJumpOverHoleHeight;
+
+    // For jumping over obstacle
+    float currentObstacleHeight;
+    float currentRelativeObstacleOffset; //the offset betwen currentObstacleHeight and the animatedObstacleHeight - 0.8m;
+    public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
+
+    // Infos about Current Link
+    NavMeshLinkProperties currentNavMeshLinkProperties;
+    Vector3 currentLinkEndPosition;
+    Vector3 currentLinkStartPosition; 
+    float currentDistanceToTraverse;
+    float currentLinkTraverseDuration;
+    float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
+    Vector3 offMeshLinkTraversalDirection;
+
+
+    enum OffMeshLinkMoveMethod
+    {
+        JumpOverObstacle,
+        JumpUpDownOrHorizontal,
+        Linear
+    }
+    OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
+
+    // Saved For Ragdolls or others
+     Vector3 offMeshLinkTraversalVelocity;
+
+    #endregion
+
+
+    [Header("Traversing Sloped Surfaces")]
+    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
+    NavMeshHit navMeshHit = new NavMeshHit();
+    public string steepSlopeNavmeshAreaName;
+    int steepSlopeNavmeshAreaID;
+
+
+    [Header("Debug")]
+    [SerializeField]
+    bool showGizmo;
+
+
+    #region Movement Order
 
     // Represents an information container about the current order, does not do any logic by itself
     class MovementOrder
@@ -42,14 +125,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             NoOrder
         }
 
-         OrderExecutionStatus orderExecutionStatus = OrderExecutionStatus.NoOrder;
+        OrderExecutionStatus orderExecutionStatus = OrderExecutionStatus.NoOrder;
 
         public MovementOrder()
         {
 
         }
 
-  
+
         public void SetCurrentOrder(Vector3 destination)
         {
             orderExecutionStatus = OrderExecutionStatus.Ordered;
@@ -84,7 +167,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         public void OnResume()
-        { 
+        {
             orderExecutionStatus = OrderExecutionStatus.BeingExecuted;
         }
 
@@ -103,7 +186,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         public bool IsWaitingForExecution()
         {
             //return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
-            return  orderExecutionStatus == OrderExecutionStatus.Ordered;
+            return orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 
         #endregion
@@ -111,78 +194,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     MovementOrder currentMovementOrder;
 
-
-    [Header("Debug")]
-    [SerializeField]
-    bool showGizmo;
-
-    [Header("Rotation")]
-    float averageAngularVelocity;
-    public float angularAccelerationDistance;
-    Vector3 angularVelocity;
-    float angularSmoothTime;
-
-    Quaternion targetRotation;
-    Quaternion currentRotation;
-    Quaternion derivQuaternion;
-
-    public float stationaryTurnSpeed;
-    public float runningTurnSpeed;
-
-    Vector3 desiredForward;
-    [Tooltip("If false, the agent will rotate towards his movement direction")]
-    public bool manualRotation;
-
-    [Header("Movement")]
-    public float sprintingSpeed;
-    public float defaultSpeed;
-    float currentDesiredSpeed; //set the agent.speed as desiredSpeed * speedModifiers
-    float currentSpeed;
-
-    //Speed Modifiers:
-    HashSet<MovementSpeedModifier> activeSpeedModifiers = new HashSet<MovementSpeedModifier>();
-
-
-    [Header("Traversing Off Mesh Links")]
-    // For calculating the jump over hole or up and down curve
-    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
-    public AnimationCurve jumpingDownCuve = new AnimationCurve();
-    public AnimationCurve jumpingUpCurve = new AnimationCurve();
-    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
-    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
-    float currentJumpOverHoleHeight;
-
-    // For jumping over obstacle
-    float currentObstacleHeight;
-    float currentRelativeObstacleOffset; //the offset betwen currentObstacleHeight and the animatedObstacleHeight - 0.8m;
-    public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
-
-    // Infos about Current Link
-    NavMeshLinkProperties currentNavMeshLinkProperties;
-    Vector3 currentLinkEndPosition;
-    Vector3 currentLinkStartPosition; 
-    float currentDistanceToTraverse;
-    float currentLinkTraverseDuration;
-    float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
-    Vector3 offMeshLinkTraversalDirection;
-
-
-    enum OffMeshLinkMoveMethod
-    {
-        JumpOverObstacle,
-        JumpUpDownOrHorizontal,
-        Linear
-    }
-    OffMeshLinkMoveMethod currentOffMeshLinkMoveMethod;
-
-    // Saved For Ragdolls or others
-     Vector3 offMeshLinkTraversalVelocity; 
-    
-    [Header("Traversing Sloped Surfaces")]
-    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
-    NavMeshHit navMeshHit = new NavMeshHit();
-    public string steepSlopeNavmeshAreaName;
-    int steepSlopeNavmeshAreaID;
+    #endregion
 
 
     #endregion
@@ -206,7 +218,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         if (movementState == MovementState.Default)
         {
             //1. Navmesh Link Check
-
             if (agent.isOnOffMeshLink)
             {
                 StartTraversingOffMeshLink();
@@ -214,7 +225,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             }
 
             //2. Check if agent is on sloped surface
-
             agent.SamplePathPosition(NavMesh.AllAreas, 0.0f, out navMeshHit);
 
             if(navMeshHit.mask == steepSlopeNavmeshAreaID)
@@ -227,9 +237,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 activeSpeedModifiers.Remove(steepSlopeMovementSpeedModifier);
             }
           
-
-
-
             // 3. Update movement according to movement Order 
             if (currentMovementOrder.IsWaitingForExecution())
             {
@@ -260,16 +267,13 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             RotateTowards(desiredForward);
 
             //5. Update animation
-
             //calculate forward and sideways velocity;
-            Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
+            Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);  
 
             if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
             //6. update agent speed
             UpdateAgentSpeed(currentMovementOrder.sprint);
-
-
 
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
@@ -449,7 +453,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     }
 
 
-
     public void SetAcceleration(float newAcceleration)
     {
         agent.acceleration = newAcceleration;
@@ -459,6 +462,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     {
         stationaryTurnSpeed = newStationaryTurnSpeed;
     }
+
 
     //-----------Modifiers---------------
     public void AddSpeedModifier(MovementSpeedModifier modifier)
