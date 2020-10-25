@@ -1714,6 +1714,12 @@ MonoBehaviour:
   damageThresholdForFlinch: 10
   damageThresholdForStagger: 50
   staggerDuration: 1.5
+  staggerMovementSpeedModifier:
+    name: Stagger Mod
+    value: 0.7
+  steepSlopeMovementSpeedModifier:
+    name: 
+    value: 0
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
@@ -2021,6 +2027,8 @@ MonoBehaviour:
   leftHandIK: {fileID: 7074038497521217696}
   rightHandIK: {fileID: 7560968261588369191}
   defaultChangeIKWeightsSpeed: 5
+  enterCombatStanceChangeIKWeightsSpeed: 0
+  currentChangeIKWeightsSpeed: 0
   rightHandTransform: {fileID: 2617185220004434608}
   aimingWeaponHandPosition: {fileID: 6601688291365867921}
   iKSettingsCorrespondingToWeaponInteractionTypes:

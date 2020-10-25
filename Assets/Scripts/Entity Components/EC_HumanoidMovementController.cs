@@ -4,6 +4,9 @@ using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+
+
 public class EC_HumanoidMovementController : EntityComponent, IMoveable
 {
     #region Fields
@@ -134,6 +137,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     [Header("Movement")]
     public float sprintingSpeed;
     public float defaultSpeed;
+    float currentDesiredSpeed; //set the agent.speed as desiredSpeed * speedModifiers
+    float currentSpeed;
+
+    //Speed Modifiers:
+    HashSet<MovementSpeedModifier> activeSpeedModifiers = new HashSet<MovementSpeedModifier>();
+
 
     [Header("Traversing Off Mesh Links")]
     // For calculating the jump over hole or up and down curve
@@ -190,13 +199,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     {
         if (movementState == MovementState.Default)
         {
+            
+           
+
+
             // 1. Update movement according to movement Order 
             if (currentMovementOrder.IsWaitingForExecution())
             {
                 agent.isStopped = false;
 
                 agent.SetDestination(currentMovementOrder.destination);
-                UpdateAgentSpeed(currentMovementOrder.sprint);
+                
                 currentMovementOrder.OnExecute();
             }
             else if (currentMovementOrder.IsBeingExecuted())
@@ -226,7 +239,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
-            // 4. Navmesh Link Check
+           
+
+            //4. update agent speed
+            UpdateAgentSpeed(currentMovementOrder.sprint);
+
+            //5. Navmesh Link Check
 
             if (agent.isOnOffMeshLink)
             {
@@ -353,39 +371,54 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     #endregion
 
-    #region Modify Values
+    #region Modify Speed Values
 
-    public void UpdateAgentSpeed(bool sprint)
+    void UpdateAgentSpeed(bool sprint)
     {
         if (currentMovementOrder.sprint)
         {
-            agent.speed = sprintingSpeed;
+            currentDesiredSpeed = sprintingSpeed;
         }
         else
         {
-            agent.speed = defaultSpeed;
+            currentDesiredSpeed = defaultSpeed;
         }
+
+        currentSpeed = currentDesiredSpeed;
+        //Update Movement speed with modifiers
+        foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
+        {
+            currentSpeed *= modifier.value;
+        }
+        agent.speed = currentSpeed;
     }
 
-    public void SetDefaultSpeed(float newDefaultSpeed)
+    //-----------Setting Speed Values according to stances---------------
+
+    public void SetDefaultSpeed(float newDefaultSpeed) //make public later
     {
         defaultSpeed = newDefaultSpeed;
 
-        if (!currentMovementOrder.sprint)
+        /*if (!currentMovementOrder.sprint)
         {
             agent.speed = defaultSpeed;
-        }
+        }*/
+        UpdateAgentSpeed(currentMovementOrder.sprint);
     }
 
-    public void SetSprintSpeed(float newSprintSpeed)
+    public void SetSprintSpeed(float newSprintSpeed) //make public later
     {
         sprintingSpeed = newSprintSpeed;
 
-        if (currentMovementOrder.sprint)
+        /*if (currentMovementOrder.sprint)
         {
             agent.speed = sprintingSpeed;
-        }
+        }*/
+        UpdateAgentSpeed(currentMovementOrder.sprint);
+
     }
+
+
 
     public void SetAcceleration(float newAcceleration)
     {
@@ -395,6 +428,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     public void SetStationaryTurnSpeed(float newStationaryTurnSpeed)
     {
         stationaryTurnSpeed = newStationaryTurnSpeed;
+    }
+
+    //-----------Modifiers---------------
+    public void AddSpeedModifier(MovementSpeedModifier modifier)
+    {
+        activeSpeedModifiers.Add(modifier);
+    }
+
+    public void RemoveSpeedModifier(MovementSpeedModifier modifier)
+    {
+        activeSpeedModifiers.Remove(modifier);
     }
 
 

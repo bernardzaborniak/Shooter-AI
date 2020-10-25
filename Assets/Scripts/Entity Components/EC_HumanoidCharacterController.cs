@@ -37,6 +37,10 @@ public class EC_HumanoidCharacterController : EntityComponent
     public float damageThresholdForFlinch;
     public float damageThresholdForStagger;
     public float staggerDuration;
+    public MovementSpeedModifier staggerMovementSpeedModifier;
+
+    [Header("Movement over different Areas")]
+    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
 
     // ---------- States & Stances ---------
     enum CharacterStance
@@ -206,7 +210,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 characterPreventionType = CharacterPreventionType.NoPrevention;
 
                 //reset speds
-                if (currentStance == CharacterStance.Idle)
+                /*if (currentStance == CharacterStance.Idle)
                 {
                     movementController.SetDefaultSpeed(idleWalkingSpeed);
                     movementController.SetSprintSpeed(idleSprintingSpeed);
@@ -219,7 +223,9 @@ public class EC_HumanoidCharacterController : EntityComponent
                 else if (currentStance == CharacterStance.Crouching)
                 {
                     movementController.SetDefaultSpeed(crouchSpeed);
-                }
+                }*/
+                movementController.RemoveSpeedModifier(staggerMovementSpeedModifier);
+
             }
         }else if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
@@ -652,7 +658,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         StopAimingWeapon();
 
 
-        if (currentStance == CharacterStance.Crouching)
+        /*if (currentStance == CharacterStance.Crouching)
         {
             movementController.SetDefaultSpeed(stunnedCrouchedMovementSpeed);
         }
@@ -660,7 +666,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             movementController.SetDefaultSpeed(stunnedMovementSpeed);
             movementController.SetSprintSpeed(stunnedSprintingSpeed);
-        }
+        }*/
+        movementController.AddSpeedModifier(staggerMovementSpeedModifier);
 
 
 
