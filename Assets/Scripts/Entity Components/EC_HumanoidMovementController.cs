@@ -63,15 +63,27 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     // For jumping over obstacle
     float currentObstacleHeight;
     float currentRelativeObstacleOffset; //the offset betwen currentObstacleHeight and the animatedObstacleHeight - 0.8m;
-    public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
+    [Space(5)]
+    public AnimationCurve jumpOverObstacleYOffsetCurve = new AnimationCurve();
+    public AnimationCurve jumpOverObstacleTraversalSpeedCurve = new AnimationCurve();
 
     // For calculating the jump over hole or up and down curve
-    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
-    public AnimationCurve jumpingUpCurve = new AnimationCurve();
-    public AnimationCurve jumpingDownSmallLedgeCurve = new AnimationCurve();
-    public AnimationCurve jumpingDownBigLedgeCurve = new AnimationCurve();
+    [Space(5)]
+    public AnimationCurve horizontalJumpYOffsetCurve = new AnimationCurve();
+    public AnimationCurve horizontalJumpTraversalSpeedCurve = new AnimationCurve();
+    [Space(5)]
+    public AnimationCurve jumpingUpSmallLedgeYOffsetCurve = new AnimationCurve();
+    public AnimationCurve jumpingUpSmallLedgeTraversalSpeedCurve = new AnimationCurve();
+    [Space(5)]
+    public AnimationCurve jumpingDownSmallLedgeYOffsetCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownSmallLedgeTraversalSpeedCurve = new AnimationCurve();
+    [Space(5)]
+    public AnimationCurve jumpingDownBigLedgeYOffsetCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownBigLedgeTraversalSpeedCurve = new AnimationCurve();
 
-    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
+    AnimationCurve currentYOffsetCurveForJumpingUpDownOrHorizontal;
+    AnimationCurve currentTraversalSpeedCurveForJumpingUpDownOrHorizontal;
+
     float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
     float currentJumpOverHoleHeight;
 
@@ -205,8 +217,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         public bool IsWaitingForExecution()
         {
-            //return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
-            return orderExecutionStatus == OrderExecutionStatus.Ordered;
+            return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
+            //return orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 
         #endregion
@@ -235,6 +247,16 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public override void UpdateComponent()
     {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            agent.CompleteOffMeshLink();
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            agent.ResetPath();
+            currentMovementOrder.OnAbort();
+        }
+
         if (movementState == MovementState.Default)
         {
             //1. Navmesh Link Check
@@ -313,16 +335,20 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             {
                 Vector3 newPosition = Vector3.zero;
 
+
                 if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpOverObstacle)
                 {
-                    //float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentObstacleHeight;
-                    float yOffset = jumpOverObstacleCurve.Evaluate(currentTraversalNormalizedTime) * currentRelativeObstacleOffset;
-                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                    float modifiedCurrentTraversalNormalizedTime = jumpOverObstacleTraversalSpeedCurve.Evaluate(currentTraversalNormalizedTime);
+
+                    float yOffset = jumpOverObstacleYOffsetCurve.Evaluate(modifiedCurrentTraversalNormalizedTime) * currentRelativeObstacleOffset;
+                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, modifiedCurrentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.JumpUpDownOrHorizontal)
                 {
-                    float yOffset = currentCurveForJumpingUpDownOrHorizontal.Evaluate(currentTraversalNormalizedTime) * currentJumpOverHoleHeight;
-                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime) + yOffset * Vector3.up;
+                    float modifiedCurrentTraversalNormalizedTime = currentTraversalSpeedCurveForJumpingUpDownOrHorizontal.Evaluate(currentTraversalNormalizedTime);
+
+                    float yOffset = currentYOffsetCurveForJumpingUpDownOrHorizontal.Evaluate(modifiedCurrentTraversalNormalizedTime) * currentJumpOverHoleHeight;
+                    newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, modifiedCurrentTraversalNormalizedTime) + yOffset * Vector3.up;
                 }
                 else if (currentOffMeshLinkMoveMethod == OffMeshLinkMoveMethod.Linear)
                 {
@@ -511,8 +537,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void StartTraversingOffMeshLink()
     {
-        //agent.speed = 0; does it make a difference?
-
         movementState = MovementState.TraversingOffMeshLink;
 
         OffMeshLinkData data = agent.currentOffMeshLinkData;
@@ -584,7 +608,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         if (heightDifference > 0.5f)
         {
             //if going up
-            currentCurveForJumpingUpDownOrHorizontal = jumpingUpCurve;
+            currentYOffsetCurveForJumpingUpDownOrHorizontal = jumpingUpSmallLedgeYOffsetCurve;
+            currentTraversalSpeedCurveForJumpingUpDownOrHorizontal = jumpingUpSmallLedgeTraversalSpeedCurve;
 
             traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingUpSmallLedge;
 
@@ -596,28 +621,28 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             if (heightDifference < -1.3f)
             {
                 traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge;
-                currentCurveForJumpingUpDownOrHorizontal = jumpingDownBigLedgeCurve;
+                currentYOffsetCurveForJumpingUpDownOrHorizontal = jumpingDownBigLedgeYOffsetCurve;
+                currentTraversalSpeedCurveForJumpingUpDownOrHorizontal = jumpingDownBigLedgeTraversalSpeedCurve;
+
             }
             else
             {
                 traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownSmallLedge;
-                currentCurveForJumpingUpDownOrHorizontal = jumpingDownSmallLedgeCurve;
+                currentYOffsetCurveForJumpingUpDownOrHorizontal = jumpingDownSmallLedgeYOffsetCurve;
+                currentTraversalSpeedCurveForJumpingUpDownOrHorizontal = jumpingDownSmallLedgeTraversalSpeedCurve;
+
             }
         }
         else
         {
-            currentCurveForJumpingUpDownOrHorizontal = horizontalJumpCurve;
+            currentYOffsetCurveForJumpingUpDownOrHorizontal = horizontalJumpYOffsetCurve;
             traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingHorizontal;
+            currentTraversalSpeedCurveForJumpingUpDownOrHorizontal = jumpingUpSmallLedgeTraversalSpeedCurve;
         }
     }
 
     void FinishTraversingOffMeshLink()
     {
-        agent.transform.position = currentLinkEndPosition;
-        agent.CompleteOffMeshLink();
-
-        movementState = MovementState.Default;
-
         currentTraversalNormalizedTime = 0;
         offMeshLinkTraversalDirection = Vector3.zero;
 
@@ -626,13 +651,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
             {
-                Debug.Log("Add Modifier");
                 activeSpeedModifiers.Add(jumpDownBigLedgeLandingSpeedModifier);
                 jumpDownBigLedgeLandingSpeedModifierActive = true;
                 nextjumpDownBigLedgeLandingSpeedModifierRemoveTime = Time.time + jumpDownBigLedgeLandingSpeedModifierDuration;
+                agent.velocity = Vector3.zero;
             }
         }
-      
+
+        movementState = MovementState.Default;
+        agent.transform.position = currentLinkEndPosition;
+        agent.CompleteOffMeshLink();
+
 
         // Inform Character Controler
         characterController.OnStopTraversingOffMeshLink();

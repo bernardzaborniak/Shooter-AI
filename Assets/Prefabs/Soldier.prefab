@@ -1797,7 +1797,7 @@ MonoBehaviour:
   manualRotation: 0
   sprintingSpeed: 7
   defaultSpeed: 0
-  jumpOverObstacleCurve:
+  jumpOverObstacleYOffsetCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1848,7 +1848,31 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  horizontalJumpCurve:
+  jumpOverObstacleTraversalSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  horizontalJumpYOffsetCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1881,7 +1905,31 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpingUpCurve:
+  horizontalJumpTraversalSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpingUpSmallLedgeYOffsetCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1914,40 +1962,31 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpingDownSmallLedgeCurve:
+  jumpingUpSmallLedgeTraversalSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.21711375
-      outSlope: 0.21711375
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.3898164
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.7497999
-      value: 0.99890274
-      inSlope: -0.012857882
-      outSlope: -0.012857882
-      tangentMode: 0
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.7206975
-    - serializedVersion: 3
-      time: 1.0045654
-      value: -0.0039274693
-      inSlope: -3.0748954
-      outSlope: -3.0748954
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.212088
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpingDownBigLedgeCurve:
+  jumpingDownSmallLedgeYOffsetCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1976,6 +2015,87 @@ MonoBehaviour:
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.13958657
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpingDownSmallLedgeTraversalSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpingDownBigLedgeYOffsetCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.004096985
+      value: -0.0064315796
+      inSlope: 2.7677007
+      outSlope: 2.7677007
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.097020194
+    - serializedVersion: 3
+      time: 0.77232313
+      value: 1.9924088
+      inSlope: -0.7328359
+      outSlope: -0.7328359
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.44951272
+      outWeight: 0.29936147
+    - serializedVersion: 3
+      time: 0.9924011
+      value: 0.002357483
+      inSlope: -1.7939501
+      outSlope: -1.7939501
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13958657
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpingDownBigLedgeTraversalSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.6666666
+      outSlope: 1.6666666
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6
+      value: 1
+      inSlope: 1.6666666
+      outSlope: 1.6666666
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
