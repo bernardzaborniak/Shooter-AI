@@ -60,18 +60,22 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     [Header("Traversing Off Mesh Links")]
     #region Traversung NavmeshLink Fields
 
-    // For calculating the jump over hole or up and down curve
-    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
-    public AnimationCurve jumpingDownCuve = new AnimationCurve();
-    public AnimationCurve jumpingUpCurve = new AnimationCurve();
-    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
-    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
-    float currentJumpOverHoleHeight;
-
     // For jumping over obstacle
     float currentObstacleHeight;
     float currentRelativeObstacleOffset; //the offset betwen currentObstacleHeight and the animatedObstacleHeight - 0.8m;
     public AnimationCurve jumpOverObstacleCurve = new AnimationCurve();
+
+    // For calculating the jump over hole or up and down curve
+    public AnimationCurve horizontalJumpCurve = new AnimationCurve();
+    public AnimationCurve jumpingUpCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownSmallLedgeCurve = new AnimationCurve();
+    public AnimationCurve jumpingDownBigLedgeCurve = new AnimationCurve();
+
+    AnimationCurve currentCurveForJumpingUpDownOrHorizontal;
+    float distanceHeightRatio = 0.2f; //how much the length is the height of the jump going to be?
+    float currentJumpOverHoleHeight;
+
+ 
 
     // Infos about Current Link
     NavMeshLinkProperties currentNavMeshLinkProperties;
@@ -587,15 +591,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
         else if (heightDifference < -0.5f)
         {
-            currentCurveForJumpingUpDownOrHorizontal = jumpingDownCuve;
+            
 
             if (heightDifference < -1.3f)
             {
                 traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge;
+                currentCurveForJumpingUpDownOrHorizontal = jumpingDownBigLedgeCurve;
             }
             else
             {
                 traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownSmallLedge;
+                currentCurveForJumpingUpDownOrHorizontal = jumpingDownSmallLedgeCurve;
             }
         }
         else
@@ -620,6 +626,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
             {
+                Debug.Log("Add Modifier");
                 activeSpeedModifiers.Add(jumpDownBigLedgeLandingSpeedModifier);
                 jumpDownBigLedgeLandingSpeedModifierActive = true;
                 nextjumpDownBigLedgeLandingSpeedModifierRemoveTime = Time.time + jumpDownBigLedgeLandingSpeedModifierDuration;
