@@ -28,10 +28,6 @@ public class EC_HumanoidCharacterController : EntityComponent
     [Space(5)]
     public float crouchSpeed;
     public float crouchAcceleration;
-    [Space(5)]
-    public float stunnedMovementSpeed;
-    public float stunnedSprintingSpeed;
-    public float stunnedCrouchedMovementSpeed;
 
     [Header("Damage Reactions")]
     public float damageThresholdForFlinch;
@@ -39,8 +35,6 @@ public class EC_HumanoidCharacterController : EntityComponent
     public float staggerDuration;
     public MovementSpeedModifier staggerMovementSpeedModifier;
 
-    [Header("Movement over different Areas")]
-    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
 
     // ---------- States & Stances ---------
     enum CharacterStance

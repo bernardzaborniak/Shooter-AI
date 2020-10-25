@@ -1708,18 +1708,13 @@ MonoBehaviour:
   combatStanceAcceleration: 9
   crouchSpeed: 0.9
   crouchAcceleration: 2
-  stunnedMovementSpeed: 1
-  stunnedSprintingSpeed: 4.5
-  stunnedCrouchedMovementSpeed: 0.5
   damageThresholdForFlinch: 10
   damageThresholdForStagger: 50
   staggerDuration: 1.5
   staggerMovementSpeedModifier:
     name: Stagger Mod
-    value: 0.7
-  steepSlopeMovementSpeedModifier:
-    name: 
-    value: 0
+    walkingSpeedMod: 0.8
+    sprintingSpeedMod: 0.7
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
@@ -1953,6 +1948,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  steepSlopeMovementSpeedModifier:
+    name: Steep Slope
+    walkingSpeedMod: 0.85
+    sprintingSpeedMod: 0.66
+  steepSlopeNavmeshAreaName: Steep Slope
 --- !u!114 &7366031314207611044
 MonoBehaviour:
   m_ObjectHideFlags: 0

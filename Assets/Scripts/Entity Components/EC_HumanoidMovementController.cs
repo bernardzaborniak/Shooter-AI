@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
-
-
-
+using UnityEngine.Experimental.AI;
 
 public class EC_HumanoidMovementController : EntityComponent, IMoveable
 {
@@ -179,6 +178,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     // Saved For Ragdolls or others
      Vector3 offMeshLinkTraversalVelocity; 
     
+    [Header("Traversing Sloped Surfaces")]
+    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
+    NavMeshHit navMeshHit = new NavMeshHit();
+    public string steepSlopeNavmeshAreaName;
+    int steepSlopeNavmeshAreaID;
 
 
     #endregion
@@ -193,17 +197,40 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         desiredForward = transform.forward;
         movementState = MovementState.Default;
 
+        steepSlopeNavmeshAreaID = 1 << NavMesh.GetAreaFromName(steepSlopeNavmeshAreaName);
+
     }
 
     public override void UpdateComponent()
     {
         if (movementState == MovementState.Default)
         {
-            
-           
+            //1. Navmesh Link Check
+
+            if (agent.isOnOffMeshLink)
+            {
+                StartTraversingOffMeshLink();
+                return;
+            }
+
+            //2. Check if agent is on sloped surface
+
+            agent.SamplePathPosition(NavMesh.AllAreas, 0.0f, out navMeshHit);
+
+            if(navMeshHit.mask == steepSlopeNavmeshAreaID)
+            {
+                Debug.Log("Agent is currently on sttep slope!! " + navMeshHit.mask);
+                activeSpeedModifiers.Add(steepSlopeMovementSpeedModifier);
+            }
+            else
+            {
+                activeSpeedModifiers.Remove(steepSlopeMovementSpeedModifier);
+            }
+          
 
 
-            // 1. Update movement according to movement Order 
+
+            // 3. Update movement according to movement Order 
             if (currentMovementOrder.IsWaitingForExecution())
             {
                 agent.isStopped = false;
@@ -221,7 +248,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 }
             }
 
-            // 2. Update rotation according to movement direction or externally set direction if manualRotation=true
+            // 4. Update rotation according to movement direction or externally set direction if manualRotation=true
             if (!manualRotation)
             {
                 if (agent.desiredVelocity != Vector3.zero)
@@ -232,24 +259,18 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             RotateTowards(desiredForward);
 
-            //3. Update animation
+            //5. Update animation
 
             //calculate forward and sideways velocity;
             Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
 
             if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
-           
-
-            //4. update agent speed
+            //6. update agent speed
             UpdateAgentSpeed(currentMovementOrder.sprint);
 
-            //5. Navmesh Link Check
 
-            if (agent.isOnOffMeshLink)
-            {
-                StartTraversingOffMeshLink();
-            }
+
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
         {
@@ -378,18 +399,27 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         if (currentMovementOrder.sprint)
         {
             currentDesiredSpeed = sprintingSpeed;
+
+            //Update Movement speed with modifiers
+            currentSpeed = currentDesiredSpeed;
+            foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
+            {
+                currentSpeed *= modifier.sprintingSpeedMod;
+            }
         }
         else
         {
             currentDesiredSpeed = defaultSpeed;
+
+            //Update Movement speed with modifiers
+            currentSpeed = currentDesiredSpeed;
+            foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
+            {
+                currentSpeed *= modifier.walkingSpeedMod;
+            }
         }
 
-        currentSpeed = currentDesiredSpeed;
-        //Update Movement speed with modifiers
-        foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
-        {
-            currentSpeed *= modifier.value;
-        }
+        
         agent.speed = currentSpeed;
     }
 

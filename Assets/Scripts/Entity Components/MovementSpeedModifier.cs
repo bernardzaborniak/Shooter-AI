@@ -6,5 +6,6 @@ using UnityEngine;
 public class MovementSpeedModifier
 {
     public string name;
-    public float value;
+    public float walkingSpeedMod;
+    public float sprintingSpeedMod;
 }
