@@ -2082,17 +2082,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.6666666
-      outSlope: 1.6666666
+      inSlope: 1.1764705
+      outSlope: 1.1764705
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.6
+      time: 0.85
       value: 1
-      inSlope: 1.6666666
-      outSlope: 1.6666666
+      inSlope: 1.1764705
+      outSlope: 1.1764705
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -2102,9 +2102,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpDownBigLedgeLandingSpeedModifier:
     name: Landing Mod
-    walkingSpeedMod: 0.2
-    sprintingSpeedMod: 0.1
-  jumpDownBigLedgeLandingSpeedModifierDuration: 0.25
+    walkingSpeedMod: 0
+    sprintingSpeedMod: 0
+  jumpDownBigLedgeLandingSpeedModifierDuration: 0.1
   steepSlopeMovementSpeedModifier:
     name: Steep Slope
     walkingSpeedMod: 0.85
