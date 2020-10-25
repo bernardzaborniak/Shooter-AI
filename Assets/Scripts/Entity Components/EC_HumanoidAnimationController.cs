@@ -158,6 +158,9 @@ public class EC_HumanoidAnimationController : EntityComponent
      Jump Down Small Ledge  3
      Jump Down Ledge        4
 
+
+
+
     */
 
     #endregion
@@ -349,50 +352,44 @@ public class EC_HumanoidAnimationController : EntityComponent
         animator.SetFloat(staggerSpeedMultiplierParamID, staggerAnimationsLengths[currentStaggerID]/ animationDuration);
         animator.SetInteger(staggerIDParamID, currentStaggerID);
 
-
         animator.SetTrigger(staggerParamID);
     }
 
-    public void StartJumpingOverObstacle(bool jumpOverObstacle, Vector3 startPointPosition, Vector3 endPointPosition, float traversalDuration)
+    public void StartJumpingOverObstacle(int jumpOverID, float traversalDuration) //EC_HumanoidMovementController.TraversingLinkJumpUpDownOrHorizontalType traversalType)
     {
         // 1. Determine which aniamtion to use, set jumpOverID & jumpOverSpeedModifier
-        if (jumpOverObstacle)
+        if (jumpOverID == 0)
         {
+            // Jump Over Obstacle
             animator.SetInteger(jumpOverIDParamID, 0);
             animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpOverObstacleAnimationDuration / traversalDuration);
         }
         else
         {
-            float horizontalDistance = Vector3.Distance(new Vector3(startPointPosition.x,0, startPointPosition.z), new Vector3(endPointPosition.x, 0, endPointPosition.z));
-            float verticalDistance = Mathf.Abs(startPointPosition.y - endPointPosition.y);
-
-            bool jumpingDown = endPointPosition.y < startPointPosition.y;
-
-            // we jump horzintally if the distance is bigger than 3 or the difference in height smaller than 0.3f
-            if (horizontalDistance>3 || verticalDistance < 0.4f)
+            if(jumpOverID == 1)
             {
+                //  Jump Horizontally
                 animator.SetInteger(jumpOverIDParamID, 1);
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpHorizontallyAnimationDuration / traversalDuration);
             }
-            //jump up small ledge
-            else if (!jumpingDown)
+            else if(jumpOverID == 2)
             {
+                //  Jump Up Small Ledge 
                 animator.SetInteger(jumpOverIDParamID, 2);
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpUpSmallLedgeAnimationDuration / traversalDuration);
             }
-            //jump down small ledge
-            else if (verticalDistance < 1.3f)
+            else if(jumpOverID == 3)
             {
+                //Jump Down Small Ledge 
                 animator.SetInteger(jumpOverIDParamID, 3);
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownSmallLedgeAnimationDuration / traversalDuration);
             }
-            //jump down big ledge
-            else
+            else if(jumpOverID == 4)
             {
+                // Jump Down Ledge 
                 animator.SetInteger(jumpOverIDParamID, 4);
                 animator.SetFloat(jumpOverSpeedMultiplierParamID, jumpDownLedgeAnimationDuration / traversalDuration);
             }
-
         }
        
 
