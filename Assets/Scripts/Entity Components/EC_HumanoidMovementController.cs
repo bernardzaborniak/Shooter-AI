@@ -94,6 +94,22 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     // Saved For Ragdolls or others
      Vector3 offMeshLinkTraversalVelocity;
 
+    //Modifying speed after landing
+    enum TraversingLinkJumpUpDownOrHorizontalType
+    {
+        JumpingHorizontal,
+        JumpingUp,
+        JumpingDownSmallLedge,
+        JumpingDownBigLedge
+    }
+    TraversingLinkJumpUpDownOrHorizontalType traversingLinkJumpUpDownOrHorizontalType;
+
+
+    public MovementSpeedModifier jumpDownBigLedgeLandingSpeedModifier;  //makes sure that the character doesnt sprint while playing hte landing animation
+    public float jumpDownBigLedgeLandingSpeedModifierDuration;
+    bool jumpDownBigLedgeLandingSpeedModifierActive = false;
+    float nextjumpDownBigLedgeLandingSpeedModifierRemoveTime;
+
     #endregion
 
 
@@ -229,7 +245,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if(navMeshHit.mask == steepSlopeNavmeshAreaID)
             {
-                Debug.Log("Agent is currently on sttep slope!! " + navMeshHit.mask);
                 activeSpeedModifiers.Add(steepSlopeMovementSpeedModifier);
             }
             else
@@ -272,7 +287,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
-            //6. update agent speed
+            //6. Remove Landing Speed modifier
+            if (jumpDownBigLedgeLandingSpeedModifierActive)
+            {
+                if(Time.time > nextjumpDownBigLedgeLandingSpeedModifierRemoveTime)
+                {
+                    jumpDownBigLedgeLandingSpeedModifierActive = false;
+                    activeSpeedModifiers.Remove(jumpDownBigLedgeLandingSpeedModifier);
+                }
+            }
+
+            //7. update agent speed
             UpdateAgentSpeed(currentMovementOrder.sprint);
 
         }
@@ -482,6 +507,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void StartTraversingOffMeshLink()
     {
+        //agent.speed = 0; does it make a difference?
+
         movementState = MovementState.TraversingOffMeshLink;
 
         OffMeshLinkData data = agent.currentOffMeshLinkData;
@@ -512,7 +539,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             }
             else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpDownUpOrHorizontal)
             {
-                StartTraversingLinkJumpOverHole();
+                StartTraversingLinkJumpDownUpOrHorizontal();
             }
             else if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.DefaultLinearLink)
             {
@@ -528,26 +555,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     }
 
-    void FinishTraversingOffMeshLink()
-    {
-        //agent.transform.position = currentLinkStartPosition;
-        agent.transform.position = currentLinkEndPosition;
-        agent.CompleteOffMeshLink();
-        
-
-        movementState = MovementState.Default;
-
-        //offMeshLinkTraversalVelocity = Vector3.zero;
-        currentTraversalNormalizedTime = 0;
-        offMeshLinkTraversalDirection = Vector3.zero;
-
-        // Inform Character Controler
-        characterController.OnStopTraversingOffMeshLink();
-
-        // Inform Animation Controller
-        animationController.StopJumpingOverObstacle();
-    }
-
     void StartTraversingLinkLinearly()
     {
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.Linear;
@@ -561,13 +568,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentRelativeObstacleOffset = currentObstacleHeight - 0.75f;//0.65f;
     }
 
-    void StartTraversingLinkJumpOverHole()
+    void StartTraversingLinkJumpDownUpOrHorizontal()
     {
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpUpDownOrHorizontal;
 
         currentJumpOverHoleHeight = currentDistanceToTraverse * distanceHeightRatio;
 
         float heightDifference = currentLinkEndPosition.y - currentLinkStartPosition.y;
+        Debug.Log("heightDifference: " + heightDifference);
 
         //if the distance between the point in y is big, we adjust the jumpOverHoleHeight based on the highest:
         if (heightDifference > 0.5f)
@@ -575,18 +583,68 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             //if going up
             currentCurveForJumpingUpDownOrHorizontal = jumpingUpCurve;
 
+            traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingUp;
+
         }
         else if (heightDifference < -0.5f)
         {
-            heightDifference = -heightDifference;
+            //heightDifference = -heightDifference; //we negate the difference, because ... WHY?
             currentCurveForJumpingUpDownOrHorizontal = jumpingDownCuve;
+
+            if (heightDifference < -1.3f)
+            {
+                traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge;
+            }
+            else
+            {
+                traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingDownSmallLedge;
+            }
+
+            
         }
         else
         {
             currentCurveForJumpingUpDownOrHorizontal = horizontalJumpCurve;
+            traversingLinkJumpUpDownOrHorizontalType = TraversingLinkJumpUpDownOrHorizontalType.JumpingHorizontal;
         }
     }
 
+    void FinishTraversingOffMeshLink()
+    {
+        agent.transform.position = currentLinkEndPosition;
+        agent.CompleteOffMeshLink();
+
+        movementState = MovementState.Default;
+
+        currentTraversalNormalizedTime = 0;
+        offMeshLinkTraversalDirection = Vector3.zero;
+
+        //Add the Speed Modifier and set the timer to disable it 
+        Debug.Log("prop: " + currentNavMeshLinkProperties);
+        if (currentNavMeshLinkProperties.navMeshLinkType == NavMeshLinkType.JumpDownUpOrHorizontal)
+        {
+            Debug.Log("1");
+            if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
+            {
+                Debug.Log("2");
+                Debug.Log("add modifier");
+                activeSpeedModifiers.Add(jumpDownBigLedgeLandingSpeedModifier);
+                jumpDownBigLedgeLandingSpeedModifierActive = true;
+                nextjumpDownBigLedgeLandingSpeedModifierRemoveTime = Time.time + jumpDownBigLedgeLandingSpeedModifierDuration;
+            }
+            else
+            {
+                Debug.Log("not 2, " + traversingLinkJumpUpDownOrHorizontalType);
+            }
+        }
+      
+
+        // Inform Character Controler
+        characterController.OnStopTraversingOffMeshLink();
+
+        // Inform Animation Controller
+        animationController.StopJumpingOverObstacle();
+    }
 
     #endregion
 

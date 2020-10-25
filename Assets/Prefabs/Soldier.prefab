@@ -1715,11 +1715,11 @@ MonoBehaviour:
     name: Stagger Mod
     walkingSpeedMod: 0.8
     sprintingSpeedMod: 0.7
+  humanoidDeathEffect: {fileID: 3943937303858629962}
+  offMeshLinkFinishDelayTime: 0.4
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
-  humanoidDeathEffect: {fileID: 3943937303858629962}
-  offMeshLinkFinishDelayTime: 0.4
 --- !u!114 &6119667436294565816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1791,7 +1791,6 @@ MonoBehaviour:
   agent: {fileID: 7366031314207611054}
   animationController: {fileID: 7366031314207611044}
   characterController: {fileID: 6597338694826147279}
-  showGizmo: 1
   angularAccelerationDistance: 90
   stationaryTurnSpeed: 0
   runningTurnSpeed: 50
@@ -1948,11 +1947,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  jumpDownBigLedgeLandingSpeedModifier:
+    name: Landing Mod
+    walkingSpeedMod: 0.2
+    sprintingSpeedMod: 0.1
+  jumpDownBigLedgeLandingSpeedModifierDuration: 0.25
   steepSlopeMovementSpeedModifier:
     name: Steep Slope
     walkingSpeedMod: 0.85
     sprintingSpeedMod: 0.66
   steepSlopeNavmeshAreaName: Steep Slope
+  showGizmo: 1
 --- !u!114 &7366031314207611044
 MonoBehaviour:
   m_ObjectHideFlags: 0
