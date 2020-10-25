@@ -7,6 +7,8 @@ public class EC_HumanoidCharacterController : EntityComponent
 {
     // Is the Interface between the Ai Controller and all the other Controllers like aiming movement etc...
 
+    #region Fields 
+
     [Header("References")]
     public EC_HumanoidMovementController movementController;
     public EC_HumanoidAnimationController animationController;
@@ -36,7 +38,28 @@ public class EC_HumanoidCharacterController : EntityComponent
     public MovementSpeedModifier staggerMovementSpeedModifier;
 
 
-    // ---------- States & Stances ---------
+  
+
+    [Header("Death Effect")]
+    public HumanoidDeathEffect humanoidDeathEffect;
+
+    [Header("Traversing OffmeshLink prevention")]
+    [Tooltip("after the traversal of the offMeshLink is finished, we stop the state after a small delay for smoother aniamtions and look")]
+    public float offMeshLinkFinishDelayTime;
+    float nextOffMeshFinishTime;
+    bool onStopTraversingOffMeshLinkIsDelayed;
+
+    [Header("For development only")]
+    public Transform aimAtTarget;
+    public Transform lookAtTarget;
+    public bool controllByPlayer;
+    //add a bool to character stance which tells if stance allows sprinting or not
+
+#endregion
+
+    #region State Fields
+
+    // ---------- CharacterStance ---------
     enum CharacterStance
     {
         Idle,
@@ -44,6 +67,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         Crouching,
     }
     CharacterStance currentStance;
+
+    // ---------- CharacterPreventionType ---------
 
     enum CharacterPreventionType
     {
@@ -53,28 +78,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
     CharacterPreventionType characterPreventionType;
-    //bool stunned;
     float endStunTime;
 
-
-
-    [Header("For development only")]
-    public Transform aimAtTarget;
-    public Transform lookAtTarget;
-    public bool controllByPlayer;
-    //add a bool to character stance which tells if stance allows sprinting or not
-
-    [Header("Death Effect")]
-    public HumanoidDeathEffect humanoidDeathEffect;
-
-
-
-    [Header("Traversing OffmeshLink prevention")]
-    [Tooltip("after the traversal of the offMeshLink is finished, we stop the state after a small delay for smoother aniamtions and look")]
-    public float offMeshLinkFinishDelayTime;
-    float nextOffMeshFinishTime;
-    bool onStopTraversingOffMeshLinkIsDelayed;
-
+    #endregion
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -202,24 +208,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             if (Time.time > endStunTime)
             {
                 characterPreventionType = CharacterPreventionType.NoPrevention;
-
-                //reset speds
-                /*if (currentStance == CharacterStance.Idle)
-                {
-                    movementController.SetDefaultSpeed(idleWalkingSpeed);
-                    movementController.SetSprintSpeed(idleSprintingSpeed);
-                }
-                else if (currentStance == CharacterStance.CombatStance)
-                {
-                    movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
-                    movementController.SetSprintSpeed(combatStanceSprintingSpeed);
-                }
-                else if (currentStance == CharacterStance.Crouching)
-                {
-                    movementController.SetDefaultSpeed(crouchSpeed);
-                }*/
                 movementController.RemoveSpeedModifier(staggerMovementSpeedModifier);
-
             }
         }else if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
@@ -230,13 +219,14 @@ public class EC_HumanoidCharacterController : EntityComponent
                     onStopTraversingOffMeshLinkIsDelayed = false;
 
                     characterPreventionType = CharacterPreventionType.NoPrevention;
-                    //handsIKController.EnableIKs();
                     handsIKController.OnStopTraversingOffMeshLink();
                 }
             } 
         }
     }
 
+
+    #region Changing Character Stances Orders
 
     void SetUpCharacter()
     {
@@ -249,7 +239,6 @@ public class EC_HumanoidCharacterController : EntityComponent
         animationController.ChangeToIdleStance();
         handsIKController.OnEnterIdleStance();
 
-        //StopAimAt();
         StopAimingSpine();
         StopAimingWeapon();
     }
@@ -268,7 +257,6 @@ public class EC_HumanoidCharacterController : EntityComponent
             
             handsIKController.OnEnterIdleStance();
 
-            //StopAimAt();
             StopAimingSpine();
             StopAimingWeapon();
         }
@@ -307,7 +295,50 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    #endregion
 
+    #region Character Stances Info
+
+    bool DoesCurrentStanceAllowSprinting()
+    {
+        if (currentStance == CharacterStance.Crouching)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    bool DoesCurrentStanceAllowAiming()
+    {
+        if (currentStance == CharacterStance.Idle)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public bool IsCrouched()
+    {
+        if (currentStance == CharacterStance.Crouching)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #endregion
+
+
+    #region Movement Orders
 
     public void MoveTo(Vector3 destination)
     {
@@ -329,7 +360,6 @@ public class EC_HumanoidCharacterController : EntityComponent
                 }
                 else
                 {
-                    //StopAimAt();
                     StopAimingSpine();
                     StopAimingWeapon();
                 }
@@ -344,33 +374,63 @@ public class EC_HumanoidCharacterController : EntityComponent
         movementController.AbortMoving();
     }
 
-    #region Aiming Weapon & Spine And LookAt
+    #endregion
 
-    /*public void AimAt(Transform traget)
+    #region Movement Info
+
+    public bool IsMoving()
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
-        {
-            if (DoesCurrentStanceAllowAiming())
-            {
-                //LookAt(traget);
-                AimSpineAtTarget(traget);
-
-                if (interactionController.GetCurrentSelecteditem() is Gun)
-                {
-                    AimWeaponAtTarget();
-                }
-
-            }
-        }
+        return movementController.IsMoving();
     }
 
-    public void StopAimAt()
+    public bool IsSprinting()
     {
-        //StopLookAt();
+        return movementController.IsSprinting();
+    }
+
+    public float GetRemainingDistanceToCurrentMovementTarget()
+    {
+        return movementController.GetRemainingDistance();
+    }
+
+    #endregion
+
+    #region Traversing Offmesh Links
+
+    public void OnStartTraversingOffMeshLink()
+    {
+        characterPreventionType = CharacterPreventionType.JumpingToTraverseOffMeshLink;
+
+        AbortReloadingWeapon();
+        //StopAimAt();
+        AbortChangingSelectedItem();
+        //AbortThrowingGrenade();
+
         StopAimingSpine();
         StopAimingWeapon();
-    }*/
 
+        //handsIKController.DisableIKs();
+        handsIKController.OnStartTraversingOffMeshLink();
+
+
+    }
+
+    public void OnStopTraversingOffMeshLink()
+    {
+        if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        {
+            onStopTraversingOffMeshLinkIsDelayed = true;
+            nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
+            //characterPreventionType = CharacterPreventionType.NoPrevention;
+            //handsIKController.OnStopTraversingOffMeshLink();
+        }
+
+    }
+
+    #endregion
+
+
+    #region Look At Orders
 
     public void LookAt(Transform target)
     {
@@ -385,7 +445,18 @@ public class EC_HumanoidCharacterController : EntityComponent
         aimingController.StopLookAt();
     }
 
+    #endregion
 
+    #region Look At Info
+
+    public bool IsLookingAtTarget()
+    {
+        return aimingController.IsCharacterLookingAtTarget();
+    }
+
+    #endregion
+
+    #region Aim Spine Orders
     public void AimSpineAtTransform(Transform target)
     {
        // if (characterPreventionType == CharacterPreventionType.NoPrevention)
@@ -427,12 +498,24 @@ public class EC_HumanoidCharacterController : EntityComponent
         aimingController.StopAimSpineAtTarget();
     }
 
+    #endregion
+
+    #region Aim Spine Info
+
     public float GetCurrentSpineAimingErrorAngle()
     {
         return aimingController.GetCurrentSpineAimingErrorAngle();
     }
 
-    //automaticly takes the spine target
+    public bool IsAimingSpine()
+    {
+        return aimingController.IsCharacterAimingSpine();
+    }
+
+    #endregion
+
+    #region Aim Weapon Orders Info
+
     public void AimWeaponAtTransform(Transform target)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
@@ -475,33 +558,30 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public void StopAimingWeapon()
+    {
+        aimingController.StopAimingWeaponAtTarget();
+    }
+
+    #endregion
+
+    #region Aim Weapon Orders Info
+
     public float GetCurrentWeaponAimingErrorAngle(bool ignoreRecoil)
     {
         return aimingController.GetCurrentWeaponAimingErrorAngle(ignoreRecoil);
     }
 
-    public void StopAimingWeapon()
-    {
-        aimingController.StopAimingWeaponAtTarget();
-    }
 
     public bool IsAimingWeapon()
     {
         return aimingController.IsCharacterAimingWeapon();
     }
 
-    public bool IsAimingSpine()
-    {
-        return aimingController.IsCharacterAimingSpine();
-    }
-
-    public bool IsLookingAtTarget()
-    {
-        return aimingController.IsCharacterLookingAtTarget();
-    }
-
     #endregion
 
+
+    #region Item Interation Orders
     public void ChangeSelectedItem(int inventoryID)
     {
         if (characterPreventionType == CharacterPreventionType.NoPrevention)
@@ -515,6 +595,15 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public void AbortChangingSelectedItem()
+    {
+        interactionController.AbortChangingItemInHand();
+    }
+
+    #endregion
+
+    #region Item Interaction Info
+
     public Item GetCurrentlySelectedItem()
     {
         return interactionController.GetCurrentSelectedItem();
@@ -525,10 +614,15 @@ public class EC_HumanoidCharacterController : EntityComponent
         return interactionController.GetItemInInventory(inventoryPosition);
     }
 
-    public void AbortChangingSelectedItem()
+    public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
     {
-        interactionController.AbortChangingItemInHand();
+        return interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon();
     }
+
+    #endregion
+
+
+    #region Weapon Combat Orders
 
     public void ShootWeapon()
     {
@@ -537,6 +631,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             interactionController.ShootWeapon();
         }
     }
+
 
     public void StartReloadingWeapon()
     {
@@ -556,10 +651,6 @@ public class EC_HumanoidCharacterController : EntityComponent
         interactionController.AbortReloadingWeapon();
     }
 
-    public int GetAmmoRemainingInMagazine()
-    {
-        return interactionController.GetAmmoRemainingInMagazine();
-    }
 
     public void ThrowGrenade(float throwVelocity, Vector3 throwDirection)
     {
@@ -569,72 +660,22 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
-
-
-    #region Info Getters
-
     public void AbortThrowingGrenade()
     {
         interactionController.AbortThrowingGrenade();
     }
 
-    bool DoesCurrentStanceAllowSprinting()
-    {
-        if (currentStance == CharacterStance.Crouching)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    #endregion
 
-    bool DoesCurrentStanceAllowAiming()
-    {
-        if (currentStance == CharacterStance.Idle)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
+    #region Weapon Combat Info
 
-    public bool IsCrouched()
+    public int GetAmmoRemainingInMagazine()
     {
-        if (currentStance == CharacterStance.Crouching)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool IsMoving()
-    {
-        return movementController.IsMoving();
-    }
-
-    public bool IsSprinting()
-    {
-        return movementController.IsSprinting();
-    }
-
-    public float GetRemainingDistanceToCurrentMovementTarget()
-    {
-        return movementController.GetRemainingDistance();
-    }
-
-    public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
-    {
-        return interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon();
+        return interactionController.GetAmmoRemainingInMagazine();
     }
 
     #endregion
+
 
     #region Damage And Death Reactions
 
@@ -692,44 +733,6 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
     #endregion
-
-    #region Traversing Offmesh Links
-
-    public void OnStartTraversingOffMeshLink()
-    {
-        characterPreventionType = CharacterPreventionType.JumpingToTraverseOffMeshLink;
-
-        AbortReloadingWeapon();
-        //StopAimAt();
-        AbortChangingSelectedItem();
-        //AbortThrowingGrenade();
-        
-        StopAimingSpine();
-        StopAimingWeapon();
-
-        //handsIKController.DisableIKs();
-        handsIKController.OnStartTraversingOffMeshLink();
-
-
-    }
-
-    public void OnStopTraversingOffMeshLink()
-    {
-         if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
-         {
-            onStopTraversingOffMeshLinkIsDelayed = true;
-            nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
-            //characterPreventionType = CharacterPreventionType.NoPrevention;
-            //handsIKController.OnStopTraversingOffMeshLink();
-        }
-       
-    }
-
-    #endregion
-
-
-
-
 
 
 }
