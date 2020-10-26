@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 3d9059b721ad5e242be9b9ca0e2246b6
+guid: b77af0491c996004b8cd48277f7286c7
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5099603970213671239
-    second: Flinch 3
+    second: Idle Standing 1
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Flinch 3
+      name: Idle Standing 1
       takeName: mixamo.com
       internalID: 0
-      firstFrame: 5
-      lastFrame: 20
+      firstFrame: 0
+      lastFrame: 93
       wrapMode: 0
       orientationOffsetY: 0
       level: -0.025
@@ -47,14 +47,14 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 1
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

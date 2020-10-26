@@ -1404,7 +1404,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Flinch 3
-  m_Speed: 2
+  m_Speed: 1.75
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8900972211441069827}
@@ -1714,7 +1714,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a5afc6775fa62d64daffab34e958cfea, type: 2}
+    m_Motion: {fileID: 7400000, guid: 071a203dd427c964996082d6a0ad0ef8, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -1754,7 +1754,7 @@ BlendTree:
     m_DirectBlendParameter: Movement Forward
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 5e767fc1018e61a4f9bd896eed71a0dd, type: 2}
+    m_Motion: {fileID: 7400000, guid: d3a3c1e15a7d4b44aa626d67964c891d, type: 2}
     m_Threshold: 0.35714287
     m_Position: {x: 0, y: 1.4}
     m_TimeScale: 1
@@ -2695,12 +2695,12 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: Flinch
     m_StateMachine: {fileID: 4844245289536228166}
-    m_Mask: {fileID: 0}
+    m_Mask: {fileID: 31900000, guid: f213868751e11b64dbfcacc40c387340, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 1
     m_SyncedLayerIndex: -1
-    m_DefaultWeight: 0.26
+    m_DefaultWeight: 0.18
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -4095,7 +4095,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Flinch 2
-  m_Speed: 1.5
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8751248428838133056}
@@ -4891,7 +4891,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Flinch 1
-  m_Speed: 2
+  m_Speed: 1.75
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3456835450043159987}
