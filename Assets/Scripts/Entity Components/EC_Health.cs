@@ -92,11 +92,18 @@ public class EC_Health : EntityComponent
 
     public override void UpdateComponent()
     {
-       /* if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             DamageInfo di = new DamageInfo(51);
             TakeDamage(ref di);
-        }*/
+            currentHealth += 51;
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            DamageInfo di = new DamageInfo(21);
+            TakeDamage(ref di);
+            currentHealth += 21;
+        }
 
         base.UpdateComponent();
 
