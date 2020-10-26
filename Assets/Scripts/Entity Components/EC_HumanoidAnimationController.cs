@@ -213,7 +213,7 @@ public class EC_HumanoidAnimationController : EntityComponent
 
     public override void UpdateComponent()
     {
-
+        //Debug.Log("Delta pos: " + animator.deltaPosition);
     }
 
     public void UpdateLocomotionAnimation(float velocity, float forwardVelocity, float sidewaysVelocity, float angularVelocity)
