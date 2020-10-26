@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: b77af0491c996004b8cd48277f7286c7
+guid: 032750ef345a4d046adfda26a1e3f3ad
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5099603970213671239
-    second: Idle Standing 1
+    second: Idle Walking 1
   externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -35,7 +35,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle Standing 1
+      name: Idle Walking 1
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
@@ -47,14 +47,14 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
-      keepOriginalPositionY: 0
+      keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
-      heightFromFeet: 1
+      heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

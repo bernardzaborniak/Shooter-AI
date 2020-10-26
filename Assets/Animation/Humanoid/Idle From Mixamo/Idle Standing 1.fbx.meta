@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 10abe9d3d12bf1247bc3f84d7bc71e53
+guid: d3fb90fc86f5aee4a9e6c0cf68da25b5
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -5099603970213671239
-    second: Flinch 1
+    second: Idle Standing 1
   externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Flinch 1
+      name: Idle Standing 1
       takeName: mixamo.com
       internalID: 0
-      firstFrame: 10
-      lastFrame: 25
+      firstFrame: 0
+      lastFrame: 93
       wrapMode: 0
       orientationOffsetY: 0
       level: -0.025
@@ -47,7 +47,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
