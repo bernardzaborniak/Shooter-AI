@@ -55,7 +55,13 @@ public class EC_HumanoidCharacterController : EntityComponent
     public bool controllByPlayer;
     //add a bool to character stance which tells if stance allows sprinting or not
 
-#endregion
+    [Header("Modifiers")]
+    //Speed Modifiers:
+    HashSet<CharacterModifier> activeModifiers = new HashSet<CharacterModifier>();
+    HashSet<CharacterModifier> modifiersToDeleteThisFrame = new HashSet<CharacterModifier>();
+
+
+    #endregion
 
     #region State Fields
 
@@ -202,13 +208,13 @@ public class EC_HumanoidCharacterController : EntityComponent
 
         #endregion
 
-        // Disable Stun after Time
+        // 1. Disable Stun after Time
         if (characterPreventionType == CharacterPreventionType.Stunned)
         {
             if (Time.time > endStunTime)
             {
                 characterPreventionType = CharacterPreventionType.NoPrevention;
-                movementController.RemoveSpeedModifier(staggerMovementSpeedModifier);
+                //RemoveModifier(staggerMovementSpeedModifier);
             }
         }else if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
@@ -223,6 +229,9 @@ public class EC_HumanoidCharacterController : EntityComponent
                 }
             } 
         }
+
+        // 2. Update Modifiers
+        UpdateModifiers();
     }
 
 
@@ -702,7 +711,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetDefaultSpeed(stunnedMovementSpeed);
             movementController.SetSprintSpeed(stunnedSprintingSpeed);
         }*/
-        movementController.AddSpeedModifier(staggerMovementSpeedModifier);
+        AddModifier(staggerMovementSpeedModifier);
 
 
 
@@ -730,6 +739,49 @@ public class EC_HumanoidCharacterController : EntityComponent
     public override void OnDie(ref DamageInfo damageInfo)
     {
         humanoidDeathEffect.EnableDeathEffect(movementController.GetCurrentVelocity(), movementController.GetCurrentAngularVelocity(), ref damageInfo);
+    }
+
+    #endregion
+
+
+    #region Modifiers
+
+    public void AddModifier(CharacterModifier modifier)
+    {
+        activeModifiers.Add(modifier);
+        modifier.Activate();
+    }
+
+    public void RemoveModifier(CharacterModifier modifier)
+    {
+        activeModifiers.Remove(modifier);
+    }
+
+    void UpdateModifiers()
+    {
+
+        foreach (CharacterModifier modifier in activeModifiers)
+        {
+            if (modifier.ShouldModifierBeDeactivated())
+            {
+                modifiersToDeleteThisFrame.Add(modifier);
+                
+            }
+        }
+
+        foreach (CharacterModifier modifier in modifiersToDeleteThisFrame)
+        {
+            activeModifiers.Remove(modifier);
+        }
+        modifiersToDeleteThisFrame.Clear();
+
+
+
+    }
+
+    public HashSet<CharacterModifier> GetActiveModifiers()
+    {
+        return activeModifiers;
     }
 
     #endregion

@@ -1713,6 +1713,8 @@ MonoBehaviour:
   staggerDuration: 1.5
   staggerMovementSpeedModifier:
     name: Stagger Mod
+    type: 0
+    modifierDuration: 1.5
     walkingSpeedMod: 0.8
     sprintingSpeedMod: 0.7
   humanoidDeathEffect: {fileID: 3943937303858629962}
@@ -1797,6 +1799,18 @@ MonoBehaviour:
   manualRotation: 0
   sprintingSpeed: 7
   defaultSpeed: 0
+  jumpDownBigLedgeLandingSpeedModifier:
+    name: Landing Mod
+    type: 0
+    modifierDuration: 0.1
+    walkingSpeedMod: 0
+    sprintingSpeedMod: 0
+  steepSlopeMovementSpeedModifier:
+    name: Steep Slope
+    type: 1
+    modifierDuration: 0
+    walkingSpeedMod: 0.85
+    sprintingSpeedMod: 0.66
   jumpOverObstacleYOffsetCurve:
     serializedVersion: 2
     m_Curve:
@@ -2100,15 +2114,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpDownBigLedgeLandingSpeedModifier:
-    name: Landing Mod
-    walkingSpeedMod: 0
-    sprintingSpeedMod: 0
-  jumpDownBigLedgeLandingSpeedModifierDuration: 0.1
-  steepSlopeMovementSpeedModifier:
-    name: Steep Slope
-    walkingSpeedMod: 0.85
-    sprintingSpeedMod: 0.66
   steepSlopeNavmeshAreaName: Steep Slope
   showGizmo: 1
 --- !u!114 &7366031314207611044

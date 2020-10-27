@@ -47,18 +47,18 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     public bool manualRotation;
 
 
-    [Header("Movement")]
+    [Header("Movement Speeds")]
     public float sprintingSpeed;
     public float defaultSpeed;
     float currentDesiredSpeed; //set the agent.speed as desiredSpeed * speedModifiers
     float currentSpeed;
 
-    //Speed Modifiers:
-    HashSet<MovementSpeedModifier> activeSpeedModifiers = new HashSet<MovementSpeedModifier>();
+    public MovementSpeedModifier jumpDownBigLedgeLandingSpeedModifier;  //Modifying speed after landing, makes sure that the character doesnt sprint while playing hte landing animation
+    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
 
 
     [Header("Traversing Off Mesh Links")]
-    #region Traversung NavmeshLink Fields
+    #region Traversing NavmeshLink Fields
 
     // For jumping over obstacle
     float currentObstacleHeight;
@@ -101,11 +101,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     // Saved For Ragdolls or others
     Vector3 offMeshLinkTraversalVelocity;
 
-    //Modifying speed after landing
-    public MovementSpeedModifier jumpDownBigLedgeLandingSpeedModifier;  //makes sure that the character doesnt sprint while playing hte landing animation
-    public float jumpDownBigLedgeLandingSpeedModifierDuration;
-    bool jumpDownBigLedgeLandingSpeedModifierActive = false;
-    float nextjumpDownBigLedgeLandingSpeedModifierRemoveTime;
+
 
 
     enum OffMeshLinkMoveMethod
@@ -130,7 +126,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
 
     [Header("Traversing Sloped Surfaces")]
-    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
+    
     NavMeshHit navMeshHit = new NavMeshHit();
     public string steepSlopeNavmeshAreaName;
     int steepSlopeNavmeshAreaID;
@@ -271,11 +267,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if(navMeshHit.mask == steepSlopeNavmeshAreaID)
             {
-                activeSpeedModifiers.Add(steepSlopeMovementSpeedModifier);
+                characterController.AddModifier(steepSlopeMovementSpeedModifier);
             }
             else
             {
-                activeSpeedModifiers.Remove(steepSlopeMovementSpeedModifier);
+                characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
             }
           
             // 3. Update movement according to movement Order 
@@ -313,15 +309,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
-            //6. Remove Landing Speed modifier
-            if (jumpDownBigLedgeLandingSpeedModifierActive)
-            {
-                if(Time.time > nextjumpDownBigLedgeLandingSpeedModifierRemoveTime)
-                {
-                    jumpDownBigLedgeLandingSpeedModifierActive = false;
-                    activeSpeedModifiers.Remove(jumpDownBigLedgeLandingSpeedModifier);
-                }
-            }
 
             //7. update agent speed
             UpdateAgentSpeed(currentMovementOrder.sprint);
@@ -461,9 +448,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
+            foreach (CharacterModifier modifier in characterController.GetActiveModifiers())
             {
-                currentSpeed *= modifier.sprintingSpeedMod;
+                if(modifier is MovementSpeedModifier)
+                {
+                    currentSpeed *= (modifier as MovementSpeedModifier).sprintingSpeedMod;
+                }  
             }
         }
         else
@@ -472,9 +462,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (MovementSpeedModifier modifier in activeSpeedModifiers)
+            foreach (CharacterModifier modifier in characterController.GetActiveModifiers())
             {
-                currentSpeed *= modifier.walkingSpeedMod;
+                if (modifier is MovementSpeedModifier)
+                {
+                    currentSpeed *= (modifier as MovementSpeedModifier).walkingSpeedMod;
+                }
             }
         }
 
@@ -519,16 +512,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     }
 
 
-    //-----------Modifiers---------------
-    public void AddSpeedModifier(MovementSpeedModifier modifier)
-    {
-        activeSpeedModifiers.Add(modifier);
-    }
-
-    public void RemoveSpeedModifier(MovementSpeedModifier modifier)
-    {
-        activeSpeedModifiers.Remove(modifier);
-    }
 
 
     #endregion
@@ -651,9 +634,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
             {
-                activeSpeedModifiers.Add(jumpDownBigLedgeLandingSpeedModifier);
-                jumpDownBigLedgeLandingSpeedModifierActive = true;
-                nextjumpDownBigLedgeLandingSpeedModifierRemoveTime = Time.time + jumpDownBigLedgeLandingSpeedModifierDuration;
+                characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier);
                 agent.velocity = Vector3.zero;
             }
         }
