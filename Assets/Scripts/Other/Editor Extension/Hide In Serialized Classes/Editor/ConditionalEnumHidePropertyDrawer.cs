@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEditor;
+
 
 //Original version of the ConditionalEnumHideAttribute created by Brecht Lecluyse (www.brechtos.com)
 //Modified by: -
