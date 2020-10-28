@@ -10,7 +10,8 @@ public class CharacterModifier
     {
         DeactivateAfterFixedDelay,
         DeactivateAfterDelayRandomBetween2,
-        DeactivateManually
+        DeactivateManually,
+        DeactivateManuallyWithDelay
     }
 
     [Header("Character Modifier Base Class")]
@@ -24,26 +25,64 @@ public class CharacterModifier
     public float modifierMinDuration;
 
     [ConditionalEnumHide("type", 1)]
-    public float modifierMaxDuration; 
+    public float modifierMaxDuration;
+
+    [ConditionalEnumHide("type", 3)]
+    [Tooltip("the modifier is deactivated after this small delay after deactivation")]
+    public float delayAfterManualDeactivation;
+    bool deactivateDelayStarted;
 
     float nextDeactivateModifierTime;
+    [Space(5)]
+    public float currentModifierDuration;
 
 
     public virtual void Activate()
     {
         if(type == ModiferType.DeactivateAfterFixedDelay)
         {
-            nextDeactivateModifierTime = Time.time + modifierDuration;
+            currentModifierDuration = modifierDuration;    
         }
         else if(type == ModiferType.DeactivateAfterDelayRandomBetween2)
         {
-            nextDeactivateModifierTime = Time.time + Random.Range(modifierMinDuration, modifierMaxDuration);
+
+            currentModifierDuration =  Random.Range(modifierMinDuration, modifierMaxDuration);
+        }
+
+        nextDeactivateModifierTime = Time.time + currentModifierDuration;
+
+
+        if (type == ModiferType.DeactivateManuallyWithDelay)
+        {
+            deactivateDelayStarted = false;
         }
     }
 
-    public virtual bool ShouldModifierBeDeactivated() //think of a different name for this
+    //Only for DeactivateManuallyWithDelay
+    public virtual bool HasDeactivationDelayPassed()
     {
-        if(type == ModiferType.DeactivateAfterFixedDelay || type == ModiferType.DeactivateAfterDelayRandomBetween2)
+        if(type == ModiferType.DeactivateManuallyWithDelay)
+        {
+            if (!deactivateDelayStarted)
+            {
+                deactivateDelayStarted = true;
+                nextDeactivateModifierTime = Time.time + delayAfterManualDeactivation;
+                return false;
+            }
+            else
+            {
+                if(Time.time> nextDeactivateModifierTime)
+                {
+                    return true;
+                }
+            }  
+        }
+        return true;
+    }
+
+    public virtual bool HasModifierTimeRunOut() //think of a different name for this
+    {
+        if(type == ModiferType.DeactivateAfterFixedDelay || type == ModiferType.DeactivateAfterDelayRandomBetween2 || type == ModiferType.DeactivateManuallyWithDelay && deactivateDelayStarted)
         {
             return (Time.time > nextDeactivateModifierTime);
         }
@@ -62,6 +101,21 @@ public class MovementSpeedModifier : CharacterModifier
     [Header("Movement Speed Modifier")]
     public float walkingSpeedMod;
     public float sprintingSpeedMod;
+
+
+}
+
+[System.Serializable]
+public class CharacterPreventionModifier : CharacterModifier
+{
+    public enum CharacterPreventionType
+    {
+        Stunned,
+        JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
+    }
+
+    [Header("Character Prevention Modifier")]
+    public CharacterPreventionType characterPreventionType;
 
 
 }

@@ -34,7 +34,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     [Header("Damage Reactions")]
     public float damageThresholdForFlinch;
     public float damageThresholdForStagger;
-    public float staggerDuration;
+    public CharacterPreventionModifier stunModifier;
     public MovementSpeedModifier staggerMovementSpeedModifier;
 
 
@@ -43,11 +43,6 @@ public class EC_HumanoidCharacterController : EntityComponent
     [Header("Death Effect")]
     public HumanoidDeathEffect humanoidDeathEffect;
 
-    [Header("Traversing OffmeshLink prevention")]
-    [Tooltip("after the traversal of the offMeshLink is finished, we stop the state after a small delay for smoother aniamtions and look")]
-    public float offMeshLinkFinishDelayTime;
-    float nextOffMeshFinishTime;
-    bool onStopTraversingOffMeshLinkIsDelayed;
 
     [Header("For development only")]
     public Transform aimAtTarget;
@@ -56,9 +51,17 @@ public class EC_HumanoidCharacterController : EntityComponent
     //add a bool to character stance which tells if stance allows sprinting or not
 
     [Header("Modifiers")]
-    //Speed Modifiers:
-    HashSet<CharacterModifier> activeModifiers = new HashSet<CharacterModifier>();
-    HashSet<CharacterModifier> modifiersToDeleteThisFrame = new HashSet<CharacterModifier>();
+
+    HashSet<MovementSpeedModifier> activeMovementSpeedModifiers = new HashSet<MovementSpeedModifier>();
+    HashSet<MovementSpeedModifier> movementSpeedModifiersToDeleteThisFrame = new HashSet<MovementSpeedModifier>();
+
+    HashSet<CharacterPreventionModifier> activeStunModifers = new HashSet<CharacterPreventionModifier>();
+    HashSet<CharacterPreventionModifier> stunModifiersToDeleteThisFrame = new HashSet<CharacterPreventionModifier>();
+
+    HashSet<CharacterPreventionModifier> activeTraversingOffmeshLinkPreventionModifers = new HashSet<CharacterPreventionModifier>();
+    HashSet<CharacterPreventionModifier> traversingOffmeshLinkPreventionModifiersToDeleteThisFrame = new HashSet<CharacterPreventionModifier>();
+
+
 
 
     #endregion
@@ -76,15 +79,8 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     // ---------- CharacterPreventionType ---------
 
-    enum CharacterPreventionType
-    {
-        NoPrevention,
-        Stunned,
-        JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
-    }
-
-    CharacterPreventionType characterPreventionType;
-    float endStunTime;
+   
+    //float endStunTime;
 
     #endregion
 
@@ -209,14 +205,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         #endregion
 
         // 1. Disable Stun after Time
-        if (characterPreventionType == CharacterPreventionType.Stunned)
+       /* if (characterPreventionType == CharacterPreventionType.Stunned)
         {
             if (Time.time > endStunTime)
             {
                 characterPreventionType = CharacterPreventionType.NoPrevention;
                 //RemoveModifier(staggerMovementSpeedModifier);
             }
-        }else if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        }else *//*if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {
             if (onStopTraversingOffMeshLinkIsDelayed)
             {
@@ -228,11 +224,12 @@ public class EC_HumanoidCharacterController : EntityComponent
                     handsIKController.OnStopTraversingOffMeshLink();
                 }
             } 
-        }
+        }*/
 
         // 2. Update Modifiers
         UpdateModifiers();
     }
+
 
 
     #region Changing Character Stances Orders
@@ -351,15 +348,16 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             movementController.MoveTo(destination, false);
         }
     }
 
+
     public void MoveTo(Vector3 destination, bool sprint)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (sprint)
             {
@@ -404,46 +402,14 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #endregion
 
-    #region Traversing Offmesh Links
 
-    public void OnStartTraversingOffMeshLink()
-    {
-        characterPreventionType = CharacterPreventionType.JumpingToTraverseOffMeshLink;
-
-        AbortReloadingWeapon();
-        //StopAimAt();
-        AbortChangingSelectedItem();
-        //AbortThrowingGrenade();
-
-        StopAimingSpine();
-        StopAimingWeapon();
-
-        //handsIKController.DisableIKs();
-        handsIKController.OnStartTraversingOffMeshLink();
-
-
-    }
-
-    public void OnStopTraversingOffMeshLink()
-    {
-        if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
-        {
-            onStopTraversingOffMeshLinkIsDelayed = true;
-            nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
-            //characterPreventionType = CharacterPreventionType.NoPrevention;
-            //handsIKController.OnStopTraversingOffMeshLink();
-        }
-
-    }
-
-    #endregion
 
 
     #region Look At Orders
 
     public void LookAt(Transform target)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             aimingController.LookAtTransform(target);
         }
@@ -480,7 +446,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineAtPosition(Vector3 position)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -492,7 +458,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -527,7 +493,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponAtTransform(Transform target)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -541,7 +507,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponAtPosition(Vector3 position)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -555,7 +521,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponInDirection(Vector3 direction)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (DoesCurrentStanceAllowAiming())
             {
@@ -593,7 +559,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region Item Interation Orders
     public void ChangeSelectedItem(int inventoryID)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (IsAimingWeapon())
             {
@@ -635,7 +601,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ShootWeapon()
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             interactionController.ShootWeapon();
         }
@@ -644,8 +610,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             if (IsAimingWeapon())
             {
@@ -663,7 +628,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void ThrowGrenade(float throwVelocity, Vector3 throwDirection)
     {
-        if (characterPreventionType == CharacterPreventionType.NoPrevention)
+        if (!AreModifiersPreventing())
         {
             interactionController.ThrowGrenade(throwVelocity, throwDirection);
         }
@@ -688,34 +653,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #region Damage And Death Reactions
 
-    void Stagger(float staggerDuration)
-    {
-        animationController.Stagger(staggerDuration);
-        characterPreventionType = CharacterPreventionType.Stunned;
-        endStunTime = Time.time + staggerDuration;
-
-        AbortReloadingWeapon();
-        // StopAimAt();
-        AbortChangingSelectedItem();
-        AbortThrowingGrenade();
-        StopAimingSpine();
-        StopAimingWeapon();
-
-
-        /*if (currentStance == CharacterStance.Crouching)
-        {
-            movementController.SetDefaultSpeed(stunnedCrouchedMovementSpeed);
-        }
-        else
-        {
-            movementController.SetDefaultSpeed(stunnedMovementSpeed);
-            movementController.SetSprintSpeed(stunnedSprintingSpeed);
-        }*/
-        AddModifier(staggerMovementSpeedModifier);
-
-
-
-    }
+  
 
     public override void OnTakeDamage(ref DamageInfo damageInfo)
     {
@@ -723,7 +661,10 @@ public class EC_HumanoidCharacterController : EntityComponent
         if (damageInfo.damage > damageThresholdForStagger)
         {
             //Stagger
-            Stagger(staggerDuration);
+            //Stagger(staggerDuration);
+            CharacterModifier addedModifier = AddModifier(stunModifier);
+            animationController.Stagger(addedModifier.currentModifierDuration);
+            AddModifier(staggerMovementSpeedModifier);
         }
         else if (damageInfo.damage > damageThresholdForFlinch)
         {
@@ -746,42 +687,212 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #region Modifiers
 
-    public void AddModifier(CharacterModifier modifier)
+    public CharacterModifier AddModifier(CharacterModifier modifier)
     {
-        activeModifiers.Add(modifier);
+        if(modifier is MovementSpeedModifier)
+        {
+            activeMovementSpeedModifiers.Add(modifier as MovementSpeedModifier);
+        }
+        else if(modifier is CharacterPreventionModifier)
+        {
+            CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
+
+            if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
+            {
+                if(activeStunModifers.Count == 0)
+                {
+                    activeStunModifers.Add(preventionMod);
+                    OnAddStunModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                }
+                else
+                {
+                    activeStunModifers.Add(preventionMod);
+                }
+            }
+            else if(preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
+            {
+                if (activeTraversingOffmeshLinkPreventionModifers.Count == 0)
+                {
+                    activeTraversingOffmeshLinkPreventionModifers.Add(preventionMod);
+                    OnAddTraversingOffmeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                }
+                else
+                {
+                    activeTraversingOffmeshLinkPreventionModifers.Add(preventionMod);
+                }
+            }
+
+        }
+
         modifier.Activate();
+        return modifier;
     }
 
     public void RemoveModifier(CharacterModifier modifier)
     {
-        activeModifiers.Remove(modifier);
+        bool remove = true;
+        //if(modifier.type == CharacterModifier.ModiferType.DeactivateManuallyWithDelay)
+        //{
+            if(!modifier.HasDeactivationDelayPassed())
+            {
+                remove = false;
+            }
+        //}
+
+        if (remove)
+        {
+            if (modifier is MovementSpeedModifier)
+            {
+                activeMovementSpeedModifiers.Remove(modifier as MovementSpeedModifier);
+            }
+            else if (modifier is CharacterPreventionModifier)
+            {
+                CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
+
+                if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
+                {
+                    activeStunModifers.Remove(preventionMod);
+                    if (activeStunModifers.Count == 0)
+                    {
+                        OnRemoveStunModifier(); //only execute when the last stun is removed
+                    }
+                }
+                else if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
+                {
+                    activeTraversingOffmeshLinkPreventionModifers.Remove(preventionMod);
+
+                    if (activeTraversingOffmeshLinkPreventionModifers.Count == 0)
+                    {
+                        OnRemoveTraversingOffmeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                    }
+                }
+            }
+        }
+        
     }
 
     void UpdateModifiers()
     {
-
-        foreach (CharacterModifier modifier in activeModifiers)
+        //Debug.Log("Modifiers this frame----------------------------------------------------");
+        foreach (MovementSpeedModifier modifier in activeMovementSpeedModifiers)
         {
-            if (modifier.ShouldModifierBeDeactivated())
+            //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
+            if (modifier.HasModifierTimeRunOut())
             {
-                modifiersToDeleteThisFrame.Add(modifier);
-                
+                movementSpeedModifiersToDeleteThisFrame.Add(modifier);             
             }
         }
-
-        foreach (CharacterModifier modifier in modifiersToDeleteThisFrame)
+        foreach (MovementSpeedModifier modifier in movementSpeedModifiersToDeleteThisFrame)
         {
-            activeModifiers.Remove(modifier);
+            activeMovementSpeedModifiers.Remove(modifier);
         }
-        modifiersToDeleteThisFrame.Clear();
+        movementSpeedModifiersToDeleteThisFrame.Clear();
 
+
+
+        foreach (CharacterPreventionModifier modifier in activeStunModifers)
+        {
+            //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
+
+            if (modifier.HasModifierTimeRunOut())
+            {
+                stunModifiersToDeleteThisFrame.Add(modifier);
+            }
+        }
+        foreach (CharacterPreventionModifier modifier in stunModifiersToDeleteThisFrame)
+        {
+            activeStunModifers.Remove(modifier);
+        }
+        stunModifiersToDeleteThisFrame.Clear();
+
+
+
+        foreach (CharacterPreventionModifier modifier in activeTraversingOffmeshLinkPreventionModifers)
+        {
+            //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
+
+            if (modifier.HasModifierTimeRunOut())
+            {
+                traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Add(modifier);
+            }
+        }
+        foreach (CharacterPreventionModifier modifier in traversingOffmeshLinkPreventionModifiersToDeleteThisFrame)
+        {
+            activeTraversingOffmeshLinkPreventionModifers.Remove(modifier);
+        }
+        traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Clear();
 
 
     }
 
-    public HashSet<CharacterModifier> GetActiveModifiers()
+    public HashSet<MovementSpeedModifier> GetActiveMovementSpeedModifiers()
     {
-        return activeModifiers;
+        return activeMovementSpeedModifiers;
+    }
+
+
+
+    public bool AreModifiersPreventing()
+    {
+        if (activeStunModifers.Count > 0 )
+        {
+            if(activeTraversingOffmeshLinkPreventionModifers.Count > 0)
+            {
+                return true;
+            } 
+        }
+
+        return false;
+
+    }
+
+
+    void OnAddStunModifier()
+    {
+        AbortReloadingWeapon();
+        // StopAimAt();
+        AbortChangingSelectedItem();
+        AbortThrowingGrenade();
+        StopAimingSpine();
+        StopAimingWeapon();
+    }
+
+    void OnRemoveStunModifier()
+    {
+
+    }
+
+    void OnAddTraversingOffmeshLinkPreventionModifier()
+    {
+
+        AbortReloadingWeapon();
+        //StopAimAt();
+        AbortChangingSelectedItem();
+        //AbortThrowingGrenade();
+
+        StopAimingSpine();
+        StopAimingWeapon();
+
+        //handsIKController.DisableIKs();
+        handsIKController.OnStartTraversingOffMeshLink();
+
+
+    }
+
+    void OnRemoveTraversingOffmeshLinkPreventionModifier()
+    {
+        /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
+        {*/
+
+
+            //onStopTraversingOffMeshLinkIsDelayed = true;
+            //nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
+
+
+            //characterPreventionType = CharacterPreventionType.NoPrevention;
+            //handsIKController.OnStopTraversingOffMeshLink();
+        //}
+
     }
 
     #endregion

@@ -1710,17 +1710,26 @@ MonoBehaviour:
   crouchAcceleration: 2
   damageThresholdForFlinch: 10
   damageThresholdForStagger: 50
-  staggerDuration: 1.5
+  stunModifier:
+    name: Stun Prev Mod
+    type: 1
+    modifierDuration: 0
+    modifierMinDuration: 1.3
+    modifierMaxDuration: 1.7
+    delayAfterManualDeactivation: 0
+    currentModifierDuration: 0
+    characterPreventionType: 0
   staggerMovementSpeedModifier:
-    name: Stagger Mod
+    name: Stagger Mov Speed Mod
     type: 0
-    modifierDuration: 1.5
+    modifierDuration: 0
     modifierMinDuration: 0
     modifierMaxDuration: 0
+    delayAfterManualDeactivation: 0
+    currentModifierDuration: 0
     walkingSpeedMod: 0.8
     sprintingSpeedMod: 0.7
   humanoidDeathEffect: {fileID: 3943937303858629962}
-  offMeshLinkFinishDelayTime: 0.4
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
@@ -1802,21 +1811,34 @@ MonoBehaviour:
   sprintingSpeed: 7
   defaultSpeed: 0
   jumpDownBigLedgeLandingSpeedModifier:
-    name: Landing Mod
+    name: Landing Mov Speed Mod
     type: 1
     modifierDuration: 0.1
     modifierMinDuration: 0.08
     modifierMaxDuration: 0.12
+    delayAfterManualDeactivation: 0
+    currentModifierDuration: 0
     walkingSpeedMod: 0
     sprintingSpeedMod: 0
   steepSlopeMovementSpeedModifier:
-    name: Steep Slope
+    name: Steep Slope Speed Mod
     type: 2
     modifierDuration: 0
     modifierMinDuration: 0
     modifierMaxDuration: 0
+    delayAfterManualDeactivation: 0
+    currentModifierDuration: 0
     walkingSpeedMod: 0.85
     sprintingSpeedMod: 0.66
+  traversingOffMeshLinkPreventionModifier:
+    name: Navmesh Link Prev Mod
+    type: 3
+    modifierDuration: 0
+    modifierMinDuration: 0
+    modifierMaxDuration: 0
+    delayAfterManualDeactivation: 0.4
+    currentModifierDuration: 0
+    characterPreventionType: 0
   jumpOverObstacleYOffsetCurve:
     serializedVersion: 2
     m_Curve:

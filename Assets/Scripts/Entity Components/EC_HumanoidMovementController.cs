@@ -58,6 +58,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     [Header("Traversing Off Mesh Links")]
     #region Traversing NavmeshLink Fields
+    public CharacterPreventionModifier traversingOffMeshLinkPreventionModifier;
 
     // For jumping over obstacle
     float currentObstacleHeight;
@@ -447,12 +448,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (CharacterModifier modifier in characterController.GetActiveModifiers())
+            foreach (MovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
             {
-                if(modifier is MovementSpeedModifier)
-                {
-                    currentSpeed *= (modifier as MovementSpeedModifier).sprintingSpeedMod;
-                }  
+                 currentSpeed *= modifier.sprintingSpeedMod; 
             }
         }
         else
@@ -461,12 +459,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (CharacterModifier modifier in characterController.GetActiveModifiers())
+            foreach (MovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
             {
-                if (modifier is MovementSpeedModifier)
-                {
-                    currentSpeed *= (modifier as MovementSpeedModifier).walkingSpeedMod;
-                }
+                currentSpeed *= modifier.walkingSpeedMod;
             }
         }
 
@@ -558,7 +553,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         // Inform Character Controler
-        characterController.OnStartTraversingOffMeshLink();
+        //characterController.OnStartTraversingOffMeshLink();
+        characterController.AddModifier(traversingOffMeshLinkPreventionModifier);
 
         // Inform Animation Controller
         animationController.StartJumpingOverObstacle(GetAnimationIDCorrespondingToTraversingType(), currentLinkTraverseDuration);
@@ -644,7 +640,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
 
         // Inform Character Controler
-        characterController.OnStopTraversingOffMeshLink();
+        //characterController.OnStopTraversingOffMeshLink();
+        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier);
 
         // Inform Animation Controller
         animationController.StopJumpingOverObstacle();
