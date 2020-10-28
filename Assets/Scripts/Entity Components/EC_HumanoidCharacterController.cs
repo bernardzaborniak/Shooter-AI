@@ -881,16 +881,17 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void OnRemoveTraversingOffmeshLinkPreventionModifier()
     {
+        handsIKController.OnStopTraversingOffMeshLink();
         /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {*/
 
 
-            //onStopTraversingOffMeshLinkIsDelayed = true;
-            //nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
+        //onStopTraversingOffMeshLinkIsDelayed = true;
+        //nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
 
 
-            //characterPreventionType = CharacterPreventionType.NoPrevention;
-            //handsIKController.OnStopTraversingOffMeshLink();
+        //characterPreventionType = CharacterPreventionType.NoPrevention;
+        //handsIKController.OnStopTraversingOffMeshLink();
         //}
 
     }

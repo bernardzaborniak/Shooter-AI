@@ -2433,6 +2433,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2359f402deefc60459ebff3ea85bff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  optimiseAnimator: 0
+  animator: {fileID: 3479307253520860033}
+  animatorUpdateInterval: 0.06666668
   spineTarget: {fileID: 7707363000070997972}
   spineBone1: {fileID: 7961269438824104043}
   spineBone2: {fileID: 1832169487545923482}
@@ -4112,6 +4115,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 7f4265e7831b802469385062f6888f63, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 6be324008b89e6e46b59b621e2b6386c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6be324008b89e6e46b59b621e2b6386c, type: 3}
 --- !u!4 &1832169487545923482 stripped
