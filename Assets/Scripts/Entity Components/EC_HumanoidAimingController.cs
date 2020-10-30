@@ -52,26 +52,31 @@ public class EC_HumanoidAimingController : EntityComponent
     public EC_HumanoidMovementController movementController;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
     public Transform aimingReferencePointOnBody; //could be spine 3
-  
-    
-    Vector3 desiredLocalSpineDirection; //direction localToThe aimingReferencePoint
-    
+
+    //directions local to the aimingReferencePoint
+    Vector3 desiredLocalSpineDirection; 
     Vector3 currentLocalSpineDirection;
-    //Vector3 currentSpineDirectionChangeVelocity;
-    //float desiredSpineXRotation;
 
     //the non local directions are not used by the spine calculation
     Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
 
+    //Used For Vector3 Slerp
+    [Space(10)]
+    [Tooltip("average velocity of spine rotation up and down")]
+    public float spineAverageAngularVelocity;
+    [Tooltip("the distance in degrees the spine needs to gain maximum velocity on its rotation up and down")]
+    public float spineAngularAccelerationDistance;
+
+    float rot_spineAngularSmoothTime;
+    Vector3 rot_spineLastDesiredDirection;
+    Vector3 rot_spineCurrentVelocity;
+
+    // Used for Setting Constraints Weights
     float spineConstraint1TargetWeight;
     float spineConstraint2TargetWeight;
     float spineConstraint3TargetWeight;
-   //float spineConstraint1CurrentWeight;
-    //float spineConstraint2CurrentWeight;
-   // float spineConstraint3CurrentWeight;
-   // [Tooltip("Basically The Speed at which the spine Rotates Up and Down, the smaller the smooth time, the faster the rotation")]
-    //public float spineConstraintDirectionChangeSmoothTime = 0.1f;
+
     [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
@@ -121,41 +126,24 @@ public class EC_HumanoidAimingController : EntityComponent
     public float maxWeaponRotDifference;
     [Tooltip("speed used for Quaternion.RotateTowards() - not used anymore")]
     public float weaponAimRotationSpeed;
-    //[Tooltip("The smaller this value, the faster the weapon aims, it uses vector3.smoothDamp to smooth the movement a little bit")]
-    //public float aimingWeaponSmoothTime = 0.05f;
+
     Vector3 currentWeaponDirection;
     Vector3 desiredWeaponDirection;
-   // Vector3 weaponAimSpeedRef;
 
-    #endregion
 
-    #region for rotation
-
-    [Header("Rotation")]
-    public float spineAverageAngularVelocity;
-    public float spineAngularAccelerationDistance;
-    //Vector3 spineAngularVelocity;
-    float rot_spineAngularSmoothTime;
-
-    Quaternion rot_spineTargetRotation;
-    Vector3 rot_spineLastDesiredDirection;
-    Quaternion rot_spineCurrentRotation;
-    Quaternion rot_spineDerivQuaternion;
-    Vector3 rot_spineCurrentVelocity;
-
+    //Used For Vector3 Slerp
     [Space(10)]
+    [Tooltip("average velocity of weapon rotation ")]
     public float weaponAverageAngularVelocity;
+    [Tooltip("the distance in degrees the weapon needs to gain maximum velocity")]
     public float weaponAngularAccelerationDistance;
-    //Vector3 weaponAngularVelocity;
+
     float rot_weaponAngularSmoothTime;
-
-    Quaternion rot_weaponTargetRotation;
-    Quaternion rot_weaponCurrentRotation;
-    Quaternion rot_weaponDerivQuaternion;
-
-
-
+    Vector3 rot_weaponLastDesiredDirection;
+    Vector3 rot_weaponCurrentVelocity;
     #endregion
+
+
 
 
     [Header("Debug")]
@@ -167,9 +155,13 @@ public class EC_HumanoidAimingController : EntityComponent
         base.SetUpComponent(entity);
 
         //currentSpineDirection = transform.forward;
-       // desiredSpineDirection = currentSpineDirection;
+        // desiredSpineDirection = currentSpineDirection;
+
+        //currentSpineDirection = transform.forward;
+        //currentWeaponDirection = transform.forward;
 
         rot_spineLastDesiredDirection = Vector3.forward;
+        rot_weaponLastDesiredDirection = Vector3.forward;
 
         weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
     }
@@ -215,7 +207,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Spine
 
-        #region  Calculate Desired Direction - Only If aimingSpine == true -
+        #region  Calculate Desired & current Direction - Only If aimingSpine == true -
 
         if (aimingSpine)
         {
@@ -240,30 +232,22 @@ public class EC_HumanoidAimingController : EntityComponent
 
             // -------------   Calculate V3 desiredLocalSpineDirection & current -----------------
             desiredLocalSpineDirection = new Vector3(0, directionFromAimingReferencePointToSpineTarget.y, new Vector2(directionFromAimingReferencePointToSpineTarget.x, directionFromAimingReferencePointToSpineTarget.z).magnitude);
-            currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z);
+            desiredSpineDirection = transform.TransformDirection(desiredLocalSpineDirection);
+            currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z); //cla,p the currentDirection so it only goes up and down
+
         }
         #endregion
 
-        #region Move Current Direction towards desired, update spineConstraintLocalTarget position - Only If Hasnt Reached Desired Direction, 
+        #region Move Current Direction towards desired, update spineConstraintLocalTarget position 
 
-        bool reachedDesiredDirection = false;
-        if (Vector3.Angle(desiredLocalSpineDirection, currentLocalSpineDirection) < 0.1f)
-        {
-            reachedDesiredDirection = true;
-        }
+        //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
+        currentLocalSpineDirection = RotateSpineTowards(currentLocalSpineDirection, desiredLocalSpineDirection);
 
-        if (!reachedDesiredDirection)
-        {
-            //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
-            currentLocalSpineDirection = RotateSpineTowards(currentLocalSpineDirection,desiredLocalSpineDirection);
+        // ----------    Set the world direction for further use: ----------  
+        currentSpineDirection = transform.TransformDirection(currentLocalSpineDirection);
 
-            // ----------    Set the world directions for further use: ----------  
-            desiredSpineDirection = transform.TransformDirection(desiredLocalSpineDirection);
-            currentSpineDirection = transform.TransformDirection(currentLocalSpineDirection);
-
-            //----------     Set the target Transform position for the constraint Controller ----------  
-            spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
-        }
+        //----------     Set the target Transform position for the constraint Controller ----------  
+        spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
         #endregion
 
@@ -321,11 +305,11 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Weapon
 
-        #region Calculate desiredWeaponAimDirection 
+        #region Calculate Desired & current Direction - Only If aimingWeapon == true 
+
         if (aimingWeapon)
         {
             // ---------------  1. Calculate Direction to aim at -----------
-
             if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
             {
                 //pointToAimSpineAt = aimingReferencePointOnBody.position + spineAimDirection * defaultDirectionAimDistance;
@@ -342,37 +326,26 @@ public class EC_HumanoidAimingController : EntityComponent
                 weaponDirectionToTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;
             }
 
-
-
-            // Calculate & Rotate Weapon Aim Direction
-            //desiredWeaponAimDirection = Vector3.RotateTowards(currentSpineDirection, spineDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-            //desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-           
-            //desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
             desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-            currentWeaponDirection = currentWeaponDirection.normalized * desiredWeaponDirection.magnitude;
-
-        }
-        else
-        {
-            //desiredWeaponDirection = transform.forward;
-            //currentWeaponDirection = currentSpineDirection;
-            //desiredWeaponDirection = currentWeaponDirection;
+            currentWeaponDirection = currentWeaponDirection.normalized * desiredWeaponDirection.magnitude; //lenthen current Direction so it has the same length as desird, only then vector slerp wil give correct results
         }
 
         #endregion
 
-        #region Smoothly rotate the weapon towards desiredWeaponDirection & smooth out change in weaponAimingRig.weight
-        /*
-        // currentWeaponDirection = Vector3.SmoothDamp(currentWeaponDirection, desiredWeaponDirection, ref weaponAimSpeedRef, aimingWeaponSmoothTime);
-        currentWeaponDirection = RotateWeaponTowards(desiredWeaponDirection);
+        #region Move Current Direction towards desired, update spineConstraintLocalTarget position 
+
+        //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
+        currentWeaponDirection = RotateWeaponTowards(currentWeaponDirection, desiredWeaponDirection);
+
+        //----------     Set the target Transform position for the constraint Controller ----------  
         weaponAimLocalTarget.position = aimingReferencePointOnBody.position + currentWeaponDirection;
 
-        // Smooth out the change between aiming weapon and holding it idle
+        // -------------- Smooth out the change between aiming weapon and holding it idle
         float changeSpeed = aimingWeightChangeSpeed * Time.deltaTime;
         constraintController.weaponAimWeight += Mathf.Clamp((desiredWeaponAimingConstraintWeight - constraintController.weaponAimWeight), -changeSpeed, changeSpeed);
-        */
+
         #endregion
+
 
         #endregion
     }
@@ -386,14 +359,6 @@ public class EC_HumanoidAimingController : EntityComponent
             aimingSpine = true;
             currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
             movementController.manualRotation = true;
-            directionFromAimingReferencePointToSpineTarget = direction;
-
-            //currentSpineDirection = transform.forward;
-            //currentSpineDirection = spineConstraintLocalTarget.position - aimingReferencePointOnBody.position;
-
-            //SetSpineDirectionToTarget();
-
-            movementController.SetDesiredForward(direction);
         }
        
     }
@@ -406,9 +371,6 @@ public class EC_HumanoidAimingController : EntityComponent
             currentSpineTargetingMethod = AimAtTargetingMethod.Position;
             movementController.manualRotation = true;
             spinePositionOfTarget = position;
-
-            //currentSpineDirection = spineConstraintLocalTarget.position - aimingReferencePointOnBody.position;
-
         }
     }
 
@@ -420,10 +382,6 @@ public class EC_HumanoidAimingController : EntityComponent
             currentSpineTargetingMethod = AimAtTargetingMethod.Transform;
             movementController.manualRotation = true;
             spineTransformOfTarget = transform;
-
-            //currentSpineDirection = transform.forward;
-            //currentSpineDirection = spineConstraintLocalTarget.position - aimingReferencePointOnBody.position; //we just take the current direction, so
-
         }
     }
 
@@ -437,9 +395,6 @@ public class EC_HumanoidAimingController : EntityComponent
             movementController.manualRotation = false;
 
             desiredSpineDirection = transform.forward;
-           /* spineConstraint1TargetWeight = 0f;
-            spineConstraint2TargetWeight = 0f;
-            spineConstraint3TargetWeight = 0f;*/
         }
     }
 
@@ -501,10 +456,6 @@ public class EC_HumanoidAimingController : EntityComponent
         currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
         weaponDirectionToTarget = direction;
         desiredWeaponAimingConstraintWeight = 1;
-
-        // currentWeaponDirection = transform.forward; //could be something else - lik,e the actual weaponAImTransform?
-        //currentWeaponDirection = currentSpineDirection; //could be something else - lik,e the actual weaponAImTransform?
-        //currentWeaponDirection.magnitude = direction-
     }
 
     public void AimWeaponAtPosition(Vector3 position)
@@ -516,9 +467,6 @@ public class EC_HumanoidAimingController : EntityComponent
         currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
         weaponPositionOfTarget = position;
         desiredWeaponAimingConstraintWeight = 1;
-
-        //currentWeaponDirection = transform.forward;
-        //currentWeaponDirection = currentSpineDirection;
     }
 
     public void AimWeaponAtTransform(Transform transform)
@@ -530,9 +478,6 @@ public class EC_HumanoidAimingController : EntityComponent
         currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
         weaponTransformOfTarget = transform;
         desiredWeaponAimingConstraintWeight = 1;
-
-        //currentWeaponDirection = transform.forward;
-        //currentWeaponDirection = currentSpineDirection;
     }
 
     public void StopAimingWeaponAtTarget()
@@ -561,44 +506,18 @@ public class EC_HumanoidAimingController : EntityComponent
         return Vector3.SmoothDamp(fromRotation, rot_spineLastDesiredDirection, ref rot_spineCurrentVelocity, rot_spineAngularSmoothTime);
      }
 
-    Vector3 RotateWeaponTowards(Vector3 direction)
+    Vector3 RotateWeaponTowards(Vector3 fromRotation, Vector3 desiredDirection)
     {
-        //TODO do an vector3 slerp instead, also with adjustable smooth time
-        /*if(currentWeaponDirection == Vector3.zero)
+
+        //adjust the smooth time , if target changes -> to ensure constant speeds at big and at small angles
+        if (Vector3.Angle(rot_weaponLastDesiredDirection, desiredDirection) > 0.1f)
         {
-            currentWeaponDirection = weaponAimTransform.forward;
-        }*/
+            rot_weaponLastDesiredDirection = desiredDirection;
 
-
-        //only rotate on y axis
-        rot_weaponCurrentRotation = Quaternion.LookRotation(currentWeaponDirection);
-        //Debug.Log("currentWeaponDirection: " + currentWeaponDirection);
-
-
-        if (rot_weaponTargetRotation != Quaternion.LookRotation(direction))
-        {
-            rot_weaponTargetRotation = Quaternion.LookRotation(direction);
-
-            float distance = Quaternion.Angle(rot_weaponCurrentRotation, rot_weaponTargetRotation);
-            //adjust the smooth time to ensure constant speeds at big and at small angles
+            float distance = Vector3.Angle(currentWeaponDirection, rot_weaponLastDesiredDirection);
             rot_weaponAngularSmoothTime = Utility.CalculateSmoothTime(distance, weaponAverageAngularVelocity, weaponAngularAccelerationDistance);
         }
-
-       // Debug.Log("rot_currentSpineRotation: " + rot_weaponCurrentRotation.eulerAngles);
-        //Debug.Log("rot_targetSpineRotation: " + rot_weaponTargetRotation.eulerAngles);
-
-        //return  Utility.SmoothDamp(rot_currentSpineRotation, rot_targetSpineRotation, ref rot_spineDerivQuaternion, rot_spineAgularSmoothTime) * Vector3.forward;
-        //return  rot_currentSpineRotation * Quaternion.Inverse(Utility.SmoothDamp(rot_currentSpineRotation, rot_targetSpineRotation, ref rot_spineDerivQuaternion, rot_spineAgularSmoothTime)) * currentSpineDirection;
-        Vector3 ret = Utility.SmoothDamp(rot_weaponCurrentRotation, rot_weaponTargetRotation, ref rot_weaponDerivQuaternion, rot_weaponAngularSmoothTime) * Quaternion.Inverse(rot_weaponCurrentRotation) * currentWeaponDirection;
-
-        Vector3 vel = Utility.DerivToAngVelCorrected(rot_weaponCurrentRotation, rot_weaponDerivQuaternion);
-        //Debug.Log("vel.x: " + vel.x);
-        //Debug.Log("vel.y: " + vel.y);
-       // Debug.Log("vel.z: " + vel.z);
-
-        return ret;
-
-
+        return Vector3.SmoothDamp(fromRotation, rot_weaponLastDesiredDirection, ref rot_weaponCurrentVelocity, rot_weaponAngularSmoothTime);
     }
 
     #endregion
@@ -680,25 +599,34 @@ public class EC_HumanoidAimingController : EntityComponent
             Gizmos.color = Color.blue;
             Gizmos.DrawSphere(spineConstraintLocalTarget.position, 0.05f);
 
-/*
-            Gizmos.color = Color.blue;
-            Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentSpineDirection, 0.05f);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);*/
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f); 
 
-            // Gizmos.color = Color.green;
-            //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
+                   Gizmos.color = Color.red;
+            Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection, 0.05f); 
 
-            // Gizmos.color = Color.red;
-            //Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection.normalized * desiredWeaponDirection.magnitude, 0.05f);
-            // Gizmos.DrawSphere(weaponAimLocalTarget.position, 0.05f);
+             /*
+                         Gizmos.color = Color.blue;
+                         Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentSpineDirection, 0.05f);
 
-            //Gizmos.color = Color.cyan;
-            //Gizmos.DrawLine(aimingReferencePointOnBody.position, aimingReferencePointOnBody.position + spineDirectionToTarget);
-            //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
+                         Gizmos.color = Color.red;
+                         Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);*/
 
-            Gizmos.color = Color.yellow;
+             // Gizmos.color = Color.green;
+             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
+
+             // Gizmos.color = Color.red;
+             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection.normalized * desiredWeaponDirection.magnitude, 0.05f);
+             // Gizmos.DrawSphere(weaponAimLocalTarget.position, 0.05f);
+
+             //Gizmos.color = Color.cyan;
+             //Gizmos.DrawLine(aimingReferencePointOnBody.position, aimingReferencePointOnBody.position + spineDirectionToTarget);
+             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
+
+             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + transform.forward*3, 0.2f);
 
         }
