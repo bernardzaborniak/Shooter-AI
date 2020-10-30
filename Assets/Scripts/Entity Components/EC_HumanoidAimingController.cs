@@ -215,11 +215,11 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Spine
 
-        #region Only If Aiming Spine - Calculate Desired Direction
+        #region  Calculate Desired Direction - Only If aimingSpine == true -
 
         if (aimingSpine)
         {
-            // ---------------  1. Calculate Direction to aim at -----------
+            // ---------------  Calculate Direction to aim at -----------
             // Basically all aim At Modes work the same that we have a direction in whihc to aim - from the aimingReferencePoint
 
             if (currentSpineTargetingMethod == AimAtTargetingMethod.Direction)
@@ -235,16 +235,16 @@ public class EC_HumanoidAimingController : EntityComponent
                 directionFromAimingReferencePointToSpineTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
             }
 
-            // -------------   2. Rotate Horizontally ----------------
+            // -------------   Rotate Horizontally ----------------
             movementController.SetDesiredForward(directionFromAimingReferencePointToSpineTarget);
 
-            // -------------   3. Calculate V3 desiredLocalSpineDirection & current -----------------
+            // -------------   Calculate V3 desiredLocalSpineDirection & current -----------------
             desiredLocalSpineDirection = new Vector3(0, directionFromAimingReferencePointToSpineTarget.y, new Vector2(directionFromAimingReferencePointToSpineTarget.x, directionFromAimingReferencePointToSpineTarget.z).magnitude);
             currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z);
         }
         #endregion
 
-      
+        #region Move Current Direction towards desired, update spineConstraintLocalTarget position - Only If Hasnt Reached Desired Direction, 
 
         bool reachedDesiredDirection = false;
         if (Vector3.Angle(desiredLocalSpineDirection, currentLocalSpineDirection) < 0.1f)
@@ -252,27 +252,22 @@ public class EC_HumanoidAimingController : EntityComponent
             reachedDesiredDirection = true;
         }
 
-        #region Only If Hasnt Reached Desired Direction, move current Direction towards desired, update spineConstraintLocalTarget position
-
         if (!reachedDesiredDirection)
         {
-            //  ----------   4. Update current direction -> Rotate towards Aiming Direction with damping  ----------
+            //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
             currentLocalSpineDirection = RotateSpineTowards(currentLocalSpineDirection,desiredLocalSpineDirection);
 
-            // ----------  5.Set the world directions for further use: ----------  
+            // ----------    Set the world directions for further use: ----------  
             desiredSpineDirection = transform.TransformDirection(desiredLocalSpineDirection);
             currentSpineDirection = transform.TransformDirection(currentLocalSpineDirection);
 
-            //----------   6. Set the target Transform position for the constraint Controller ----------  
+            //----------     Set the target Transform position for the constraint Controller ----------  
             spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
-
         }
-
-
 
         #endregion
 
-        // ----------  7.  Set the target weight of spine constraints depending on if the target is above or below the shoulders ----------  
+        #region Set the target weight of spine constraints depending on if the target is above or below the shoulders 
 
         if (aimingSpine)
         {
@@ -309,26 +304,16 @@ public class EC_HumanoidAimingController : EntityComponent
             spineConstraint3TargetWeight = 0f;
         }
 
+        #endregion
 
-
-        #region Smooth Out Spine Constraints weight change
+        #region Smooth Out Spine Constraints weight change, set the weights inside constraintController
 
         // -----------   8 Smooth out Spine Constraints weight change ----------
         float maxSpeed = spineConstraintWeightChangeSpeed * Time.deltaTime;
 
         constraintController.spine1Weight += Mathf.Clamp((spineConstraint1TargetWeight - constraintController.spine1Weight), -maxSpeed, maxSpeed);
-        //constraintController.spine1Weight = spineConstraint1CurrentWeight;
         constraintController.spine2Weight += Mathf.Clamp((spineConstraint2TargetWeight - constraintController.spine2Weight), -maxSpeed, maxSpeed);
-        //constraintController.spine2Weight = spineConstraint2CurrentWeight;
         constraintController.spine3Weight += Mathf.Clamp((spineConstraint3TargetWeight - constraintController.spine3Weight), -maxSpeed, maxSpeed);
-        //constraintController.spine3Weight = spineConstraint3CurrentWeight;
-
-        /*spineConstraint1CurrentWeight += Mathf.Clamp((spineConstraint1TargetWeight - constraintController.spine1Weight), -maxSpeed, maxSpeed);
-        constraintController.spine1Weight = spineConstraint1CurrentWeight;
-        spineConstraint2CurrentWeight += Mathf.Clamp((spineConstraint2TargetWeight - constraintController.spine2Weight), -maxSpeed, maxSpeed);
-        constraintController.spine2Weight = spineConstraint2CurrentWeight;
-        spineConstraint3CurrentWeight += Mathf.Clamp((spineConstraint3TargetWeight - constraintController.spine3Weight), -maxSpeed, maxSpeed);
-        constraintController.spine3Weight = spineConstraint3CurrentWeight;*/
 
         #endregion
 
@@ -565,25 +550,16 @@ public class EC_HumanoidAimingController : EntityComponent
      Vector3 RotateSpineTowards(Vector3 fromRotation, Vector3 desiredDirection)
      {
 
+        //adjust the smooth time , if target changes -> to ensure constant speeds at big and at small angles
         if (Vector3.Angle(rot_spineLastDesiredDirection, desiredDirection)>0.1f)
         {
-            Debug.Log("angle > 0.01f");
             rot_spineLastDesiredDirection = desiredDirection;
 
             float distance = Vector3.Angle(currentSpineDirection, rot_spineLastDesiredDirection);
-            //adjust the smooth time to ensure constant speeds at big and at small angles
             rot_spineAngularSmoothTime = Utility.CalculateSmoothTime(distance, spineAverageAngularVelocity, spineAngularAccelerationDistance);
-            Debug.Log("update spine smooth Time: angle: " + Vector3.Angle(rot_spineLastDesiredDirection, desiredDirection));
         }
-        Vector3 newDirection =  Vector3.SmoothDamp(fromRotation, rot_spineLastDesiredDirection, ref rot_spineCurrentVelocity, rot_spineAngularSmoothTime);
-
-        Vector3 angularVelocity = Utility.DerivToAngVelCorrected(rot_spineCurrentRotation, rot_spineDerivQuaternion);
-
-        return newDirection;
-
-
-
-    }
+        return Vector3.SmoothDamp(fromRotation, rot_spineLastDesiredDirection, ref rot_spineCurrentVelocity, rot_spineAngularSmoothTime);
+     }
 
     Vector3 RotateWeaponTowards(Vector3 direction)
     {
