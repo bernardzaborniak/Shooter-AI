@@ -143,7 +143,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 //AimAt(aimAtTarget);
                 AimSpineAtTransform(aimAtTarget);
-                //AimWeaponAtTransform(aimAtTarget);
+                AimWeaponAtTransform(aimAtTarget);
             }
             if (Input.GetKeyDown(KeyCode.H))
             {
