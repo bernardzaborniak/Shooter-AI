@@ -1777,7 +1777,8 @@ MonoBehaviour:
   spineConstraintLocalTarget: {fileID: 7707363000070997972}
   movementController: {fileID: 7366031314207611041}
   aimingReferencePointOnBody: {fileID: 7854700470141249062}
-  spineConstraintDirectionChangeSmoothTime: 0.1
+  spineAverageAngularVelocity: 120
+  spineAngularAccelerationDistance: 40
   spineConstraintWeightChangeSpeed: 1.5
   lookAtLocalTarget: {fileID: 1822445957814018765}
   fLookAnimator: {fileID: 7040072253816882034}
@@ -1787,8 +1788,9 @@ MonoBehaviour:
   aimingWeightChangeSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
   maxWeaponRotDifference: 10
-  weaponAimRotationSpeed: 40
-  aimingWeaponSmoothTime: 0.05
+  weaponAverageAngularVelocity: 200
+  weaponAngularAccelerationDistance: 10
+  showGizmos: 0
 --- !u!114 &7366031314207611041
 MonoBehaviour:
   m_ObjectHideFlags: 0

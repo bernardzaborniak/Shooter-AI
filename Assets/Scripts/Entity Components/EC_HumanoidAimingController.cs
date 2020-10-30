@@ -25,20 +25,8 @@ public class EC_HumanoidAimingController : EntityComponent
 
     AimAtTargetingMethod currentSpineTargetingMethod;
     AimAtTargetingMethod currentWeaponTargetingMethod;
-    AimAtTargetingMethod currentLookAtTargetingMethod; //TODO ADD Look At Differeent Targeting methods
+    AimAtTargetingMethod currentLookAtTargetingMethod; 
 
-    //For Spine Aiming
-    bool aimingSpine;
-    //Vector3 spineAimDirection;
-    Vector3 directionFromAimingReferencePointToSpineTarget;
-    Vector3 spinePositionOfTarget;
-    Transform spineTransformOfTarget;
-
-    //for Weapon Aiming
-    bool aimingWeapon;
-    Vector3 weaponDirectionToTarget;
-    Vector3 weaponPositionOfTarget;
-    Transform weaponTransformOfTarget;
 
     #endregion
 
@@ -52,6 +40,12 @@ public class EC_HumanoidAimingController : EntityComponent
     public EC_HumanoidMovementController movementController;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
     public Transform aimingReferencePointOnBody; //could be spine 3
+
+    //For Calculating the desired Direction in Different ways
+    bool aimingSpine;
+    Vector3 directionFromAimingReferencePointToSpineTarget;
+    Vector3 spinePositionOfTarget;
+    Transform spineTransformOfTarget;
 
     //directions local to the aimingReferencePoint
     Vector3 desiredLocalSpineDirection; 
@@ -77,7 +71,7 @@ public class EC_HumanoidAimingController : EntityComponent
     float spineConstraint2TargetWeight;
     float spineConstraint3TargetWeight;
 
-    [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
+    [Tooltip("To Start Or Stop aiming with the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
     #endregion
@@ -90,6 +84,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public Transform lookAtLocalTarget;
     public FLookAnimator fLookAnimator;
 
+    //For Calculating the desired Direction in Different ways
     Vector3 lookAtDirectionToTarget;
     Vector3 lookAtPositionOfTarget;
     Transform lookAtTransformToTarget;
@@ -110,6 +105,7 @@ public class EC_HumanoidAimingController : EntityComponent
     #endregion
 
     #region Caulculating Aiming Weapon Target Weight etc...
+
     [Header("Aiming the Weapon")]
 
     public Transform weaponAimLocalTarget;
@@ -122,14 +118,17 @@ public class EC_HumanoidAimingController : EntityComponent
     public Transform weaponAimParentLocalAdjuster;
 
     [Header("Weapon Aim Target Smoothing & Constraint")]
-    [Tooltip("Max Rotation difference between current character forward and the target he aims at, to prrevent aiming too far to the side")]
+    [Tooltip("Max Rotation difference between current character forward / spine direction and the target he aims at, to prevent aiming too far to the side")]
     public float maxWeaponRotDifference;
-    [Tooltip("speed used for Quaternion.RotateTowards() - not used anymore")]
-    public float weaponAimRotationSpeed;
+
+    //For Calculating the desired Direction in Different ways
+    bool aimingWeapon;
+    Vector3 weaponDirectionToTarget;
+    Vector3 weaponPositionOfTarget;
+    Transform weaponTransformOfTarget;
 
     Vector3 currentWeaponDirection;
     Vector3 desiredWeaponDirection;
-
 
     //Used For Vector3 Slerp
     [Space(10)]
@@ -144,8 +143,6 @@ public class EC_HumanoidAimingController : EntityComponent
     #endregion
 
 
-
-
     [Header("Debug")]
     public bool showGizmos;
 
@@ -154,12 +151,7 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         base.SetUpComponent(entity);
 
-        //currentSpineDirection = transform.forward;
-        // desiredSpineDirection = currentSpineDirection;
-
-        //currentSpineDirection = transform.forward;
-        //currentWeaponDirection = transform.forward;
-
+        //For Rotating Weapon & Spine Directions using Vector3.Slerp
         rot_spineLastDesiredDirection = Vector3.forward;
         rot_weaponLastDesiredDirection = Vector3.forward;
 
@@ -207,7 +199,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Spine
 
-        #region  Calculate Desired & current Direction - Only If aimingSpine == true -
+        #region  Calculate local desired & current direction - Only If aimingSpine is true 
 
         if (aimingSpine)
         {
@@ -233,12 +225,11 @@ public class EC_HumanoidAimingController : EntityComponent
             // -------------   Calculate V3 desiredLocalSpineDirection & current -----------------
             desiredLocalSpineDirection = new Vector3(0, directionFromAimingReferencePointToSpineTarget.y, new Vector2(directionFromAimingReferencePointToSpineTarget.x, directionFromAimingReferencePointToSpineTarget.z).magnitude);
             desiredSpineDirection = transform.TransformDirection(desiredLocalSpineDirection);
-            currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z); //cla,p the currentDirection so it only goes up and down
-
+            currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z); //clap the currentDirection so it only goes up and down, not to the sides, also //adjust the length of current Direction so it has the same length as desired, only then vector slerp in RotateTowards() wil give correct results
         }
         #endregion
 
-        #region Move Current Direction towards desired, update spineConstraintLocalTarget position 
+        #region Move currentLocalDirection towards desired, update spineConstraintLocalTarget position 
 
         //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
         currentLocalSpineDirection = RotateSpineTowards(currentLocalSpineDirection, desiredLocalSpineDirection);
@@ -255,17 +246,17 @@ public class EC_HumanoidAimingController : EntityComponent
 
         if (aimingSpine)
         {
-            //Todo solve this weight problem
+            //Todo solve this weight problem - Both versions arent perfect
 
-
+            // --------------------Version 1:------------------
             /*float lerpAmount = Mathf.Clamp(currentLocalSpineDirection.normalized.y - (0 - 0.5f), 0, 1); // normalize between 0.5 and +0.5 y Difference
                                                      //down //up value
             spineConstraint1TargetWeight = Mathf.Lerp(0.2f, 0.05f, lerpAmount);
             spineConstraint2TargetWeight = Mathf.Lerp(0.5f, 0.2f, lerpAmount);
             spineConstraint3TargetWeight = Mathf.Lerp(-0.3f, -0.1f, lerpAmount);*/
-           
-            
-            
+
+
+            // --------------------Version 2:------------------
             if (spineConstraintLocalTarget.position.y > aimingReferencePointOnBody.position.y)
             {
                 // aiming Up 
@@ -305,7 +296,7 @@ public class EC_HumanoidAimingController : EntityComponent
 
         #region Aiming Weapon
 
-        #region Calculate Desired & current Direction - Only If aimingWeapon == true 
+        #region Calculate desired & current Direction - Only If aimingWeapon is true 
 
         if (aimingWeapon)
         {
@@ -327,7 +318,7 @@ public class EC_HumanoidAimingController : EntityComponent
             }
 
             desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);
-            currentWeaponDirection = currentWeaponDirection.normalized * desiredWeaponDirection.magnitude; //lenthen current Direction so it has the same length as desird, only then vector slerp wil give correct results
+            currentWeaponDirection = currentWeaponDirection.normalized * desiredWeaponDirection.magnitude; //adjust the length of current Direction so it has the same length as desired, only then vector slerp in RotateTowards() wil give correct results
         }
 
         #endregion
@@ -607,24 +598,6 @@ public class EC_HumanoidAimingController : EntityComponent
 
                    Gizmos.color = Color.red;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection, 0.05f); 
-
-             /*
-                         Gizmos.color = Color.blue;
-                         Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentSpineDirection, 0.05f);
-
-                         Gizmos.color = Color.red;
-                         Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);*/
-
-             // Gizmos.color = Color.green;
-             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
-
-             // Gizmos.color = Color.red;
-             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection.normalized * desiredWeaponDirection.magnitude, 0.05f);
-             // Gizmos.DrawSphere(weaponAimLocalTarget.position, 0.05f);
-
-             //Gizmos.color = Color.cyan;
-             //Gizmos.DrawLine(aimingReferencePointOnBody.position, aimingReferencePointOnBody.position + spineDirectionToTarget);
-             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
 
              Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + transform.forward*3, 0.2f);
