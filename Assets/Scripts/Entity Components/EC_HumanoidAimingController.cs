@@ -58,7 +58,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public Transform aimingReferencePointOnBody; //could be spine 3
     Vector3 desiredSpineDirection;
     Vector3 currentSpineDirection;
-    Vector3 currentSpineDirectionChangeVelocity;
+    //Vector3 currentSpineDirectionChangeVelocity;
 
     float spineConstraint1TargetWeight;
     float spineConstraint2TargetWeight;
@@ -66,8 +66,8 @@ public class EC_HumanoidAimingController : EntityComponent
     float spineConstraint1CurrentWeight;
     float spineConstraint2CurrentWeight;
     float spineConstraint3CurrentWeight;
-    [Tooltip("Basically The Speed at which the spine Rotates Up and Down, the smaller the smooth time, the faster the rotation")]
-    public float spineConstraintDirectionChangeSmoothTime = 0.1f;
+   // [Tooltip("Basically The Speed at which the spine Rotates Up and Down, the smaller the smooth time, the faster the rotation")]
+    //public float spineConstraintDirectionChangeSmoothTime = 0.1f;
     [Tooltip("To Start Or Stop aimingwith the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
@@ -128,14 +128,14 @@ public class EC_HumanoidAimingController : EntityComponent
     #region for rotation
 
     [Header("Rotation")]
-    float averageAngularVelocity;
-    public float angularAccelerationDistance;
+    public float spineAverageAngularVelocity;
+    public float spineAngularAccelerationDistance;
     Vector3 angularVelocity;
-    float angularSmoothTime;
+    float rot_spineAgularSmoothTime;
 
-    Quaternion targetRotation;
-    Quaternion currentRotation;
-    Quaternion derivQuaternion;
+    Quaternion rot_targetSpineRotation;
+    Quaternion rot_currentSpineRotation;
+    Quaternion rot_spineDerivQuaternion;
 
 
     #endregion
@@ -226,8 +226,13 @@ public class EC_HumanoidAimingController : EntityComponent
 
             // 3.1 Limit to rotation on the x axis only
             //We are kind of rotating the vector to point in the Forward Direction
+            //spineDirectionToTarget.Normalize();
             desiredSpineDirection = new Vector3(0, spineDirectionToTarget.y, new Vector2(spineDirectionToTarget.x, spineDirectionToTarget.z).magnitude);
             desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
+            //TODO think of a different way to calculate this direction
+            //desiredSpineDirection = transform.InverseTransformDirection(spineDirectionToTarget);
+            //desiredSpineDirection.x = 0;
+            //desiredSpineDirection = transform.TransformDirection(desiredSpineDirection);
 
             // 3.2 Set the target weight of spine constraints depending on if the target is above or below the shoulders
             if (spineConstraintLocalTarget.position.y > aimingReferencePointOnBody.position.y)
@@ -260,7 +265,9 @@ public class EC_HumanoidAimingController : EntityComponent
 
         //  ----------   4.Rotate towards Aiming Direction with damping  ----------
         currentSpineDirection = new Vector3(desiredSpineDirection.x, currentSpineDirection.y, desiredSpineDirection.z); //currentSpineDirection should be smoothed on the local y, but not on x and z
-        currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
+                                                                                                                        //currentSpineDirection = Vector3.SmoothDamp(currentSpineDirection, desiredSpineDirection, ref currentSpineDirectionChangeVelocity, spineConstraintDirectionChangeSmoothTime); //Damping is static for now, no real velocity value
+
+        currentSpineDirection = RotateSpineTowards(desiredSpineDirection);
 
         spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
@@ -464,23 +471,33 @@ public class EC_HumanoidAimingController : EntityComponent
 
     #region Calclate New Rotation
 
-    void RotateTowards(Vector3 direction)
+    Vector3 RotateSpineTowards(Vector3 direction)
     {
+        //TODO do an vector3 slerp instead, also with adjustable smooth time
+
         //only rotate on y axis
-        currentRotation = transform.rotation;
+        rot_currentSpineRotation = Quaternion.LookRotation(currentSpineDirection);
 
 
-        if (targetRotation != Quaternion.LookRotation(direction))
+        if (rot_targetSpineRotation != Quaternion.LookRotation(direction))
         {
-            targetRotation = Quaternion.LookRotation(direction);
+            rot_targetSpineRotation = Quaternion.LookRotation(direction);
 
-            float distance = Quaternion.Angle(currentRotation, targetRotation);
+            float distance = Quaternion.Angle(rot_currentSpineRotation, rot_targetSpineRotation);
             //adjust the smooth time to ensure constant speeds at big and at small angles
-            angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
+            rot_spineAgularSmoothTime = Utility.CalculateSmoothTime(distance, spineAverageAngularVelocity, spineAngularAccelerationDistance);
         }
 
-        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
-        angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
+        Debug.Log("rot_currentSpineRotation: " + rot_currentSpineRotation.eulerAngles);
+        Debug.Log("rot_targetSpineRotation: " + rot_targetSpineRotation.eulerAngles);
+
+        //return  Utility.SmoothDamp(rot_currentSpineRotation, rot_targetSpineRotation, ref rot_spineDerivQuaternion, rot_spineAgularSmoothTime) * Vector3.forward;
+        //return  rot_currentSpineRotation * Quaternion.Inverse(Utility.SmoothDamp(rot_currentSpineRotation, rot_targetSpineRotation, ref rot_spineDerivQuaternion, rot_spineAgularSmoothTime)) * currentSpineDirection;
+        return Utility.SmoothDamp(rot_currentSpineRotation, rot_targetSpineRotation, ref rot_spineDerivQuaternion, rot_spineAgularSmoothTime) * Quaternion.Inverse(rot_currentSpineRotation) * currentSpineDirection;
+
+
+
+        //angularVelocity = Utility.DerivToAngVelCorrected(rot_currentSpineRotation, rot_spineDerivQuaternion);
 
     }
 
@@ -568,7 +585,8 @@ public class EC_HumanoidAimingController : EntityComponent
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);
 
-            //Gizmos.color = Color.red;
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(aimingReferencePointOnBody.position, aimingReferencePointOnBody.position + spineDirectionToTarget);
             //Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
 
             Gizmos.color = Color.yellow;
