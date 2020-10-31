@@ -375,6 +375,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
     }
 
+    public void SetSprint(bool sprint)
+    {
+        if (movementState == MovementState.Default)
+        {
+            currentMovementOrder.sprint = sprint;
+        }
+    }
+
     public void AbortMoving()
     {
         if (movementState == MovementState.Default)

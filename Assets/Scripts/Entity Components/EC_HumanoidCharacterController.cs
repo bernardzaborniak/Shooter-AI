@@ -434,14 +434,18 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region Aim Spine Orders
     public void AimSpineAtTransform(Transform target)
     {
-       // if (characterPreventionType == CharacterPreventionType.NoPrevention)
-        //{
-            //if (DoesCurrentStanceAllowAiming())
-           // {
+        if (!AreModifiersPreventing())
+        {
+            if (DoesCurrentStanceAllowAiming())
+            {
                 aimingController.AimSpineAtTransform(target);
-            //}
-        //}
 
+                if (movementController.IsSprinting())
+                {
+                    movementController.SetSprint(false);
+                }
+            }
+        }
     }
 
     public void AimSpineAtPosition(Vector3 position)
@@ -451,6 +455,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             if (DoesCurrentStanceAllowAiming())
             {
                 aimingController.AimSpineAtPosition(position);
+
+                if (movementController.IsSprinting())
+                {
+                    movementController.SetSprint(false);
+                }
             }
         }
 
@@ -463,6 +472,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             if (DoesCurrentStanceAllowAiming())
             {
                 aimingController.AimSpineInDirection(direction);
+
+                if (movementController.IsSprinting())
+                {
+                    movementController.SetSprint(false);
+                }
             }
         }
 
@@ -500,6 +514,11 @@ public class EC_HumanoidCharacterController : EntityComponent
                 if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponAtTransform(target);
+
+                    if (movementController.IsSprinting())
+                    {
+                        movementController.SetSprint(false);
+                    }
                 }
             }
         }
@@ -514,6 +533,11 @@ public class EC_HumanoidCharacterController : EntityComponent
                 if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponAtPosition(position);
+
+                    if (movementController.IsSprinting())
+                    {
+                        movementController.SetSprint(false);
+                    }
                 }
             }
         }
@@ -528,6 +552,11 @@ public class EC_HumanoidCharacterController : EntityComponent
                 if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
                     aimingController.AimWeaponInDirection(direction);
+
+                    if (movementController.IsSprinting())
+                    {
+                        movementController.SetSprint(false);
+                    }
                 }
             }
         }
@@ -561,12 +590,15 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         if (!AreModifiersPreventing())
         {
-            if (IsAimingWeapon())
+            //stop aiming weapon if itemChangeInitiated
+            if (interactionController.ChangeItemInHand(inventoryID))
             {
-                StopAimingWeapon();
+                if (IsAimingWeapon())
+                {
+                    StopAimingWeapon();
+                }
             }
-            //stop aiming weapon if here
-            interactionController.ChangeItemInHand(inventoryID);
+           
         }
     }
 

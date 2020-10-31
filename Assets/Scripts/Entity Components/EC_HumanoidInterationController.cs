@@ -106,7 +106,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     #region Change Item in Hand
 
-    public void ChangeItemInHand(int newWeaponInventoryID)
+    public bool ChangeItemInHand(int newWeaponInventoryID) //returns true if item starts to change
     {
         desiredSelectedItemID = newWeaponInventoryID;
 
@@ -134,6 +134,8 @@ public class EC_HumanoidInterationController : EntityComponent
                 {
                     StartHidingItem(1);
                 }
+
+                return true;
             }
         }else if(itemInteractionState == ItemInteractionState.PullingOutItemInHand)
         {
@@ -141,6 +143,8 @@ public class EC_HumanoidInterationController : EntityComponent
             {
                 float percentageAlreadyPulledOut = 1 - (pullingOutWeaponEndTime - Time.time) / inventory[currentSelectedItemID].pullOutItemTime;
                 StartHidingItem(percentageAlreadyPulledOut);
+
+                return true;
             }
         }
         else if(itemInteractionState == ItemInteractionState.HidingItemInHand)
@@ -149,8 +153,12 @@ public class EC_HumanoidInterationController : EntityComponent
             {
                 float percentageAlreadyHidden = 1 - (hidingWeaponEndTime - Time.time) / inventory[currentSelectedItemID].hideItemTime;
                 StartPullingOutItem(desiredSelectedItemID, percentageAlreadyHidden);
+
+                return true;
             }     
         }
+
+        return false;
 
     }
 
