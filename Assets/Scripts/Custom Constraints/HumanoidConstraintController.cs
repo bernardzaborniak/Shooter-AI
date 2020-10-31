@@ -110,6 +110,7 @@ public class HumanoidConstraintController : MonoBehaviour
         {
             #region 1. Orient/Update the spine Constraints first
 
+            UnityEngine.Profiling.Profiler.BeginSample("Constraints ifs");
             // The recoil position is used to determine the roattion of the spine, as it is the back movement of the gun which rotates the spine
             Quaternion recoilRotationAdder = Quaternion.Euler(transformToCopyRecoilFrom.localPosition.z * 100, 0, 0); //used to add some recoil to spine
 
@@ -167,12 +168,15 @@ public class HumanoidConstraintController : MonoBehaviour
                 weaponAimTransform.rotation = rotationDifferenceW * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation); //instead use the aimingWeight somewhere else
                 //weaponAimTransform.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceW, weaponAimWeight) * (weaponAimTransform.parent.rotation * weaponAimLocalStartRotation); //instead use the aimingWeight somewhere else
             }
+            UnityEngine.Profiling.Profiler.EndSample();
+
 
             #endregion
 
+            UnityEngine.Profiling.Profiler.BeginSample("Constraints IKS");
             #region 4. Update The IK's
 
-            // 1. Set The IK Positions
+            // 1. Set The  left IK Position
             // The IK targets are set here in late update, cause some IK targets are targeting the animated hand position - for recoil to work correctly, so they need to be set after the animator updated the positions
 
 
@@ -187,7 +191,7 @@ public class HumanoidConstraintController : MonoBehaviour
                 leftHandIKTarget.rotation = leftHandTransform.rotation;
             }
 
-            // 2. Apply recoil only to right hand IK
+            // 2. Set The  right IK Position - Apply recoil only to right hand IK
             //this is specific to the skeleton hand orientation - i dont know how to change it otherwise than hardcode here
             Quaternion recoil = Quaternion.Euler(-transformToCopyRecoilFrom.localRotation.eulerAngles.x, 0, transformToCopyRecoilFrom.localRotation.eulerAngles.y);
 
@@ -211,6 +215,9 @@ public class HumanoidConstraintController : MonoBehaviour
             leftHandIK.ResolveIK();
             rightHandIK.ResolveIK();
             rightHandIK.ResolveIK();
+
+            UnityEngine.Profiling.Profiler.EndSample();
+
 
             #endregion
         }
