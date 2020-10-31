@@ -5,6 +5,9 @@ using UnityEngine;
 // Is responsible, together with the constraintController for the correct aiming of the spine bones together with hands and parenting of weapons
 public class EC_HumanoidAimingController : EntityComponent
 {
+
+    #region Fields
+
     [Header("References")]
     public HumanoidConstraintController constraintController;
     public EC_HumanoidHandsIKController handsIKController;
@@ -142,10 +145,10 @@ public class EC_HumanoidAimingController : EntityComponent
     Vector3 rot_weaponCurrentVelocity;
     #endregion
 
-
     [Header("Debug")]
     public bool showGizmos;
 
+    #endregion
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -345,38 +348,26 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
-        if (!aimingSpine)
-        {
-            aimingSpine = true;
-            currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
-            movementController.manualRotation = true;
-        }
-       
+        aimingSpine = true;
+        currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
+        movementController.manualRotation = true;
     }
 
     public void AimSpineAtPosition(Vector3 position)
     {
-        if (!aimingSpine)
-        {
-            aimingSpine = true;
-            currentSpineTargetingMethod = AimAtTargetingMethod.Position;
-            movementController.manualRotation = true;
-            spinePositionOfTarget = position;
-        }
+        aimingSpine = true;
+        currentSpineTargetingMethod = AimAtTargetingMethod.Position;
+        movementController.manualRotation = true;
+        spinePositionOfTarget = position;
     }
 
     public void AimSpineAtTransform(Transform transform)
     {
-        if (!aimingSpine)
-        {
-            aimingSpine = true;
-            currentSpineTargetingMethod = AimAtTargetingMethod.Transform;
-            movementController.manualRotation = true;
-            spineTransformOfTarget = transform;
-        }
+        aimingSpine = true;
+        currentSpineTargetingMethod = AimAtTargetingMethod.Transform;
+        movementController.manualRotation = true;
+        spineTransformOfTarget = transform;
     }
-
-
 
     public void StopAimSpineAtTarget()
     {
@@ -440,9 +431,13 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponInDirection(Vector3 direction)
     {
-        aimingWeapon = true;
+        if (!aimingWeapon)
+        {
+            currentWeaponDirection = currentSpineDirection;
+            handsIKController.OnStartAimingWeapon();
 
-        handsIKController.OnStartAimingWeapon();
+            aimingWeapon = true;
+        }
 
         currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
         weaponDirectionToTarget = direction;
@@ -451,10 +446,16 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponAtPosition(Vector3 position)
     {
-        aimingWeapon = true;
+        if (!aimingWeapon)
+        {
+            currentWeaponDirection = currentSpineDirection;
 
-        handsIKController.OnStartAimingWeapon();
+            currentWeaponDirection = currentSpineDirection;
+            handsIKController.OnStartAimingWeapon();
 
+            aimingWeapon = true;
+        }
+    
         currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
         weaponPositionOfTarget = position;
         desiredWeaponAimingConstraintWeight = 1;
@@ -462,9 +463,15 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponAtTransform(Transform transform)
     {
-        aimingWeapon = true;
+        if (!aimingWeapon)
+        {
+            currentWeaponDirection = currentSpineDirection;
 
-        handsIKController.OnStartAimingWeapon();
+            currentWeaponDirection = currentSpineDirection;
+            handsIKController.OnStartAimingWeapon();
+
+            aimingWeapon = true;
+        }
 
         currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
         weaponTransformOfTarget = transform;
@@ -473,10 +480,15 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void StopAimingWeaponAtTarget()
     {
-        handsIKController.OnStopAimingWeapon();
+        if (aimingWeapon)
+        {
+            handsIKController.OnStopAimingWeapon();
 
-        aimingWeapon = false;
-        desiredWeaponAimingConstraintWeight = 0;
+            aimingWeapon = false;
+            desiredWeaponAimingConstraintWeight = 0;
+        }
+
+        
     }
 
     #endregion
@@ -593,13 +605,14 @@ public class EC_HumanoidAimingController : EntityComponent
             Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredSpineDirection, 0.05f);
 
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection, 0.05f);
+
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f); 
+            Gizmos.DrawSphere(aimingReferencePointOnBody.position + desiredWeaponDirection, 0.05f);
 
-                   Gizmos.color = Color.red;
-            Gizmos.DrawSphere(aimingReferencePointOnBody.position + currentWeaponDirection, 0.05f); 
-
-             Gizmos.color = Color.yellow;
+            Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(aimingReferencePointOnBody.position + transform.forward*3, 0.2f);
 
         }
