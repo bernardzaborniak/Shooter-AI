@@ -721,13 +721,16 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public CharacterModifier AddModifier(CharacterModifier modifier)
     {
-        if(modifier is MovementSpeedModifier)
+        Debug.Log("onADD 0: " + modifier.name);
+        if (modifier is MovementSpeedModifier)
         {
             activeMovementSpeedModifiers.Add(modifier as MovementSpeedModifier);
         }
         else if(modifier is CharacterPreventionModifier)
         {
+           
             CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
+            Debug.Log("onADD 1.1: prev type" + preventionMod.characterPreventionType);
 
             if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
             {
@@ -743,10 +746,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
             else if(preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
             {
+                Debug.Log("onADD 1.2");
                 if (activeTraversingOffmeshLinkPreventionModifers.Count == 0)
                 {
                     activeTraversingOffmeshLinkPreventionModifers.Add(preventionMod);
-                    OnAddTraversingOffmeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                    OnAddTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
                 }
                 else
                 {
@@ -779,6 +783,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
             else if (modifier is CharacterPreventionModifier)
             {
+
                 CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
 
                 if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
@@ -795,7 +800,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
                     if (activeTraversingOffmeshLinkPreventionModifers.Count == 0)
                     {
-                        OnRemoveTraversingOffmeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                        OnRemoveTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
                     }
                 }
             }
@@ -845,6 +850,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
             if (modifier.HasModifierTimeRunOut())
             {
+                Debug.Log("Remove");
                 traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Add(modifier);
             }
         }
@@ -894,8 +900,9 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
-    void OnAddTraversingOffmeshLinkPreventionModifier()
+    void OnAddTraversingOffMeshLinkPreventionModifier()
     {
+        Debug.Log("onADD 2");
 
         AbortReloadingWeapon();
         //StopAimAt();
@@ -911,8 +918,10 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
-    void OnRemoveTraversingOffmeshLinkPreventionModifier()
+    void OnRemoveTraversingOffMeshLinkPreventionModifier()
     {
+        Debug.Log("onRemove 1");
+
         handsIKController.OnStopTraversingOffMeshLink();
         /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {*/
