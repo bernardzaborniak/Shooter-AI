@@ -470,7 +470,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public void SetManualRotation(bool manualRotation)
     {
-        this.manualRotation = true;
+        this.manualRotation = manualRotation;
     }
 
     #endregion
