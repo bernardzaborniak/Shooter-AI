@@ -767,13 +767,12 @@ public class EC_HumanoidCharacterController : EntityComponent
     public void RemoveModifier(CharacterModifier modifier)
     {
         bool remove = true;
-        //if(modifier.type == CharacterModifier.ModiferType.DeactivateManuallyWithDelay)
-        //{
-            if(!modifier.HasDeactivationDelayPassed())
-            {
-                remove = false;
-            }
-        //}
+
+        if (!modifier.HasDeactivationDelayPassed())
+        {
+            remove = false;
+        }
+
 
         if (remove)
         {
@@ -850,7 +849,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
             if (modifier.HasModifierTimeRunOut())
             {
-                Debug.Log("Remove");
                 traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Add(modifier);
             }
         }
@@ -902,8 +900,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void OnAddTraversingOffMeshLinkPreventionModifier()
     {
-        Debug.Log("onADD 2");
-
         AbortReloadingWeapon();
         //StopAimAt();
         AbortChangingSelectedItem();
@@ -920,7 +916,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void OnRemoveTraversingOffMeshLinkPreventionModifier()
     {
-        Debug.Log("onRemove 1");
 
         handsIKController.OnStopTraversingOffMeshLink();
         /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)

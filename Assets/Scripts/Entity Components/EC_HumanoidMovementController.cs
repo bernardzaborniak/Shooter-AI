@@ -43,7 +43,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     Vector3 desiredForward;
     [Tooltip("If false, the agent will rotate towards his movement direction")]
-    public bool manualRotation;
+    bool manualRotation;
 
 
     [Header("Movement Speeds")]
@@ -58,6 +58,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     [Header("Traversing Off Mesh Links")]
     #region Traversing NavmeshLink Fields
+    public float maximalAngleToNavMeshLinkDirectionToEnterTraversal;
     public CharacterPreventionModifier traversingOffMeshLinkPreventionModifier;
 
     // For jumping over obstacle
@@ -253,13 +254,31 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             currentMovementOrder.OnAbort();
         }
 
+        bool rotatingTowardsOffMeshLinkOverridesOtherRotation = false;
+
         if (movementState == MovementState.Default)
         {
             //1. Navmesh Link Check
             if (agent.isOnOffMeshLink)
             {
-                StartTraversingOffMeshLink();
-                return;
+                OffMeshLinkData data = agent.currentOffMeshLinkData;
+                currentLinkStartPosition = agent.transform.position;
+                currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+                offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
+                Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
+
+                if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward)< maximalAngleToNavMeshLinkDirectionToEnterTraversal)
+                {
+                    StartTraversingOffMeshLink(data);
+                    return;
+                }
+                else
+                {
+                    //SetDesiredForward(offMeshLinkTraversalDirection);
+                    rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
+                    RotateTowards(offMeshLinkTraversalDirectionNoY);
+                }
+                
             }
 
             //2. Check if agent is on sloped surface
@@ -292,16 +311,21 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 }
             }
 
-            // 4. Update rotation according to movement direction or externally set direction if manualRotation=true
-            if (!manualRotation)
+            if (!rotatingTowardsOffMeshLinkOverridesOtherRotation)
             {
-                if (agent.desiredVelocity != Vector3.zero)
+                // 4. Update rotation according to movement direction or externally set direction if manualRotation=true
+                if (!manualRotation)
                 {
-                    desiredForward = agent.desiredVelocity;
+                    if (agent.desiredVelocity != Vector3.zero)
+                    {
+                        desiredForward = agent.desiredVelocity;
+                    }
                 }
-            }
 
-            RotateTowards(desiredForward);
+
+                RotateTowards(desiredForward);
+            }
+            
 
             //5. Update animation
             //calculate forward and sideways velocity;
@@ -444,6 +468,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         if (manualRotation) desiredForward = direction;
     }
 
+    public void SetManualRotation(bool manualRotation)
+    {
+        this.manualRotation = true;
+    }
+
     #endregion
 
     #region Modify Speed Values
@@ -520,17 +549,17 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     #region Traversing Off Mesh Link
 
-    void StartTraversingOffMeshLink()
+    void StartTraversingOffMeshLink(OffMeshLinkData data)
     {
         movementState = MovementState.TraversingOffMeshLink;
 
-        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        //OffMeshLinkData data = agent.currentOffMeshLinkData;
         currentNavMeshLinkProperties = ((UnityEngine.AI.NavMeshLink)agent.navMeshOwner).gameObject.GetComponent<NavMeshLinkProperties>();       // use this instead of "data.offMeshLink.gameObject.GetComponent<NavMeshLinkProperties>();" because of a unity bug where the navmeshlink is returned null by the navmeshLinkData?
-        currentLinkStartPosition = agent.transform.position;
-        currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+        //currentLinkStartPosition = agent.transform.position;
+        //currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
         currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
 
-        offMeshLinkTraversalDirection = currentLinkEndPosition- currentLinkStartPosition;
+        //offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
 
 
         currentTraversalNormalizedTime = 0;

@@ -350,14 +350,16 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
-        movementController.manualRotation = true;
+        //movementController.manualRotation = true;
+        movementController.SetManualRotation(true);
     }
 
     public void AimSpineAtPosition(Vector3 position)
     {
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Position;
-        movementController.manualRotation = true;
+        //movementController.manualRotation = true;
+        movementController.SetManualRotation(true);
         spinePositionOfTarget = position;
     }
 
@@ -365,7 +367,8 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Transform;
-        movementController.manualRotation = true;
+        //movementController.manualRotation = true;
+        movementController.SetManualRotation(true);
         spineTransformOfTarget = transform;
     }
 
@@ -374,7 +377,8 @@ public class EC_HumanoidAimingController : EntityComponent
         if (aimingSpine)
         {
             aimingSpine = false;
-            movementController.manualRotation = false;
+            //movementController.manualRotation = false;
+            movementController.SetManualRotation(false);
 
             desiredSpineDirection = transform.forward;
         }

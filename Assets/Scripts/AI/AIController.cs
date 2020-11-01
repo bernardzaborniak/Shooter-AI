@@ -54,6 +54,8 @@ public class AIController : MonoBehaviour
     bool crouching;
     float crouchingPropability = 0.3f;
 
+    public Transform targetPositionVisualised;
+
     
 
     void Start()
@@ -66,6 +68,8 @@ public class AIController : MonoBehaviour
         aIState = WeaponState.FiringSMG;
 
         currentTargetOffset = new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
+        
+        targetPositionVisualised.SetParent(null);
     }
 
     void Update()
@@ -137,6 +141,7 @@ public class AIController : MonoBehaviour
                 if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
                 {
                     characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
+                    targetPositionVisualised.position = nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy;
                 }
 
 
@@ -179,6 +184,7 @@ public class AIController : MonoBehaviour
                         positioningState = PositioningState.MovingIntoCover;
                         targetPost = closestPost;
                         characterController.MoveTo(targetPost.GetPostPosition());
+                        targetPositionVisualised.position = targetPost.GetPostPosition();
                     }
                 }
             }
@@ -201,6 +207,7 @@ public class AIController : MonoBehaviour
                     if (!characterController.IsMoving())
                     {
                         characterController.MoveTo(targetPost.GetPostPosition());
+                        targetPositionVisualised.position = targetPost.GetPostPosition();
                     }
                 }
 
@@ -435,6 +442,7 @@ public class AIController : MonoBehaviour
             characterController.StopAimingSpine();
             characterController.StopAimingWeapon();
             characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
+            targetPositionVisualised.position = targetPosition.position + currentTargetOffset;
         }
 
         nearestEnemyLastFrame = nearestEnemy;
