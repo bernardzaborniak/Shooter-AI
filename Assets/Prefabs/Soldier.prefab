@@ -1797,11 +1797,11 @@ MonoBehaviour:
   handsIKController: {fileID: 7399303670798280785}
   idleWalkingSpeed: 1.4
   idleSprintingSpeed: 6
-  idleStationaryTurnSpeed: 90
+  idleStationaryTurnSpeed: 100
   idleAcceleration: 9
   combatStanceWalkingSpeed: 2
   combatStanceSprintingSpeed: 6
-  combatStationaryTurnSpeed: 140
+  combatStationaryTurnSpeed: 180
   combatStanceAcceleration: 9
   crouchSpeed: 0.9
   crouchAcceleration: 2
@@ -1903,10 +1903,9 @@ MonoBehaviour:
   agent: {fileID: 7366031314207611054}
   animationController: {fileID: 7366031314207611044}
   characterController: {fileID: 6597338694826147279}
-  angularAccelerationDistance: 90
+  angularAccelerationDistance: 120
   stationaryTurnSpeed: 0
   runningTurnSpeed: 50
-  manualRotation: 0
   sprintingSpeed: 7
   defaultSpeed: 0
   jumpDownBigLedgeLandingSpeedModifier:
