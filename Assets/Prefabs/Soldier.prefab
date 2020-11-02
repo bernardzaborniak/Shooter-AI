@@ -703,7 +703,6 @@ MonoBehaviour:
   maxRangeToEnemy: 20
   minRangeToEnemy: 8
   desiredRangeToEnemy: 14
-  targetPosition: {fileID: 0}
   targetMaxOffset: 8
   targetPositionVisualised: {fileID: 5713231771712369939}
 --- !u!114 &7864116541130220572
@@ -1906,6 +1905,7 @@ MonoBehaviour:
   angularAccelerationDistance: 120
   stationaryTurnSpeed: 0
   runningTurnSpeed: 50
+  desiredForward: {x: 0, y: 0, z: 0}
   sprintingSpeed: 7
   defaultSpeed: 0
   jumpDownBigLedgeLandingSpeedModifier:
@@ -2393,7 +2393,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: -0.075
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!135 &8562225995320379315
