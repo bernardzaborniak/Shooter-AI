@@ -25678,6 +25678,7 @@ GameObject:
   - component: {fileID: 982752505}
   - component: {fileID: 982752507}
   - component: {fileID: 982752506}
+  - component: {fileID: 982752508}
   m_Layer: 0
   m_Name: Link One (10)
   m_TagString: Untagged
@@ -25734,6 +25735,23 @@ MonoBehaviour:
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
   m_Area: 0
+--- !u!191 &982752508
+OffMeshLink:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982752504}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_AreaIndex: 0
+  m_AgentTypeID: 0
+  m_Start: {fileID: 0}
+  m_End: {fileID: 0}
+  m_CostOverride: -1
+  m_BiDirectional: 1
+  m_Activated: 1
+  m_AutoUpdatePositions: 0
 --- !u!43 &990249485
 Mesh:
   m_ObjectHideFlags: 0

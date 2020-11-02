@@ -92,8 +92,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     // Infos about Current Link
     NavMeshLinkProperties currentNavMeshLinkProperties;
-    Vector3 currentLinkEndPosition;
-    Vector3 currentLinkStartPosition; 
+    public Vector3 currentLinkEndPosition;
+    public Vector3 currentLinkStartPosition; 
     float currentDistanceToTraverse;
     float currentLinkTraverseDuration;
     float currentTraversalNormalizedTime; //Normalized between 0 and 1 of the currentTraversalDuration
@@ -233,6 +233,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     public bool calledStart;
     public bool calledFinishLastFrame;
     public bool agentisOnOffMeshLink;
+    public Vector3 lastNavmeshHitPosition;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -267,20 +268,24 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         if (movementState == MovementState.Default)
         {
-
-            if (!calledFinishLastFrame)
-            {
+            //check this to prevent agent traversing the same link he just completed backwards - Unity.AI = :/
+            //if (!calledFinishLastFrame)
+            //{
                 //1. Navmesh Link Check
                 if (agent.isOnOffMeshLink)
                 {
                     OffMeshLinkData data = agent.currentOffMeshLinkData;
-                    currentLinkStartPosition = agent.transform.position;
+                    //currentLinkStartPosition = agent.transform.position;
+                    currentLinkStartPosition = data.startPos + Vector3.up * agent.baseOffset; //we use the link start position, the transform.pisitoon can cause errors
                     currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
                     offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
                     Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
 
+                    //the angle check prevents units from using offmeshLinks, although they are not facing them -> unnatural jump
                     if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
                     {
+                        //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
+                        currentLinkStartPosition = transform.position;
                         StartTraversingOffMeshLink(data);
                         return;
                     }
@@ -292,12 +297,32 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                     }
 
                 }
-            }
-            else
-            {
-                calledFinishLastFrame = false;
-            }
-           
+            //}
+            //else
+            //{
+              //  calledFinishLastFrame = false;
+                /* calledFinishLastFrame = false;
+                 agent.updatePosition = false;
+                 agent.nextPosition = currentLinkEndPosition;
+                 agent.transform.position = currentLinkEndPosition;
+                 transform.position = currentLinkEndPosition;
+                 agent.updatePosition = true;*/
+
+                // transform.position = currentLinkEndPosition;
+                /*NavMeshHit hit;
+                if (NavMesh.SamplePosition(currentLinkEndPosition, out hit, 1f, NavMesh.AllAreas))
+                {
+                    transform.position = hit.position;
+                    lastNavmeshHitPosition = hit.position;
+                }
+                else
+                {
+                    transform.position = currentLinkEndPosition;
+                }*/
+                //transform.position = currentLinkEndPosition;
+
+            //}
+
 
             //2. Check if agent is on sloped surface
             agent.SamplePathPosition(NavMesh.AllAreas, 0.0f, out navMeshHit);
@@ -404,7 +429,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 offMeshLinkTraversalVelocity = (newPosition - transform.position)/Time.deltaTime;
                 //RotateTowards(new Vector3(offMeshLinkTraversalVelocity.x,0,offMeshLinkTraversalVelocity.z));
                 RotateTowards(offMeshLinkTraversalDirection);
-                agent.transform.position = newPosition;
+                //agent.transform.position = newPosition;
+                transform.position = newPosition;
+                //agent.nextPosition = currentLinkEndPosition;
                 lastSnappedTraversingPositionTraverseUpdate =newPosition;
             }
             else
@@ -482,6 +509,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     void RotateTowards(Vector3 direction)
     {
         //only rotate on y axis
+        direction.y = 0;
         currentRotation = transform.rotation;
 
         averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
@@ -591,6 +619,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     {
         //agent.isStopped = true;
         //agent.CompleteOffMeshLink();
+
+        
         
         calledStart = true;
 
@@ -601,6 +631,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         //currentLinkStartPosition = agent.transform.position;
         //currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
         currentDistanceToTraverse = Vector3.Distance(currentLinkStartPosition, currentLinkEndPosition);
+        
 
         //offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
 
@@ -639,10 +670,16 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         // Inform Animation Controller
         animationController.StartJumpingOverObstacle(GetAnimationIDCorrespondingToTraversingType(), currentLinkTraverseDuration);
 
-        agent.CompleteOffMeshLink(); //I thought this should be called on FinishTraversingNavmesh, but if we call it there it can cause issues, where the agent snaps back to ist previous posiiton
+        //agent.CompleteOffMeshLink(); //I thought this should be called on FinishTraversingNavmesh, but if we call it there it can cause issues, where the agent snaps back to ist previous posiiton
         //-> snaps agent to the end position, when jumping beginns
+
+
+
         //agent.isStopped = true;
         //agent.updatePosition = false;
+        //agent.updatePosition = false;
+        agent.enabled = false;
+
 
     }
 
@@ -733,8 +770,10 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
          {
              agent.transform.position = currentLinkEndPosition;
          }*/
-        agent.nextPosition = currentLinkEndPosition;
-         lastSnappedTraversingPositionOnFinish = currentLinkEndPosition;
+
+        //agent.nextPosition = currentLinkEndPosition;
+        //transform.position = currentLinkEndPosition;
+        lastSnappedTraversingPositionOnFinish = currentLinkEndPosition;
 
         //agent.CompleteOffMeshLink();
 
@@ -747,6 +786,26 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         animationController.StopJumpingOverObstacle();
         //agent.isStopped = false;
         //agent.updatePosition = true;
+        //agent.updatePosition = true;
+        agent.enabled = true;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 1f, NavMesh.AllAreas))
+        {
+            agent.transform.position = hit.position;
+            agent.nextPosition = hit.position;
+            lastNavmeshHitPosition = hit.position;
+        }
+        else
+        {
+            agent.transform.position = transform.position;
+            agent.nextPosition = transform.position;
+
+        }
+        
+        //*/
+
+        //agent.nextPosition = 
 
     }
 
@@ -817,7 +876,13 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public float GetRemainingDistance()
     {
-        return agent.remainingDistance;
+        if (agent.enabled)
+        {
+            return agent.remainingDistance;
+
+        }
+
+        return Mathf.Infinity;
     }
 
     public bool IsSprinting()

@@ -28,6 +28,7 @@ public class SoldierSpawner : MonoBehaviour
         {
             nextTeam1SpawnTime = Time.time + Random.Range(spawnIntervalMin, spawnIntervalMax);
             SpawnTeam1Soldier();
+            SpawnTeam1Soldier();
         }
         if (Time.time > nextTeam2SpawnTime)
         {
