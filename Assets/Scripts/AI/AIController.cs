@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
@@ -23,9 +24,9 @@ public class AIController : MonoBehaviour
     float nextCheckGrenadeTime;
     float grenadeThrowInterval = 1f;
 
-    public Transform targetPosition;
+    //public Transform targetPosition;
     public float targetMaxOffset;
-    Vector3 currentTargetOffset;
+    Vector3 finalMoveDestination;
 
     GameEntity nearestEnemyLastFrame;
 
@@ -67,9 +68,28 @@ public class AIController : MonoBehaviour
 
         aIState = WeaponState.FiringSMG;
 
-        currentTargetOffset = new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
-        
+       
+
+
         targetPositionVisualised.SetParent(null);
+    }
+
+    public void SetFinalTargetPosition(Vector3 targetPosition)
+    {
+        finalMoveDestination = targetPosition + new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
+
+        //Sammple position on navmesh to prevent ai standing around cause of missing path
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(finalMoveDestination, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            finalMoveDestination = hit.position;
+        }
+        else
+        {
+            //finalMoveDestination = targetPosition.position;
+            finalMoveDestination = targetPosition;
+        }
+
     }
 
     void Update()
@@ -441,8 +461,10 @@ public class AIController : MonoBehaviour
             characterController.ChangeCharacterStanceToIdle();
             characterController.StopAimingSpine();
             characterController.StopAimingWeapon();
-            characterController.MoveTo(targetPosition.position + currentTargetOffset, true);
-            targetPositionVisualised.position = targetPosition.position + currentTargetOffset;
+            characterController.MoveTo(finalMoveDestination, true);
+            //characterController.MoveTo(targetPosition.position + finalMoveDestination, true);
+            //targetPositionVisualised.position = targetPosition.position + currentTargetOffset;
+            targetPositionVisualised.position = finalMoveDestination;
         }
 
         nearestEnemyLastFrame = nearestEnemy;

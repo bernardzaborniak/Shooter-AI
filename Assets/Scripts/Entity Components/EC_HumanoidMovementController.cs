@@ -41,7 +41,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     public float stationaryTurnSpeed;
     public float runningTurnSpeed;
 
-    Vector3 desiredForward;
+    public Vector3 desiredForward; //only public for debug
     [Tooltip("If false, the agent will rotate towards his movement direction")]
     bool manualRotation;
 
@@ -228,6 +228,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     #endregion
 
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -258,6 +259,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         if (movementState == MovementState.Default)
         {
+              
             //1. Navmesh Link Check
             if (agent.isOnOffMeshLink)
             {
@@ -329,9 +331,16 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //5. Update animation
             //calculate forward and sideways velocity;
-            Vector3 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);  
+            Vector3 velocityInLocalSpace = Vector3.zero;
+            float speedParamForAnim = 0;
 
-            if (animationController) animationController.UpdateLocomotionAnimation(agent.velocity.magnitude, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
+            if (agent.hasPath)
+            {
+                speedParamForAnim = agent.velocity.magnitude;
+                velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
+            }
+
+            if (animationController) animationController.UpdateLocomotionAnimation(speedParamForAnim, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
 
 
             //7. update agent speed

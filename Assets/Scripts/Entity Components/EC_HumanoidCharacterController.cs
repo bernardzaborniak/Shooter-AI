@@ -721,7 +721,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public CharacterModifier AddModifier(CharacterModifier modifier)
     {
-        Debug.Log("onADD 0: " + modifier.name);
         if (modifier is MovementSpeedModifier)
         {
             activeMovementSpeedModifiers.Add(modifier as MovementSpeedModifier);
@@ -730,7 +729,6 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
            
             CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
-            Debug.Log("onADD 1.1: prev type" + preventionMod.characterPreventionType);
 
             if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
             {
@@ -746,7 +744,6 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
             else if(preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
             {
-                Debug.Log("onADD 1.2");
                 if (activeTraversingOffmeshLinkPreventionModifers.Count == 0)
                 {
                     activeTraversingOffmeshLinkPreventionModifers.Add(preventionMod);

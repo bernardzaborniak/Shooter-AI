@@ -44,7 +44,9 @@ public class SoldierSpawner : MonoBehaviour
 
         //set the target
         AIController aiController = soldier.transform.GetChild(0).GetComponent<AIController>();
-        aiController.targetPosition = team1TargetPosition;
+       // aiController.targetPosition = team1TargetPosition;
+        aiController.SetFinalTargetPosition(team1TargetPosition.position);
+
     }
 
     void SpawnTeam2Soldier()
@@ -55,6 +57,7 @@ public class SoldierSpawner : MonoBehaviour
 
         //set the target
         AIController aiController = soldier.transform.GetChild(0).GetComponent<AIController>();
-        aiController.targetPosition = team2TargetPosition;
+        //aiController.targetPosition = team2TargetPosition;
+        aiController.SetFinalTargetPosition(team2TargetPosition.position);
     }
 }
