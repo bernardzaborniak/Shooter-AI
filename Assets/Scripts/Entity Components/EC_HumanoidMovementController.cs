@@ -228,6 +228,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     #endregion
 
+    public Vector3 lastSnappedTraversingPositionOnFinish;
+    public Vector3 lastSnappedTraversingPositionTraverseUpdate;
+    public bool calledStart;
+    public bool calledFinishLastFrame;
+    public bool agentisOnOffMeshLink;
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -256,32 +261,43 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         bool rotatingTowardsOffMeshLinkOverridesOtherRotation = false;
+        calledStart = false;
+        //calledFinish = false;
+        agentisOnOffMeshLink = agent.isOnOffMeshLink;
 
         if (movementState == MovementState.Default)
         {
-              
-            //1. Navmesh Link Check
-            if (agent.isOnOffMeshLink)
-            {
-                OffMeshLinkData data = agent.currentOffMeshLinkData;
-                currentLinkStartPosition = agent.transform.position;
-                currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
-                offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
-                Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
 
-                if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward)< maximalAngleToNavMeshLinkDirectionToEnterTraversal)
+            if (!calledFinishLastFrame)
+            {
+                //1. Navmesh Link Check
+                if (agent.isOnOffMeshLink)
                 {
-                    StartTraversingOffMeshLink(data);
-                    return;
+                    OffMeshLinkData data = agent.currentOffMeshLinkData;
+                    currentLinkStartPosition = agent.transform.position;
+                    currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+                    offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
+                    Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
+
+                    if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
+                    {
+                        StartTraversingOffMeshLink(data);
+                        return;
+                    }
+                    else
+                    {
+                        //SetDesiredForward(offMeshLinkTraversalDirection);
+                        rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
+                        RotateTowards(offMeshLinkTraversalDirectionNoY);
+                    }
+
                 }
-                else
-                {
-                    //SetDesiredForward(offMeshLinkTraversalDirection);
-                    rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
-                    RotateTowards(offMeshLinkTraversalDirectionNoY);
-                }
-                
             }
+            else
+            {
+                calledFinishLastFrame = false;
+            }
+           
 
             //2. Check if agent is on sloped surface
             agent.SamplePathPosition(NavMesh.AllAreas, 0.0f, out navMeshHit);
@@ -345,10 +361,19 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //7. update agent speed
             UpdateAgentSpeed(currentMovementOrder.sprint);
-
+           
+            //return; 
+            //without the return we could get from this if statement to the next when we set the movement State to ttraversing offmesh link, because Navmesh.CompleteOffmeshLink is asynchronous, 
+            //this could teleport the agent back to the offmesh Link start point, bause traverng offmesh link would be started again - do we really need this?
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
         {
+           /* if (!agent.isOnOffMeshLink)
+            {
+                FinishTraversingOffMeshLink(); //Opt out if the asynchoronous navmesh.CompleteOffmeshLink() triggers to late
+                return;
+            }*/
+
             currentTraversalNormalizedTime += Time.deltaTime / currentLinkTraverseDuration;
 
             if (currentTraversalNormalizedTime < 1)
@@ -375,16 +400,20 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                     newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
 
-                offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
+                //offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
+                offMeshLinkTraversalVelocity = (newPosition - transform.position)/Time.deltaTime;
                 //RotateTowards(new Vector3(offMeshLinkTraversalVelocity.x,0,offMeshLinkTraversalVelocity.z));
                 RotateTowards(offMeshLinkTraversalDirection);
                 agent.transform.position = newPosition;
+                lastSnappedTraversingPositionTraverseUpdate =newPosition;
             }
             else
             {
                 
                 FinishTraversingOffMeshLink();
             }
+
+           // return;
         }
     }
 
@@ -560,6 +589,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void StartTraversingOffMeshLink(OffMeshLinkData data)
     {
+        //agent.isStopped = true;
+        //agent.CompleteOffMeshLink();
+        
+        calledStart = true;
+
         movementState = MovementState.TraversingOffMeshLink;
 
         //OffMeshLinkData data = agent.currentOffMeshLinkData;
@@ -604,6 +638,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         // Inform Animation Controller
         animationController.StartJumpingOverObstacle(GetAnimationIDCorrespondingToTraversingType(), currentLinkTraverseDuration);
+
+        agent.CompleteOffMeshLink(); //I thought this should be called on FinishTraversingNavmesh, but if we call it there it can cause issues, where the agent snaps back to ist previous posiiton
+        //-> snaps agent to the end position, when jumping beginns
+        //agent.isStopped = true;
+        //agent.updatePosition = false;
 
     }
 
@@ -667,7 +706,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void FinishTraversingOffMeshLink()
     {
-        currentTraversalNormalizedTime = 0;
+       
+        calledFinishLastFrame = true;
+        currentTraversalNormalizedTime = 1;
         offMeshLinkTraversalDirection = Vector3.zero;
 
         //Add the Speed Modifier and set the timer to disable it 
@@ -681,8 +722,21 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         movementState = MovementState.Default;
-        agent.transform.position = currentLinkEndPosition;
-        agent.CompleteOffMeshLink();
+
+        //snap the target position to navmesh, cause sometimes navmesh.CompletePath() moves him to a wrong posoiton
+        /* NavMeshHit hit;
+         if(NavMesh.SamplePosition(currentLinkEndPosition,out hit, 1f, NavMesh.AllAreas))
+         {
+             agent.transform.position = hit.position;
+         }
+         else
+         {
+             agent.transform.position = currentLinkEndPosition;
+         }*/
+        agent.nextPosition = currentLinkEndPosition;
+         lastSnappedTraversingPositionOnFinish = currentLinkEndPosition;
+
+        //agent.CompleteOffMeshLink();
 
 
         // Inform Character Controler
@@ -691,6 +745,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         // Inform Animation Controller
         animationController.StopJumpingOverObstacle();
+        //agent.isStopped = false;
+        //agent.updatePosition = true;
+
     }
 
     int GetAnimationIDCorrespondingToTraversingType( )
