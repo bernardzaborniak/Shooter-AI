@@ -624,7 +624,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentOffMeshLinkMoveMethod = OffMeshLinkMoveMethod.JumpOverObstacle;
 
         currentObstacleHeight = currentNavMeshLinkProperties.obstacleHeight;
-        currentRelativeObstacleOffset = currentObstacleHeight - 0.75f;//0.65f;
+        currentRelativeObstacleOffset = currentObstacleHeight - 0.8f;//0.65f;
     }
 
     void StartTraversingLinkJumpDownUpOrHorizontal()
