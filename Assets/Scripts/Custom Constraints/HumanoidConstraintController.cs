@@ -211,10 +211,13 @@ public class HumanoidConstraintController : MonoBehaviour
             // 3. Resolve IK's
 
             // I dont know why, but we need to resolve them twice to have a nice result
-            leftHandIK.ResolveIK();
-            leftHandIK.ResolveIK();
-            rightHandIK.ResolveIK();
-            rightHandIK.ResolveIK();
+            //Vector3 leftHandPosBeforeIkResolve = leftHandIK.End.position;
+            //leftHandIK.ResolveIK(leftHandPosBeforeIkResolve);
+            leftHandIK.ResolveIK(2);
+
+            //Vector3 rightHandPosBeforeIkResolve = rightHandIK.End.position;
+            //rightHandIK.ResolveIK(rightHandPosBeforeIkResolve);
+            rightHandIK.ResolveIK(2);
 
             UnityEngine.Profiling.Profiler.EndSample();
 

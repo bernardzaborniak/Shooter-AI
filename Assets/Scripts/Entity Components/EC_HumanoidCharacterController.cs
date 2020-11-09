@@ -282,7 +282,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 movementController.SetAcceleration(combatStanceAcceleration);
                 animationController.ChangeToCombatStance();
                
-                handsIKController.OnEnterCombatStance();
+                handsIKController.OnEnterCombatOrCrouchedStance();
             }
         }
     }
@@ -297,7 +297,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             movementController.SetAcceleration(crouchAcceleration);
             animationController.ChangeToCrouchedStance();
            
-            handsIKController.OnEnterCombatStance();
+            handsIKController.OnEnterCombatOrCrouchedStance();
         }
     }
 

@@ -2343,6 +2343,48 @@ MonoBehaviour:
     idleIKRight: 0
     combatIKLeft: 0
     combatIKRight: 0
+  idleStanceIKState:
+    name: Idle IK
+    weightsChangeSpeed: 5
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  combatAndCrouchedStanceIKState:
+    name: Crouched And Combat IK
+    weightsChangeSpeed: 2.5
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  reloadingIKState:
+    name: 
+    weightsChangeSpeed: 0
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  pullingOutWeaponIKState:
+    name: 
+    weightsChangeSpeed: 0
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  hidingWeaponIKState:
+    name: 
+    weightsChangeSpeed: 0
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  aimingWeaponIKState:
+    name: 
+    weightsChangeSpeed: 0
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
+  traversingOffMeshLinkIKState:
+    name: 
+    weightsChangeSpeed: 0
+    leftHandIKTargetWeight: 0
+    rightHandIKTargetWeight: 0
+    recoilEnabledThroughRightHandIK: 0
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0
