@@ -148,8 +148,8 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
 
         float changeSpeed = currentIKState.weightsChangeSpeed * Time.deltaTime;
-        //leftHandIK.weight += Mathf.Clamp((currentIKState.leftHandIKTargetWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
-        //rightHandIK.weight += Mathf.Clamp((currentIKState.rightHandIKTargetWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
+        leftHandIK.weight += Mathf.Clamp((currentIKState.leftHandIKTargetWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
+        rightHandIK.weight += Mathf.Clamp((currentIKState.rightHandIKTargetWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
 
         if (leftHandIK.weight > 0)
         {

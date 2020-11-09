@@ -2345,13 +2345,13 @@ MonoBehaviour:
     combatIKRight: 0
   idleStanceIKState:
     name: Idle IK
-    weightsChangeSpeed: 5
+    weightsChangeSpeed: 4
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
   combatAndCrouchedStanceIKState:
     name: Crouched And Combat IK
-    weightsChangeSpeed: 2.5
+    weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0

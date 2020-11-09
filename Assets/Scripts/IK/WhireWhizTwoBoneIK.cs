@@ -33,63 +33,48 @@ public class WhireWhizTwoBoneIK : MonoBehaviour
     Vector3 lowerPosition;
     Vector3 targetPosition;
 
-    public bool blockResolving;
 
     void LateUpdate()
     {
         if (automaticlyUpdateInLateUpdate)
         {
-            Vector3 handPositionBeforeIKResolve = End.position;
-            ResolveIK(2);
-            //ResolveIK(handPositionBeforeIKResolve);
+            ResolveIK();
         }
        
     }
 
-    public void ResolveIK(int resolveCount)//resolveCount -> how myn times is it resolved? //Vector3 handPositionBeforeIKResolve)  //the position of the end needs to be saved, as it changes if we reolve the iks twice in one frame
+    public void ResolveIK()//resolveCount -> how myn times is it resolved? //Vector3 handPositionBeforeIKResolve)  //the position of the end needs to be saved, as it changes if we reolve the iks twice in one frame
     {
-        resolveCount = 1;
-        //if (weight > 0)
-        //{
-            if (!blockResolving)
-            {
-                for (int i = 0; i < resolveCount; i++)
-                {
-                upperPosition = Upper.position;
-                lowerPosition = Lower.position;
-                targetPosition = Vector3.Lerp(End.position, Target.position, weight);
-                //targetPosition =  Target.position;
-                //targetPosition = Vector3.Lerp(handPositionBeforeIKResolve, Target.position, weight);
+        if (weight > 0)
+        {
+            upperPosition = Upper.position;
+            lowerPosition = Lower.position;
+            targetPosition = Vector3.Lerp(End.position, Target.position, weight);
 
-                a = Lower.localPosition.magnitude;
-                b = End.localPosition.magnitude;
-                c = Vector3.Distance(upperPosition, targetPosition);
-                en = Vector3.Cross(targetPosition - upperPosition, Pole.position - upperPosition);
+            a = Lower.localPosition.magnitude;
+            b = End.localPosition.magnitude;
+            c = Vector3.Distance(upperPosition, targetPosition);
+            en = Vector3.Cross(targetPosition - upperPosition, Pole.position - upperPosition);
 
-                
-                    //Set the rotation of the upper arm
-                    upperTargetRotation = Quaternion.LookRotation(targetPosition - upperPosition, Quaternion.AngleAxis(UpperElbowRotation, lowerPosition - upperPosition) * (en));
-                    upperTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, Lower.localPosition));
-                    upperTargetRotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * upperTargetRotation;
-                    Upper.rotation = Quaternion.Slerp(Upper.rotation, upperTargetRotation, weight);
-                    //Upper.rotation = upperTargetRotation;
 
-                    lowerPosition = Lower.position;
+            //Set the rotation of the upper arm
+            upperTargetRotation = Quaternion.LookRotation(targetPosition - upperPosition, Quaternion.AngleAxis(UpperElbowRotation, lowerPosition - upperPosition) * (en));
+            upperTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, Lower.localPosition));
+            upperTargetRotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * upperTargetRotation;
+            Upper.rotation = Quaternion.Slerp(Upper.rotation, upperTargetRotation, weight);
 
-                    //set the rotation of the lower arm
-                    lowerTargetRotation = Quaternion.LookRotation(targetPosition - lowerPosition, Quaternion.AngleAxis(LowerElbowRotation, End.position - lowerPosition) * (en));
-                    lowerTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, End.localPosition));
-                    Lower.rotation = Quaternion.Slerp(Lower.rotation, lowerTargetRotation, weight);
-                    //Lower.rotation = lowerTargetRotation;
+            lowerPosition = Lower.position;
 
-                    End.rotation = Quaternion.Slerp(End.rotation, Target.rotation, weight);
-                    //Lower.LookAt(Lower, Pole.position - Upper.position);
-                    //Lower.rotation = Quaternion.AngleAxis(CosAngle(a, b, c), en);
-                }
+            //set the rotation of the lower arm
+            lowerTargetRotation = Quaternion.LookRotation(targetPosition - lowerPosition, Quaternion.AngleAxis(LowerElbowRotation, End.position - lowerPosition) * (en));
+            lowerTargetRotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, End.localPosition));
+            Lower.rotation = Quaternion.Slerp(Lower.rotation, lowerTargetRotation, weight);
 
-            }
-        //}
-        
+            End.rotation = Quaternion.Slerp(End.rotation, Target.rotation, weight);
+            //Lower.LookAt(Lower, Pole.position - Upper.position);
+            //Lower.rotation = Quaternion.AngleAxis(CosAngle(a, b, c), en);
+        }
+
     }
 
     //function that finds angles using the cosine rule 
