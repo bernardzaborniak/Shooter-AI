@@ -13,7 +13,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     [Header("Hand IK")]
 
-    
     IItemWithIKHandPositions currentIKTargetItem;
 
     [Tooltip("The IK Targets are being swet through the constraint controller - as they need to be set in LateUpdate")]
@@ -24,13 +23,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public WhireWhizTwoBoneIK rightHandIK;
     float desiredRightHandIKRigWeight;
 
-    [Header("IK Weight Change Speeds")]
-    [Tooltip("the default speed used for most changes")]
-    public float defaultChangeIKWeightsSpeed;
-    public float enterCombatStanceChangeIKWeightsSpeed;
-    public float currentChangeIKWeightsSpeed;
-
-
     [Header("For Recoil")]
     public Transform rightHandTransform;
 
@@ -38,7 +30,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     [Tooltip("position to which the right hand is being IK'eyd when aiming weapon - weapn is parented to the right hand")]
     public Transform aimingWeaponHandPosition;
-    //bool aimingWeapon;
 
     [Serializable]
     public class IKSettingsCorrespondingToWeaponInteractionType
@@ -50,40 +41,13 @@ public class EC_HumanoidHandsIKController : EntityComponent
         [Space(10)]
         public bool combatIKLeft = false;
         public bool combatIKRight = false;
-        //[Space(10)]
-        //public bool aimingIKLeft = false;
-        //public bool aimingIKRight = false;
     }
     [Space(10)]
     public IKSettingsCorrespondingToWeaponInteractionType[] iKSettingsCorrespondingToWeaponInteractionTypes;
     [Space(10)]
-    public IKSettingsCorrespondingToWeaponInteractionType currentIKSettings;
+    public IKSettingsCorrespondingToWeaponInteractionType currentIKSettingCorrespondingToWeaponInteractionType;
 
-
-   // bool IKEnabled;
-
-    enum PrimaryIKStance
-    {
-       // NoIK,
-        Idle,
-        CombatStance,
-    }
-    PrimaryIKStance primaryIKStance;
-
-    enum SecondaryIKStance
-    {
-        None,
-        Aiming,
-        TraversingOffMeshLink,
-        PullingOutItem,
-        HidingItem,
-        ReloadingWeapon
-    }
-    SecondaryIKStance secondaryIKStance;
-
-
-
-    #endregion
+ 
 
     [System.Serializable]
     public class IKState
@@ -112,91 +76,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
             return rightHandIKTargetWeight;
         }
     }
-    /*[System.Serializable]
-    public class IKStateDefault : IKState
-    {
-       // [Header("IKStateDefault")]
-        public float weightsChangeSpeed;
-        public float leftHandIKTargetWeight;
-        public float rightHandIKTargetWeight;
-
-        public override float GetCurrentWeightsChangeSpeed()
-        {
-            return weightsChangeSpeed;
-        }
-
-        public override float GetLeftHandIKTargetWeight()
-        {
-            return leftHandIKTargetWeight;
-        }
-        public override float GetRightHandIKTargetWeight()
-        {
-            return rightHandIKTargetWeight;
-        }
-
-
-    }*/
-    //[System.Serializable]
-   /* public class IKStateExitAfterDelay: IKState
-    {
-        [Header("IKStateChangeWeightsAfterDelay")]
-        [Space(5)]
-        float timeAtWhichWeightsChange;
-        [Space(5)]
-        public float leftHandIKTargetWeightBeforeChangeTime;
-        public float rightHandIKTargetWeightBeforeChangeTime;
-        public float weightsChangeSpeedBeforeChangeTime;
-        [Space(5)]
-        public float leftHandIKTargetWeightAfterChangeTime;
-        public float rightHandIKTargetWeightAfterChangeTime;
-        public float weightsChangeSpeedAfterChangeTime;
-
-        public void SetTimeAtWhichTheWeightsChange(float time)
-        {
-            timeAtWhichWeightsChange = time;
-        }
-
-        public override float GetCurrentWeightsChangeSpeed()
-        {
-            if(Time.time< timeAtWhichWeightsChange)
-            {
-                return weightsChangeSpeedBeforeChangeTime;
-            }
-            else
-            {
-                return weightsChangeSpeedAfterChangeTime;
-
-            }
-        }
-
-        public override float GetLeftHandIKTargetWeight()
-        {
-            if (Time.time < timeAtWhichWeightsChange)
-            {
-                return leftHandIKTargetWeightBeforeChangeTime;
-            }
-            else
-            {
-                return leftHandIKTargetWeightAfterChangeTime;
-
-            }
-        }
-        public override float GetRightHandIKTargetWeight()
-        {
-            if (Time.time < timeAtWhichWeightsChange)
-            {
-                return rightHandIKTargetWeightBeforeChangeTime;
-            }
-            else
-            {
-                return rightHandIKTargetWeightAfterChangeTime;
-
-            }
-        }
-
-    }*/
-
-
+    
 
     IKState currentLayer1State;
     IKState currentLayer2State;
@@ -221,7 +101,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     //a higher layered state always overrides the lower layer. if the current 3 layerState is null - the 2and layer is used
 
-
+    #endregion
 
     public override void SetUpComponent(GameEntity entity)
     {
@@ -233,17 +113,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public override void UpdateComponent()
     {
-       /* Debug.Log("currentLayer1State: " + currentLayer1State.name);
-        if (currentLayer2State != null)
-        {
-            Debug.Log("currentLayer2State: " + currentLayer2State.name);
-        }
-        if (currentLayer3State != null)
-        {
-            Debug.Log("currentLayer3State: " + currentLayer3State.name);
-        }*/
-
-
         IKState currentIKState = null;
         if (currentLayer4State != null)
         {
@@ -270,7 +139,6 @@ public class EC_HumanoidHandsIKController : EntityComponent
             currentIKState = currentLayer1State;
         }
 
-       
 
         float changeSpeed = currentIKState.GetCurrentWeightsChangeSpeed() * Time.deltaTime;
         leftHandIK.weight += Mathf.Clamp((currentIKState.GetLeftHandIKTargetWeight() - leftHandIK.weight), -changeSpeed, changeSpeed);
@@ -293,34 +161,12 @@ public class EC_HumanoidHandsIKController : EntityComponent
             {
                 constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AnimatedHandPosition, Vector3.zero, Quaternion.identity);
             }
-        }
-        
-
-
-
-
-        /* float changeSpeed = currentChangeIKWeightsSpeed * Time.deltaTime;
-         leftHandIK.weight += Mathf.Clamp((desiredLeftHandIKRigWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
-         rightHandIK.weight += Mathf.Clamp((desiredRightHandIKRigWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
-
-         //add a current state check here instead of this //TODO
-         if (currentIKTargetItem != null)
-         {
-             //set the positions via constraint manager - they need to be updated in late update
-             constraintController.SetDesiredLeftIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, currentIKTargetItem.GetLeftHandIKPosition(), currentIKTargetItem.GetLeftHandIKRotation());
-             constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.AnimatedHandPosition, Vector3.zero, Quaternion.identity);
-         }
-         if (secondaryIKStance == SecondaryIKStance.Aiming)
-         {
-             constraintController.SetDesiredRightIKTarget(HumanoidConstraintController.IKTargetingMode.CustomPosition, aimingWeaponHandPosition.position, aimingWeaponHandPosition.rotation);
-         }*/
-
-
+        }     
     }
 
     void UpdateLayer1TargetWeightsAccordingToEquippedItem()
     {
-        if (currentIKSettings.idleIKLeft)
+        if (currentIKSettingCorrespondingToWeaponInteractionType.idleIKLeft)
         {
 
             idleStanceIKState.leftHandIKTargetWeight = 1;
@@ -330,7 +176,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
             idleStanceIKState.leftHandIKTargetWeight = 0;
         }
 
-        if (currentIKSettings.idleIKRight)
+        if (currentIKSettingCorrespondingToWeaponInteractionType.idleIKRight)
         {
             idleStanceIKState.rightHandIKTargetWeight = 1;
         }
@@ -340,7 +186,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
 
 
-        if (currentIKSettings.combatIKLeft)
+        if (currentIKSettingCorrespondingToWeaponInteractionType.combatIKLeft)
         {
             combatAndCrouchedStanceIKState.leftHandIKTargetWeight = 1;
         }
@@ -349,7 +195,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
             combatAndCrouchedStanceIKState.leftHandIKTargetWeight = 0;
         }
 
-        if (currentIKSettings.combatIKRight)
+        if (currentIKSettingCorrespondingToWeaponInteractionType.combatIKRight)
         {
             combatAndCrouchedStanceIKState.rightHandIKTargetWeight = 1;
         }
@@ -359,83 +205,23 @@ public class EC_HumanoidHandsIKController : EntityComponent
         }
     }
 
-
-  
-
-   /* void UpdateDesiredIKWeights()
-    {
-        if(secondaryIKStance == SecondaryIKStance.None)
-        {
-            if (primaryIKStance == PrimaryIKStance.Idle)
-            {
-                SetIKWeightsForIdle();
-            }
-            else if (primaryIKStance == PrimaryIKStance.CombatStance)
-            {
-                SetIKWeightsForCombat();
-            }
-        }
-        else if(secondaryIKStance == SecondaryIKStance.Aiming)
-        {
-            SetIKWeightsForAiming();
-        }
-        else if(secondaryIKStance == SecondaryIKStance.TraversingOffMeshLink)
-        {
-            SetIKWeightsForTraversingOffMeshLink();
-        }
-        else if(secondaryIKStance == SecondaryIKStance.PullingOutItem)
-        {
-            //SetIKWeightsForPullingOutItem();
-            /*if (primaryIKStance == PrimaryIKStance.Idle)
-            {
-                SetIKWeightsForIdle();
-            }
-            else if (primaryIKStance == PrimaryIKStance.CombatStance)
-            {
-                SetIKWeightsForCombat();
-            }*//*
-            desiredLeftHandIKRigWeight = 0;
-            desiredRightHandIKRigWeight = 0;
-
-        }
-        else if (secondaryIKStance == SecondaryIKStance.HidingItem)
-        {
-            //SetIKWeightsForHidingItem();
-            desiredLeftHandIKRigWeight = 0;
-            desiredRightHandIKRigWeight = 0;
-        }
-        else if (secondaryIKStance == SecondaryIKStance.ReloadingWeapon)
-        {
-            SetIKWeightsForReloadingWeapon();
-        }
-    }*/
-
     #region Change States External Orders
-
-
 
     public void OnEnterIdleStance()
     {
-        //SetPrimaryIKStance(PrimaryIKStance.Idle);
-        // currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
-        //idleStanceIKState
-
         currentLayer1State = idleStanceIKState;
     }
 
     public void OnEnterCombatOrCrouchedStance()
     {
         currentLayer1State = combatAndCrouchedStanceIKState;
-
-        // SetPrimaryIKStance(PrimaryIKStance.CombatStance);
-        //currentChangeIKWeightsSpeed = enterCombatStanceChangeIKWeightsSpeed;
     }
 
     public void OnChangeItemInHand(Item newItem)
     {
         if (newItem == null)
         {
-            currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+            currentIKSettingCorrespondingToWeaponInteractionType = iKSettingsCorrespondingToWeaponInteractionTypes[0];
             currentIKTargetItem = null;
         }
         else
@@ -448,13 +234,13 @@ public class EC_HumanoidHandsIKController : EntityComponent
                 {
                     if (iKSettingsCorrespondingToWeaponInteractionTypes[i].weaponInteractionType == newItem.itemInteractionType)
                     {
-                        currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[i];
+                        currentIKSettingCorrespondingToWeaponInteractionType = iKSettingsCorrespondingToWeaponInteractionTypes[i];
                     }
                 }
             }
             else
             {
-                currentIKSettings = iKSettingsCorrespondingToWeaponInteractionTypes[0];
+                currentIKSettingCorrespondingToWeaponInteractionType = iKSettingsCorrespondingToWeaponInteractionTypes[0];
             }
         }
 
@@ -463,209 +249,56 @@ public class EC_HumanoidHandsIKController : EntityComponent
 
     public void OnStartAimingWeapon()
     {
-        //SetSecondaryIKStance(SecondaryIKStance.Aiming);
         currentLayer3State = aimingWeaponIKState;
     }
 
     public void OnStopAimingWeapon()
     {
-        /*if (secondaryIKStance == SecondaryIKStance.Aiming)
-        {
-            SetSecondaryIKStance(SecondaryIKStance.None);
-            currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
-        }*/
         currentLayer3State = null;
-
-
     }
 
     public void OnStartPullingOutWeapon(float timeTillFinished)
     {
-        //SetSecondaryIKStance(SecondaryIKStance.PullingOutItem);
         currentLayer2State = pullingOutWeaponIKState;
         pullingOutWeaponIKState.exitStateAfterDelay = true;
         pullingOutWeaponIKState.exitStateTime = Time.time + timeTillFinished-0.1f;
-
-        //(pullingOutWeaponIKState as IKStateChangeWeightsAfterDelay).SetTimeAtWhichTheWeightsChange(Time.time + timeTillFinished-0.3f);
-        //pullingOutWeaponIKState.weightsChangeSpeed = 1 / pullOutWeaponTime;
-
     }
 
     public void OnStopPullingOutWeapon()
     {
-        /*if (secondaryIKStance == SecondaryIKStance.PullingOutItem)
-        {
-            SetSecondaryIKStance(SecondaryIKStance.None);
-        }*/
         currentLayer2State = null;
-
     }
 
     public void OnStartHidingWeapon(float timeTillFinished)
     {
-        //SetSecondaryIKStance(SecondaryIKStance.HidingItem);
         currentLayer2State = hidingWeaponIKState;
-        //hidingWeaponIKState.weightsChangeSpeed = 1 / hideWeaponTime;
-
     }
 
     public void OnStopHidingWeapon()
     {
-        /*if (secondaryIKStance == SecondaryIKStance.HidingItem)
-        {
-            SetSecondaryIKStance(SecondaryIKStance.None);
-        }*/
         currentLayer2State = null;
-
     }
 
     public void OnStartReloadingWeapon()
     {
-        //SetSecondaryIKStance(SecondaryIKStance.ReloadingWeapon);
         currentLayer2State = reloadingIKState;
-
     }
 
     public void OnStopReloadingWeapon()
     {
-        /*if (secondaryIKStance == SecondaryIKStance.ReloadingWeapon)
-        {
-            SetSecondaryIKStance(SecondaryIKStance.None);
-        }*/
         currentLayer2State = null;
-
     }
 
     public void OnStartTraversingOffMeshLink()
     {
-        //SetSecondaryIKStance(SecondaryIKStance.TraversingOffMeshLink);
-        // delayedOnStopTraversingOffMeshLink = false;
-        Debug.Log("on start traversing");
         currentLayer4State = traversingOffMeshLinkIKState;
-
     }
 
     public void OnStopTraversingOffMeshLink()
     {
-        Debug.Log("on stop traversing");
-
-        //SetSecondaryIKStance(SecondaryIKStance.None);
         currentLayer4State = null;
-
     }
 
     #endregion
-
-
-    /*
-    #region Change States Internal
-
-    void SetPrimaryIKStance(PrimaryIKStance newStance)
-    {
-        primaryIKStance = newStance;
-        UpdateDesiredIKWeights();
-    }
-
-    void SetSecondaryIKStance(SecondaryIKStance newStance)
-    {
-        secondaryIKStance = newStance;
-        UpdateDesiredIKWeights();
-    }
-
-    #endregion
-
-
-
-    void SetIKWeightsForIdle()
-    {
-        if (currentIKSettings.idleIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.idleIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }
-
-    void SetIKWeightsForCombat()
-    {
-        if (currentIKSettings.combatIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        if (currentIKSettings.combatIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }
-
-    void SetIKWeightsForAiming()
-    {
-
-        //if (currentIKSettings.aimingIKLeft)
-        if (currentIKSettings.combatIKLeft)
-        {
-            desiredLeftHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredLeftHandIKRigWeight = 0;
-        }
-
-        //if (currentIKSettings.aimingIKRight)
-        if (currentIKSettings.combatIKRight)
-        {
-            desiredRightHandIKRigWeight = 1;
-        }
-        else
-        {
-            desiredRightHandIKRigWeight = 0;
-        }
-    }
-
-    void SetIKWeightsForTraversingOffMeshLink()
-    {
-        desiredLeftHandIKRigWeight = 0;
-        desiredRightHandIKRigWeight = 0;
-    }
-
-   /* void SetIKWeightsForPullingOutItem()
-    {
-        desiredLeftHandIKRigWeight = 0;
-        desiredRightHandIKRigWeight = 0;
-    }*/
-
-    /*
-
-    void SetIKWeightsForHidingItem()
-    {
-        desiredLeftHandIKRigWeight = 0;
-        desiredRightHandIKRigWeight = 0;
-    }
-
-    void SetIKWeightsForReloadingWeapon()
-    {
-        desiredLeftHandIKRigWeight = 0;
-        desiredRightHandIKRigWeight = 0;
-    }*/
 
 }
