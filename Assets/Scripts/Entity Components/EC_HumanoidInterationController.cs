@@ -198,7 +198,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
         //added
         handsIKController.OnChangeItemInHand(inventory[currentSelectedItemID]);
-        handsIKController.OnStartPullingOutWeapon();
+        handsIKController.OnStartPullingOutWeapon(inventory[currentSelectedItemID].pullOutItemTime * percentageAlreadyHidden);
 
     }
 
@@ -224,7 +224,7 @@ public class EC_HumanoidInterationController : EntityComponent
         animationController.ChangeWeaponInteractionState(2);
 
         //handsIKController.DisableIKs();
-        handsIKController.OnStartHidingWeapon();
+        handsIKController.OnStartHidingWeapon(inventory[currentSelectedItemID].hideItemTime * pulledOutPercentage);
     }
 
     void FinishHidingItem()
@@ -240,6 +240,8 @@ public class EC_HumanoidInterationController : EntityComponent
         {
             (inventory[currentSelectedItemID] as Gun).OnReleaseWeapon();
         }
+
+        handsIKController.OnStopHidingWeapon();
 
         // What next? - depending on which item is desired
         if (inventory[desiredSelectedItemID] != null)
@@ -258,7 +260,7 @@ public class EC_HumanoidInterationController : EntityComponent
             handsIKController.OnChangeItemInHand(null);
         }
 
-        handsIKController.OnStopHidingWeapon();
+        
     }
 
     public bool DoesCurrentItemInHandAllowCombatStance()

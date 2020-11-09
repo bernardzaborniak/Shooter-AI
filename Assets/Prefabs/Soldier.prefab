@@ -2344,47 +2344,61 @@ MonoBehaviour:
     combatIKLeft: 0
     combatIKRight: 0
   idleStanceIKState:
-    name: Idle IK
+    name: Idle State
     weightsChangeSpeed: 4
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 0
+    exitStateTime: 0
   combatAndCrouchedStanceIKState:
-    name: Crouched And Combat IK
+    name: Crouhced & Combat State
     weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 0
+    exitStateTime: 0
   reloadingIKState:
-    name: 
-    weightsChangeSpeed: 0
+    name: Reloading State
+    weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 0
+    exitStateTime: 0
   pullingOutWeaponIKState:
-    name: 
-    weightsChangeSpeed: 0
+    name: Pulling Out W State
+    weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 1
+    exitStateTime: 0
   hidingWeaponIKState:
-    name: 
-    weightsChangeSpeed: 0
+    name: Hiding
+    weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 0
+    exitStateTime: 0
   aimingWeaponIKState:
-    name: 
-    weightsChangeSpeed: 0
-    leftHandIKTargetWeight: 0
-    rightHandIKTargetWeight: 0
-    recoilEnabledThroughRightHandIK: 0
+    name: Aiming State
+    weightsChangeSpeed: 10
+    leftHandIKTargetWeight: 1
+    rightHandIKTargetWeight: 1
+    recoilEnabledThroughRightHandIK: 1
+    exitStateAfterDelay: 0
+    exitStateTime: 0
   traversingOffMeshLinkIKState:
-    name: 
-    weightsChangeSpeed: 0
+    name: Traversing OffMeshLink State
+    weightsChangeSpeed: 5
     leftHandIKTargetWeight: 0
     rightHandIKTargetWeight: 0
     recoilEnabledThroughRightHandIK: 0
+    exitStateAfterDelay: 0
+    exitStateTime: 0
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0

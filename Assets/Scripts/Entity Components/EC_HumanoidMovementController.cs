@@ -245,15 +245,15 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public override void UpdateComponent()
     {
-        if (Input.GetKeyDown(KeyCode.N))
+        /*if (Input.GetKeyDown(KeyCode.N))
         {
             agent.CompleteOffMeshLink();
-        }
-        if (Input.GetKeyDown(KeyCode.M))
+        }*/
+        /*if (Input.GetKeyDown(KeyCode.M))
         {
             agent.ResetPath();
             currentMovementOrder.OnAbort();
-        }
+        }*/
 
         bool rotatingTowardsOffMeshLinkOverridesOtherRotation = false;
 
@@ -673,7 +673,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     }
 
     void FinishTraversingOffMeshLink()
-    {    
+    {
+        Debug.Log("finish traversing movement");
         currentTraversalNormalizedTime = 1;
         offMeshLinkTraversalDirection = Vector3.zero;
 

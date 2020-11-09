@@ -89,20 +89,119 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public class IKState
     {
         public string name;
+       
         public float weightsChangeSpeed;
-        //public float enterStateWeightChangeSpeed;
-        //public float exitStateWeightChangeSpeed;
         public float leftHandIKTargetWeight;
         public float rightHandIKTargetWeight;
         public bool recoilEnabledThroughRightHandIK;
 
+        public bool exitStateAfterDelay;
+        public float exitStateTime;
+
+        public virtual float GetCurrentWeightsChangeSpeed()
+        {
+            return weightsChangeSpeed;
+        }
+
+        public virtual float GetLeftHandIKTargetWeight()
+        {
+            return leftHandIKTargetWeight;
+        }
+        public virtual float GetRightHandIKTargetWeight()
+        {
+            return rightHandIKTargetWeight;
+        }
     }
+    /*[System.Serializable]
+    public class IKStateDefault : IKState
+    {
+       // [Header("IKStateDefault")]
+        public float weightsChangeSpeed;
+        public float leftHandIKTargetWeight;
+        public float rightHandIKTargetWeight;
+
+        public override float GetCurrentWeightsChangeSpeed()
+        {
+            return weightsChangeSpeed;
+        }
+
+        public override float GetLeftHandIKTargetWeight()
+        {
+            return leftHandIKTargetWeight;
+        }
+        public override float GetRightHandIKTargetWeight()
+        {
+            return rightHandIKTargetWeight;
+        }
+
+
+    }*/
+    //[System.Serializable]
+   /* public class IKStateExitAfterDelay: IKState
+    {
+        [Header("IKStateChangeWeightsAfterDelay")]
+        [Space(5)]
+        float timeAtWhichWeightsChange;
+        [Space(5)]
+        public float leftHandIKTargetWeightBeforeChangeTime;
+        public float rightHandIKTargetWeightBeforeChangeTime;
+        public float weightsChangeSpeedBeforeChangeTime;
+        [Space(5)]
+        public float leftHandIKTargetWeightAfterChangeTime;
+        public float rightHandIKTargetWeightAfterChangeTime;
+        public float weightsChangeSpeedAfterChangeTime;
+
+        public void SetTimeAtWhichTheWeightsChange(float time)
+        {
+            timeAtWhichWeightsChange = time;
+        }
+
+        public override float GetCurrentWeightsChangeSpeed()
+        {
+            if(Time.time< timeAtWhichWeightsChange)
+            {
+                return weightsChangeSpeedBeforeChangeTime;
+            }
+            else
+            {
+                return weightsChangeSpeedAfterChangeTime;
+
+            }
+        }
+
+        public override float GetLeftHandIKTargetWeight()
+        {
+            if (Time.time < timeAtWhichWeightsChange)
+            {
+                return leftHandIKTargetWeightBeforeChangeTime;
+            }
+            else
+            {
+                return leftHandIKTargetWeightAfterChangeTime;
+
+            }
+        }
+        public override float GetRightHandIKTargetWeight()
+        {
+            if (Time.time < timeAtWhichWeightsChange)
+            {
+                return rightHandIKTargetWeightBeforeChangeTime;
+            }
+            else
+            {
+                return rightHandIKTargetWeightAfterChangeTime;
+
+            }
+        }
+
+    }*/
 
 
 
-     IKState currentLayer1State;
-     IKState currentLayer2State;
-     IKState currentLayer3State;
+    IKState currentLayer1State;
+    IKState currentLayer2State;
+    IKState currentLayer3State;
+    IKState currentLayer4State;
 
 
     [Header("Layer 1 IK States")]
@@ -113,9 +212,11 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public IKState reloadingIKState;
     public IKState pullingOutWeaponIKState;
     public IKState hidingWeaponIKState;
-    public IKState aimingWeaponIKState;
 
     [Header("Layer 3 IK States")]
+    public IKState aimingWeaponIKState;
+
+    [Header("Layer 4 IK States")]
     public IKState traversingOffMeshLinkIKState;
 
     //a higher layered state always overrides the lower layer. if the current 3 layerState is null - the 2and layer is used
@@ -126,30 +227,54 @@ public class EC_HumanoidHandsIKController : EntityComponent
     {
         base.SetUpComponent(entity);
 
-        //currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
         UpdateLayer1TargetWeightsAccordingToEquippedItem();
+        currentLayer1State = idleStanceIKState;
     }
 
     public override void UpdateComponent()
     {
-        
-         IKState currentIKState = null;
+       /* Debug.Log("currentLayer1State: " + currentLayer1State.name);
+        if (currentLayer2State != null)
+        {
+            Debug.Log("currentLayer2State: " + currentLayer2State.name);
+        }
         if (currentLayer3State != null)
+        {
+            Debug.Log("currentLayer3State: " + currentLayer3State.name);
+        }*/
+
+
+        IKState currentIKState = null;
+        if (currentLayer4State != null)
+        {
+            currentIKState = currentLayer4State;
+        }
+        else if (currentLayer3State != null)
         {
             currentIKState = currentLayer3State;
         }
         else if (currentLayer2State != null)
         {
             currentIKState = currentLayer2State;
+
+            if (currentIKState.exitStateAfterDelay)
+            {
+                if (Time.time > currentIKState.exitStateTime)
+                {
+                    currentLayer2State = null;
+                }
+            }
         }
         else if (currentLayer1State != null)
         {
             currentIKState = currentLayer1State;
         }
 
-        float changeSpeed = currentIKState.weightsChangeSpeed * Time.deltaTime;
-        leftHandIK.weight += Mathf.Clamp((currentIKState.leftHandIKTargetWeight - leftHandIK.weight), -changeSpeed, changeSpeed);
-        rightHandIK.weight += Mathf.Clamp((currentIKState.rightHandIKTargetWeight - rightHandIK.weight), -changeSpeed, changeSpeed);
+       
+
+        float changeSpeed = currentIKState.GetCurrentWeightsChangeSpeed() * Time.deltaTime;
+        leftHandIK.weight += Mathf.Clamp((currentIKState.GetLeftHandIKTargetWeight() - leftHandIK.weight), -changeSpeed, changeSpeed);
+        rightHandIK.weight += Mathf.Clamp((currentIKState.GetRightHandIKTargetWeight() - rightHandIK.weight), -changeSpeed, changeSpeed);
 
         if (leftHandIK.weight > 0)
         {
@@ -233,6 +358,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
             combatAndCrouchedStanceIKState.rightHandIKTargetWeight = 0;
         }
     }
+
 
   
 
@@ -338,6 +464,7 @@ public class EC_HumanoidHandsIKController : EntityComponent
     public void OnStartAimingWeapon()
     {
         //SetSecondaryIKStance(SecondaryIKStance.Aiming);
+        currentLayer3State = aimingWeaponIKState;
     }
 
     public void OnStopAimingWeapon()
@@ -347,12 +474,21 @@ public class EC_HumanoidHandsIKController : EntityComponent
             SetSecondaryIKStance(SecondaryIKStance.None);
             currentChangeIKWeightsSpeed = defaultChangeIKWeightsSpeed;
         }*/
-         
+        currentLayer3State = null;
+
+
     }
 
-    public void OnStartPullingOutWeapon()
+    public void OnStartPullingOutWeapon(float timeTillFinished)
     {
         //SetSecondaryIKStance(SecondaryIKStance.PullingOutItem);
+        currentLayer2State = pullingOutWeaponIKState;
+        pullingOutWeaponIKState.exitStateAfterDelay = true;
+        pullingOutWeaponIKState.exitStateTime = Time.time + timeTillFinished-0.1f;
+
+        //(pullingOutWeaponIKState as IKStateChangeWeightsAfterDelay).SetTimeAtWhichTheWeightsChange(Time.time + timeTillFinished-0.3f);
+        //pullingOutWeaponIKState.weightsChangeSpeed = 1 / pullOutWeaponTime;
+
     }
 
     public void OnStopPullingOutWeapon()
@@ -361,11 +497,16 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
         }*/
+        currentLayer2State = null;
+
     }
 
-    public void OnStartHidingWeapon()
+    public void OnStartHidingWeapon(float timeTillFinished)
     {
         //SetSecondaryIKStance(SecondaryIKStance.HidingItem);
+        currentLayer2State = hidingWeaponIKState;
+        //hidingWeaponIKState.weightsChangeSpeed = 1 / hideWeaponTime;
+
     }
 
     public void OnStopHidingWeapon()
@@ -374,11 +515,15 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
         }*/
+        currentLayer2State = null;
+
     }
 
     public void OnStartReloadingWeapon()
     {
         //SetSecondaryIKStance(SecondaryIKStance.ReloadingWeapon);
+        currentLayer2State = reloadingIKState;
+
     }
 
     public void OnStopReloadingWeapon()
@@ -387,17 +532,26 @@ public class EC_HumanoidHandsIKController : EntityComponent
         {
             SetSecondaryIKStance(SecondaryIKStance.None);
         }*/
+        currentLayer2State = null;
+
     }
 
     public void OnStartTraversingOffMeshLink()
     {
         //SetSecondaryIKStance(SecondaryIKStance.TraversingOffMeshLink);
-       // delayedOnStopTraversingOffMeshLink = false;
+        // delayedOnStopTraversingOffMeshLink = false;
+        Debug.Log("on start traversing");
+        currentLayer4State = traversingOffMeshLinkIKState;
+
     }
 
     public void OnStopTraversingOffMeshLink()
     {
+        Debug.Log("on stop traversing");
+
         //SetSecondaryIKStance(SecondaryIKStance.None);
+        currentLayer4State = null;
+
     }
 
     #endregion

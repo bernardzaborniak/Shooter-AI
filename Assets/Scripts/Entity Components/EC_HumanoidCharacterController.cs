@@ -770,7 +770,8 @@ public class EC_HumanoidCharacterController : EntityComponent
             remove = false;
         }
 
-
+        Debug.Log("removeBool: " + remove);
+       // Debug.Log("activeTraversingOffmeshLinkPreventionModifers.contains: " + activeTraversingOffmeshLinkPreventionModifers.Contains(modifier as Charact));
         if (remove)
         {
             if (modifier is MovementSpeedModifier)
@@ -806,6 +807,8 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void UpdateModifiers()
     {
+        Debug.Log("contains mov: " + activeMovementSpeedModifiers.Contains(staggerMovementSpeedModifier));
+
         //Debug.Log("Modifiers this frame----------------------------------------------------");
         foreach (MovementSpeedModifier modifier in activeMovementSpeedModifiers)
         {
@@ -913,7 +916,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void OnRemoveTraversingOffMeshLinkPreventionModifier()
     {
-
+        Debug.Log("RemoveModifier");
         handsIKController.OnStopTraversingOffMeshLink();
         /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
         {*/
