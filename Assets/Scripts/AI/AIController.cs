@@ -45,17 +45,22 @@ public class AIController : MonoBehaviour
     {
         OpenField,
         MovingIntoCover,
-        InCover,
+        InCoverHiding,
+        InCoverShooting
     }
     PositioningState positioningState;
 
-    Post targetPost;
-    Post usedPost;
+    CoverPost targetCoverPost;
+    CoverPost usedCoverPost;
 
     bool crouching;
     float crouchingPropability = 0.3f;
 
     public Transform targetPositionVisualised;
+
+    float switchingBetweenCoverHidingAndShootingIntervalMin = 1;
+    float switchingBetweenCoverHidingAndShootingIntervalMax = 4;
+    float nextChangeCoverStanceTime;
 
     
 
@@ -164,7 +169,6 @@ public class AIController : MonoBehaviour
                     targetPositionVisualised.position = nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy;
                 }
 
-
                 if (crouching)
                 {
                     characterController.ChangeCharacterStanceToCrouchingStance();
@@ -174,10 +178,11 @@ public class AIController : MonoBehaviour
                     characterController.ChangeCharacterStanceToCombatStance();
                 }
 
+
                 //discard if the direction isnt good enough, find the closest one of the remaining
                 //HashSet<Tuple<Post, float>> postsDiscardedBecauseOfDirection;
-               
-                if(possiblePosts.Count > 0)
+
+                if (possiblePosts.Count > 0)
                 {
                     Post closestPost = null;
                     float closestDistance = Mathf.Infinity;
@@ -202,17 +207,26 @@ public class AIController : MonoBehaviour
                     if (closestPost)
                     {
                         positioningState = PositioningState.MovingIntoCover;
-                        targetPost = closestPost;
-                        characterController.MoveTo(targetPost.GetPostPosition());
-                        targetPositionVisualised.position = targetPost.GetPostPosition();
+                        targetCoverPost = closestPost as CoverPost;
+                        characterController.MoveTo(targetCoverPost.GetPostPosition());
+                        targetPositionVisualised.position = targetCoverPost.GetPostPosition();
                     }
                 }
             }
             else if (positioningState == PositioningState.MovingIntoCover)
             {
-                if (targetPost.used)
+                if (crouching)
                 {
-                    targetPost = null;
+                    characterController.ChangeCharacterStanceToCrouchingStance();
+                }
+                else
+                {
+                    characterController.ChangeCharacterStanceToCombatStance();
+                }
+
+                if (targetCoverPost.used)
+                {
+                    targetCoverPost = null;
                     positioningState = PositioningState.OpenField;
                     characterController.StopMoving();
                 }
@@ -220,36 +234,82 @@ public class AIController : MonoBehaviour
                 {
                     if (characterController.GetRemainingDistanceToCurrentMovementTarget() < 0.5f)
                     {
-                        positioningState = PositioningState.InCover;
+                        positioningState = PositioningState.InCoverHiding;
+                        nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
+
                         //code for entering cover
-                        EnterCoverPost(targetPost as CoverPost);
+                        EnterCoverPost(targetCoverPost as CoverPost);
                     }
                     if (!characterController.IsMoving())
                     {
-                        characterController.MoveTo(targetPost.GetPostPosition());
-                        targetPositionVisualised.position = targetPost.GetPostPosition();
+                        characterController.MoveTo(targetCoverPost.GetPostPosition());
+                        targetPositionVisualised.position = targetCoverPost.GetPostPosition();
                     }
                 }
 
                
             }
-            else if (positioningState == PositioningState.InCover)
+            else if (positioningState == PositioningState.InCoverHiding)
             {
-                if((usedPost as CoverPost).stanceType == 0)
+                if(Time.time> nextChangeCoverStanceTime)
                 {
+                    positioningState = PositioningState.InCoverShooting;
+                    nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
                     characterController.ChangeCharacterStanceToCombatStance();
+                    characterController.MoveTo(usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position);
                 }
-                else if((usedPost as CoverPost).stanceType == 1)
+                else
                 {
-                    characterController.ChangeCharacterStanceToCrouchingStance();
+                    if ((usedCoverPost as CoverPost).stanceType == 0)
+                    {
+                        characterController.ChangeCharacterStanceToCombatStance();
+                    }
+                    else if ((usedCoverPost as CoverPost).stanceType == 1)
+                    {
+                        characterController.ChangeCharacterStanceToCrouchingStance();
+                    }
+
+                    //check if the current cover isnt as good as it was anymore
+                    if (Vector3.Angle(directionToNearestEnemy, usedCoverPost.transform.forward) > 80)
+                    {
+                        ExitCoverPost();
+                        positioningState = PositioningState.OpenField;
+                    }
                 }
 
-                //check if the current cover isnt as good as it was anymore
-                if (Vector3.Angle(directionToNearestEnemy,usedPost.transform.forward)>80)
+
+               
+
+            }
+            else if (positioningState == PositioningState.InCoverShooting)
+            {
+                if (Time.time > nextChangeCoverStanceTime)
                 {
-                    ExitCoverPost();
-                    positioningState = PositioningState.OpenField;
+                    positioningState = PositioningState.InCoverHiding;
+                    nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
+                    characterController.MoveTo(targetCoverPost.GetPostPosition());
                 }
+                else
+                {
+                    if ((usedCoverPost as CoverPost).stanceType == 0)
+                    {
+                        characterController.ChangeCharacterStanceToCombatStance();
+                    }
+                    else if ((usedCoverPost as CoverPost).stanceType == 1)
+                    {
+                        characterController.ChangeCharacterStanceToCrouchingStance();
+                    }
+
+                    //check if the current cover isnt as good as it was anymore
+                    if (Vector3.Angle(directionToNearestEnemy, usedCoverPost.transform.forward) > 80)
+                    {
+                        ExitCoverPost();
+                        positioningState = PositioningState.OpenField;
+                    }
+                }
+
+
+             
 
             }
 
@@ -275,9 +335,13 @@ public class AIController : MonoBehaviour
 
                     if (characterController.GetAmmoRemainingInMagazine() > 0)
                     {
+
                         if (characterController.GetCurrentWeaponAimingErrorAngle(false) < 10)
                         {
-                            characterController.ShootWeapon();
+                            if(positioningState != PositioningState.InCoverHiding)
+                            {
+                                characterController.ShootWeapon();
+                            }
                         }
                         
                     }
@@ -361,7 +425,10 @@ public class AIController : MonoBehaviour
                     {
                         if (characterController.GetCurrentWeaponAimingErrorAngle(false) < 10)
                         {
-                            characterController.ShootWeapon();
+                            if (positioningState != PositioningState.InCoverHiding)
+                            {
+                                characterController.ShootWeapon();
+                            }
                         }
                     }
 
@@ -450,7 +517,7 @@ public class AIController : MonoBehaviour
         }
         else
         {
-            if (positioningState == PositioningState.InCover)
+            if (positioningState == PositioningState.InCoverHiding || positioningState == PositioningState.InCoverShooting)
             {
                 ExitCoverPost();
                 positioningState = PositioningState.OpenField;
@@ -531,7 +598,7 @@ public class AIController : MonoBehaviour
     {
         if (!post.used)
         {
-            usedPost = post;
+            usedCoverPost = post;
             post.used = true;
             post.usingEntity = entityAttachedTo;
         }
@@ -540,14 +607,14 @@ public class AIController : MonoBehaviour
     void ExitCoverPost()
     {
        
-        usedPost.used = false;
-        usedPost.usingEntity = null;
-        usedPost = null;
+        usedCoverPost.used = false;
+        usedCoverPost.usingEntity = null;
+        usedCoverPost = null;
     }
 
     public void OnDie()
     {
-        if (positioningState == PositioningState.InCover)
+        if (positioningState == PositioningState.InCoverHiding || positioningState == PositioningState.InCoverShooting)
         {
             ExitCoverPost();
         }      
