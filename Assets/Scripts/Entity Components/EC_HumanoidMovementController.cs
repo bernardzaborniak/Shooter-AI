@@ -52,14 +52,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     float currentDesiredSpeed; //set the agent.speed as desiredSpeed * speedModifiers
     float currentSpeed;
 
-    public MovementSpeedModifier jumpDownBigLedgeLandingSpeedModifier;  //Modifying speed after landing, makes sure that the character doesnt sprint while playing hte landing animation
-    public MovementSpeedModifier steepSlopeMovementSpeedModifier;
+    public CharacterModifierCreator jumpDownBigLedgeLandingSpeedModifier;  //Modifying speed after landing, makes sure that the character doesnt sprint while playing hte landing animation
+    public CharacterModifierCreator steepSlopeMovementSpeedModifier;
 
 
     [Header("Traversing Off Mesh Links")]
     #region Traversing NavmeshLink Fields
     public float maximalAngleToNavMeshLinkDirectionToEnterTraversal;
-    public CharacterPreventionModifier traversingOffMeshLinkPreventionModifier;
+    public CharacterModifierCreator traversingOffMeshLinkPreventionModifier;
 
     // For jumping over obstacle
     float currentObstacleHeight;
@@ -292,11 +292,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if(navMeshHit.mask == steepSlopeNavmeshAreaID)
             {
-                characterController.AddModifier(steepSlopeMovementSpeedModifier);
+                characterController.AddModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
             }
             else
             {
-                characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
+                characterController.RemoveModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
             }
           
             // 3. Update movement according to movement Order 
@@ -503,7 +503,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (MovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
+            foreach (ActiveCharacterMovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
             {
                  currentSpeed *= modifier.sprintingSpeedMod; 
             }
@@ -514,7 +514,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             //Update Movement speed with modifiers
             currentSpeed = currentDesiredSpeed;
-            foreach (MovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
+            foreach (ActiveCharacterMovementSpeedModifier modifier in characterController.GetActiveMovementSpeedModifiers())
             {
                 currentSpeed *= modifier.walkingSpeedMod;
             }
@@ -602,7 +602,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         // Inform Character Controler
         //characterController.OnStartTraversingOffMeshLink();
-        characterController.AddModifier(traversingOffMeshLinkPreventionModifier);
+        characterController.AddModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier());
 
         // Inform Animation Controller
         animationController.StartJumpingOverObstacle(GetAnimationIDCorrespondingToTraversingType(), currentLinkTraverseDuration);
@@ -683,14 +683,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
             {
-                characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier);
+                characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier.CreateAndActivateNewModifier());
                 agent.velocity = Vector3.zero;
             }
         }
 
         movementState = MovementState.Default;
 
-        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier);
+        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier());
 
         // Inform Animation Controller
         animationController.StopJumpingOverObstacle();
