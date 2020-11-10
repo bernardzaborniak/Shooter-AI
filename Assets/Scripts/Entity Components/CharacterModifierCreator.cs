@@ -45,12 +45,6 @@ public class CharacterModifierCreator
     [ConditionalEnumHide("modifierType", 1)]
     public ActiveCharacterPreventionModifier.CharacterPreventionType characterPreventionType;
 
-    //float nextDeactivateModifierTime;
-
-    //[Space(5)]
-    //public float currentModifierDuration;
-
-    //int hashCode;
     public ActiveCharacterModifier CreateAndActivateNewModifier()
     {
         float currentModifierDuration = -1;
@@ -76,51 +70,11 @@ public class CharacterModifierCreator
         }
         return null;
     }
-
-
-    /*public virtual void Activate()
-    {
-        if(type == ModiferType.DeactivateAfterFixedDelay)
-        {
-            currentModifierDuration = modifierDuration;    
-        }
-        else if(type == ModiferType.DeactivateAfterDelayRandomBetween2)
-        {
-
-            currentModifierDuration =  Random.Range(modifierMinDuration, modifierMaxDuration);
-        }
-
-        nextDeactivateModifierTime = Time.time + currentModifierDuration;
-
-    }*/
-
-
-    /*public virtual bool HasModifierTimeRunOut() //think of a different name for this
-    {
-        if(type != ModiferType.DeactivateManually)
-        {
-            return (Time.time > nextDeactivateModifierTime);
-        }
-        else
-        {
-            return false;
-        }
-        
-    }*/
-
-    /*public void SetHashCode()
-    {
-        hashCode = base.GetHashCode();
-    }
-
-    public override int GetHashCode()
-    {
-        return hashCode;
-    }*/
 }
 
-public class ActiveCharacterModifier //: IEqualityComparer<ActiveCharacterModifier>
+public class ActiveCharacterModifier 
 {
+    public string name;
     public CharacterModifierCreator creator;
     public CharacterModifierCreator.ModiferDurationType modifierDurationType;
 
@@ -136,6 +90,7 @@ public class ActiveCharacterModifier //: IEqualityComparer<ActiveCharacterModifi
         modifierDurationType = creator.modifierDurationType;
         this.currentModifierDuration = currentModifierDuration;
         nextDeactivateModifierTime = Time.time + currentModifierDuration;
+        name = creator.name;
 
         hashCode = creator.GetHashCode();
     }
@@ -154,14 +109,11 @@ public class ActiveCharacterModifier //: IEqualityComparer<ActiveCharacterModifi
     }
     public override int GetHashCode()
     {
-        Debug.Log("return active override code for getHashCode");
-        //return obj.creator.GetHashCode();
         return hashCode;
     }
 
     public override bool Equals(object obj)
     {
-        Debug.Log("override equals");
 
         if (obj is ActiveCharacterModifier)
         {
@@ -173,30 +125,10 @@ public class ActiveCharacterModifier //: IEqualityComparer<ActiveCharacterModifi
         return false;
     }
 
-    /*public virtual int GetHashCode(ActiveCharacterModifier obj) 
-    {
-        Debug.Log("return active override code for getHashCode");
-        //return obj.creator.GetHashCode();
-        return obj.hashCode;
-    }
-    public virtual bool Equals(ActiveCharacterModifier obj1, ActiveCharacterModifier obj2) 
-    {
-        Debug.Log("equals override");
-
-        if (obj1.creator == obj2.creator)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
 }
 
-public class ActiveCharacterMovementSpeedModifier : ActiveCharacterModifier//, IEqualityComparer<ActiveCharacterModifier>
+public class ActiveCharacterMovementSpeedModifier : ActiveCharacterModifier
 {
-    //[Header("Movement Speed Modifier")]
     public float walkingSpeedMod;
     public float sprintingSpeedMod;
 
@@ -205,31 +137,9 @@ public class ActiveCharacterMovementSpeedModifier : ActiveCharacterModifier//, I
         walkingSpeedMod = creator.walkingSpeedMod;
         sprintingSpeedMod = creator.sprintingSpeedMod;
     }
-
-    
-    
-    /*public override int GetHashCode(ActiveCharacterModifier obj)
-    {
-        Debug.Log("return active override code for getHashCode");
-        return obj.creator.GetHashCode();
-    }
-    public override bool Equals(ActiveCharacterModifier obj1, ActiveCharacterModifier obj2)
-    {
-        Debug.Log("equals override");
-
-        if (obj1.creator == obj2.creator)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
-
 }
 
-public class ActiveCharacterPreventionModifier : ActiveCharacterModifier//, IEqualityComparer<ActiveCharacterModifier>
+public class ActiveCharacterPreventionModifier : ActiveCharacterModifier
 {
     public enum CharacterPreventionType
     {
@@ -242,26 +152,6 @@ public class ActiveCharacterPreventionModifier : ActiveCharacterModifier//, IEqu
     public ActiveCharacterPreventionModifier(CharacterModifierCreator creator, float currentModifierDuration) : base(creator, currentModifierDuration)
     {
         characterPreventionType = creator.characterPreventionType;
-    }
-
-   /* public override int GetHashCode(ActiveCharacterModifier obj)
-    {
-        Debug.Log("return active override code for getHashCode");
-        return obj.creator.GetHashCode();
-    }
-    public override bool Equals(ActiveCharacterModifier obj1, ActiveCharacterModifier obj2)
-    {
-        Debug.Log("equals override");
-
-        if (obj1.creator == obj2.creator)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
-    
+    }    
 }
 

@@ -211,28 +211,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
         #endregion
 
-        // 1. Disable Stun after Time
-        /* if (characterPreventionType == CharacterPreventionType.Stunned)
-         {
-             if (Time.time > endStunTime)
-             {
-                 characterPreventionType = CharacterPreventionType.NoPrevention;
-                 //RemoveModifier(staggerMovementSpeedModifier);
-             }
-         }else *//*if(characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
-         {
-             if (onStopTraversingOffMeshLinkIsDelayed)
-             {
-                 if (Time.time > nextOffMeshFinishTime)
-                 {
-                     onStopTraversingOffMeshLinkIsDelayed = false;
-
-                     characterPreventionType = CharacterPreventionType.NoPrevention;
-                     handsIKController.OnStopTraversingOffMeshLink();
-                 }
-             } 
-         }*/
-
         // 2. Update Modifiers
         UpdateModifiers();
     }
@@ -748,73 +726,20 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
 
         }
-
-        /* if (modifier is MovementSpeedModifier)
-         {
-             activeMovementSpeedModifiers.Add(modifier as MovementSpeedModifier);
-         }
-         else if (modifier is CharacterPreventionModifier)
-         {
-
-             CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
-
-             if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
-             {
-                 if (activeStunModifers.Count == 0)
-                 {
-                     activeStunModifers.Add(preventionMod);
-                     OnAddStunModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
-                 }
-                 else
-                 {
-                     activeStunModifers.Add(preventionMod);
-                 }
-             }
-             else if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
-             {
-                 if (activeTraversingOffMeshLinkPreventionModifers.Count == 0)
-                 {
-                     activeTraversingOffMeshLinkPreventionModifers.Add(preventionMod);
-                     OnAddTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
-                 }
-                 else
-                 {
-                     activeTraversingOffMeshLinkPreventionModifers.Add(preventionMod);
-                 }
-             }
-
-         }
-
-         modifier.Activate();
-         return modifier;*/
     }
 
     public void RemoveModifier(ActiveCharacterModifier modifier)
     {
-        ActiveCharacterModifier ac = new ActiveCharacterModifier(stunModifier, 2);
-        //Debug.Log("ac: hash" + ac.GetHashCode());
-
         if (modifier is ActiveCharacterMovementSpeedModifier)
         {
+            ActiveCharacterMovementSpeedModifier preventionMod = modifier as ActiveCharacterMovementSpeedModifier;
+
             activeMovementSpeedModifiers.Remove(modifier as ActiveCharacterMovementSpeedModifier);
         }
         else if (modifier is ActiveCharacterPreventionModifier)
         {
-            Debug.Log("C Remove Mod 2 - prev");
-
             ActiveCharacterPreventionModifier preventionMod = modifier as ActiveCharacterPreventionModifier;
-            Debug.Log("hash of the mod to delete: " + preventionMod.GetHashCode());
-            Debug.Log("creatoe of the mod to delete: " + preventionMod.creator);
-            Debug.Log("hash of creatoe of the mod to delete: " + preventionMod.creator.GetHashCode());
-            foreach (ActiveCharacterPreventionModifier mod in activeCharacterPreventionModifiers)
-            {
-                Debug.Log("hash of the mod in collection: " + mod.GetHashCode());
-                Debug.Log("creatoe of the mod in collection: " + mod.creator);
-                Debug.Log("hash of creatoe of the mod in collection: " + mod.creator.GetHashCode());
 
-                Debug.Log("EQUALS: " + (preventionMod.Equals( mod)));
-            }
-            Debug.Log("contains: " + activeCharacterPreventionModifiers.Contains(preventionMod));
             if (activeCharacterPreventionModifiers.Remove(preventionMod))
             {
                 if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
@@ -825,57 +750,12 @@ public class EC_HumanoidCharacterController : EntityComponent
                 {
                      OnRemoveTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
                 }
-            }
-
-           
+            }    
         }
-
-
-        /*if (modifier is MovementSpeedModifier)
-        {
-            activeMovementSpeedModifiers.Remove(modifier as MovementSpeedModifier);
-        }
-        else if (modifier is CharacterPreventionModifier)
-        {
-            Debug.Log("C Remove Mod 2 - prev");
-
-            CharacterPreventionModifier preventionMod = modifier as CharacterPreventionModifier;
-
-            if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.Stunned)
-            {
-                activeStunModifers.Remove(preventionMod);
-                if (activeStunModifers.Count == 0)
-                {
-                    OnRemoveStunModifier(); //only execute when the last stun is removed
-                }
-            }
-            else if (preventionMod.characterPreventionType == CharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
-            {
-                Debug.Log("C Remove Mod 3 - link");
-
-                Debug.Log("hash of the mod to remove: " + modifier.GetHashCode());
-                foreach (CharacterPreventionModifier mod in activeTraversingOffMeshLinkPreventionModifers)
-                {
-                    Debug.Log("hash of the mod there: " + mod.GetHashCode());
-                }
-                Debug.Log("contains: " + activeTraversingOffMeshLinkPreventionModifers.Contains(preventionMod));
-                activeTraversingOffMeshLinkPreventionModifers.Remove(preventionMod);
-
-                if (activeTraversingOffMeshLinkPreventionModifers.Count == 0)
-                {
-                    OnRemoveTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
-                }
-            }
-        }*/
-
     }
 
     void UpdateModifiers()
     {
-
-        //Debug.Log("contains mov: " + activeMovementSpeedModifiers.Contains(staggerMovementSpeedModifier));
-
-        //Debug.Log("Modifiers this frame----------------------------------------------------");
         foreach (ActiveCharacterMovementSpeedModifier modifier in activeMovementSpeedModifiers)
         {
             //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
@@ -886,7 +766,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
         foreach (ActiveCharacterMovementSpeedModifier modifier in movementSpeedModifiersToDeleteThisFrame)
         {
-            activeMovementSpeedModifiers.Remove(modifier);
+            RemoveModifier(modifier);
         }
         movementSpeedModifiersToDeleteThisFrame.Clear();
 
@@ -894,7 +774,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
         foreach (ActiveCharacterPreventionModifier modifier in activeCharacterPreventionModifiers)
         {
-            //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
+            //Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name + "remaining duration");
 
             if (modifier.HasModifierTimeRunOut())
             {
@@ -903,28 +783,9 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
         foreach (ActiveCharacterPreventionModifier modifier in characterPreventionModifiersToDeleteThisFrame)
         {
-            activeCharacterPreventionModifiers.Remove(modifier);
+            RemoveModifier(modifier);
         }
         characterPreventionModifiersToDeleteThisFrame.Clear();
-
-
-
-        /*foreach (CharacterPreventionModifier modifier in activeTraversingOffMeshLinkPreventionModifers)
-        {
-            // Debug.Log("mod: " + modifier + " modifier.name: " + modifier.name);
-
-            if (modifier.HasModifierTimeRunOut())
-            {
-                traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Add(modifier);
-            }
-        }
-        foreach (CharacterPreventionModifier modifier in traversingOffmeshLinkPreventionModifiersToDeleteThisFrame)
-        {
-            activeTraversingOffMeshLinkPreventionModifers.Remove(modifier);
-        }
-        traversingOffmeshLinkPreventionModifiersToDeleteThisFrame.Clear();*/
-
-
     }
 
     public HashSet<ActiveCharacterMovementSpeedModifier> GetActiveMovementSpeedModifiers()
@@ -936,13 +797,6 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public bool AreModifiersPreventing()
     {
-        /*if (activeStunModifers.Count > 0)
-        {
-            if (activeTraversingOffMeshLinkPreventionModifers.Count > 0)
-            {
-                return true;
-            }
-        }*/
         if (activeCharacterPreventionModifiers.Count > 0)
         {
             return true;
@@ -961,10 +815,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         AbortThrowingGrenade();
         StopAimingSpine();
         StopAimingWeapon();
+
+        Debug.Log("On Add Stun");
     }
 
     void OnRemoveStunModifier()
     {
+        Debug.Log("On Remove Stun");
+        RemoveModifier(staggerMovementSpeedModifier.CreateAndActivateNewModifier());
 
     }
 
@@ -981,25 +839,12 @@ public class EC_HumanoidCharacterController : EntityComponent
         //handsIKController.DisableIKs();
         handsIKController.OnStartTraversingOffMeshLink();
 
-        Debug.Log("C AddModifier");
 
     }
 
     void OnRemoveTraversingOffMeshLinkPreventionModifier()
     {
-        Debug.Log("C RemoveModifier Link");
         handsIKController.OnStopTraversingOffMeshLink();
-        /*if (characterPreventionType == CharacterPreventionType.JumpingToTraverseOffMeshLink)
-        {*/
-
-
-        //onStopTraversingOffMeshLinkIsDelayed = true;
-        //nextOffMeshFinishTime = Time.time + offMeshLinkFinishDelayTime;
-
-
-        //characterPreventionType = CharacterPreventionType.NoPrevention;
-        //handsIKController.OnStopTraversingOffMeshLink();
-        //}
 
     }
 

@@ -296,7 +296,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             }
             else
             {
-                characterController.RemoveModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
+               characterController.RemoveModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
             }
           
             // 3. Update movement according to movement Order 
@@ -690,7 +690,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         movementState = MovementState.Default;
 
-        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier());
+        StartCoroutine(DisableTraversingLinkPreventionModifierAfterDelay(0.2f));
 
         // Inform Animation Controller
         animationController.StopJumpingOverObstacle();
@@ -703,6 +703,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         agent.SetDestination(currentMovementOrder.destination);
 
         currentMovementOrder.OnExecute();
+    }
+
+    IEnumerator DisableTraversingLinkPreventionModifierAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier()); //this could be dalyed by 0.2f seconds using coroutine
     }
 
     int GetAnimationIDCorrespondingToTraversingType( )
