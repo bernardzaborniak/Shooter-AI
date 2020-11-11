@@ -49,6 +49,10 @@ public class EC_HumanoidInterationController : EntityComponent
     float hidingWeaponEndTime;
     float pullingOutWeaponEndTime;
 
+    //items are not ativated with the beginning of pull out or end of hide animation, pulling out shows weapon after a delay after pulling out started, hiding animation hides weapon, some time before the aniamtion is finished
+    public float percentageOfFinishedAnimationWhenItemIsHidden = 0.8f;  
+    public float percentageOfFinishedAnimationWhenItemIsActivated = 0.2f;
+
     [Header("Reloading")]
     [Tooltip("the reload time of weapons can be speed up by this value")]
     public float reloadTimeSkillMultiplier = 1;
@@ -77,12 +81,20 @@ public class EC_HumanoidInterationController : EntityComponent
             {
                 FinishHidingItem();
             }
+            if (Time.time > hidingWeaponEndTime - inventory[currentSelectedItemID].hideItemTime * (1 - percentageOfFinishedAnimationWhenItemIsHidden))
+            {
+                DeactivateItemBeingHidden();
+            }
         }
         else if (itemInteractionState == ItemInteractionState.PullingOutItemInHand)
         {
             if (Time.time > pullingOutWeaponEndTime)
             {
                 FinishPullingOutItem();
+            }
+            if(Time.time > pullingOutWeaponEndTime - inventory[currentSelectedItemID].pullOutItemTime * (1- percentageOfFinishedAnimationWhenItemIsActivated))
+            {
+                ActivateItemBeingPulledOut();
             }
         }
         else if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
@@ -171,10 +183,8 @@ public class EC_HumanoidInterationController : EntityComponent
     {
 
         currentSelectedItemID = newInventoryID;
-        inventory[currentSelectedItemID].transform.SetParent(rightHandItemParent);
-        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
-        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
-        inventory[currentSelectedItemID].gameObject.SetActive(true);
+
+        //EquipItem();
 
         pullingOutWeaponEndTime = Time.time + inventory[currentSelectedItemID].pullOutItemTime * percentageAlreadyHidden;
 
@@ -184,16 +194,7 @@ public class EC_HumanoidInterationController : EntityComponent
         animationController.AdjustPullOutAnimationSpeedAndOffset(inventory[currentSelectedItemID].pullOutItemTime, 1-percentageAlreadyHidden);
         animationController.ChangeWeaponInteractionState(1);
 
-        if(inventory[currentSelectedItemID] is Gun)
-        {
-            Gun gun = (inventory[currentSelectedItemID] as Gun);
-            gun.OnEquipWeapon(myEntity);
-            aimingController.OnChangeWeapon(gun);
-        }
-        else
-        {
-            aimingController.OnChangeWeapon(null);
-        }
+        
 
 
         //added
@@ -229,17 +230,7 @@ public class EC_HumanoidInterationController : EntityComponent
 
     void FinishHidingItem()
     {
-        // Reset Position & Visibility
-        inventory[currentSelectedItemID].gameObject.SetActive(false);
-        inventory[currentSelectedItemID].transform.SetParent(inventoryItemParent);
-        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
-        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
-
-        //If Gun - adjust Gun
-        if(inventory[currentSelectedItemID] is Gun)
-        {
-            (inventory[currentSelectedItemID] as Gun).OnReleaseWeapon();
-        }
+        //HolsterItem();
 
         handsIKController.OnStopHidingWeapon();
 
@@ -272,6 +263,40 @@ public class EC_HumanoidInterationController : EntityComponent
         else
         {
             return true;
+        }
+    }
+
+    void ActivateItemBeingPulledOut()
+    {
+        inventory[currentSelectedItemID].transform.SetParent(rightHandItemParent);
+        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
+        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
+        inventory[currentSelectedItemID].gameObject.SetActive(true);
+
+        if (inventory[currentSelectedItemID] is Gun)
+        {
+            Gun gun = (inventory[currentSelectedItemID] as Gun);
+            gun.OnEquipWeapon(myEntity);
+            aimingController.OnChangeWeapon(gun);
+        }
+        else
+        {
+            aimingController.OnChangeWeapon(null);
+        }
+    }
+
+    void DeactivateItemBeingHidden()
+    {
+        // Reset Position & Visibility
+        inventory[currentSelectedItemID].gameObject.SetActive(false);
+        inventory[currentSelectedItemID].transform.SetParent(inventoryItemParent);
+        inventory[currentSelectedItemID].transform.localPosition = Vector3.zero;
+        inventory[currentSelectedItemID].transform.localRotation = Quaternion.identity;
+
+        //If Gun - adjust Gun
+        if (inventory[currentSelectedItemID] is Gun)
+        {
+            (inventory[currentSelectedItemID] as Gun).OnReleaseWeapon();
         }
     }
 
