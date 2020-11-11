@@ -26,6 +26,11 @@ public class HumanoidConstraintController : MonoBehaviour
     public float spine2Weight;
     public float spine3Weight;
 
+    [Header("1b. Head")]
+
+    public Transform headBone;
+    public float headConstraintWeight;
+
 
     [Header("2- Look At Animator")]
     public FLookAnimator lookAtAnimator;
@@ -147,6 +152,21 @@ public class HumanoidConstraintController : MonoBehaviour
                 Quaternion rotationDifferenceS3 = targetRotationS3 * Quaternion.Inverse(spineBone3.rotation);
                 spineBone3.rotation = Quaternion.Slerp(Quaternion.identity, rotationDifferenceS3, spine3Weight) * spineBone3.rotation * Quaternion.Slerp(Quaternion.identity, Quaternion.Inverse(recoilRotationAdder), 0.5f);
             }
+            #endregion
+
+            #region 1.b Orient The Head - may get overriden by lookAtAnimator
+
+            //uses the same target as spine
+            if (headConstraintWeight > 0)
+            {
+                Vector3 directionToTargetH = spineTargetPosition - headBone.position;
+                Quaternion targetRotationH = Quaternion.LookRotation(directionToTargetH);
+                //targetRotationH = Quaternion.Euler(targetRotationH.eulerAngles.x, spineBone2.rotation.eulerAngles.y, targetRotationH.eulerAngles.z);
+
+                //Quaternion rotationDifferenceH = targetRotationH * Quaternion.Inverse(headBone.rotation);
+                headBone.rotation = Quaternion.Slerp(Quaternion.identity, targetRotationH, headConstraintWeight);// * headBone.rotation; //* recoilRotationAdder;
+            }
+
             #endregion
 
             #region 2. Update LookAtAnimator

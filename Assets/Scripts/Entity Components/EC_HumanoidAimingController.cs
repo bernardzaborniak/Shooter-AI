@@ -74,6 +74,8 @@ public class EC_HumanoidAimingController : EntityComponent
     float spineConstraint2TargetWeight;
     float spineConstraint3TargetWeight;
 
+    float headAimConstraintTargetWeight;
+
     [Tooltip("To Start Or Stop aiming with the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
@@ -266,6 +268,8 @@ public class EC_HumanoidAimingController : EntityComponent
                 spineConstraint1TargetWeight = 0.05f;//0.05f;
                 spineConstraint2TargetWeight = 0.2f;//0.2f;
                 spineConstraint3TargetWeight = -0.1f;//0.4f;
+
+                headAimConstraintTargetWeight = 0.8f;
             }
             else
             {
@@ -273,13 +277,18 @@ public class EC_HumanoidAimingController : EntityComponent
                 spineConstraint1TargetWeight = 0.2f;//0.2f;
                 spineConstraint2TargetWeight = 0.5f;//0.7f;
                 spineConstraint3TargetWeight = -0.3f;//1f;
+
+                headAimConstraintTargetWeight = 1;
             }
+            
         }
         else
         {
             spineConstraint1TargetWeight = 0f;
             spineConstraint2TargetWeight = 0f;
             spineConstraint3TargetWeight = 0f;
+
+            headAimConstraintTargetWeight = 0;
         }
 
         #endregion
@@ -292,6 +301,9 @@ public class EC_HumanoidAimingController : EntityComponent
         constraintController.spine1Weight += Mathf.Clamp((spineConstraint1TargetWeight - constraintController.spine1Weight), -maxSpeed, maxSpeed);
         constraintController.spine2Weight += Mathf.Clamp((spineConstraint2TargetWeight - constraintController.spine2Weight), -maxSpeed, maxSpeed);
         constraintController.spine3Weight += Mathf.Clamp((spineConstraint3TargetWeight - constraintController.spine3Weight), -maxSpeed, maxSpeed);
+
+        constraintController.headConstraintWeight += Mathf.Clamp((headAimConstraintTargetWeight - constraintController.headConstraintWeight), -maxSpeed, maxSpeed);
+        
 
         #endregion
 
