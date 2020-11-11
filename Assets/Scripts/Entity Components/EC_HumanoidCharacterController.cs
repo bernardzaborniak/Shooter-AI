@@ -140,7 +140,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             // -------- Aiming & Look at -------
             if (Input.GetKeyDown(KeyCode.L))
             {
-                LookAt(lookAtTarget);
+                LookAtTransform(lookAtTarget);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -390,11 +390,27 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #region Look At Orders
 
-    public void LookAt(Transform target)
+    public void LookAtTransform(Transform target)
     {
         if (!AreModifiersPreventing())
         {
             aimingController.LookAtTransform(target);
+        }
+    }
+
+    public void LookAtPosition(Vector3 position)
+    {
+        if (!AreModifiersPreventing())
+        {
+            aimingController.LookAtPosition(position);
+        }
+    }
+
+    public void LookInDirection(Vector3 direction)
+    {
+        if (!AreModifiersPreventing())
+        {
+            aimingController.LookInDirection(direction);
         }
     }
 

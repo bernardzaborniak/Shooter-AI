@@ -329,7 +329,9 @@ public class EC_HumanoidAimingController : EntityComponent
         #region Move Current Direction towards desired, update spineConstraintLocalTarget position 
 
         //  ----------    Update current direction -> Rotate towards Aiming Direction with damping  ----------
-        currentWeaponDirection = RotateWeaponTowards(currentWeaponDirection, desiredWeaponDirection);
+        //clamp the current rotation too
+        currentWeaponDirection = Vector3.RotateTowards(currentWeaponDirection, RotateWeaponTowards(currentWeaponDirection, desiredWeaponDirection), maxWeaponRotDifference * Mathf.Deg2Rad, 100); 
+        //currentWeaponDirection = RotateWeaponTowards(currentWeaponDirection, desiredWeaponDirection);
 
         //----------     Set the target Transform position for the constraint Controller ----------  
         weaponAimLocalTarget.position = aimingReferencePointOnBody.position + currentWeaponDirection;

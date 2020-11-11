@@ -1606,8 +1606,8 @@ MonoBehaviour:
   End: {fileID: 6049892562260482975}
   Target: {fileID: 2133351232494822414}
   Pole: {fileID: 608345413167868889}
-  UpperElbowRotation: -70
-  LowerElbowRotation: -5
+  UpperElbowRotation: 65
+  LowerElbowRotation: 130
 --- !u!1 &6024086494530523548
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,8 +2049,8 @@ MonoBehaviour:
   aimingWeightChangeSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
   maxWeaponRotDifference: 5
-  weaponAverageAngularVelocity: 200
-  weaponAngularAccelerationDistance: 50
+  weaponAverageAngularVelocity: 400
+  weaponAngularAccelerationDistance: 30
   showGizmos: 0
 --- !u!114 &7366031314207611041
 MonoBehaviour:
@@ -4421,7 +4421,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 6be324008b89e6e46b59b621e2b6386c,
         type: 3}
       propertyPath: m_CullingMode
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 6be324008b89e6e46b59b621e2b6386c,
         type: 3}
