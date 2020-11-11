@@ -601,7 +601,6 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         // Inform Character Controler
-        //characterController.OnStartTraversingOffMeshLink();
         characterController.AddModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier());
 
         // Inform Animation Controller
