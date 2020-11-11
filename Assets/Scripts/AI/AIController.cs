@@ -256,7 +256,12 @@ public class AIController : MonoBehaviour
                     positioningState = PositioningState.InCoverShooting;
                     nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
                     characterController.ChangeCharacterStanceToCombatStance();
-                    characterController.MoveTo(usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position);
+                    Debug.Log("usedCoverPost: " + usedCoverPost);
+                    int randomNumber = UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length);
+                    Debug.Log("Random number: " + usedCoverPost.PeekPositions[randomNumber]);
+                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)]: " + usedCoverPost.PeekPositions[randomNumber]);
+                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position: " + usedCoverPost.PeekPositions[randomNumber].transform.position);
+                    characterController.MoveTo(usedCoverPost.PeekPositions[randomNumber].transform.position);
                 }
                 else
                 {

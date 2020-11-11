@@ -674,7 +674,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     void FinishTraversingOffMeshLink()
     {
-        Debug.Log("finish traversing movement");
+        //Debug.Log("finish traversing movement");
         currentTraversalNormalizedTime = 1;
         offMeshLinkTraversalDirection = Vector3.zero;
 

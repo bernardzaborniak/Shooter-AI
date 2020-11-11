@@ -77,25 +77,27 @@ public class EC_HumanoidInterationController : EntityComponent
 
         if (itemInteractionState == ItemInteractionState.HidingItemInHand)
         {
-            if(Time.time > hidingWeaponEndTime)
-            {
-                FinishHidingItem();
-            }
             if (Time.time > hidingWeaponEndTime - inventory[currentSelectedItemID].hideItemTime * (1 - percentageOfFinishedAnimationWhenItemIsHidden))
             {
                 DeactivateItemBeingHidden();
             }
+            if (Time.time > hidingWeaponEndTime)
+            {
+                FinishHidingItem();
+            }
+            
         }
         else if (itemInteractionState == ItemInteractionState.PullingOutItemInHand)
         {
+            if (Time.time > pullingOutWeaponEndTime - inventory[currentSelectedItemID].pullOutItemTime * (1 - percentageOfFinishedAnimationWhenItemIsActivated))
+            {
+                ActivateItemBeingPulledOut();
+            }
             if (Time.time > pullingOutWeaponEndTime)
             {
                 FinishPullingOutItem();
             }
-            if(Time.time > pullingOutWeaponEndTime - inventory[currentSelectedItemID].pullOutItemTime * (1- percentageOfFinishedAnimationWhenItemIsActivated))
-            {
-                ActivateItemBeingPulledOut();
-            }
+            
         }
         else if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {
