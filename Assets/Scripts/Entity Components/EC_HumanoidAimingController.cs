@@ -74,10 +74,16 @@ public class EC_HumanoidAimingController : EntityComponent
     float spineConstraint2TargetWeight;
     float spineConstraint3TargetWeight;
 
-    float headAimConstraintTargetWeight;
+
 
     [Tooltip("To Start Or Stop aiming with the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
+
+    float headAimConstraintTargetWeight;
+
+    [Tooltip("Roughly 3x the spineConstraintWeightChangeSpeed prooved a good value")]
+    public float spineHeadConstraintWeightChangeSpeed = 1.5f;
+
 
     #endregion
 
@@ -302,6 +308,8 @@ public class EC_HumanoidAimingController : EntityComponent
         constraintController.spine2Weight += Mathf.Clamp((spineConstraint2TargetWeight - constraintController.spine2Weight), -maxSpeed, maxSpeed);
         constraintController.spine3Weight += Mathf.Clamp((spineConstraint3TargetWeight - constraintController.spine3Weight), -maxSpeed, maxSpeed);
 
+        maxSpeed = spineHeadConstraintWeightChangeSpeed * Time.deltaTime;
+        //changing the head weight is faster
         constraintController.headConstraintWeight += Mathf.Clamp((headAimConstraintTargetWeight - constraintController.headConstraintWeight), -maxSpeed, maxSpeed);
         
 
@@ -597,13 +605,28 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public float GetCurrentWeaponAimingErrorAngle(bool ignoreRecoil)
     {
+        Vector3 directionToCurrentAimTarget = Vector3.zero;
+
+        if(currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
+        {
+            directionToCurrentAimTarget = weaponDirectionToTarget;
+        }
+        else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Position)
+        {
+            directionToCurrentAimTarget = weaponPositionOfTarget - aimingReferencePointOnBody.position;
+        }
+        else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
+        {
+            directionToCurrentAimTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;    
+        }
+
         if (ignoreRecoil)
         {
-            return Vector3.Angle(desiredWeaponDirection, currentWeaponDirection);
+            return Vector3.Angle(directionToCurrentAimTarget, currentWeaponDirection);
         }
         else
         {
-            return Vector3.Angle(desiredWeaponDirection, weapon.transform.forward);
+            return Vector3.Angle(directionToCurrentAimTarget, weapon.transform.forward);
         }
 
     }

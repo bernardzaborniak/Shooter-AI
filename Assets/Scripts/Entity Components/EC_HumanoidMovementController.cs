@@ -245,6 +245,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public override void UpdateComponent()
     {
+        //Debug.Log("IsSprintingAccordingToVelocity: " + IsSprintingAccordingToVelocity());
         /*if (Input.GetKeyDown(KeyCode.N))
         {
             agent.CompleteOffMeshLink();
@@ -338,7 +339,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             Vector3 velocityInLocalSpace = Vector3.zero;
             float speedParamForAnim = 0;
 
-            if (agent.hasPath)
+            //this removes the error of wild speed values when path cant be reached 
+            if(agent.pathStatus != NavMeshPathStatus.PathInvalid)
             {
                 speedParamForAnim = agent.velocity.magnitude;
                 velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
@@ -786,10 +788,14 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         return Mathf.Infinity;
     }
 
-    public bool IsSprinting()
+    public bool IsSprintingAccordingToOrder()
     {
         return currentMovementOrder.sprint;
     }
+   /* public bool IsSprintingAccordingToVelocity()
+    {
+        return agent.velocity.sqrMagnitude > (sprintingSpeed * sprintingSpeed) - 2f;
+    }*/
 
     #endregion
 

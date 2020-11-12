@@ -83,10 +83,6 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
     CharacterStance currentStance;
 
-    // ---------- CharacterPreventionType ---------
-
-
-    //float endStunTime;
 
     #endregion
 
@@ -268,6 +264,8 @@ public class EC_HumanoidCharacterController : EntityComponent
                 animationController.ChangeToCombatStance();
 
                 handsIKController.OnEnterCombatOrCrouchedStance();
+
+
             }
         }
     }
@@ -377,7 +375,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public bool IsSprinting()
     {
-        return movementController.IsSprinting();
+        return movementController.IsSprintingAccordingToOrder();
     }
 
     public float GetRemainingDistanceToCurrentMovementTarget()
@@ -439,7 +437,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 aimingController.AimSpineAtTransform(target);
 
-                if (movementController.IsSprinting())
+                if (movementController.IsSprintingAccordingToOrder())
                 {
                     movementController.SetSprint(false);
                 }
@@ -455,7 +453,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 aimingController.AimSpineAtPosition(position);
 
-                if (movementController.IsSprinting())
+                if (movementController.IsSprintingAccordingToOrder())
                 {
                     movementController.SetSprint(false);
                 }
@@ -472,7 +470,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 aimingController.AimSpineInDirection(direction);
 
-                if (movementController.IsSprinting())
+                if (movementController.IsSprintingAccordingToOrder())
                 {
                     movementController.SetSprint(false);
                 }
@@ -502,7 +500,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #endregion
 
-    #region Aim Weapon Orders Info
+    #region Aim Weapon Orders 
 
     public void AimWeaponAtTransform(Transform target)
     {
@@ -514,7 +512,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 {
                     aimingController.AimWeaponAtTransform(target);
 
-                    if (movementController.IsSprinting())
+                    if (movementController.IsSprintingAccordingToOrder())
                     {
                         movementController.SetSprint(false);
                     }
@@ -533,7 +531,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 {
                     aimingController.AimWeaponAtPosition(position);
 
-                    if (movementController.IsSprinting())
+                    if (movementController.IsSprintingAccordingToOrder())
                     {
                         movementController.SetSprint(false);
                     }
@@ -552,7 +550,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 {
                     aimingController.AimWeaponInDirection(direction);
 
-                    if (movementController.IsSprinting())
+                    if (movementController.IsSprintingAccordingToOrder())
                     {
                         movementController.SetSprint(false);
                     }

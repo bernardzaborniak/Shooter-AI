@@ -329,9 +329,17 @@ public class AIController : MonoBehaviour
                 
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(1) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
+                    if(positioningState == PositioningState.InCoverHiding)
+                    {
+                        characterController.StopAimingSpine();
+                        characterController.StopAimingWeapon();
+                    }
+                    else
+                    {
+                        characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
 
-                    characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-                    characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+                    }
 
                     if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
                     {
@@ -417,9 +425,19 @@ public class AIController : MonoBehaviour
 
                 if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(2) && characterController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
                 {
+                    if (positioningState == PositioningState.InCoverHiding)
+                    {
+                        characterController.StopAimingSpine();
+                        characterController.StopAimingWeapon();
+                    }
+                    else
+                    {
+                        characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
+                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
 
-                    characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-                    characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+                    }
+
+
 
                     if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
                     {
