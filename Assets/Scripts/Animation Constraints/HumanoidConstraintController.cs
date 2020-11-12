@@ -31,7 +31,8 @@ public class HumanoidConstraintController : MonoBehaviour
     public bool headConstraint;
     public Transform headBone;
     public float headConstraintWeight;
-    public Vector3 headBoneRotOffset;
+    public float headConstraintXOffset;
+    //public Vector3 headBoneRotOffset;
 
 
     [Header("2- Look At Animator")]
@@ -177,14 +178,18 @@ public class HumanoidConstraintController : MonoBehaviour
                     Quaternion targetRotationH = Quaternion.LookRotation(directionToTargetH);
                     // targetRotationH =  Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z) * Quaternion.Euler(headBoneRotOffset);
                     //targetRotationH =  Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z) * Quaternion.AngleAxis(50, transform.right);
-                    targetRotationH = Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z);
+
+                    //targetRotationH = Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z);
+                    targetRotationH = Quaternion.Euler(targetRotationH.eulerAngles.x + headConstraintXOffset, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z);
+                    //targetRotationH = Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z) * Quaternion.AngleAxis(headConstraintXOffset, headBone.transform.right);
 
 
                     //Quaternion rotationOffsetTransformedFromLocalToWorldSpace = transform.rotation * Quaternion.Euler(headBoneRotOffset);
                     //targetRotationH =  Quaternion.Euler(targetRotationH.eulerAngles.x, headBone.rotation.eulerAngles.y, targetRotationH.eulerAngles.z) * rotationOffsetTransformedFromLocalToWorldSpace;
 
                     //Quaternion rotationDifferenceH = targetRotationH * Quaternion.Inverse(headBone.rotation);
-                    headBone.rotation = Quaternion.Slerp(Quaternion.identity, targetRotationH, headConstraintWeight);// * headBone.rotation; //* recoilRotationAdder;
+                    //headBone.rotation = Quaternion.Slerp(Quaternion.identity, targetRotationH, headConstraintWeight);// * headBone.rotation; //* recoilRotationAdder;
+                    headBone.rotation = Quaternion.Slerp(headBone.rotation, targetRotationH, headConstraintWeight);// * headBone.rotation; //* recoilRotationAdder;
                 }
             }
 
