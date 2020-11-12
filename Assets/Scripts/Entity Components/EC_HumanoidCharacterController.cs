@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class EC_HumanoidCharacterController : EntityComponent
 {
@@ -59,14 +60,13 @@ public class EC_HumanoidCharacterController : EntityComponent
     HashSet<ActiveCharacterPreventionModifier> activeCharacterPreventionModifiers = new HashSet<ActiveCharacterPreventionModifier>();
     HashSet<ActiveCharacterPreventionModifier> characterPreventionModifiersToDeleteThisFrame = new HashSet<ActiveCharacterPreventionModifier>();
 
-    
+
 
     /*HashSet<CharacterPreventionModifier> activeStunModifers = new HashSet<CharacterPreventionModifier>();
     HashSet<CharacterPreventionModifier> stunModifiersToDeleteThisFrame = new HashSet<CharacterPreventionModifier>();
 
     HashSet<CharacterPreventionModifier> activeTraversingOffMeshLinkPreventionModifers = new HashSet<CharacterPreventionModifier>();
     HashSet<CharacterPreventionModifier> traversingOffmeshLinkPreventionModifiersToDeleteThisFrame = new HashSet<CharacterPreventionModifier>();*/
-
 
 
 
@@ -691,10 +691,9 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             //Stagger
             //Stagger(staggerDuration);
-            ActiveCharacterModifier mod = stunModifier.CreateAndActivateNewModifier();
-            AddModifier(mod);
-            animationController.Stagger(mod.currentModifierDuration);
-            AddModifier(staggerMovementSpeedModifier.CreateAndActivateNewModifier());
+            ActiveCharacterModifier stunMod = AddModifier(stunModifier);
+            animationController.Stagger(stunMod.currentModifierDuration);
+            AddModifier(staggerMovementSpeedModifier);
         }
         else if (damageInfo.damage > damageThresholdForFlinch)
         {
@@ -717,8 +716,30 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     #region Modifiers
 
-    //public CharacterModifierCreator AddModifier(CharacterModifierCreator modifier)
-    public void AddModifier(ActiveCharacterModifier modifier)
+    public ActiveCharacterModifier AddModifier(CharacterModifierCreator creator, float delay = 0)
+    {
+        ActiveCharacterModifier mod = creator.CreateAndActivateNewModifier();
+
+        if (delay > 0)
+        {
+            StartCoroutine(AddModifierDelayed(mod, delay));
+        }
+        else
+        {
+            AddModifier(mod);
+        }
+        return mod;
+
+    }
+
+    IEnumerator AddModifierDelayed(ActiveCharacterModifier modifier, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        AddModifier(modifier);
+    }
+
+    void AddModifier(ActiveCharacterModifier modifier)
     {
         if (modifier is ActiveCharacterMovementSpeedModifier)
         {
@@ -742,7 +763,31 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
-    public void RemoveModifier(ActiveCharacterModifier modifier)
+
+    public ActiveCharacterModifier RemoveModifier(CharacterModifierCreator creator, float delay = 0)
+    {
+        ActiveCharacterModifier mod = creator.CreateAndActivateNewModifier();
+
+        if (delay > 0)
+        {
+            StartCoroutine(RemoveModifierDelayed(mod, delay));
+        }
+        else
+        {
+            RemoveModifier(mod);
+        }
+
+        return mod;
+    }
+
+    IEnumerator RemoveModifierDelayed(ActiveCharacterModifier modifier, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        RemoveModifier(modifier);
+    }
+
+    void RemoveModifier(ActiveCharacterModifier modifier)
     {
         if (modifier is ActiveCharacterMovementSpeedModifier)
         {
@@ -767,6 +812,8 @@ public class EC_HumanoidCharacterController : EntityComponent
             }    
         }
     }
+
+  
 
     void UpdateModifiers()
     {

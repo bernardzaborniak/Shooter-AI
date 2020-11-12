@@ -293,11 +293,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
             if(navMeshHit.mask == steepSlopeNavmeshAreaID)
             {
-                characterController.AddModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
+                characterController.AddModifier(steepSlopeMovementSpeedModifier);
             }
             else
             {
-               characterController.RemoveModifier(steepSlopeMovementSpeedModifier.CreateAndActivateNewModifier());
+               characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
             }
           
             // 3. Update movement according to movement Order 
@@ -603,7 +603,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         }
 
         // Inform Character Controler
-        characterController.AddModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier());
+        characterController.AddModifier(traversingOffMeshLinkPreventionModifier);
 
         // Inform Animation Controller
         animationController.StartJumpingOverObstacle(GetAnimationIDCorrespondingToTraversingType(), currentLinkTraverseDuration);
@@ -684,14 +684,16 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         {
             if(traversingLinkJumpUpDownOrHorizontalType == TraversingLinkJumpUpDownOrHorizontalType.JumpingDownBigLedge)
             {
-                characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier.CreateAndActivateNewModifier());
+                //characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier.CreateAndActivateNewModifier());
+                characterController.AddModifier(jumpDownBigLedgeLandingSpeedModifier);
                 agent.velocity = Vector3.zero;
             }
         }
 
         movementState = MovementState.Default;
 
-        StartCoroutine(DisableTraversingLinkPreventionModifierAfterDelay(0.2f));
+        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier, 0.2f);
+        //StartCoroutine(DisableTraversingLinkPreventionModifierAfterDelay(0.2f));
 
         // Inform Animation Controller
         animationController.StopJumpingOverObstacle();
@@ -706,11 +708,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentMovementOrder.OnExecute();
     }
 
-    IEnumerator DisableTraversingLinkPreventionModifierAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        characterController.RemoveModifier(traversingOffMeshLinkPreventionModifier.CreateAndActivateNewModifier()); //this could be dalyed by 0.2f seconds using coroutine
-    }
+
 
     int GetAnimationIDCorrespondingToTraversingType( )
     {
