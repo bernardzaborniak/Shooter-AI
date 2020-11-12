@@ -330,14 +330,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: HandMiddle3.L
-      humanName: Left Middle Distal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: HandIndex1.L
       humanName: Left Index Proximal
       limit:
@@ -362,16 +354,8 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: HandThumb2.L
-      humanName: Left Thumb Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: HandThumb3.L
-      humanName: Left Thumb Distal
+    - boneName: HandMiddle3.L
+      humanName: Left Middle Distal
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -426,6 +410,30 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
+    - boneName: HandThumb2.L
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: HandThumb3.L
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: HandIndex1.R
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
     - boneName: HandThumb2.R
       humanName: Right Thumb Intermediate
       limit:
@@ -436,14 +444,6 @@ ModelImporter:
         modified: 0
     - boneName: HandThumb3.R
       humanName: Right Thumb Distal
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: HandIndex1.R
-      humanName: Right Index Proximal
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -506,16 +506,16 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: HandPinky3.R
-      humanName: Right Little Distal
+    - boneName: HandPinky2.R
+      humanName: Right Little Intermediate
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: HandPinky2.R
-      humanName: Right Little Intermediate
+    - boneName: HandPinky3.R
+      humanName: Right Little Distal
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -555,14 +555,14 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Neck
       parentName: Spine3
-      position: {x: 0.00000044352345, y: 0.15052016, z: -0.0020299696}
-      rotation: {x: 0.114422925, y: -0.00000033652373, z: -0.0000021745075, w: 0.99343216}
-      scale: {x: 1, y: 1, z: 0.99999994}
+      position: {x: 0.0000004469477, y: 0.15052016, z: -0.0020299815}
+      rotation: {x: 0.11442295, y: -0.00000034019857, z: -0.0000022855193, w: 0.9934321}
+      scale: {x: 1, y: 1, z: 1}
     - name: Head
       parentName: Neck
-      position: {x: -8.885337e-14, y: 0.10789558, z: 0.0000000061092975}
-      rotation: {x: 0.16840847, y: 0.000006584749, z: 0.000044363976, w: 0.98571736}
-      scale: {x: 1, y: 0.9999999, z: 0.9999999}
+      position: {x: 9.771739e-14, y: 0.10789573, z: -0.00000003442183}
+      rotation: {x: -0.1439814, y: -0.000013806735, z: 0.0000027871174, w: 0.98958045}
+      scale: {x: 1, y: 0.99999994, z: 0.9999998}
     - name: Shoulder.L
       parentName: Spine3
       position: {x: -0.061057825, y: 0.091371745, z: 0.0010149529}
