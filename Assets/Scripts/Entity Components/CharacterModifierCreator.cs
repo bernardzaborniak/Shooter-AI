@@ -144,7 +144,8 @@ public class ActiveCharacterPreventionModifier : ActiveCharacterModifier
     public enum CharacterPreventionType
     {
         Stunned,
-        JumpingToTraverseOffMeshLink //similar to stunned but allows look at?
+        JumpingToTraverseOffMeshLink, //similar to stunned but allows look at?
+        Sprinting
     }
 
     public CharacterPreventionType characterPreventionType;

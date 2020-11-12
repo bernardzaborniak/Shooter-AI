@@ -54,6 +54,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     public CharacterModifierCreator jumpDownBigLedgeLandingSpeedModifier;  //Modifying speed after landing, makes sure that the character doesnt sprint while playing hte landing animation
     public CharacterModifierCreator steepSlopeMovementSpeedModifier;
+    public CharacterModifierCreator sprintingPreventionModifier;
+
+
 
 
     [Header("Traversing Off Mesh Links")]
@@ -276,6 +279,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                         //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
                         currentLinkStartPosition = transform.position;
                         StartTraversingOffMeshLink(data);
+
+                        //remove modifiers
+                        characterController.RemoveModifier(sprintingPreventionModifier);
+                        characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
+
                         return;
                     }
                     else
@@ -299,7 +307,18 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             {
                characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
             }
-          
+
+            //add or remove sprinting modfier
+            //if ((sprintingSpeed * sprintingSpeed) - agent.velocity.sqrMagnitude < 2)
+            if (currentMovementOrder.sprint && currentMovementOrder.IsBeingExecuted())
+            {
+                characterController.AddModifier(sprintingPreventionModifier);
+            }
+            else
+            {
+                characterController.RemoveModifier(sprintingPreventionModifier, 0.2f);
+            }
+
             // 3. Update movement according to movement Order 
             if (currentMovementOrder.IsWaitingForExecution())
             {

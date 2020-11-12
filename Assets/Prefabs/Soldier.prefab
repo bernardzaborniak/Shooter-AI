@@ -2257,6 +2257,16 @@ MonoBehaviour:
     walkingSpeedMod: 0.85
     sprintingSpeedMod: 0.66
     characterPreventionType: 0
+  sprintingPreventionModifier:
+    name: Sprinting Prev Mod
+    modifierDurationType: 2
+    modifierDuration: 0
+    modifierMinDuration: 0
+    modifierMaxDuration: 0
+    modifierType: 1
+    walkingSpeedMod: 0
+    sprintingSpeedMod: 0
+    characterPreventionType: 2
   maximalAngleToNavMeshLinkDirectionToEnterTraversal: 45
   traversingOffMeshLinkPreventionModifier:
     name: Navmesh Link Prev Mod
