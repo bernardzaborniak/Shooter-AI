@@ -411,7 +411,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407404317873391152}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0.883, z: 0.115}
+  m_LocalPosition: {x: 0.65, y: 0.883, z: -0.145}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2680632820451384454}
@@ -2171,7 +2171,6 @@ MonoBehaviour:
   aimingController: {fileID: 7366031314207611040}
   animationController: {fileID: 7366031314207611044}
   handsIKController: {fileID: 7399303670798280785}
-  movementController: {fileID: 7366031314207611041}
   recoilManager: {fileID: 8324856474092008981}
   itemInteractionState: 0
   currentSelectedItemID: 0
@@ -2206,6 +2205,7 @@ MonoBehaviour:
   spineAverageAngularVelocity: 120
   spineAngularAccelerationDistance: 40
   spineConstraintWeightChangeSpeed: 1.5
+  spineOverrideAnimatedYRotationWeightChangeSpeed: 3
   spineHeadConstraintWeightChangeSpeed: 4.5
   lookAtLocalTarget: {fileID: 1822445957814018765}
   fLookAnimator: {fileID: 7040072253816882034}
@@ -2938,6 +2938,7 @@ MonoBehaviour:
   spine1Weight: 0
   spine2Weight: 0
   spine3Weight: 0
+  spineOverrideAnimatedYRotationWeight: 0
   headConstraint: 0
   headBone: {fileID: 1936154419766259478}
   headConstraintWeight: 0
@@ -3289,7 +3290,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8083933162419942086}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.65, y: 0.883, z: 0.115}
+  m_LocalPosition: {x: -0.247, y: 0.888, z: -0.147}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2680632820451384454}

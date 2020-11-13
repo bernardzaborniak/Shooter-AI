@@ -12,8 +12,10 @@ public class Gun : Item, IItemWithIKHandPositions
     [SerializeField]
     Transform leftHandIKPosition;
 
+    [Header("For Animation & Constraints")]
     [Tooltip("Will be read when by aimingController when equipping a weapon, makes sure the offset between weapon and shoulder is correct")]
     public Vector3 weaponAimParentLocalAdjusterOffset;
+    public float spineOverrideAnimatedYRotationWeight;
 
 
     [Header("Shooting")]

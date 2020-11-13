@@ -79,6 +79,9 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("To Start Or Stop aiming with the spine, the weight of the multi aim constraints is set by this speed -> provides smooth enabling and disabling of the spine aiming")]
     public float spineConstraintWeightChangeSpeed = 0.5f;
 
+    public float spineOverrideAnimatedYRotationWeightChangeSpeed;
+     float spineOverrideAnimatedYRotationTargetWeight;
+
     float headAimConstraintTargetWeight;
 
     [Tooltip("Roughly 3x the spineConstraintWeightChangeSpeed prooved a good value")]
@@ -311,7 +314,11 @@ public class EC_HumanoidAimingController : EntityComponent
         maxSpeed = spineHeadConstraintWeightChangeSpeed * Time.deltaTime;
         //changing the head weight is faster
         constraintController.headConstraintWeight += Mathf.Clamp((headAimConstraintTargetWeight - constraintController.headConstraintWeight), -maxSpeed, maxSpeed);
-        
+
+        maxSpeed = spineOverrideAnimatedYRotationWeightChangeSpeed * Time.deltaTime;
+
+        constraintController.spineOverrideAnimatedYRotationWeight += Mathf.Clamp((spineOverrideAnimatedYRotationTargetWeight - constraintController.spineOverrideAnimatedYRotationWeight), -maxSpeed, maxSpeed);
+
 
         #endregion
 
@@ -574,6 +581,7 @@ public class EC_HumanoidAimingController : EntityComponent
         {
             currentlySelectedWeapon = newWeapon;
             weaponAimParentLocalAdjuster.localPosition = currentlySelectedWeapon.weaponAimParentLocalAdjusterOffset;
+            spineOverrideAnimatedYRotationTargetWeight = currentlySelectedWeapon.spineOverrideAnimatedYRotationWeight;
 
             /*fLookAnimator.CompensationWeight = lookAtCompensationWeightWithWeapon;
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;*/
