@@ -809,7 +809,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void RemoveModifier(ActiveCharacterModifier modifier)
     {
-        Debug.Log("remove modifier: " + modifier.name);
+        //Debug.Log("remove modifier: " + modifier.name);
 
         if (modifier is ActiveCharacterMovementSpeedModifier)
         {

@@ -120,7 +120,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Header("Aiming the Weapon")]
 
     public Transform weaponAimLocalTarget;
-    public Gun weapon;
+    public Gun currentlySelectedWeapon;
 
     float desiredWeaponAimingConstraintWeight;
     [Tooltip("Ensures a smooth transition between holding weapon idle and aiming")]
@@ -166,7 +166,7 @@ public class EC_HumanoidAimingController : EntityComponent
         rot_spineLastDesiredDirection = Vector3.forward;
         rot_weaponLastDesiredDirection = Vector3.forward;
 
-        weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
+        //weaponAimParentLocalAdjuster.localPosition = currentlySelectedWeapon.weaponAimParentLocalAdjusterOffset;
     }
 
     public override void UpdateComponent()
@@ -457,51 +457,61 @@ public class EC_HumanoidAimingController : EntityComponent
 
     public void AimWeaponInDirection(Vector3 direction)
     {
-        if (!aimingWeapon)
+        if(currentlySelectedWeapon != null)
         {
-            currentWeaponDirection = currentSpineDirection;
-            handsIKController.OnStartAimingWeapon();
+            if (!aimingWeapon)
+            {
+                currentWeaponDirection = currentSpineDirection;
+                handsIKController.OnStartAimingWeapon();
 
-            aimingWeapon = true;
+                aimingWeapon = true;
+            }
+
+            currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
+            weaponDirectionToTarget = direction;
+            desiredWeaponAimingConstraintWeight = 1;
         }
-
-        currentWeaponTargetingMethod = AimAtTargetingMethod.Direction;
-        weaponDirectionToTarget = direction;
-        desiredWeaponAimingConstraintWeight = 1;
+        
     }
 
     public void AimWeaponAtPosition(Vector3 position)
     {
-        if (!aimingWeapon)
+        if (currentlySelectedWeapon != null)
         {
-            currentWeaponDirection = currentSpineDirection;
+            if (!aimingWeapon)
+            {
+                currentWeaponDirection = currentSpineDirection;
 
-            currentWeaponDirection = currentSpineDirection;
-            handsIKController.OnStartAimingWeapon();
+                currentWeaponDirection = currentSpineDirection;
+                handsIKController.OnStartAimingWeapon();
 
-            aimingWeapon = true;
+                aimingWeapon = true;
+            }
+
+            currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
+            weaponPositionOfTarget = position;
+            desiredWeaponAimingConstraintWeight = 1;
         }
-    
-        currentWeaponTargetingMethod = AimAtTargetingMethod.Position;
-        weaponPositionOfTarget = position;
-        desiredWeaponAimingConstraintWeight = 1;
     }
 
     public void AimWeaponAtTransform(Transform transform)
     {
-        if (!aimingWeapon)
+        if (currentlySelectedWeapon != null)
         {
-            currentWeaponDirection = currentSpineDirection;
+            if (!aimingWeapon)
+            {
+                currentWeaponDirection = currentSpineDirection;
 
-            currentWeaponDirection = currentSpineDirection;
-            handsIKController.OnStartAimingWeapon();
+                currentWeaponDirection = currentSpineDirection;
+                handsIKController.OnStartAimingWeapon();
 
-            aimingWeapon = true;
+                aimingWeapon = true;
+            }
+
+            currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
+            weaponTransformOfTarget = transform;
+            desiredWeaponAimingConstraintWeight = 1;
         }
-
-        currentWeaponTargetingMethod = AimAtTargetingMethod.Transform;
-        weaponTransformOfTarget = transform;
-        desiredWeaponAimingConstraintWeight = 1;
     }
 
     public void StopAimingWeaponAtTarget()
@@ -555,15 +565,15 @@ public class EC_HumanoidAimingController : EntityComponent
     {
         if (newWeapon == null)
         {
-            weapon = null;
+            currentlySelectedWeapon = null;
 
             /*fLookAnimator.CompensationWeight = lookAtCompensationWeightWithoutWeapon;
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithoutWeapon;*/
         }
         else
         {
-            weapon = newWeapon;
-            weaponAimParentLocalAdjuster.localPosition = weapon.weaponAimParentLocalAdjusterOffset;
+            currentlySelectedWeapon = newWeapon;
+            weaponAimParentLocalAdjuster.localPosition = currentlySelectedWeapon.weaponAimParentLocalAdjusterOffset;
 
             /*fLookAnimator.CompensationWeight = lookAtCompensationWeightWithWeapon;
             fLookAnimator.CompensatePositions = lookAtCompensatiePositionsWithWeapon;*/
@@ -626,7 +636,7 @@ public class EC_HumanoidAimingController : EntityComponent
         }
         else
         {
-            return Vector3.Angle(directionToCurrentAimTarget, weapon.transform.forward);
+            return Vector3.Angle(directionToCurrentAimTarget, currentlySelectedWeapon.transform.forward);
         }
 
     }

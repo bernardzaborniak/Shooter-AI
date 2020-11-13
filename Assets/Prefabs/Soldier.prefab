@@ -2155,6 +2155,7 @@ MonoBehaviour:
   aimAtTarget: {fileID: 0}
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
+  activePrevMods: []
 --- !u!114 &6119667436294565816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2170,6 +2171,7 @@ MonoBehaviour:
   aimingController: {fileID: 7366031314207611040}
   animationController: {fileID: 7366031314207611044}
   handsIKController: {fileID: 7399303670798280785}
+  movementController: {fileID: 7366031314207611041}
   recoilManager: {fileID: 8324856474092008981}
   itemInteractionState: 0
   currentSelectedItemID: 0
@@ -2209,10 +2211,11 @@ MonoBehaviour:
   fLookAnimator: {fileID: 7040072253816882034}
   lookAtDisableDelay: 3
   weaponAimLocalTarget: {fileID: 6750380158517121211}
-  weapon: {fileID: 7366031315910803148}
+  currentlySelectedWeapon: {fileID: 0}
   aimingWeightChangeSpeed: 5
   weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
   maxWeaponRotDifference: 5
+  aimingWeapon: 0
   weaponAverageAngularVelocity: 400
   weaponAngularAccelerationDistance: 30
   showGizmos: 0

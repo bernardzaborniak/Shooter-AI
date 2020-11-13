@@ -61,6 +61,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
     [Header("Traversing Off Mesh Links")]
     #region Traversing NavmeshLink Fields
+    bool allowTraversingOffMeshLinks;
+
     public float maximalAngleToNavMeshLinkDirectionToEnterTraversal;
     public CharacterModifierCreator traversingOffMeshLinkPreventionModifier;
 
@@ -250,6 +252,8 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         steepSlopeNavmeshAreaID = 1 << NavMesh.GetAreaFromName(steepSlopeNavmeshAreaName);
 
+        allowTraversingOffMeshLinks = true;
+
     }
 
     public override void UpdateComponent()
@@ -283,15 +287,19 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 //the angle check prevents units from using offmeshLinks, although they are not facing them -> unnatural jump
                 if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
                 {
-                    //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
-                    currentLinkStartPosition = transform.position;
-                    StartTraversingOffMeshLink(data);
+                    if (allowTraversingOffMeshLinks)
+                    {
+                        //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
+                        currentLinkStartPosition = transform.position;
+                        StartTraversingOffMeshLink(data);
 
-                    //remove modifiers
-                    characterController.RemoveModifier(sprintingPreventionModifier);
-                    characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
+                        //remove modifiers
+                        characterController.RemoveModifier(sprintingPreventionModifier);
+                        characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
 
-                    return;
+                        return;
+                    }
+                    
                 }
                 else
                 {
@@ -599,6 +607,11 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     #endregion
 
     #region Traversing Off Mesh Link
+
+    public void SetAllowTraversingOffMeshLinks(bool allowTraversingOffMeshLinks)
+    {
+        this.allowTraversingOffMeshLinks = allowTraversingOffMeshLinks;
+    }
 
     void StartTraversingOffMeshLink(OffMeshLinkData data)
     {

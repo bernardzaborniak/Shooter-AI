@@ -416,6 +416,7 @@ public class EC_HumanoidInterationController : EntityComponent
         (inventory[currentSelectedItemID] as Grenade).Throw(currentGrenadeThrowDirection, currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
+
     }
 
     public void AbortThrowingGrenade()
@@ -427,7 +428,7 @@ public class EC_HumanoidInterationController : EntityComponent
             (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), Random.Range(-3, 3));  //is this the proper way
             inventory[currentSelectedItemID] = null; //Remove grenade from inventory
             animationController.AbortThrowingGrenade();
-        }  
+        }
     }
 
     public Item GetCurrentSelectedItem()
