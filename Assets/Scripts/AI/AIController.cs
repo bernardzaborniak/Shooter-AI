@@ -551,7 +551,14 @@ public class AIController : MonoBehaviour
             characterController.ChangeCharacterStanceToIdle();
             characterController.StopAimingSpine();
             characterController.StopAimingWeapon();
-            characterController.MoveTo(finalMoveDestination, true);
+            if(selectedGun != null)
+            {
+                characterController.MoveTo(finalMoveDestination, true);
+            }
+            else
+            {
+                characterController.MoveTo(finalMoveDestination, false);
+            }
             //characterController.MoveTo(targetPosition.position + finalMoveDestination, true);
             //targetPositionVisualised.position = targetPosition.position + currentTargetOffset;
             targetPositionVisualised.position = finalMoveDestination;

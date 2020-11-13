@@ -133,7 +133,7 @@ public class EC_HumanoidAimingController : EntityComponent
     public float maxWeaponRotDifference;
 
     //For Calculating the desired Direction in Different ways
-    bool aimingWeapon;
+    public bool aimingWeapon; //only public to fix this left hand bug
     Vector3 weaponDirectionToTarget;
     Vector3 weaponPositionOfTarget;
     Transform weaponTransformOfTarget;

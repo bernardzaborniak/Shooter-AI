@@ -221,6 +221,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             //return orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 
+        public bool IsFinishedOrNoOrder()
+        {
+            return orderExecutionStatus == OrderExecutionStatus.NoOrder;
+            
+        }
+
         #endregion
     }
 
@@ -261,39 +267,57 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
 
         bool rotatingTowardsOffMeshLinkOverridesOtherRotation = false;
 
+
         if (movementState == MovementState.Default)
         {
 
-                //1. Navmesh Link Check
-                if (agent.isOnOffMeshLink)
+            //1. Navmesh Link Check
+            if (agent.isOnOffMeshLink)
+            {
+                OffMeshLinkData data = agent.currentOffMeshLinkData;
+                currentLinkStartPosition = data.startPos + Vector3.up * agent.baseOffset; //we use the link start position, the transform.pisitoon can cause errors
+                currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
+                offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
+                Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
+
+                //the angle check prevents units from using offmeshLinks, although they are not facing them -> unnatural jump
+                if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
                 {
-                    OffMeshLinkData data = agent.currentOffMeshLinkData;
-                    currentLinkStartPosition = data.startPos + Vector3.up * agent.baseOffset; //we use the link start position, the transform.pisitoon can cause errors
-                    currentLinkEndPosition = data.endPos + Vector3.up * agent.baseOffset;
-                    offMeshLinkTraversalDirection = currentLinkEndPosition - currentLinkStartPosition;
-                    Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
+                    //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
+                    currentLinkStartPosition = transform.position;
+                    StartTraversingOffMeshLink(data);
 
-                    //the angle check prevents units from using offmeshLinks, although they are not facing them -> unnatural jump
-                    if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
-                    {
-                        //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
-                        currentLinkStartPosition = transform.position;
-                        StartTraversingOffMeshLink(data);
+                    //remove modifiers
+                    characterController.RemoveModifier(sprintingPreventionModifier);
+                    characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
 
-                        //remove modifiers
-                        characterController.RemoveModifier(sprintingPreventionModifier);
-                        characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
-
-                        return;
-                    }
-                    else
-                    {
-                        rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
-                        RotateTowards(offMeshLinkTraversalDirectionNoY);
-                    }
-
+                    return;
                 }
- 
+                else
+                {
+                    rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
+                    RotateTowards(offMeshLinkTraversalDirectionNoY);
+                }
+
+            }
+
+            // 2. Update movement according to movement Order 
+            if (currentMovementOrder.IsWaitingForExecution())
+            {
+                agent.isStopped = false;
+
+                agent.SetDestination(currentMovementOrder.destination);
+
+                currentMovementOrder.OnExecute();
+            }
+            else if (currentMovementOrder.IsBeingExecuted())
+            {
+                float dist = agent.remainingDistance;
+                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
+                {
+                    currentMovementOrder.OnFinishedExecuting();
+                }
+            }
 
 
             //2. Check if agent is on sloped surface
@@ -306,36 +330,24 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             else
             {
                characterController.RemoveModifier(steepSlopeMovementSpeedModifier);
+
             }
 
-            //add or remove sprinting modfier
-            //if ((sprintingSpeed * sprintingSpeed) - agent.velocity.sqrMagnitude < 2)
+
+
             if (currentMovementOrder.sprint && currentMovementOrder.IsBeingExecuted())
             {
                 characterController.AddModifier(sprintingPreventionModifier);
+
             }
             else
             {
-                characterController.RemoveModifier(sprintingPreventionModifier, 0.2f);
+                //by giving this modifier a delay, we allow the unit to transition from the sprinting animaton into the default animiton before aimingWeapon can be executed -> better aniamtion
+                characterController.RemoveModifier(sprintingPreventionModifier, 0.3f); //0.7f
+
             }
 
-            // 3. Update movement according to movement Order 
-            if (currentMovementOrder.IsWaitingForExecution())
-            {
-                agent.isStopped = false;
-
-                agent.SetDestination(currentMovementOrder.destination);
-                
-                currentMovementOrder.OnExecute();
-            }
-            else if (currentMovementOrder.IsBeingExecuted())
-            {
-                float dist = agent.remainingDistance;
-                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
-                {
-                    currentMovementOrder.OnFinishedExecuting();
-                }
-            }
+           
 
             if (!rotatingTowardsOffMeshLinkOverridesOtherRotation)
             {

@@ -72,6 +72,7 @@ public class CharacterModifierCreator
     }
 }
 
+[System.Serializable]
 public class ActiveCharacterModifier 
 {
     public string name;
@@ -127,6 +128,7 @@ public class ActiveCharacterModifier
 
 }
 
+[System.Serializable]
 public class ActiveCharacterMovementSpeedModifier : ActiveCharacterModifier
 {
     public float walkingSpeedMod;
@@ -139,6 +141,7 @@ public class ActiveCharacterMovementSpeedModifier : ActiveCharacterModifier
     }
 }
 
+[System.Serializable]
 public class ActiveCharacterPreventionModifier : ActiveCharacterModifier
 {
     public enum CharacterPreventionType
