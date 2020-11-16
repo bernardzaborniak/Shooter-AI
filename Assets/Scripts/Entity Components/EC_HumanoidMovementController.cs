@@ -247,7 +247,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         currentMovementOrder = new MovementOrder();
 
         agent.updateRotation = false;
-        desiredForward = transform.forward;
+        desiredForward = agent.transform.forward;
         movementState = MovementState.Default;
 
         steepSlopeNavmeshAreaID = 1 << NavMesh.GetAreaFromName(steepSlopeNavmeshAreaName);
@@ -285,12 +285,12 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                 Vector3 offMeshLinkTraversalDirectionNoY = new Vector3(offMeshLinkTraversalDirection.x, 0, offMeshLinkTraversalDirection.z);
 
                 //the angle check prevents units from using offmeshLinks, although they are not facing them -> unnatural jump
-                if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
+                if (Vector3.Angle(offMeshLinkTraversalDirectionNoY, agent.transform.forward) < maximalAngleToNavMeshLinkDirectionToEnterTraversal)
                 {
                     if (allowTraversingOffMeshLinks)
                     {
                         //only if we decide to traverse, based on angle, the start posiiton is set to transform.pos to smooth things out
-                        currentLinkStartPosition = transform.position;
+                        currentLinkStartPosition = agent.transform.position;
                         StartTraversingOffMeshLink(data);
 
                         //remove modifiers
@@ -382,7 +382,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             if(agent.pathStatus != NavMeshPathStatus.PathInvalid)
             {
                 speedParamForAnim = agent.velocity.magnitude;
-                velocityInLocalSpace = transform.InverseTransformVector(agent.velocity);
+                velocityInLocalSpace = agent.transform.InverseTransformVector(agent.velocity);
             }
 
             if (animationController) animationController.UpdateLocomotionAnimation(speedParamForAnim, velocityInLocalSpace.z, velocityInLocalSpace.x, angularVelocity.y);
@@ -423,9 +423,9 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
                     newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
 
-                offMeshLinkTraversalVelocity = (newPosition - transform.position)/Time.deltaTime;
+                offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
                 RotateTowards(offMeshLinkTraversalDirection);
-                transform.position = newPosition;
+                agent.transform.position = newPosition;
             }
             else
             {
@@ -503,7 +503,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     {
         //only rotate on y axis
         direction.y = 0;
-        currentRotation = transform.rotation;
+        currentRotation = agent.transform.rotation;
 
         averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
 
@@ -516,7 +516,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             angularSmoothTime = Utility.CalculateSmoothTime(distance, averageAngularVelocity, angularAccelerationDistance);
         }
 
-        transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
+        agent.transform.rotation = Utility.SmoothDamp(currentRotation, targetRotation, ref derivQuaternion, angularSmoothTime);
         angularVelocity = Utility.DerivToAngVelCorrected(currentRotation, derivQuaternion);
 
     }
@@ -856,7 +856,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
             if (agent.desiredVelocity != null)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawLine(transform.position + Vector3.up, transform.position + agent.desiredVelocity + Vector3.up);
+                Gizmos.DrawLine(agent.transform.position + Vector3.up, agent.transform.position + agent.desiredVelocity + Vector3.up);
 
             }
         }
@@ -864,7 +864,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
         if (offMeshLinkTraversalDirection != Vector3.zero)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position + Vector3.up, transform.position + offMeshLinkTraversalDirection + Vector3.up);
+            Gizmos.DrawLine(agent.transform.position + Vector3.up, agent.transform.position + offMeshLinkTraversalDirection + Vector3.up);
         }
 
         if(currentLinkStartPosition != Vector3.zero)

@@ -893,7 +893,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         if (activeCharacterPreventionModifiers.Count == 0)
         {
-            Debug.Log("allow true");
+            //Debug.Log("allow true");
             return true;
         }
         /*else
