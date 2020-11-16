@@ -9,14 +9,14 @@ public enum ItemInteractionType
     Grenade
 }
 
-public class EC_HumanoidInterationController : EntityComponent
+public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 {
     // Is responsible for interactions like picking up/ changing weapons/reloading etc, communicates with animator  
 
     [Header("References")]
-    public EC_HumanoidAimingController aimingController;
-    public EC_HumanoidAnimationController animationController;
-    public EC_HumanoidHandsIKController handsIKController;
+    public HCC_HumanoidAimingController aimingController;
+    public HCC_HumanoidAnimationController animationController;
+    public HCC_HumanoidHandsIKController handsIKController;
     
     public RecoilManager recoilManager;
 

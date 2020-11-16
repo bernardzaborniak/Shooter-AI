@@ -1781,10 +1781,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7957667190790678039}
   - component: {fileID: 8032510007199776535}
-  - component: {fileID: 3860488045331781271}
-  - component: {fileID: 5751419455035681391}
   - component: {fileID: 1132746719342460013}
+  - component: {fileID: 5751419455035681391}
   - component: {fileID: 314852547433277711}
+  - component: {fileID: 3860488045331781271}
   - component: {fileID: 796938860685711539}
   m_Layer: 0
   m_Name: Character Controller
@@ -1819,6 +1819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a157847be23cc8409b1287440202719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  components:
+  - {fileID: 1132746719342460013}
+  - {fileID: 5751419455035681391}
+  - {fileID: 314852547433277711}
+  - {fileID: 3860488045331781271}
+  - {fileID: 796938860685711539}
   movementController: {fileID: 1132746719342460013}
   animationController: {fileID: 314852547433277711}
   interactionController: {fileID: 3860488045331781271}
@@ -1861,69 +1867,6 @@ MonoBehaviour:
   lookAtTarget: {fileID: 0}
   controllByPlayer: 0
   activePrevMods: []
---- !u!114 &3860488045331781271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5955954684543961578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ab32c7597515644f9494812ff89f23b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimingController: {fileID: 5751419455035681391}
-  animationController: {fileID: 314852547433277711}
-  handsIKController: {fileID: 796938860685711539}
-  recoilManager: {fileID: 8324856474092008981}
-  itemInteractionState: 0
-  currentSelectedItemID: 0
-  inventory:
-  - {fileID: 0}
-  - {fileID: 7366031315910803148}
-  - {fileID: 7366031314584728135}
-  - {fileID: 1573985985855596651}
-  rightHandItemParent: {fileID: 525684010534896666}
-  inventoryItemParent: {fileID: 7366031315089746461}
-  percentageOfFinishedAnimationWhenItemIsHidden: 0.8
-  percentageOfFinishedAnimationWhenItemIsActivated: 0.2
-  reloadTimeSkillMultiplier: 1
---- !u!114 &5751419455035681391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5955954684543961578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  constraintController: {fileID: 2227929691444097820}
-  handsIKController: {fileID: 796938860685711539}
-  defaultDirectionAimDistance: 20
-  spineConstraintLocalTarget: {fileID: 7707363000070997972}
-  movementController: {fileID: 1132746719342460013}
-  aimingReferencePointOnBody: {fileID: 7854700470141249062}
-  spineAverageAngularVelocity: 120
-  spineAngularAccelerationDistance: 40
-  spineConstraintWeightChangeSpeed: 1.5
-  spineOverrideAnimatedYRotationWeightChangeSpeed: 3
-  spineHeadConstraintWeightChangeSpeed: 4.5
-  lookAtLocalTarget: {fileID: 1822445957814018765}
-  fLookAnimator: {fileID: 7040072253816882034}
-  lookAtDisableDelay: 3
-  weaponAimLocalTarget: {fileID: 6750380158517121211}
-  currentlySelectedWeapon: {fileID: 0}
-  aimingWeightChangeSpeed: 5
-  weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
-  maxWeaponRotDifference: 5
-  aimingWeapon: 0
-  weaponAverageAngularVelocity: 400
-  weaponAngularAccelerationDistance: 30
-  showGizmos: 0
 --- !u!114 &1132746719342460013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2291,6 +2234,41 @@ MonoBehaviour:
     m_RotationOrder: 4
   steepSlopeNavmeshAreaName: Steep Slope
   showGizmo: 1
+--- !u!114 &5751419455035681391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955954684543961578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a73070c7ba9774fb49625f300e9db9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  constraintController: {fileID: 2227929691444097820}
+  handsIKController: {fileID: 796938860685711539}
+  defaultDirectionAimDistance: 20
+  spineConstraintLocalTarget: {fileID: 7707363000070997972}
+  movementController: {fileID: 1132746719342460013}
+  aimingReferencePointOnBody: {fileID: 7854700470141249062}
+  spineAverageAngularVelocity: 120
+  spineAngularAccelerationDistance: 40
+  spineConstraintWeightChangeSpeed: 1.5
+  spineOverrideAnimatedYRotationWeightChangeSpeed: 3
+  spineHeadConstraintWeightChangeSpeed: 4.5
+  lookAtLocalTarget: {fileID: 1822445957814018765}
+  fLookAnimator: {fileID: 7040072253816882034}
+  lookAtDisableDelay: 3
+  weaponAimLocalTarget: {fileID: 6750380158517121211}
+  currentlySelectedWeapon: {fileID: 0}
+  aimingWeightChangeSpeed: 5
+  weaponAimParentLocalAdjuster: {fileID: 6601688291365867921}
+  maxWeaponRotDifference: 5
+  aimingWeapon: 0
+  weaponAverageAngularVelocity: 400
+  weaponAngularAccelerationDistance: 30
+  showGizmos: 0
 --- !u!114 &314852547433277711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2349,6 +2327,34 @@ MonoBehaviour:
   jumpDownLedgeAnimationDuration: 1
   turnLayerID: 1
   traverseOffMeshLinksLayerID: 2
+--- !u!114 &3860488045331781271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5955954684543961578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab32c7597515644f9494812ff89f23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimingController: {fileID: 5751419455035681391}
+  animationController: {fileID: 314852547433277711}
+  handsIKController: {fileID: 796938860685711539}
+  recoilManager: {fileID: 8324856474092008981}
+  itemInteractionState: 0
+  currentSelectedItemID: 0
+  inventory:
+  - {fileID: 0}
+  - {fileID: 7366031315910803148}
+  - {fileID: 7366031314584728135}
+  - {fileID: 1573985985855596651}
+  rightHandItemParent: {fileID: 525684010534896666}
+  inventoryItemParent: {fileID: 7366031315089746461}
+  percentageOfFinishedAnimationWhenItemIsHidden: 0.8
+  percentageOfFinishedAnimationWhenItemIsActivated: 0.2
+  reloadTimeSkillMultiplier: 1
 --- !u!114 &796938860685711539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2743,12 +2749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   components:
-  - {fileID: 1132746719342460013}
-  - {fileID: 5751419455035681391}
-  - {fileID: 314852547433277711}
   - {fileID: 8032510007199776535}
-  - {fileID: 3860488045331781271}
-  - {fileID: 796938860685711539}
   - {fileID: 3435694260906315833}
   destroyOnDie: 1
   onDieEvent:

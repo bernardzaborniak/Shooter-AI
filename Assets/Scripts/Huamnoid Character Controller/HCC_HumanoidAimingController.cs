@@ -3,14 +3,14 @@ using UnityEngine;
 
 // Positions the spineAimTarget, weaponAimTarget and the lookAtTarget
 // Is responsible, together with the constraintController for the correct aiming of the spine bones together with hands and parenting of weapons
-public class EC_HumanoidAimingController : EntityComponent
+public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 {
 
     #region Fields
 
     [Header("References")]
     public HumanoidConstraintController constraintController;
-    public EC_HumanoidHandsIKController handsIKController;
+    public HCC_HumanoidHandsIKController handsIKController;
 
     #region For Calculating the desired Direction in Different ways
 
@@ -40,7 +40,7 @@ public class EC_HumanoidAimingController : EntityComponent
     [Tooltip("Target for the animation rigging multi aim constraing (only forward und up - no sideways rotation)")]
     public Transform spineConstraintLocalTarget;
     [Tooltip("The movement Controller is used to rotate to the sides")]
-    public EC_HumanoidMovementController movementController;
+    public HCC_HumanoidMovementController movementController;
     [Tooltip("Reference point on human body for aiming direction, can change later to be the gun? OR spine3 is good")]
     public Transform aimingReferencePointOnBody; //could be spine 3
 

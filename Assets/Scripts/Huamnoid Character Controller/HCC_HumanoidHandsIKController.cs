@@ -5,7 +5,7 @@ using System;
 using UnityEngine.UIElements;
 
 // Modifies the desired Right And Left hand IK Weight
-public class EC_HumanoidHandsIKController : EntityComponent
+public class HCC_HumanoidHandsIKController : HumanoidCharacterComponent
 {
     //this class needs some refactoring - it isnt very clear, maybe also have an ik stance - disabled?
 

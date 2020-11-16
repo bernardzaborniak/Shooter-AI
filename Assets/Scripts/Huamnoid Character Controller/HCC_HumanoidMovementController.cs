@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.AI;
 
-public class EC_HumanoidMovementController : EntityComponent, IMoveable
+public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMoveable
 {
     #region Fields
 
@@ -13,7 +13,7 @@ public class EC_HumanoidMovementController : EntityComponent, IMoveable
     [SerializeField]
     protected NavMeshAgent agent;
     [SerializeField]
-    protected EC_HumanoidAnimationController animationController;
+    protected HCC_HumanoidAnimationController animationController;
     [Tooltip("Only used to inform the character controller if its currently traversing an offmeshLink")]
     [SerializeField]
     protected EC_HumanoidCharacterController characterController;

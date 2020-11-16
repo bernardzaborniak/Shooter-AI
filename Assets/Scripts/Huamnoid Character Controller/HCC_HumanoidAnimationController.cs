@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EC_HumanoidAnimationController : EntityComponent
+public class HCC_HumanoidAnimationController : HumanoidCharacterComponent
 {
     #region Fields
 

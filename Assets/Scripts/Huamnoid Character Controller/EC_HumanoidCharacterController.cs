@@ -8,14 +8,16 @@ public class EC_HumanoidCharacterController : EntityComponent
 {
     // Is the Interface between the Ai Controller and all the other Controllers like aiming movement etc...
 
+    public HumanoidCharacterComponent[] components;
+
     #region Fields 
 
     [Header("References")]
-    public EC_HumanoidMovementController movementController;
-    public EC_HumanoidAnimationController animationController;
-    public EC_HumanoidInterationController interactionController;
-    public EC_HumanoidAimingController aimingController;
-    public EC_HumanoidHandsIKController handsIKController;
+    public HCC_HumanoidMovementController movementController;
+    public HCC_HumanoidAnimationController animationController;
+    public HCC_HumanoidInterationController interactionController;
+    public HCC_HumanoidAimingController aimingController;
+    public HCC_HumanoidHandsIKController handsIKController;
 
     [Header("Movement Speeds")]
     [Space(5)]
@@ -93,6 +95,12 @@ public class EC_HumanoidCharacterController : EntityComponent
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
+
+        //1. Set Up components
+        for (int i = 0; i < components.Length; i++)
+        {
+            components[i].SetUpComponent(myEntity);
+        }
 
         SetUpCharacter();
 
@@ -209,6 +217,12 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
 
         #endregion
+
+        //1. Update components
+        for (int i = 0; i < components.Length; i++)
+        {
+            components[i].UpdateComponent();
+        }
 
         // 2. Update Modifiers
         UpdateModifiers();
