@@ -785,13 +785,9 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
     #region Status Checks
     public virtual bool IsMoving()
     {
-        return GetCurrentVelocityMagnitude() > agent.speed / 2;
+        return GetCurrentVelocity().magnitude > agent.speed / 2;
     }
 
-    public float GetCurrentVelocityMagnitude()
-    {
-        return GetCurrentVelocity().magnitude;
-    }
 
     public virtual Vector3 GetCurrentVelocity()
     {

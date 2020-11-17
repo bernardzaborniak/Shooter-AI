@@ -28,7 +28,7 @@ public class AIController : MonoBehaviour
     public float targetMaxOffset;
     Vector3 finalMoveDestination;
 
-    GameEntity nearestEnemyLastFrame;
+    SensingEntityVisibilityInfo nearestEnemyInfoLastFrame;
 
 
     //public float throwGrenadeVelocity;
@@ -111,13 +111,13 @@ public class AIController : MonoBehaviour
 
         #region Set needed Variables
 
-        GameEntity nearestEnemy = sensing.nearestEnemy;
+        SensingEntityVisibilityInfo nearestEnemyInfo = sensing.nearestEnemyInfo;
 
         Vector3 directionToNearestEnemy = Vector3.zero;
         float distanceToNearestEnemy = 0;
-        if (nearestEnemy)
+        if (nearestEnemyInfo != null)
         {
-            directionToNearestEnemy = (nearestEnemy.transform.position - transform.position);
+            directionToNearestEnemy = (nearestEnemyInfo.entityPosition - transform.position);
             distanceToNearestEnemy = directionToNearestEnemy.magnitude;
         }
 
@@ -134,15 +134,20 @@ public class AIController : MonoBehaviour
         }
 
         //-----------Set enemyMovementSpeed----------------
-        Vector3 enemyMovementSpeed = Vector3.zero;
-        if (nearestEnemy)
+        Vector3 enemyVelocity = Vector3.zero;
+        if (nearestEnemyInfo != null)
         {
-            IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
+            enemyVelocity = nearestEnemyInfo.velocity;
+        }
+        /*if (nearestEnemyInfo != null)
+        {
+            //VisibilityInfo //TODO
+            IMoveable movement = nearestEnemyInfo.GetComponent<IMoveable>();
             if (movement != null)
             {
                 enemyMovementSpeed = movement.GetCurrentVelocity();
             }
-        }
+        }*/
 
         //cover
         HashSet<Tuple<Post,float>> possiblePosts = sensing.postsInSensingRadius;
@@ -150,14 +155,14 @@ public class AIController : MonoBehaviour
 
         #endregion
 
-        if (nearestEnemy)
+        if (nearestEnemyInfo != null)
         {
 
 
             #region Positioning 
             if (positioningState == PositioningState.OpenField)
             {
-                if (nearestEnemyLastFrame)
+                if (nearestEnemyInfoLastFrame != null)
                 {
                     characterController.StopMoving();
                 }
@@ -165,8 +170,8 @@ public class AIController : MonoBehaviour
                 //Go At The Desired Distance
                 if (distanceToNearestEnemy < minRangeToEnemy || distanceToNearestEnemy > maxRangeToEnemy)
                 {
-                    characterController.MoveTo(nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
-                    targetPositionVisualised.position = nearestEnemy.transform.position + -directionToNearestEnemy.normalized * desiredRangeToEnemy;
+                    characterController.MoveTo(nearestEnemyInfo.entityPosition + -directionToNearestEnemy.normalized * desiredRangeToEnemy);
+                    targetPositionVisualised.position = nearestEnemyInfo.entityPosition + -directionToNearestEnemy.normalized * desiredRangeToEnemy;
                 }
 
                 if (crouching)
@@ -191,7 +196,7 @@ public class AIController : MonoBehaviour
                     foreach (Tuple<Post,float> postTuple in possiblePosts)
                     {
                         //check angle
-                        Vector3 directionFromCoverToEnemy = nearestEnemy.transform.position - postTuple.Item1.GetPostPosition();
+                        Vector3 directionFromCoverToEnemy = nearestEnemyInfo.entityPosition - postTuple.Item1.GetPostPosition();
                         float angle = Vector3.Angle(directionFromCoverToEnemy, postTuple.Item1.transform.forward);
 
                         if (angle < 80)
@@ -336,12 +341,12 @@ public class AIController : MonoBehaviour
                     }
                     else
                     {
-                        characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+                        characterController.AimSpineAtPosition(nearestEnemyInfo.aimPosition);
+                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.aimPosition, enemyVelocity, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
 
                     }
 
-                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
+                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.aimPosition, enemyVelocity, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
                     {
                         Debug.Log("NAN: " + transform.parent.gameObject.name + " SMG");
                     }
@@ -432,14 +437,14 @@ public class AIController : MonoBehaviour
                     }
                     else
                     {
-                        characterController.AimSpineAtPosition(nearestEnemy.GetAimPosition());
-                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
+                        characterController.AimSpineAtPosition(nearestEnemyInfo.aimPosition);
+                        characterController.AimWeaponInDirection(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.aimPosition, enemyVelocity, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true));
 
                     }
 
 
 
-                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetAimPosition(), enemyMovementSpeed, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
+                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.aimPosition, enemyVelocity, selectedGun.aimWithAngledShotCalculation, selectedGun.projectileLaunchVelocity, true).y))
                     {
                         Debug.Log("NAN: " + transform.parent.gameObject.name + " Psitol");
                     }
@@ -505,19 +510,19 @@ public class AIController : MonoBehaviour
                     Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
 
                     // enemyMovementSpeed = Vector3.zero;
-                    IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
+                    /*IMoveable movement = nearestEnemyInfo.GetComponent<IMoveable>();
 
                     if (movement != null)
                     {
-                        enemyMovementSpeed = movement.GetCurrentVelocity();
-                    }
+                        enemyVelocity = movement.GetCurrentVelocity();
+                    }*/
 
                     float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);//we add 2just to fix some errors - needs refactoring later
 
 
-                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
+                    Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.entityPosition, Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
 
-                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, Vector3.zero, true, grenadeThrowingVelocity, false).y))
+                    if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.entityPosition, Vector3.zero, true, grenadeThrowingVelocity, false).y))
                     {
                         Debug.Log("NAN: " + transform.parent.gameObject.name + " Throwing Grenade");
                         Debug.Log("-> velöpcoty: " + grenadeThrowingVelocity);
@@ -564,7 +569,7 @@ public class AIController : MonoBehaviour
             targetPositionVisualised.position = finalMoveDestination;
         }
 
-        nearestEnemyLastFrame = nearestEnemy;
+        nearestEnemyInfoLastFrame = nearestEnemyInfo;
 
 
 

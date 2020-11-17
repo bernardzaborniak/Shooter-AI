@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class AIC_HumanSensing : AIComponent
 {
-    public GameEntity nearestEnemy;
+    //public GameEntity nearestEnemy;
+    public SensingEntityVisibilityInfo nearestEnemyInfo;
     public HashSet<GameEntity> enemiesInSensingRadius = new HashSet<GameEntity>();
     Collider[] collidersInRadius;
 
@@ -47,6 +48,8 @@ public class AIC_HumanSensing : AIComponent
             GameEntity currentEntity;
             Vector3 myPosition = transform.position;
 
+            nearestEnemyInfo = null;
+
             for (int i = 0; i < collidersInRadius.Length; i++)
             {
                 currentEntity = collidersInRadius[i].GetComponent<GameEntity>();
@@ -60,7 +63,12 @@ public class AIC_HumanSensing : AIComponent
                         if (currentDistanceSqr < smallestDistanceSqr)
                         {
                             smallestDistanceSqr = currentDistanceSqr;
-                            nearestEnemy = currentEntity;
+
+                            VisibilityInfo visInfo = currentEntity.GetComponent<VisibilityInfo>();
+                            nearestEnemyInfo = new SensingEntityVisibilityInfo();
+                            nearestEnemyInfo.SetUpInfo(visInfo);
+                           // nearestEnemyInfo.visibilityInfo = currentEntity.GetComponent<VisibilityInfo>();
+                           // nearestEnemyInfo.timeWhenLastSeen = Time.time;
                         }
                     }           
                 }

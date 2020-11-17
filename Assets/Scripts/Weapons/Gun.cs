@@ -42,6 +42,7 @@ public class Gun : Item, IItemWithIKHandPositions
 
     bool usedByPlayer = false;
     GameEntity wieldingEntity;
+    IMoveable wieldingEntityMoveable;
 
     [Header("Visuals")]
     public ParticleSystem shootParticle;
@@ -72,11 +73,11 @@ public class Gun : Item, IItemWithIKHandPositions
                 #region Spawn & Activate Bullet
                 Projectile projectile = PoolingManager.Instance.SpawnAmmoFromPool(ammoType, shootPoint.position, shootPoint.rotation * Quaternion.Euler(Random.Range(-bloom, bloom), Random.Range(-bloom, bloom), 0f)).GetComponent<Projectile>();
 
-                IMoveable wieldingPlayerMoveable = wieldingEntity.GetComponent<IMoveable>();
+                //IMoveable wieldingEntityMoveable = wieldingEntity.GetComponent<IMoveable>();
                 Vector3 weaponHolderMovementSpeed = Vector3.zero;
-                if (wieldingPlayerMoveable != null)
+                if (wieldingEntityMoveable != null)
                 {
-                    weaponHolderMovementSpeed = wieldingPlayerMoveable.GetCurrentVelocity();
+                    weaponHolderMovementSpeed = wieldingEntityMoveable.GetCurrentVelocity();
                 }
                 else
                 {
@@ -106,9 +107,15 @@ public class Gun : Item, IItemWithIKHandPositions
         return false;
     }
 
-    public void OnEquipWeapon(GameEntity wieldingEntity)
+    public void OnEquipWeapon(GameEntity wieldingEntity, IMoveable wieldingEntityMoveable)
     {
         this.wieldingEntity = wieldingEntity;
+        this.wieldingEntityMoveable = wieldingEntityMoveable;
+        /*wieldingEntityMoveable = null;
+        if (wieldingEntity.gameObject.GetComponent<VisibilityInfo>())
+        {
+
+        }*/
         // here special things could be triggered
         // gunVisualsAndAudioManager.OnGrabWeapon();
     }

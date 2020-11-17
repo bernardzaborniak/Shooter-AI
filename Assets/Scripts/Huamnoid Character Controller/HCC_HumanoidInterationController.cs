@@ -17,6 +17,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     public HCC_HumanoidAimingController aimingController;
     public HCC_HumanoidAnimationController animationController;
     public HCC_HumanoidHandsIKController handsIKController;
+    public HCC_HumanoidMovementController movementController; //used to ally movement force to things like bullets n grenades
     
     public RecoilManager recoilManager;
 
@@ -278,7 +279,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         if (inventory[currentSelectedItemID] is Gun)
         {
             Gun gun = (inventory[currentSelectedItemID] as Gun);
-            gun.OnEquipWeapon(myEntity);
+            gun.OnEquipWeapon(myEntity, movementController);
             aimingController.OnChangeWeapon(gun);
         }
         else
