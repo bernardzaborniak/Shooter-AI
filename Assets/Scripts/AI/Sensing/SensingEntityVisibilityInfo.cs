@@ -6,21 +6,25 @@ using UnityEngine;
 public class SensingEntityVisibilityInfo 
 {
     public GameEntity entity;
-    public Vector3 entityPosition;
+    public VisibilityInfo visInfo;
     public int entityTeamID;
+
+
+    Vector3 lastSeenEntityPosition;
 
     //Movement
     public bool hasMovement;
-    public Vector3 velocity;
-    public Vector3 angularVelocity;
+    Vector3 lastSeenVelocity;
+    Vector3 lastSeenAngularVelocity;
 
     //Aim Positions
-    public Vector3 aimPosition;
-    public Vector3 criticalAimPosition;
+    Vector3 lastSeenAimPosition;
+    Vector3 lastSeenCriticalAimPosition;
 
 
 
     public float timeWhenLastSeen;
+    float timeDelayAfterWhichPositionIsntUpdated = 1.5f; //if we seen this entity more than x seconds ago, we wont have acess to the current position of the entity, just the last posiiton
 
 
     public SensingEntityVisibilityInfo()
@@ -30,17 +34,19 @@ public class SensingEntityVisibilityInfo
 
     public void SetUpInfo(VisibilityInfo visInfo)//, IMoveable moveable)
     {
+        this.visInfo = visInfo;
         timeWhenLastSeen = Time.time;
 
         entity = visInfo.entityAssignedTo;
+        lastSeenEntityPosition = entity.transform.position;
         entityTeamID = entity.teamID;
 
         // Set Movement Speeds.
         if (visInfo.HasMovement())
         {
             hasMovement = true;
-            velocity = visInfo.GetCurrentVelocity();
-            angularVelocity = visInfo.GetCurrentAngularVelocity();
+            lastSeenVelocity = visInfo.GetCurrentVelocity();
+            lastSeenAngularVelocity = visInfo.GetCurrentAngularVelocity();
         }
         else
         {
@@ -48,11 +54,71 @@ public class SensingEntityVisibilityInfo
         }
 
         //Set Aim Positions.
-        aimPosition = entity.GetAimPosition();
-        criticalAimPosition = entity.GetCriticalAimPosition();
+        lastSeenAimPosition = entity.GetAimPosition();
+        lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
 
 
 
     }
-  
+
+    public Vector3 GetAimPosition()
+    {
+        if(Time.time- timeWhenLastSeen< timeDelayAfterWhichPositionIsntUpdated)
+        {
+            return entity.GetAimPosition();
+        }
+        else
+        {
+            return lastSeenAimPosition;
+        }
+    }
+
+    public Vector3 GetCriticalAimPosition()
+    {
+        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        {
+            return entity.GetCriticalAimPosition();
+        }
+        else
+        {
+            return lastSeenCriticalAimPosition;
+        }
+    }
+
+    public Vector3 GetCurrentVelocity()
+    {
+        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        {
+            return visInfo.GetCurrentVelocity();
+        }
+        else
+        {
+            return lastSeenVelocity;
+        }
+    }
+
+    public Vector3 GetCurrentAngularVelocity()
+    {
+        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        {
+            return visInfo.GetCurrentAngularVelocity();
+        }
+        else
+        {
+            return lastSeenAngularVelocity;
+        }
+    }
+
+    public Vector3 GetEntityPosition()
+    {
+        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        {
+            return entity.transform.position;
+        }
+        else
+        {
+            return lastSeenEntityPosition;
+        }
+    }
+
 }
