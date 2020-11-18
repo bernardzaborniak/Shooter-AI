@@ -110,7 +110,7 @@ public class HumanoidConstraintController : MonoBehaviour
                 //Debug.Log("anm update");
                 animator.Update((Time.time-timeOfLastUpdate));
                 timeOfLastUpdate = Time.time;
-                nextAnimatorUpdateTime = Time.unscaledTime + animatorUpdateInterval;
+                nextAnimatorUpdateTime = nextAnimatorUpdateTime + animatorUpdateInterval;
             }
             else
             {
