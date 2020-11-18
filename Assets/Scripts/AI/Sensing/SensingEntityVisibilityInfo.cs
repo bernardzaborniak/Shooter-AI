@@ -61,64 +61,79 @@ public class SensingEntityVisibilityInfo
 
     }
 
+   /* public bool IsValid()
+    {
+        return entity;
+    }*/
+
     public Vector3 GetAimPosition()
     {
-        if(Time.time- timeWhenLastSeen< timeDelayAfterWhichPositionIsntUpdated)
+        if (entity != null)
         {
-            return entity.GetAimPosition();
+            if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+            {
+                return entity.GetAimPosition();
+            }
         }
-        else
-        {
-            return lastSeenAimPosition;
-        }
+
+        return lastSeenAimPosition;
+
     }
 
     public Vector3 GetCriticalAimPosition()
     {
-        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        if (entity != null)
         {
-            return entity.GetCriticalAimPosition();
+            if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+            {
+                return entity.GetCriticalAimPosition();
+            }  
         }
-        else
-        {
-            return lastSeenCriticalAimPosition;
-        }
+
+        return lastSeenCriticalAimPosition;
     }
 
     public Vector3 GetCurrentVelocity()
     {
-        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        if (entity != null)
         {
-            return visInfo.GetCurrentVelocity();
+            if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+            {
+                return visInfo.GetCurrentVelocity();
+            }
         }
-        else
-        {
-            return lastSeenVelocity;
-        }
+
+        return lastSeenVelocity;
+
     }
 
     public Vector3 GetCurrentAngularVelocity()
     {
-        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        if (entity != null)
         {
-            return visInfo.GetCurrentAngularVelocity();
+            if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+            {
+                return visInfo.GetCurrentAngularVelocity();
+            }
         }
-        else
-        {
-            return lastSeenAngularVelocity;
-        }
+
+        return lastSeenAngularVelocity;
+
     }
 
     public Vector3 GetEntityPosition()
     {
-        if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+        if (entity != null)
         {
-            return entity.transform.position;
+            if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
+            {
+                return entity.transform.position;
+            }
         }
-        else
-        {
-            return lastSeenEntityPosition;
-        }
+        
+
+        return lastSeenEntityPosition;
+
     }
 
 }
