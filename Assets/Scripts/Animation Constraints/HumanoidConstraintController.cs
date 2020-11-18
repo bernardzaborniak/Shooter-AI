@@ -104,18 +104,24 @@ public class HumanoidConstraintController : MonoBehaviour
 
         if (optimiseAnimator)
         {
+            
             if (Time.unscaledTime > nextAnimatorUpdateTime)
             {
-                
+                UnityEngine.Profiling.Profiler.BeginSample("Anim Optimised ");
                 //Debug.Log("anm update");
                 animator.Update((Time.time-timeOfLastUpdate));
                 timeOfLastUpdate = Time.time;
-                nextAnimatorUpdateTime = nextAnimatorUpdateTime + animatorUpdateInterval;
+                //nextAnimatorUpdateTime = nextAnimatorUpdateTime + animatorUpdateInterval;
+                nextAnimatorUpdateTime = Time.unscaledTime + animatorUpdateInterval;
+
+                UnityEngine.Profiling.Profiler.EndSample();
+
             }
             else
             {
                 updateConstraints = false;
             }
+            
 
         }
 

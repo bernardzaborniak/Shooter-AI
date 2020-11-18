@@ -1,57 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7782482838617632093
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7782482838617632092}
-  - component: {fileID: 7782482838617632095}
-  m_Layer: 0
-  m_Name: Pooling Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7782482838617632092
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782482838617632093}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 7782482839959260089}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7782482838617632095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782482838617632093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501a51e4fb616c445a89f9e89843d316, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ammoPools:
-  - ammoType: 0
-    prefab: {fileID: 4418169066698541896, guid: 52afd5ce111fa82438e9fca60bec9259,
-      type: 3}
-    size: 500
-  - ammoType: 1
-    prefab: {fileID: 4418169066698541896, guid: 758d3f203a947454e9757437de85f223,
-      type: 3}
-    size: 200
 --- !u!1 &7782482838716011738
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +428,6 @@ Transform:
   - {fileID: 7782482838886103179}
   - {fileID: 7782482839985801685}
   - {fileID: 7782482838716011733}
-  - {fileID: 7782482838617632092}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
