@@ -2,29 +2,171 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+
+public class ScriptOptimisationManager : MonoBehaviour
+{
+    #region Fields
+
+    [Tooltip("LOD groups are assigned based on distance and angle from the playerCamera")]
+    public Transform playerTransform;
+    public float playerViewConeAngle;
+
+    [Tooltip("Only Temporary - use something more modular later for the group switch conditions")]
+    public float distanceOfLOD1Start;
+    float distanceOfLOD1StartSquared;
+
+    //have a group of all optimisers this manager manages
+    HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
+
+    [Tooltip("every x seconds all optimisers are sorted into LOD groups based on distance or angle from camera")]
+    public float sortIntoLODGroupsInterval;
+    float nextSortIntoLODGroupsTime;
+
+
+    [Header("Debug")]
+    public int[] LODGroupSizes;
+
+
+    [Header("LOD Groups")]
+    [Space(10)]
+    public ScriptOptimisationLODGroup[] LODGroups;
+
+    #endregion
+
+    public static ScriptOptimisationManager Instance;
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            DestroyImmediate(Instance);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        for (int i = 0; i < LODGroups.Length; i++)
+        {
+            LODGroups[i].SetUpLODGroup();
+        }
+
+        nextSortIntoLODGroupsTime = 0.01f;
+        LODGroupSizes = new int[LODGroups.Length];
+    }
+
+    void Start()
+    {
+        distanceOfLOD1StartSquared = distanceOfLOD1Start * distanceOfLOD1Start;
+    }
+
+    void Update()
+    {
+        for (int i = 0; i < LODGroups.Length; i++)
+        {
+            LODGroups[i].UpdateLODGroup();
+            LODGroupSizes[i] = LODGroups[i].GetLODGroupSize();
+        }
+
+        if(Time.unscaledTime > nextSortIntoLODGroupsTime)
+        {
+            nextSortIntoLODGroupsTime = Time.unscaledTime + sortIntoLODGroupsInterval;
+            SortOptimisersIntoLODGroups();
+        }
+    }
+
+    public void AddOptimiser(IScriptOptimiser optimiser)
+    {
+        optimisersRegisteredInManager.Add(optimiser);
+    }
+
+    public void RemoveOptimiser(IScriptOptimiser optimiser)
+    {
+        optimisersRegisteredInManager.Remove(optimiser);
+
+        for (int i = 0; i < LODGroups.Length; i++)
+        {
+            if (LODGroups[i].ContainsOptimiser(optimiser))
+            {
+                LODGroups[i].RemoveOptimiser(optimiser);
+                return;
+            }
+        }
+    }
+
+    public void SortOptimisersIntoLODGroups()
+    {
+        Vector3 playerCameraForward = playerTransform.forward;
+
+        Vector3 directionTowardsObject;  //maybe also have the option to optimise dased ona angle?
+        float squaredDistance = 0;
+        float angle = 0;
+        Vector3 playerPosition = playerTransform.position;
+
+        for (int i = 0; i < LODGroups.Length; i++)
+        {
+            LODGroups[i].ClearGroup();
+        }
+
+        foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
+        {
+            directionTowardsObject = optimiser.GetPosition() - playerPosition;
+
+            angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
+            if(angle < playerViewConeAngle)
+            {
+                squaredDistance = directionTowardsObject.sqrMagnitude;
+
+                if (squaredDistance > distanceOfLOD1StartSquared)
+                {
+                    LODGroups[1].AddOptimiser(optimiser);
+                }
+                else
+                {
+                    LODGroups[0].AddOptimiser(optimiser);
+                }
+            }
+            else
+            {
+                LODGroups[2].AddOptimiser(optimiser);
+            }
+
+            
+        }
+    }
+
+}
+
 [System.Serializable]
 public class ScriptOptimisationLODGroup
 {
+    #region fields
+
     public string name;
     [Min(0)]
     public float updateInterval = 1 / 30;
+    float nextGeneralUpdateTime;
+
+    HashSet<IScriptOptimiser> objectsInLODGroup = new HashSet<IScriptOptimiser>();
     [Min(1)]
     public int updateGroups = 3;
-    public float[] groupsUpdateDelays;
-    float nextGeneralUpdateTime;
-    public float[] nextGroupUnscaledUpdateTimes;
-    public bool[] groupsUpdatedThisCycle;
-    //public float[] lastGroupUnscaledUpdateTimes;
-
-    public int[] debugGroupSizes;
-
     HashSet<IScriptOptimiser>[] groups;
-    HashSet<IScriptOptimiser> objectsInLODGroup = new HashSet<IScriptOptimiser>();
+
+    float[] groupsUpdateDelays;
+    float[] nextGroupUnscaledUpdateTimes;
+    public bool[] groupsUpdatedThisCycle;
+
+    [Header("Debug")]
+    public int[] debugGroupSizes;
 
 
     //for determining biggestAndSmallestGroup
     HashSet<IScriptOptimiser> smallestOrLargestGroup;
     int smallestOrLargestGroupSize;
+
+    #endregion
 
     public void SetUpLODGroup()
     {
@@ -119,25 +261,24 @@ public class ScriptOptimisationLODGroup
         }
         objectsInLODGroup.Remove(optimiser);
 
-       
+
     }
 
+    /* HashSet<HumanoidConstraintAndAnimationOptimiser> GetBiggestGroup()
+     {
+         smallestOrLargestGroupSize = 0;
 
-   /* HashSet<HumanoidConstraintAndAnimationOptimiser> GetBiggestGroup()
-    {
-        smallestOrLargestGroupSize = 0;
+         for (int i = 0; i < groups.Length; i++)
+         {
+             if (groups[i].Count > smallestOrLargestGroupSize)
+             {
+                 smallestOrLargestGroupSize = groups[i].Count;
+                 smallestOrLargestGroup = groups[i];
+             }
+         }
 
-        for (int i = 0; i < groups.Length; i++)
-        {
-            if (groups[i].Count > smallestOrLargestGroupSize)
-            {
-                smallestOrLargestGroupSize = groups[i].Count;
-                smallestOrLargestGroup = groups[i];
-            }
-        }
-
-        return smallestOrLargestGroup;
-    }*/
+         return smallestOrLargestGroup;
+     }*/
 
     HashSet<IScriptOptimiser> GetSmallestGroup()
     {
@@ -177,139 +318,3 @@ public class ScriptOptimisationLODGroup
 
 }
 
-
-
-
-public class ScriptOptimisationManager : MonoBehaviour
-{
-    public Transform playerTransform;
-    public float playerViewConeAngle;
-
-    public ScriptOptimisationLODGroup[] LODGroups;
-    //public HumanoidConstraintAndAnimationOptimisationLODGroup LOD1;
-    public float distanceOfLOD1Start;
-    float distanceOfLOD1StartSquared;
-
-
-
-    HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
-
-    public float sortIntoLODGroupsInterval;
-    public float nextSortIntoLODGroupsTime;
-
-    public int[] LODGroupSizes;
-
-
-
-    public static ScriptOptimisationManager Instance;
-    void Awake()
-    {
-        if (Instance != null)
-        {
-            DestroyImmediate(Instance);
-        }
-        else
-        {
-            Instance = this;
-        }
-
-        for (int i = 0; i < LODGroups.Length; i++)
-        {
-            LODGroups[i].SetUpLODGroup();
-        }
-
-        nextSortIntoLODGroupsTime = 0.01f;
-        LODGroupSizes = new int[LODGroups.Length];
-    }
-
-
-
-    void Start()
-    {
-        distanceOfLOD1StartSquared = distanceOfLOD1Start * distanceOfLOD1Start;
-    }
-
-    void Update()
-    {
-        for (int i = 0; i < LODGroups.Length; i++)
-        {
-            LODGroups[i].UpdateLODGroup();
-            LODGroupSizes[i] = LODGroups[i].GetLODGroupSize();
-        }
-
-        if(Time.unscaledTime > nextSortIntoLODGroupsTime)
-        {
-            nextSortIntoLODGroupsTime = Time.unscaledTime + sortIntoLODGroupsInterval;
-            SortOptimisersIntoLODGroups();
-        }
-    }
-
-    public void AddOptimiser(IScriptOptimiser optimiser)
-    {
-        //groups[0].Add(optimiser);
-        //LOD0.AddOptimiser(optimiser);
-        optimisersRegisteredInManager.Add(optimiser);
-    }
-
-    public void RemoveOptimiser(IScriptOptimiser optimiser)
-    {
-        //LOD0.RemoveOptimiser(optimiser);
-        optimisersRegisteredInManager.Remove(optimiser);
-
-        for (int i = 0; i < LODGroups.Length; i++)
-        {
-            if (LODGroups[i].ContainsOptimiser(optimiser))
-            {
-                LODGroups[i].RemoveOptimiser(optimiser);
-                return;
-            }
-        }
-    }
-
-
-
-
-    public void SortOptimisersIntoLODGroups()
-    {
-        Vector3 playerCameraForward = playerTransform.forward;
-
-        Vector3 directionTowardsObject;  //maybe also have the option to optimise dased ona angle?
-        float squaredDistance = 0;
-        float angle = 0;
-        Vector3 playerPosition = playerTransform.position;
-
-        for (int i = 0; i < LODGroups.Length; i++)
-        {
-            LODGroups[i].ClearGroup();
-        }
-
-        foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
-        {
-            directionTowardsObject = optimiser.GetPosition() - playerPosition;
-
-            angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
-            if(angle < playerViewConeAngle)
-            {
-                squaredDistance = directionTowardsObject.sqrMagnitude;
-
-                if (squaredDistance > distanceOfLOD1StartSquared)
-                {
-                    LODGroups[1].AddOptimiser(optimiser);
-                }
-                else
-                {
-                    LODGroups[0].AddOptimiser(optimiser);
-                }
-            }
-            else
-            {
-                LODGroups[2].AddOptimiser(optimiser);
-            }
-
-            
-        }
-    }
-
-
-
-}
