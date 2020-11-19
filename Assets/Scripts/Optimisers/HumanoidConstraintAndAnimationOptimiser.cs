@@ -16,8 +16,8 @@ public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour, IScriptOpt
     // Start is called before the first frame update
     private void OnEnable()
     {
-       // Debug.Log("Instance == null: " + HumanoidConstraintAndAnimationOptimisationManager.Instance == null);
-       // Debug.Log("update interval: " + HumanoidConstraintAndAnimationOptimisationManager.Instance.updateInterval);
+        //Debug.Log("Instance == null: " + ScriptOptimisationManager.Instance == null);
+        //Debug.Log("update interval: " + ScriptOptimisationManager.Instance.nextSortIntoLODGroupsTime);
         ScriptOptimisationManager.Instance.AddOptimiser(this);
     }
 
@@ -37,6 +37,11 @@ public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour, IScriptOpt
         //{
             Debug.Log("yee");
         //}
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
     /*private void OnBecameVisible()

@@ -6,5 +6,7 @@ public interface IScriptOptimiser
 {
     void UpdateOptimiser();
 
+    Vector3 GetPosition();
+
 
 }

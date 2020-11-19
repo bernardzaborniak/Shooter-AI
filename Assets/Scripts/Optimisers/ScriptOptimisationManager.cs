@@ -6,7 +6,9 @@ using UnityEngine;
 public class ScriptOptimisationLODGroup
 {
     public string name;
+    [Min(0)]
     public float updateInterval = 1 / 30;
+    [Min(1)]
     public int updateGroups = 3;
     public float[] groupsUpdateDelays;
     float nextGeneralUpdateTime;
@@ -16,21 +18,21 @@ public class ScriptOptimisationLODGroup
 
     public int[] debugGroupSizes;
 
-    HashSet<HumanoidConstraintAndAnimationOptimiser>[] groups;
-    HashSet<HumanoidConstraintAndAnimationOptimiser> objectsInLODGroup = new HashSet<HumanoidConstraintAndAnimationOptimiser>();
+    HashSet<IScriptOptimiser>[] groups;
+    HashSet<IScriptOptimiser> objectsInLODGroup = new HashSet<IScriptOptimiser>();
 
 
     //for determining biggestAndSmallestGroup
-    HashSet<HumanoidConstraintAndAnimationOptimiser> smallestOrLargestGroup;
+    HashSet<IScriptOptimiser> smallestOrLargestGroup;
     int smallestOrLargestGroupSize;
 
     public void SetUpLODGroup()
     {
-        groups = new HashSet<HumanoidConstraintAndAnimationOptimiser>[updateGroups];
+        groups = new HashSet<IScriptOptimiser>[updateGroups];
 
         for (int i = 0; i < groups.Length; i++)
         {
-            groups[i] = new HashSet<HumanoidConstraintAndAnimationOptimiser>();
+            groups[i] = new HashSet<IScriptOptimiser>();
         }
 
         groupsUpdateDelays = new float[updateGroups];
@@ -74,7 +76,7 @@ public class ScriptOptimisationLODGroup
                 {
                     groupsUpdatedThisCycle[i] = true;
                     //Debug.Log("update group: " + i);
-                    foreach (HumanoidConstraintAndAnimationOptimiser item in groups[i])
+                    foreach (IScriptOptimiser item in groups[i])
                     {
                         item.UpdateOptimiser();
                     }
@@ -103,13 +105,13 @@ public class ScriptOptimisationLODGroup
         //after x seconds, change the number of things in each group if needed - if one group gets too big difference >1
     }
 
-    public void AddOptimiser(HumanoidConstraintAndAnimationOptimiser optimiser)
+    public void AddOptimiser(IScriptOptimiser optimiser)
     {
         GetSmallestGroup().Add(optimiser);
         objectsInLODGroup.Add(optimiser);
     }
 
-    public void RemoveOptimiser(HumanoidConstraintAndAnimationOptimiser optimiser)
+    public void RemoveOptimiser(IScriptOptimiser optimiser)
     {
         for (int i = 0; i < groups.Length; i++)
         {
@@ -137,9 +139,10 @@ public class ScriptOptimisationLODGroup
         return smallestOrLargestGroup;
     }*/
 
-    HashSet<HumanoidConstraintAndAnimationOptimiser> GetSmallestGroup()
+    HashSet<IScriptOptimiser> GetSmallestGroup()
     {
         smallestOrLargestGroupSize = int.MaxValue;
+        //smallestOrLargestGroup = groups[0];
 
         for (int i = 0; i < groups.Length; i++)
         {
@@ -153,7 +156,7 @@ public class ScriptOptimisationLODGroup
         return smallestOrLargestGroup;
     }
 
-    public bool ContainsOptimiser(HumanoidConstraintAndAnimationOptimiser optimiser)
+    public bool ContainsOptimiser(IScriptOptimiser optimiser)
     {
         return objectsInLODGroup.Contains(optimiser);
     }
@@ -189,7 +192,7 @@ public class ScriptOptimisationManager : MonoBehaviour
 
 
 
-    HashSet<HumanoidConstraintAndAnimationOptimiser> obtimisersRegisteredInManager = new HashSet<HumanoidConstraintAndAnimationOptimiser>();
+    HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
 
     public float sortIntoLODGroupsInterval;
     public float nextSortIntoLODGroupsTime;
@@ -241,17 +244,17 @@ public class ScriptOptimisationManager : MonoBehaviour
         }
     }
 
-    public void AddOptimiser(HumanoidConstraintAndAnimationOptimiser optimiser)
+    public void AddOptimiser(IScriptOptimiser optimiser)
     {
         //groups[0].Add(optimiser);
         //LOD0.AddOptimiser(optimiser);
-        obtimisersRegisteredInManager.Add(optimiser);
+        optimisersRegisteredInManager.Add(optimiser);
     }
 
-    public void RemoveOptimiser(HumanoidConstraintAndAnimationOptimiser optimiser)
+    public void RemoveOptimiser(IScriptOptimiser optimiser)
     {
         //LOD0.RemoveOptimiser(optimiser);
-        obtimisersRegisteredInManager.Remove(optimiser);
+        optimisersRegisteredInManager.Remove(optimiser);
 
         for (int i = 0; i < LODGroups.Length; i++)
         {
@@ -280,11 +283,9 @@ public class ScriptOptimisationManager : MonoBehaviour
             LODGroups[i].ClearGroup();
         }
 
-        foreach (HumanoidConstraintAndAnimationOptimiser optimiser in obtimisersRegisteredInManager)
+        foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
         {
-            
-
-            directionTowardsObject = optimiser.transform.position - playerPosition;
+            directionTowardsObject = optimiser.GetPosition() - playerPosition;
 
             angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
             if(angle < playerViewConeAngle)
