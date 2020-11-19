@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour
+
+
+
+//[RequireComponent(typeof(Renderer))]
+public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour, IScriptOptimiser
 {
     //float max = 2;
     //float min = 0.5f;
@@ -14,12 +18,12 @@ public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour
     {
        // Debug.Log("Instance == null: " + HumanoidConstraintAndAnimationOptimisationManager.Instance == null);
        // Debug.Log("update interval: " + HumanoidConstraintAndAnimationOptimisationManager.Instance.updateInterval);
-        HumanoidConstraintAndAnimationOptimisationManager.Instance.AddConstraintObject(this);
+        ScriptOptimisationManager.Instance.AddOptimiser(this);
     }
 
     private void OnDisable()
     {
-        HumanoidConstraintAndAnimationOptimisationManager.Instance.RemoveConstraintObject(this);
+        ScriptOptimisationManager.Instance.RemoveOptimiser(this);
 
     }
 
@@ -34,4 +38,15 @@ public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour
             Debug.Log("yee");
         //}
     }
+
+    /*private void OnBecameVisible()
+    {
+        HumanoidConstraintAndAnimationOptimisationManager.Instance.AddOptimiser(this);
+    }
+
+    private void OnBecameInvisible()
+    {
+        HumanoidConstraintAndAnimationOptimisationManager.Instance.RemoveOptimiser(this);
+    }*/
+
 }

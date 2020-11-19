@@ -26,12 +26,12 @@ public class Hitbox : MonoBehaviour, IDamageable<DamageInfo>
         return myEntity.teamID;
     }
 
-    private void Update()
+   /* private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             DamageInfo info = new DamageInfo(100);
             TakeDamage(ref info);
         }
-    }
+    }*/
 }
