@@ -17,8 +17,12 @@ namespace UnityTemplateProjects
         }
         CameraControllType cameraControllType =  CameraControllType.ConstrolledByPlayer;
 
-        public Vector3 currentLerpTowardsTarget;
-        public Vector3 startedLerpPosition;
+        Vector3 currentLerpTowardsTarget;
+        Vector3 startedLerpPosition;
+
+        Quaternion currentSlerpRotTarget;
+        Quaternion startedSlerpRot;
+
         float lerpCamTowardsTargetAmount;
         public float lerpCamTowardsTargetSpeed;
         public Transform debugTargetToLerpAt;
@@ -131,11 +135,11 @@ namespace UnityTemplateProjects
             {
                 Vector3 translation = Vector3.zero;
 
-#if ENABLE_LEGACY_INPUT_MANAGER
+                #if ENABLE_LEGACY_INPUT_MANAGER
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    EnterLerpCameraToTargetMode(debugTargetToLerpAt.position);
+                    EnterLerpCameraToTargetMode(debugTargetToLerpAt);
                     return;
 
                 }
@@ -144,9 +148,9 @@ namespace UnityTemplateProjects
                 if (Input.GetKey(KeyCode.Escape))
                 {
                     Application.Quit();
-#if UNITY_EDITOR
+                #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;
-#endif
+                #endif
                 }
                 // Hide and lock cursor when right mouse button pressed
                 if (Input.GetMouseButtonDown(1))
@@ -185,9 +189,9 @@ namespace UnityTemplateProjects
                 boost += Input.mouseScrollDelta.y * 0.2f;
                 translation *= Mathf.Pow(2.0f, boost);
 
-#elif USE_INPUT_SYSTEM
-            // TODO: make the new input system work
-#endif
+                 #elif USE_INPUT_SYSTEM
+                // TODO: make the new input system work
+                #endif
 
                 m_TargetCameraState.Translate(translation);
 
@@ -206,19 +210,38 @@ namespace UnityTemplateProjects
                     EnterControllCameryByPlayerMode();
                     return;
                 }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+
+                    EnterControllCameryByPlayerMode();
+                    return;
+                }
 
                 lerpCamTowardsTargetAmount = Mathf.Clamp(lerpCamTowardsTargetAmount + lerpCamTowardsTargetSpeed * Time.deltaTime, 0, 1);
 
+                //m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, lerpCamTowardsTargetAmount);
+
+                //m_InterpolatingCameraState.UpdateTransform(transform);
+
                 transform.position = Vector3.Lerp(startedLerpPosition, currentLerpTowardsTarget, lerpCamTowardsTargetAmount);
+                transform.rotation = Quaternion.Slerp(startedSlerpRot, currentSlerpRotTarget, lerpCamTowardsTargetAmount);
+
+                m_TargetCameraState.SetFromTransform(transform);
+                m_InterpolatingCameraState.SetFromTransform(transform);
 
             }
            
         }
 
-        public void EnterLerpCameraToTargetMode(Vector3 target)
+        public void EnterLerpCameraToTargetMode(Transform target)
         {
-            currentLerpTowardsTarget = target;
+            currentLerpTowardsTarget = target.position;
+            currentSlerpRotTarget = target.rotation;
+
             startedLerpPosition = transform.position;
+            startedSlerpRot = transform.rotation;
+
             cameraControllType = CameraControllType.LerpingTowardsTarget;
             lerpCamTowardsTargetAmount = 0;
         }
