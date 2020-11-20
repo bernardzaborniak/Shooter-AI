@@ -10,6 +10,19 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
+        public enum CameraControllType
+        {
+            ConstrolledByPlayer,
+            LerpingTowardsTarget
+        }
+        CameraControllType cameraControllType =  CameraControllType.ConstrolledByPlayer;
+
+        public Vector3 currentLerpTowardsTarget;
+        public Vector3 startedLerpPosition;
+        float lerpCamTowardsTargetAmount;
+        public float lerpCamTowardsTargetSpeed;
+        public Transform debugTargetToLerpAt;
+
         class CameraState
         {
             public float yaw;
@@ -114,69 +127,108 @@ namespace UnityTemplateProjects
         
         void Update()
         {
-            Vector3 translation = Vector3.zero;
+            if(cameraControllType == CameraControllType.ConstrolledByPlayer)
+            {
+                Vector3 translation = Vector3.zero;
 
 #if ENABLE_LEGACY_INPUT_MANAGER
 
-            // Exit Sample  
-            if (Input.GetKey(KeyCode.Escape))
-            {
-                Application.Quit();
-				#if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false; 
-				#endif
-            }
-            // Hide and lock cursor when right mouse button pressed
-            if (Input.GetMouseButtonDown(1))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    EnterLerpCameraToTargetMode(debugTargetToLerpAt.position);
+                    return;
 
-            // Unlock and show cursor when right mouse button released
-            if (Input.GetMouseButtonUp(1))
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
+                }
 
-            // Rotation
-            if (Input.GetMouseButton(1))
-            {
-                var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y") * (invertY ? 1 : -1));
-                
-                var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
+                // Exit Sample  
+                if (Input.GetKey(KeyCode.Escape))
+                {
+                    Application.Quit();
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+#endif
+                }
+                // Hide and lock cursor when right mouse button pressed
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
 
-                m_TargetCameraState.yaw += mouseMovement.x * mouseSensitivityFactor;
-                m_TargetCameraState.pitch += mouseMovement.y * mouseSensitivityFactor;
-            }
-            
-            // Translation
-            translation = GetInputTranslationDirection() * Time.deltaTime;
+                // Unlock and show cursor when right mouse button released
+                if (Input.GetMouseButtonUp(1))
+                {
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                }
 
-            // Speed up movement when shift key held
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                translation *= 10.0f;
-            }
+                // Rotation
+                if (Input.GetMouseButton(1))
+                {
+                    var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y") * (invertY ? 1 : -1));
 
-            // Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel)
-            boost += Input.mouseScrollDelta.y * 0.2f;
-            translation *= Mathf.Pow(2.0f, boost);
+                    var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
 
-#elif USE_INPUT_SYSTEM 
+                    m_TargetCameraState.yaw += mouseMovement.x * mouseSensitivityFactor;
+                    m_TargetCameraState.pitch += mouseMovement.y * mouseSensitivityFactor;
+                }
+
+                // Translation
+                translation = GetInputTranslationDirection() * Time.deltaTime;
+
+                // Speed up movement when shift key held
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    translation *= 10.0f;
+                }
+
+                // Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel)
+                boost += Input.mouseScrollDelta.y * 0.2f;
+                translation *= Mathf.Pow(2.0f, boost);
+
+#elif USE_INPUT_SYSTEM
             // TODO: make the new input system work
 #endif
 
-            m_TargetCameraState.Translate(translation);
+                m_TargetCameraState.Translate(translation);
 
-            // Framerate-independent interpolation
-            // Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
-            var positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
-            var rotationLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / rotationLerpTime) * Time.deltaTime);
-            m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, rotationLerpPct);
+                // Framerate-independent interpolation
+                // Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
+                var positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
+                var rotationLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / rotationLerpTime) * Time.deltaTime);
+                m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, rotationLerpPct);
 
-            m_InterpolatingCameraState.UpdateTransform(transform);
+                m_InterpolatingCameraState.UpdateTransform(transform);
+            }
+            else
+            {
+                if(GetInputTranslationDirection() != Vector3.zero)
+                {
+                    EnterControllCameryByPlayerMode();
+                    return;
+                }
+
+                lerpCamTowardsTargetAmount = Mathf.Clamp(lerpCamTowardsTargetAmount + lerpCamTowardsTargetSpeed * Time.deltaTime, 0, 1);
+
+                transform.position = Vector3.Lerp(startedLerpPosition, currentLerpTowardsTarget, lerpCamTowardsTargetAmount);
+
+            }
+           
+        }
+
+        public void EnterLerpCameraToTargetMode(Vector3 target)
+        {
+            currentLerpTowardsTarget = target;
+            startedLerpPosition = transform.position;
+            cameraControllType = CameraControllType.LerpingTowardsTarget;
+            lerpCamTowardsTargetAmount = 0;
+        }
+
+        public void EnterControllCameryByPlayerMode()
+        {
+            cameraControllType = CameraControllType.ConstrolledByPlayer;
         }
     }
+
+    
 
 }
