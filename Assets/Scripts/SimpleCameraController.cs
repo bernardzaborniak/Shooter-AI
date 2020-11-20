@@ -10,6 +10,23 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
+        #region for framing on target object
+        [Header("For Framing on Objects")]
+        [Tooltip("The smaller the smooth time, the fast the framing")]
+        public float framingSmoothTime;
+
+        Vector3 currentTargetPosition;
+        Vector3 dampPosVelocity;
+
+        Quaternion currentTargetRotation;
+        Quaternion dampRotVelocity;
+
+        [Tooltip("Will be deleted later")]
+        public Transform debugTargetToLerpAt;
+
+        public Vector3 directionFromCameraToFramedObject;
+        public float framingDistanceFromObjectToCamera;
+
         public enum CameraControllType
         {
             ConstrolledByPlayer,
@@ -17,15 +34,9 @@ namespace UnityTemplateProjects
         }
         CameraControllType cameraControllType =  CameraControllType.ConstrolledByPlayer;
 
-        Vector3 currentLerpTowardsTarget;
-        Vector3 startedLerpPosition;
+        
 
-        Quaternion currentSlerpRotTarget;
-        Quaternion startedSlerpRot;
-
-        float lerpCamTowardsTargetAmount;
-        public float lerpCamTowardsTargetSpeed;
-        public Transform debugTargetToLerpAt;
+        #endregion
 
         class CameraState
         {
@@ -139,8 +150,7 @@ namespace UnityTemplateProjects
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    EnterLerpCameraToTargetMode(debugTargetToLerpAt);
-                    return;
+                    FrameOnObject(debugTargetToLerpAt);
 
                 }
 
@@ -218,35 +228,31 @@ namespace UnityTemplateProjects
                     return;
                 }
 
-                lerpCamTowardsTargetAmount = Mathf.Clamp(lerpCamTowardsTargetAmount + lerpCamTowardsTargetSpeed * Time.deltaTime, 0, 1);
-
-                //m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, lerpCamTowardsTargetAmount);
-
-                //m_InterpolatingCameraState.UpdateTransform(transform);
-
-                transform.position = Vector3.Lerp(startedLerpPosition, currentLerpTowardsTarget, lerpCamTowardsTargetAmount);
-                transform.rotation = Quaternion.Slerp(startedSlerpRot, currentSlerpRotTarget, lerpCamTowardsTargetAmount);
+                transform.position = Vector3.SmoothDamp(transform.position, currentTargetPosition, ref dampPosVelocity, framingSmoothTime);
+                transform.rotation = Utility.SmoothDamp(transform.rotation, currentTargetRotation, ref dampRotVelocity, framingSmoothTime);
 
                 m_TargetCameraState.SetFromTransform(transform);
                 m_InterpolatingCameraState.SetFromTransform(transform);
-
             }
-           
         }
 
-        public void EnterLerpCameraToTargetMode(Transform target)
-        {
-            currentLerpTowardsTarget = target.position;
-            currentSlerpRotTarget = target.rotation;
 
-            startedLerpPosition = transform.position;
-            startedSlerpRot = transform.rotation;
+        public void FrameOnObject(Transform frameTarget)
+        {
+            EnterLerpCameraToTargetMode(frameTarget);
+        }
+
+        void EnterLerpCameraToTargetMode(Transform target)
+        {
+            directionFromCameraToFramedObject = target.position - transform.position;
+
+            currentTargetPosition = target.position - directionFromCameraToFramedObject.normalized * framingDistanceFromObjectToCamera;
+            currentTargetRotation = Quaternion.LookRotation(directionFromCameraToFramedObject);
 
             cameraControllType = CameraControllType.LerpingTowardsTarget;
-            lerpCamTowardsTargetAmount = 0;
         }
 
-        public void EnterControllCameryByPlayerMode()
+        void EnterControllCameryByPlayerMode()
         {
             cameraControllType = CameraControllType.ConstrolledByPlayer;
         }
