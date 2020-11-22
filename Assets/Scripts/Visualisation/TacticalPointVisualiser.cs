@@ -90,7 +90,8 @@ public class TacticalPointVisualiser : MonoBehaviour
     {
 
         //Standing Distance
-        UpdateRatingRing(cameraForward, standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(false, cameraForward, standingDistanceRenderer, standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(true, cameraForward, standingQualityRenderer, standingQualityRating, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
 
        /* //Standing Quality
         clampedRatingQuality = Mathf.Clamp(coverRatingStandingQuality[i], worstQuality, bestQuality);
@@ -122,28 +123,37 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    void UpdateRatingRing(Vector3 alignTextForward, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
+    void UpdateRatingRing(bool quality, Vector3 alignTextForward, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
         float clampedRating;
         float normalizedRating;
         Color currentMappedCol;
 
         propertyBlock = new MaterialPropertyBlock();
-        standingDistanceRenderer.GetPropertyBlock(propertyBlock);
+        renderer.GetPropertyBlock(propertyBlock);
 
         for (int i = 0; i < 8; i++)
         {
-            clampedRating = Mathf.Clamp(rating[i], bestValue, worstValue);
+            if (quality) //0 to 1
+            {
+                clampedRating = Mathf.Clamp(rating[i], worstValue, bestValue);
+            }
+            else
+            {
+                clampedRating = Mathf.Clamp(rating[i], bestValue, worstValue);
+            }
+
+
             normalizedRating = Utility.Remap(clampedRating, worstValue, bestValue, 0, 1);
             currentMappedCol = Color.Lerp(worstColor, bestColor, normalizedRating);
 
-            text[i].text = clampedRating.ToString();
+            text[i].text = rating[i].ToString();
             text[i].color = currentMappedCol;
             text[i].transform.forward = alignTextForward;
 
             propertyBlock.SetColor(propertyNames[i], currentMappedCol);
         }
-        standingDistanceRenderer.SetPropertyBlock(propertyBlock);
+        renderer.SetPropertyBlock(propertyBlock);
     }
 
 }
