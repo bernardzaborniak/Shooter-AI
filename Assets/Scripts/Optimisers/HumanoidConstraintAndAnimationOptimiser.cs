@@ -18,7 +18,6 @@ public class HumanoidConstraintAndAnimationOptimiser : MonoBehaviour, IScriptOpt
     private void OnDisable()
     {
         ScriptOptimisationManager.Instance.RemoveOptimiser(this);
-
     }
 
     public void UpdateOptimiser()
