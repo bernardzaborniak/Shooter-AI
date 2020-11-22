@@ -28,8 +28,8 @@ public class TacticalPointVisualiser : MonoBehaviour
     public float[] crouchedDistanceRating;
     public TextMeshPro[] tmp_crouchedDistanceRating;
     [Space(5)]
-    public float[] crouchedDistanceQuality;
-    public TextMeshPro[] tmp_crouchedDistanceQuality;
+    public float[] crouchedQualityRating;
+    public TextMeshPro[] tmp_crouchedQualityRating;
 
     [Header("Cover Distance Rating Coloring")]
     [Tooltip("Remap between worst ad best to the worst & best color, best distance should be smaller than worst")]
@@ -86,44 +86,21 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    public void UpdateVisualiser(Vector3 cameraForward)
+    public void UpdateVisualiser(Quaternion cameraRot)
     {
 
-        //Standing Distance
-        UpdateRatingRing(false, cameraForward, standingDistanceRenderer, standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
-        UpdateRatingRing(true, cameraForward, standingQualityRenderer, standingQualityRating, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
-
-       /* //Standing Quality
-        clampedRatingQuality = Mathf.Clamp(coverRatingStandingQuality[i], worstQuality, bestQuality);
-        normalizedRatingQuality = Utility.Remap(clampedRatingQuality, worstQuality, bestQuality, 0, 1);
-        currentMappedQualityCol = Color.Lerp(worstQualityColor, bestQualityColor, normalizedRatingQuality);
-
-        coverRatingStandingNumbersQuality[i].text = clampedRatingQuality.ToString();
-        coverRatingStandingNumbersQuality[i].color = currentMappedQualityCol;
-
-        //Crouched Distance
-        clampedRatingDistance = Mathf.Clamp(coverRatingCrouchedDistance[i], bestDistance, worstDistance);
-        normalizedRatingDistance = Utility.Remap(clampedRatingDistance, worstDistance, bestDistance, 0, 1);
-        currentMappedDistanceCol = Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRatingDistance);
-
-        coverRatingCrouchedNumbersDistance[i].text = clampedRatingDistance.ToString();
-        coverRatingCrouchedNumbersDistance[i].color = currentMappedDistanceCol;
-
-        //Crouched Quality
-        clampedRatingQuality = Mathf.Clamp(coverRatingCrouchedQuality[i], worstQuality, bestQuality);
-        normalizedRatingQuality = Utility.Remap(clampedRatingQuality, worstQuality, bestQuality, 0, 1);
-        currentMappedQualityCol = Color.Lerp(worstQualityColor, bestQualityColor, normalizedRatingQuality);
-
-        coverRatingCrouchedNumbersDistance[i].text = clampedRatingQuality.ToString();
-        coverRatingCrouchedNumbersDistance[i].color = currentMappedQualityCol;
-
-        //2. set the cover color according to numbers & set the text Elements text,color 6 align them*/
-
+        //Standing
+        UpdateRatingRing(false, cameraRot, standingDistanceRenderer, standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(true, cameraRot, standingQualityRenderer, standingQualityRating, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
+        
+        //Crouched
+        UpdateRatingRing(false, cameraRot, crouchedDistanceRenderer, crouchedDistanceRating, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(true, cameraRot, crouchedQualityRenderer, crouchedQualityRating, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
 
 
     }
 
-    void UpdateRatingRing(bool quality, Vector3 alignTextForward, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
+    void UpdateRatingRing(bool quality, Quaternion alignTextRot, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
         float clampedRating;
         float normalizedRating;
@@ -149,7 +126,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
             text[i].text = rating[i].ToString();
             text[i].color = currentMappedCol;
-            text[i].transform.forward = alignTextForward;
+            text[i].transform.rotation = alignTextRot;
 
             propertyBlock.SetColor(propertyNames[i], currentMappedCol);
         }

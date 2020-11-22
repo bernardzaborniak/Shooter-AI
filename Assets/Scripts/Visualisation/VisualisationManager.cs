@@ -30,7 +30,7 @@ public class VisualisationManager : MonoBehaviour
 
     void Update()
     {
-        Vector3 camForward = camTransform.forward;
+        Quaternion camRot = camTransform.rotation;
 
         /* #region 1. Update Text aligned To Camera
 
@@ -47,7 +47,7 @@ public class VisualisationManager : MonoBehaviour
 
         foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
         {
-            visualiser.UpdateVisualiser(camForward);
+            visualiser.UpdateVisualiser(camRot);
         }
 
         #endregion
