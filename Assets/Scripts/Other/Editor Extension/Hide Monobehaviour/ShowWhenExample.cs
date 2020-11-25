@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+// comment from my: shit doesnt work with arrays
 public class ShowWhenExample : MonoBehaviour
 {
     #region Bool Region

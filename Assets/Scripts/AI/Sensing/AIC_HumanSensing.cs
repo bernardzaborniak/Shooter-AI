@@ -15,7 +15,7 @@ public class AIC_HumanSensing : AIComponent
     public float sensingRadius;
     public LayerMask sensingLayerMask;
 
-    public HashSet<Tuple<Post,float>> postsInSensingRadius = new HashSet<Tuple<Post, float>>();
+    public HashSet<Tuple<TacticalPoint,float>> postsInSensingRadius = new HashSet<Tuple<TacticalPoint, float>>();
     public LayerMask postSensingLayerMask;
 
     int myTeamID;
@@ -84,18 +84,18 @@ public class AIC_HumanSensing : AIComponent
 
             smallestDistanceSqr = Mathf.Infinity;
             currentDistanceSqr = 0;
-            Post currentPost;
+            TacticalPoint currentPost;
             myPosition = transform.position;
 
             for (int i = 0; i < collidersInRadius.Length; i++)
             {
-                currentPost = collidersInRadius[i].GetComponent<Post>();
+                currentPost = collidersInRadius[i].GetComponent<TacticalPoint>();
                 if (currentPost)
                 {
-                    if (!currentPost.used)
+                    if (!currentPost.IsPointFull())
                     {
                         currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
-                        postsInSensingRadius.Add(new Tuple<Post, float>(currentPost, currentDistanceSqr));
+                        postsInSensingRadius.Add(new Tuple<TacticalPoint, float>(currentPost, currentDistanceSqr));
                     }
                 }
             }
