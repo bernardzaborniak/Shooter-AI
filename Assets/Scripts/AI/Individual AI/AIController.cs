@@ -262,11 +262,11 @@ public class AIController : MonoBehaviour
                     nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
                     characterController.ChangeCharacterStanceToCombatStance();
                     Debug.Log("usedCoverPost: " + usedTacticalPoint);
-                    int randomNumber = UnityEngine.Random.Range(0, usedTacticalPoint.PeekPositions.Length);
-                    Debug.Log("Random number: " + usedTacticalPoint.PeekPositions[randomNumber]);
-                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)]: " + usedTacticalPoint.PeekPositions[randomNumber]);
-                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position: " + usedTacticalPoint.PeekPositions[randomNumber].transform.position);
-                    characterController.MoveTo(usedTacticalPoint.PeekPositions[randomNumber].transform.position);
+                    int randomNumber = UnityEngine.Random.Range(0, usedTacticalPoint.coverShootPoints.Length);
+                    Debug.Log("Random number: " + usedTacticalPoint.coverShootPoints[randomNumber]);
+                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)]: " + usedTacticalPoint.coverShootPoints[randomNumber]);
+                    Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position: " + usedTacticalPoint.coverShootPoints[randomNumber].transform.position);
+                    characterController.MoveTo(usedTacticalPoint.coverShootPoints[randomNumber].transform.position);
                 }
                 else
                 {

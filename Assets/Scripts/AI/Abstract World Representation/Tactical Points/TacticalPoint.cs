@@ -10,6 +10,7 @@ public enum TacticalPointType
     
 }
 
+[ExecuteInEditMode]
 public class TacticalPoint : MonoBehaviour
 {
     public TacticalPointType tacticalPointType;
@@ -19,15 +20,45 @@ public class TacticalPoint : MonoBehaviour
    
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
-    public TacticalPoint[] PeekPositions; //or ShotPositions
+    public TacticalPoint[] coverShootPoints; //or ShotPositions
+    [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
+    public Transform coverShootPointsParent;
 
 
     [Space(5)]
     //for now we only use this to test the character controller
     public int stanceType; //0 is standing, 1 is crouching
 
+    #region Update Cover Shoot Points inside Editor
 
+#if UNITY_EDITOR
+ 
+    void Update()
+    {
+        if (!Application.isPlaying)
+        {
+            if (tacticalPointType == TacticalPointType.CoverPoint)
+            {
+                coverShootPoints = new TacticalPoint[coverShootPointsParent.childCount];
+                for (int i = 0; i < coverShootPointsParent.childCount; i++)
+                {
+                    TacticalPoint tp = coverShootPointsParent.GetChild(i).GetComponent<TacticalPoint>();
+                    if (tp)
+                    {
+                        coverShootPoints[i] = tp;
+                    }
+                    else
+                    {
+                        Debug.Log("children of coverShootPointsParent on: " + gameObject.name + " is not a tactical point -> fix this");
+                    }
+                }
+            }
+        }
+       
+    }
+#endif
 
+    #endregion
 
     public Vector3 GetPostPosition()
     {
@@ -35,13 +66,13 @@ public class TacticalPoint : MonoBehaviour
     }
 
 
-    //only used if type is CoverShootPoint
+    // Only used if type is CoverShootPoint
     public Vector3 GetPeekPosition()
     {
         return transform.position;
     }
 
-    // is there room on this point for another soldier?
+    // Is there room on this point for another soldier?
     public bool IsPointFull()
     {
         if (usingEntity)

@@ -5,7 +5,7 @@ using TMPro;
 
 //TODO Move this enum to the tactical point calsss later on
 
-
+[ExecuteInEditMode]
 public class TacticalPointVisualiser : MonoBehaviour
 {
     #region Fields

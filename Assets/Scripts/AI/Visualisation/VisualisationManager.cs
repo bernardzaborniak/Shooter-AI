@@ -1,20 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
+[ExecuteInEditMode]
 public class VisualisationManager : MonoBehaviour
 {
     public Transform camTransform;
-    //public HashSet<TextToCameraAligner> managedObjects = new HashSet<TextToCameraAligner>();
     public HashSet<TacticalPointVisualiser> tacticalPointVisualisers = new HashSet<TacticalPointVisualiser>();
-
-    //public bool enableTacticalPointVisualisers;
-
 
     #region Singleton Code
     public static VisualisationManager Instance;
 
-    void Awake()
+    //void Awake()
+    void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
     {
         if (Instance != null)
         {
@@ -27,31 +26,35 @@ public class VisualisationManager : MonoBehaviour
     }
     #endregion
 
-
     void Update()
     {
-        Quaternion camRot = camTransform.rotation;
-
-        /* #region 1. Update Text aligned To Camera
-
-         
-
-         foreach (TextToCameraAligner obj in managedObjects)
-         {
-             obj.UpdateTextAligner(camForward);
-         }
-
-         #endregion*/
-
         #region 1. Update Tactical Point Visualisers
 
-        foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
+        if (Application.isPlaying)
         {
-            visualiser.UpdateVisualiser(camRot);
+            Quaternion camRot = camTransform.rotation;
+
+            foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
+            {
+                visualiser.UpdateVisualiser(camRot);
+            }
         }
 
         #endregion
+    }
 
+    //On GUI Updates more often in Edit mode than update, ensures smooth text alignment
+    private void OnRenderObject()
+    {
+        if (!Application.isPlaying)
+        {
+            Quaternion camRot = SceneView.lastActiveSceneView.rotation;
+
+            foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
+            {
+                visualiser.UpdateVisualiser(camRot);
+            }
+        }
     }
 
     public void AddTacticalPointVisualiser(TacticalPointVisualiser visualiser)
@@ -64,13 +67,4 @@ public class VisualisationManager : MonoBehaviour
         tacticalPointVisualisers.Remove(visualiser);
     }
 
-    /*public void AddTextAlignedToCamera(TextToCameraAligner obj)
-    {
-        managedObjects.Add(obj);
-    }
-
-    public void RemoveTextAlignedToCamera(TextToCameraAligner obj)
-    {
-        managedObjects.Remove(obj);
-    }*/
 }
