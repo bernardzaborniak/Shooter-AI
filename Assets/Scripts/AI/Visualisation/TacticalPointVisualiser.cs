@@ -11,7 +11,7 @@ public class TacticalPointVisualiser : MonoBehaviour
     #region Fields
 
     public TacticalPoint pointToVisualise;
-    
+
 
     [Header("Cover Distance Rating Coloring")]
     [Space(5)]
@@ -50,7 +50,8 @@ public class TacticalPointVisualiser : MonoBehaviour
     public Renderer standingQualityRenderer;
     public Renderer crouchedDistanceRenderer;
     public Renderer crouchedQualityRenderer;
-    MaterialPropertyBlock propertyBlock;// = new MaterialPropertyBlock();
+
+    MaterialPropertyBlock propertyBlock; //Used to hange material values in a performant way
 
     string[] propertyNames = new string[] {
         "Color_AEBF42CB" ,
@@ -86,34 +87,105 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    public void UpdateVisualiser(Quaternion cameraRot)
+    public void UpdateVisualiser(Quaternion cameraRot, VisualisationManager.Settings visualisationSetting)
     {
-
-        //Standing
-        UpdateRatingRing(false, cameraRot, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
-        UpdateRatingRing(true, cameraRot, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
-        
-        //Crouched
-        UpdateRatingRing(false, cameraRot, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
-        UpdateRatingRing(true, cameraRot, crouchedQualityRenderer, pointToVisualise.coverRating.crouchedQualityRating, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
-
-        propertyBlock = new MaterialPropertyBlock();
-        pointRenderer.GetPropertyBlock(propertyBlock);
-        if (pointToVisualise.IsPointFull())
+        #region Determine whether the point should be drawn
+        bool drawPoint = false;
+        if (pointToVisualise.tacticalPointType == TacticalPointType.OpenFieldPoint)
         {
-            propertyBlock.SetFloat(takenBoolName, 1f);
+            if (visualisationSetting.showOpenFieldPoints) drawPoint = true;
+        }
+        else if (pointToVisualise.tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            if (visualisationSetting.showCoverPoints) drawPoint = true;
+        }
+        else if (pointToVisualise.tacticalPointType == TacticalPointType.CoverShootPoint)
+        {
+            if (visualisationSetting.showCoverShootPoints) drawPoint = true;
+        }
+        #endregion
 
+        if (drawPoint)
+        {
+            pointRenderer.enabled = true;
+
+            //Distance
+            if (visualisationSetting.showCoverDistanceRating)
+            {
+                standingDistanceRenderer.enabled = true;
+                UpdateRatingRing(visualisationSetting.showCoverDistanceRatingNumbers, false, cameraRot, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+                crouchedDistanceRenderer.enabled = true;
+                UpdateRatingRing(visualisationSetting.showCoverDistanceRatingNumbers, false, cameraRot, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+            }
+            else
+            {
+                standingDistanceRenderer.enabled = false;
+                crouchedDistanceRenderer.enabled = false;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    tmp_standingDistanceRating[i].enabled = false;
+                    tmp_crouchedDistanceRating[i].enabled = false;
+                }
+            }
+
+            //Quality
+            if (visualisationSetting.showCoverQualityRating)
+            {
+                standingQualityRenderer.enabled = true;
+                UpdateRatingRing(visualisationSetting.showCoverQualityRatingNumbers, true, cameraRot, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
+                crouchedQualityRenderer.enabled = true;
+                UpdateRatingRing(visualisationSetting.showCoverQualityRatingNumbers, true, cameraRot, crouchedQualityRenderer, pointToVisualise.coverRating.crouchedQualityRating, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
+            }
+            else
+            {
+                standingQualityRenderer.enabled = false;
+                crouchedQualityRenderer.enabled = false;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    tmp_standingQualityRating[i].enabled = false;
+                    tmp_crouchedQualityRating[i].enabled = false;
+                }
+            }
+
+            // Set Taken Bool
+            propertyBlock = new MaterialPropertyBlock();
+            pointRenderer.GetPropertyBlock(propertyBlock);
+            if (pointToVisualise.IsPointFull())
+            {
+                propertyBlock.SetFloat(takenBoolName, 1f);
+            }
+            else
+            {
+                propertyBlock.SetFloat(takenBoolName, 0f);
+
+            }
+            pointRenderer.SetPropertyBlock(propertyBlock);
         }
         else
         {
-            propertyBlock.SetFloat(takenBoolName, 0f);
+            pointRenderer.enabled = false;
 
+            for (int i = 0; i < 8; i++)
+            {
+                tmp_standingDistanceRating[i].enabled = false;
+                tmp_standingQualityRating[i].enabled = false;
+                tmp_crouchedDistanceRating[i].enabled = false;
+                tmp_crouchedQualityRating[i].enabled = false;
+
+                standingDistanceRenderer.enabled = false;
+                standingQualityRenderer.enabled = false;
+                crouchedDistanceRenderer.enabled = false;
+                crouchedQualityRenderer.enabled = false;
+            }
         }
-        pointRenderer.SetPropertyBlock(propertyBlock);
+
 
     }
 
-    void UpdateRatingRing(bool quality, Quaternion alignTextRot, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
+
+    void UpdateRatingRing(bool showText, bool quality, Quaternion alignTextRot, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
         float clampedRating;
         float normalizedRating;
@@ -137,9 +209,18 @@ public class TacticalPointVisualiser : MonoBehaviour
             normalizedRating = Utility.Remap(clampedRating, worstValue, bestValue, 0, 1);
             currentMappedCol = Color.Lerp(worstColor, bestColor, normalizedRating);
 
-            text[i].text = rating[i].ToString();
-            text[i].color = currentMappedCol;
-            text[i].transform.rotation = alignTextRot;
+            if (showText)
+            {
+                text[i].enabled = true;
+
+                text[i].text = rating[i].ToString();
+                text[i].color = currentMappedCol;
+                text[i].transform.rotation = alignTextRot;
+            }
+            else
+            {
+                text[i].enabled = false;
+            }
 
             propertyBlock.SetColor(propertyNames[i], currentMappedCol);
         }

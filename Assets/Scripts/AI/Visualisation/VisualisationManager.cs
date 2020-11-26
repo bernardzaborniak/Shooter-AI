@@ -8,6 +8,26 @@ public class VisualisationManager : MonoBehaviour
 {
     public Transform camTransform;
     public HashSet<TacticalPointVisualiser> tacticalPointVisualisers = new HashSet<TacticalPointVisualiser>();
+   
+    [System.Serializable]
+    public class Settings
+    {
+        [Header("Tactical Points")]
+        public bool showOpenFieldPoints;
+        public bool showCoverPoints;
+        public bool showCoverShootPoints;
+        [Space(5)]
+        public bool showCoverDistanceRating;
+        [ConditionalHide("showCoverDistanceRating")]
+        public bool showCoverDistanceRatingNumbers;
+        [Space(5)]
+        public bool showCoverQualityRating;
+        [ConditionalHide("showCoverQualityRating")]
+        public bool showCoverQualityRatingNumbers;
+
+    }
+
+    public Settings settings;
 
     #region Singleton Code
     public static VisualisationManager Instance;
@@ -36,7 +56,7 @@ public class VisualisationManager : MonoBehaviour
 
             foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
             {
-                visualiser.UpdateVisualiser(camRot);
+                visualiser.UpdateVisualiser(camRot, settings);
             }
         }
 
@@ -52,7 +72,7 @@ public class VisualisationManager : MonoBehaviour
 
             foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
             {
-                visualiser.UpdateVisualiser(camRot);
+                visualiser.UpdateVisualiser(camRot, settings);
             }
         }
     }
