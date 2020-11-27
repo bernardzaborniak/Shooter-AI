@@ -11,6 +11,7 @@ public class ToogleableButton : MonoBehaviour, IPointerClickHandler
     public bool active;
 
     [Header("Event Logic")]
+    public UnityEvent OnClick;
     public UnityEvent OnActivate;
     public UnityEvent OnDeactivate;
 
@@ -57,7 +58,7 @@ public class ToogleableButton : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         active = !active;
-
+        OnClick.Invoke();
         if (active)
         {
             OnActivate.Invoke();
@@ -96,14 +97,18 @@ public class ToogleableButton : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void ActivateByScriptExternally()
+    public void SetActiveExternally(bool active)
     {
+        this.active = active;
+        if (active)
+        {
+            ActivateVisuals();
+        }
+        else
+        {
 
-    }
-
-    public void DeactivateByScriptExternally()
-    {
-
+            DeactivateVisuals();
+        }
     }
 
 

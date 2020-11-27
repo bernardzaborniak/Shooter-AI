@@ -35,14 +35,14 @@ public class VisualisationManager : MonoBehaviour
     //void Awake()
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
     {
-        if (Instance != null)
+       /* if (Instance != null)
         {
             DestroyImmediate(Instance);
         }
-        else
-        {
+        else   it kept destroying itself in the editor :(
+        {*/
             Instance = this;
-        }
+       // }
     }
     #endregion
 
