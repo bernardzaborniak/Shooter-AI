@@ -67,7 +67,7 @@ public class TacticalPointVisualiser : MonoBehaviour
     #endregion
 
 
-    private void OnEnable()
+    void OnEnable()
     {
         VisualisationManager.Instance.AddTacticalPointVisualiser(this);
     }
