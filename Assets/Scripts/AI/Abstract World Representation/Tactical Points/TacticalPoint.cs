@@ -100,4 +100,25 @@ public class TacticalPoint : MonoBehaviour
             usingEntity = null;
         }
     }
+
+    void OnEnable()
+    {
+        TacticalPointsManager.Instance.AddTacticalPoint(this);
+    }
+
+    void OnDisable()
+    {
+        TacticalPointsManager.Instance.RemoveTacticalPoint(this);
+    }
+
+    public void BakeDistanceCoverRating(float crouchedHeight, float standingHeight, float numberOfRaycasts)
+    {
+        Debug.Log("Bake Distance");
+    }
+
+    public void BakeQualityCoverRating(float crouchedHeight, float standingHeight, float numberOfRaycasts)
+    {
+        Debug.Log("Bake Quality");
+
+    }
 }

@@ -76,12 +76,21 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
 
     public void BakeCoverDistanceRating()
     {
-        Debug.Log("BakeCoverDistanceRating clicked");
+        //Debug.Log("BakeCoverDistanceRating clicked");
+        foreach (Transform generatedPoint in transform) //theyre all children
+        {
+            TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
+            point.BakeDistanceCoverRating(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.distanceRaycastsPerPoint);
+        }
     }
 
     public void BakeCoverQualityRating()
     {
-        Debug.Log("BakeCoverQualityRating clicked");
+        foreach (Transform generatedPoint in transform) //theyre all children
+        {
+            TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
+            point.BakeQualityCoverRating(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.qualityRaycastsPerPoint);
+        }
     }
 
     void OnEnable()

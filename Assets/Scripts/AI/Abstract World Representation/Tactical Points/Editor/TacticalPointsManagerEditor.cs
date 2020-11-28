@@ -26,5 +26,12 @@ public class TacticalPointsManagerEditor : Editor
         {
             myTacticalPointsManager.BakeAllCoverQualityRatings();
         }
+
+        if (GUILayout.Button("Generate Points & Bake all Ratings "))
+        {
+            myTacticalPointsManager.GenerateAll();
+            myTacticalPointsManager.BakeAllCoverDistanceRatings();
+            myTacticalPointsManager.BakeAllCoverQualityRatings();
+        }
     }     
 }

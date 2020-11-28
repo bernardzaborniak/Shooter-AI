@@ -6,11 +6,16 @@ using UnityEngine;
 public class TacticalPointsManager : MonoBehaviour
 {
     public GameObject openFieldPointPrefab;
-    public float standingCoverQualityHeight;
-    public float crouchedCoverQualityHeight;
+    public float standingCoverHeight;
+    public float crouchedCoverHeight;
     public float maxSnapDistanceToNavmesh;
+    public int distanceRaycastsPerPoint;
+    public int qualityRaycastsPerPoint;
 
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
+    public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
+
+
     public static TacticalPointsManager Instance;
 
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
@@ -28,6 +33,16 @@ public class TacticalPointsManager : MonoBehaviour
         tacticalPointGenerators.Remove(generator);
     }
 
+    public void AddTacticalPoint(TacticalPoint point)
+    {
+        tacticalPoints.Add(point);
+    }
+
+    public void RemoveTacticalPoint(TacticalPoint point)
+    {
+        tacticalPoints.Remove(point);
+    }
+
     public void GenerateAll()
     {
         foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
@@ -38,17 +53,17 @@ public class TacticalPointsManager : MonoBehaviour
 
     public void BakeAllCoverDistanceRatings()
     {
-        foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
+        foreach (TacticalPoint point in tacticalPoints)
         {
-            generator.BakeCoverDistanceRating();
+            point.BakeDistanceCoverRating(crouchedCoverHeight, standingCoverHeight, distanceRaycastsPerPoint);
         }
     }
 
     public void BakeAllCoverQualityRatings()
     {
-        foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
+        foreach (TacticalPoint point in tacticalPoints)
         {
-            generator.BakeCoverQualityRating();
+            point.BakeQualityCoverRating(crouchedCoverHeight, standingCoverHeight, qualityRaycastsPerPoint);
         }
     }
 }
