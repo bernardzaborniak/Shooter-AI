@@ -8,6 +8,7 @@ public class TacticalPointsManager : MonoBehaviour
     public GameObject openFieldPointPrefab;
     public float standingCoverQualityHeight;
     public float crouchedCoverQualityHeight;
+    public float maxSnapDistanceToNavmesh;
 
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
     public static TacticalPointsManager Instance;
@@ -25,5 +26,29 @@ public class TacticalPointsManager : MonoBehaviour
     public void RemoveTacticalPointsGeneratorBox(TacticalPointsGeneratorBox generator)
     {
         tacticalPointGenerators.Remove(generator);
+    }
+
+    public void GenerateAll()
+    {
+        foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
+        {
+            generator.Generate();
+        }
+    }
+
+    public void BakeAllCoverDistanceRatings()
+    {
+        foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
+        {
+            generator.BakeCoverDistanceRating();
+        }
+    }
+
+    public void BakeAllCoverQualityRatings()
+    {
+        foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
+        {
+            generator.BakeCoverQualityRating();
+        }
     }
 }

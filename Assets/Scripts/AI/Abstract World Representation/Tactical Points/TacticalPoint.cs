@@ -29,6 +29,9 @@ public class TacticalPoint : MonoBehaviour
     //for now we only use this to test the character controller
     public int stanceType; //0 is standing, 1 is crouching
 
+    public float radius;
+    public int capacity;
+
     #region Update Cover Shoot Points inside Editor
 
 #if UNITY_EDITOR

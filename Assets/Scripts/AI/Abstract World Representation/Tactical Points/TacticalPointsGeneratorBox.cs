@@ -16,7 +16,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     [Header("Generation Params")]
     public float gridSize;
     public float generatedPointRadius;
-    public float generatedPointCapacity;
+    public int generatedPointCapacity;
     BoxCollider generatorBoundingBox;
 
     private void Start()
@@ -54,8 +54,22 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         {
             for (float y = lowerLeftPosition.z; y <= upperRightPosition.z; y = y + gridSize)
             {
-                GameObject spawnedPoint = Instantiate(manager.openFieldPointPrefab, transform);
-                spawnedPoint.transform.localPosition = new Vector3(x,0,y);
+                //snap position to navmesh
+                //maxSnapDistanceToNavmesh
+
+                NavMeshHit hit;
+                if(NavMesh.SamplePosition(transform.TransformPoint(new Vector3(x, 0, y)), out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
+                {
+                    GameObject spawnedPoint = Instantiate(manager.openFieldPointPrefab, transform);
+                    spawnedPoint.transform.position = hit.position;
+
+                    TacticalPoint tacticalPoint = spawnedPoint.GetComponent<TacticalPoint>();
+                    tacticalPoint.capacity = generatedPointCapacity;
+                    tacticalPoint.radius = generatedPointRadius;
+
+                }
+
+
             }
         }
     }

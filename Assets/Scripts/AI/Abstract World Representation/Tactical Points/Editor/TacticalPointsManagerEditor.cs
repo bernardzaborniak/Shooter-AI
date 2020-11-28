@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class TacticalPointsManagerEditor : MonoBehaviour
+[CustomEditor(typeof(TacticalPointsManager))]
+public class TacticalPointsManagerEditor : Editor
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnInspectorGUI()
     {
-        
-    }
+        DrawDefaultInspector(); //this methiod draws the deault editor, we can add more custom editors later
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        TacticalPointsManager myTacticalPointsManager = (TacticalPointsManager)target;
+
+        if (GUILayout.Button("Generate All Points"))
+        {
+            myTacticalPointsManager.GenerateAll();
+        }
+
+        if (GUILayout.Button("Bake All Cover Distance Rating"))
+        {
+            myTacticalPointsManager.BakeAllCoverDistanceRatings();
+        }
+
+        if (GUILayout.Button("Bake All Cover Quality Rating"))
+        {
+            myTacticalPointsManager.BakeAllCoverQualityRatings();
+        }
+    }     
 }
