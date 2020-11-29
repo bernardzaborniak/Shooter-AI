@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2850946, g: 0.3713646, b: 0.49511164, a: 1}
+  m_IndirectSpecularColor: {r: 0.57040954, g: 0.64323664, b: 0.7321281, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: ba249568ff186304593a267a51693248,
-    type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: ba249568ff186304593a267a51693248, type: 2}
   m_LightingSettings: {fileID: 870225459}
 --- !u!196 &4
 NavMeshSettings:
@@ -368,7 +367,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &20007019
@@ -451,7 +450,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &20030505
@@ -514,7 +513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -962,7 +961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -1082,7 +1081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -1149,78 +1148,63 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2925017821980787382, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 2925017821980787382, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6597338694826147279, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 6597338694826147279, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: controllByPlayer
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.990562
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -21.785822
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611045, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611053, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611053, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_Name
       value: Soldier (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 7366031314207611053, guid: 8f7b5b55361f19e48b964aa9188bf50c,
-        type: 3}
+    - target: {fileID: 7366031314207611053, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -2064,7 +2048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -2541,7 +2525,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &119140737
@@ -3101,7 +3085,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &132622634
@@ -3184,7 +3168,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &139512923
@@ -3267,7 +3251,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &150106445
@@ -3330,7 +3314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -3450,7 +3434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -3637,7 +3621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -4070,7 +4054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -4441,7 +4425,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &169738165
@@ -4904,7 +4888,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &178222357
@@ -5151,7 +5135,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &183444295
@@ -5378,7 +5362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -5811,7 +5795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -5951,7 +5935,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &211111686
@@ -7271,7 +7255,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &259289083
@@ -7680,7 +7664,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &292719587
@@ -7810,7 +7794,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -8190,78 +8174,63 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.56
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.07
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839921969236, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.z
       value: -45.54
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.4734163
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.7368565
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalPosition.z
       value: 8.042285
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260089, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7782482839959260094, guid: 9267b3d50325a814cb113a506004b7c5,
-        type: 3}
+    - target: {fileID: 7782482839959260094, guid: 9267b3d50325a814cb113a506004b7c5, type: 3}
       propertyPath: m_Name
       value: ---------Scene Managers & Global---------
       objectReference: {fileID: 0}
@@ -8327,7 +8296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -8467,7 +8436,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &336755191
@@ -9635,7 +9604,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &384929612
@@ -10935,7 +10904,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &435824225
@@ -12186,7 +12155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -13096,7 +13065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -13249,7 +13218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -13369,7 +13338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -14162,7 +14131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -14990,7 +14959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -15110,7 +15079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -15563,7 +15532,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &636299959
@@ -16416,7 +16385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -16720,7 +16689,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &660757229
@@ -17429,7 +17398,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &684016922
@@ -17498,7 +17467,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!4 &684016924
@@ -17759,7 +17728,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &694494876
@@ -18535,7 +18504,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &732033482
@@ -18618,7 +18587,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &754108764
@@ -18845,7 +18814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -19509,7 +19478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -20141,7 +20110,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &823778947
@@ -20838,7 +20807,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &837532303
@@ -21547,7 +21516,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &851824623
@@ -22212,7 +22181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -23223,7 +23192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -23643,7 +23612,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &952595255
@@ -25391,7 +25360,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1018644239
@@ -25474,7 +25443,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &1020928289
@@ -26245,7 +26214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -26736,10 +26705,8 @@ MonoBehaviour:
   - {fileID: 1129902973}
   - {fileID: 1849912903}
   - {fileID: 1191486071}
-  team1Soldier: {fileID: 6552036245015414117, guid: e9d9ea6bbf2b006448069dc4ba0a3410,
-    type: 3}
-  team2Soldier: {fileID: 6919400451905985515, guid: 1792bda4c8eaf65428a09d7e7d3ebb08,
-    type: 3}
+  team1Soldier: {fileID: 6552036245015414117, guid: e9d9ea6bbf2b006448069dc4ba0a3410, type: 3}
+  team2Soldier: {fileID: 6919400451905985515, guid: 1792bda4c8eaf65428a09d7e7d3ebb08, type: 3}
   team1TargetPosition: {fileID: 261001254}
   team2TargetPosition: {fileID: 2013518277}
   spawnIntervalMin: 1
@@ -26804,7 +26771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -27331,8 +27298,7 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.19995117
       objectReference: {fileID: 0}
-    - target: {fileID: 224000010243477314, guid: 0abab5bb77339e4428787a870eb31bd3,
-        type: 3}
+    - target: {fileID: 224000010243477314, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.19995117
       objectReference: {fileID: 0}
@@ -28015,7 +27981,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1173549346
@@ -28078,7 +28044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -28531,7 +28497,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &1182987138
@@ -28989,7 +28955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -30919,7 +30885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -31039,7 +31005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -31852,7 +31818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -31992,7 +31958,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1260731987
@@ -32388,7 +32354,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1271529049
@@ -33629,7 +33595,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1294676773
@@ -35255,7 +35221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -35395,7 +35361,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &1366997458
@@ -36943,7 +36909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -37771,7 +37737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -38388,7 +38354,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1437626667
@@ -38471,7 +38437,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1439000068
@@ -39218,7 +39184,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1462194256
@@ -39281,7 +39247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -39714,7 +39680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -39834,7 +39800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -39954,7 +39920,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -41574,7 +41540,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1531030893
@@ -41970,7 +41936,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1544666139
@@ -42377,7 +42343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -42681,7 +42647,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1570904054
@@ -43045,7 +43011,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!4 &1605329945
@@ -44769,7 +44735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -45073,7 +45039,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1670724693
@@ -45136,7 +45102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -45276,7 +45242,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1675421044
@@ -45339,7 +45305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -46239,7 +46205,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1699060923
@@ -46322,7 +46288,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1703238035
@@ -46703,7 +46669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -46843,7 +46809,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &1726852952
@@ -47090,7 +47056,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1734724572
@@ -47466,7 +47432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -47586,7 +47552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -48317,7 +48283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -48457,7 +48423,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1788295241
@@ -48540,7 +48506,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1789224414
@@ -48623,7 +48589,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1795785585
@@ -49281,7 +49247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -49565,7 +49531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -49705,7 +49671,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1827158881
@@ -49768,7 +49734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -49888,7 +49854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -50058,7 +50024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -51593,7 +51559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -51713,7 +51679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -51818,7 +51784,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -52499,7 +52465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -52639,7 +52605,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1954038633
@@ -55280,7 +55246,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &1996216304
@@ -55363,7 +55329,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &2004938011
@@ -55610,7 +55576,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &2009169249
@@ -55693,7 +55659,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &2013518276
@@ -56656,7 +56622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -57109,7 +57075,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!43 &2059504902
@@ -58193,7 +58159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   used: 0
   usingEntity: {fileID: 0}
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   positionRating:
     polarDistanceToCoverStanding:
@@ -58810,7 +58776,7 @@ MonoBehaviour:
     - 0
     - 0
     - 0
-  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  cylinderMeshForGizmos: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 3}
   gizmoScale: 0.7
   stanceType: 0
 --- !u!1 &2127408100

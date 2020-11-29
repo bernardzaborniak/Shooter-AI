@@ -168,7 +168,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -479,6 +479,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   simpleCameraController: {fileID: 7782482839921969242}
-  projectilePrefab: {fileID: 4418169066698541896, guid: 758d3f203a947454e9757437de85f223,
-    type: 3}
+  projectilePrefab: {fileID: 4418169066698541896, guid: 758d3f203a947454e9757437de85f223, type: 3}
   shootPoint: {fileID: 7782482839850669044}

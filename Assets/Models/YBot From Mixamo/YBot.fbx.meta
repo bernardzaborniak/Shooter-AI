@@ -3,7 +3,17 @@ guid: 6be324008b89e6e46b59b621e2b6386c
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alpha_Body_MAT.004
+    second: {fileID: -3690184556831756600, guid: 6be324008b89e6e46b59b621e2b6386c, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alpha_Joints_MAT.004
+    second: {fileID: 8959268800111128723, guid: 6be324008b89e6e46b59b621e2b6386c, type: 3}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -686,14 +696,12 @@ ModelImporter:
     - name: HandIndex2.R
       parentName: HandIndex1.R
       position: {x: -0.00000007654042, y: 0.038919665, z: -0.0000000026018825}
-      rotation: {x: -0.000006051082, y: -0.0000061460714, z: -0.0000000046481516,
-        w: 1}
+      rotation: {x: -0.000006051082, y: -0.0000061460714, z: -0.0000000046481516, w: 1}
       scale: {x: 1, y: 0.9999999, z: 1}
     - name: HandIndex3.R
       parentName: HandIndex2.R
       position: {x: 0.000000035695482, y: 0.034151558, z: 2.3996108e-10}
-      rotation: {x: -0.00000019128629, y: -0.0000001465605, z: 0.000000029802038,
-        w: 1}
+      rotation: {x: -0.00000019128629, y: -0.0000001465605, z: 0.000000029802038, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: HandMiddle1.R
       parentName: Hand.R
@@ -703,8 +711,7 @@ ModelImporter:
     - name: HandMiddle2.R
       parentName: HandMiddle1.R
       position: {x: -0.000000042792234, y: 0.036139738, z: 0.0000000015841215}
-      rotation: {x: -0.0000033617907, y: -0.0000034279049, z: -0.0000000018359292,
-        w: 1}
+      rotation: {x: -0.0000033617907, y: -0.0000034279049, z: -0.0000000018359292, w: 1}
       scale: {x: 1, y: 1, z: 0.99999994}
     - name: HandMiddle3.R
       parentName: HandMiddle2.R

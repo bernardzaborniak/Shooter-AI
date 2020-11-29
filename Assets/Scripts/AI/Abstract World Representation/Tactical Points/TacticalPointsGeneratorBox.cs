@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(BoxCollider))]
@@ -60,7 +61,9 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                 NavMeshHit hit;
                 if(NavMesh.SamplePosition(transform.TransformPoint(new Vector3(x, 0, y)), out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
                 {
-                    GameObject spawnedPoint = Instantiate(manager.openFieldPointPrefab, transform);
+                    //GameObject spawnedPoint = Instantiate(manager.openFieldPointPrefab, transform);
+                    GameObject spawnedPoint = (GameObject)PrefabUtility.InstantiatePrefab((Object)manager.openFieldPointPrefab); //TODO
+                    spawnedPoint.transform.SetParent(transform);
                     spawnedPoint.transform.position = hit.position;
 
                     TacticalPoint tacticalPoint = spawnedPoint.GetComponent<TacticalPoint>();
