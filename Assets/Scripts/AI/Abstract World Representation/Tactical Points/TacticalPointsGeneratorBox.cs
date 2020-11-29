@@ -55,14 +55,14 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         {
             for (float y = lowerLeftPosition.z; y <= upperRightPosition.z; y = y + gridSize)
             {
-                //snap position to navmesh
-                //maxSnapDistanceToNavmesh
-
                 NavMeshHit hit;
                 if(NavMesh.SamplePosition(transform.TransformPoint(new Vector3(x, 0, y)), out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
                 {
-                    //GameObject spawnedPoint = Instantiate(manager.openFieldPointPrefab, transform);
-                    GameObject spawnedPoint = (GameObject)PrefabUtility.InstantiatePrefab((Object)manager.openFieldPointPrefab); //TODO
+                    string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(manager.openFieldPointPrefab);
+                    //Get prefab object from path
+                    Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
+                    //Instantiate the prefab in the scene, as a sibling of current gameObject
+                    GameObject spawnedPoint = PrefabUtility.InstantiatePrefab(prefab, transform.parent) as GameObject;
                     spawnedPoint.transform.SetParent(transform);
                     spawnedPoint.transform.position = hit.position;
 
@@ -71,10 +71,8 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                     tacticalPoint.radius = generatedPointRadius;
 
                 }
-
-
             }
-        }
+        }  
     }
 
     public void BakeCoverDistanceRating()
