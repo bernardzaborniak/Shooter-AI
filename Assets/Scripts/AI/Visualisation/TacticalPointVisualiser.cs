@@ -213,7 +213,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             {
                 text[i].enabled = true;
 
-                text[i].text = rating[i].ToString();
+                text[i].text = rating[i].ToString("F1");
                 text[i].color = currentMappedCol;
                 text[i].transform.rotation = alignTextRot;
             }

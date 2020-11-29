@@ -65,6 +65,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                     GameObject spawnedPoint = PrefabUtility.InstantiatePrefab(prefab, transform.parent) as GameObject;
                     spawnedPoint.transform.SetParent(transform);
                     spawnedPoint.transform.position = hit.position;
+                    spawnedPoint.transform.rotation = Quaternion.identity; //let them all have the same rotation for easier comparing
 
                     TacticalPoint tacticalPoint = spawnedPoint.GetComponent<TacticalPoint>();
                     tacticalPoint.capacity = generatedPointCapacity;
@@ -75,24 +76,16 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         }  
     }
 
-    public void BakeCoverDistanceRating()
+    public void BakeCoverRatings()
     {
         //Debug.Log("BakeCoverDistanceRating clicked");
         foreach (Transform generatedPoint in transform) //theyre all children
         {
             TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
-            point.BakeDistanceCoverRating(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.distanceRaycastsPerPoint);
+            point.BakeCoverRatings(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.distanceRaycastsPerPoint, manager.raycastLayerMask);
         }
     }
 
-    public void BakeCoverQualityRating()
-    {
-        foreach (Transform generatedPoint in transform) //theyre all children
-        {
-            TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
-            point.BakeQualityCoverRating(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.qualityRaycastsPerPoint);
-        }
-    }
 
     void OnEnable()
     {

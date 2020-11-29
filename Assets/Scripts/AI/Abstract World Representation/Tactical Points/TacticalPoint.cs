@@ -32,6 +32,44 @@ public class TacticalPoint : MonoBehaviour
     public float radius;
     public int capacity;
 
+    //calculate cover quality algorythm
+    Vector3[] raycastDirectionsInLocalSpace =
+    {
+        new Vector3(0,0,1),
+        new Vector3(1,0,1),
+        new Vector3(1,0,0),
+        new Vector3(1,0,-1),
+        new Vector3(0,0,-1),
+        new Vector3(-1,0,-1),
+        new Vector3(-1,0,0),
+        new Vector3(-1,0,1),
+    };
+
+    class UsedRaycast
+    {
+        public Vector3 start;
+        public Vector3 end;
+        public float distance;
+
+        public UsedRaycast(Vector3 start, Vector3 end, bool infinity = false)
+        {
+            this.start = start;
+            this.end = end;
+
+            if (infinity)
+            {
+                distance = Mathf.Infinity;
+            }
+            else
+            {
+                distance = Vector3.Distance(end, start);
+            }
+        }
+    }
+    HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>();
+    HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
+
+
     #region Update Cover Shoot Points inside Editor
 
 #if UNITY_EDITOR
@@ -111,14 +149,82 @@ public class TacticalPoint : MonoBehaviour
         TacticalPointsManager.Instance.RemoveTacticalPoint(this);
     }
 
-    public void BakeDistanceCoverRating(float crouchedHeight, float standingHeight, float numberOfRaycasts)
+    public void BakeCoverRatings(float crouchedHeight, float standingHeight, float numberOfRaycasts, LayerMask raycastLayerMask)
     {
         Debug.Log("Bake Distance");
+
+        //1. convert directions into local Space
+        Vector3[] raycastDirectionsInWorldSpace = new Vector3[8];
+
+        for (int i = 0; i < 8; i++)
+        {
+            raycastDirectionsInWorldSpace[i] = transform.TransformDirection(raycastDirectionsInLocalSpace[i]);
+        }
+
+
+        //2. cast and save Raycasts
+        raycastsUsedForGeneratingRating.Clear();
+
+        float randomiseRange = 22.5f;
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < numberOfRaycasts; j++)
+            {
+                //standing rating
+
+                //choose random point inside sphere
+                Vector3 rayStartPoint = transform.position + new Vector3(0, standingHeight, 0) + Random.insideUnitSphere * radius;
+
+                //randomise Direction
+                Vector3 randomsedDirection = Quaternion.Euler(Random.Range(-randomiseRange, randomiseRange), Random.Range(-randomiseRange, randomiseRange), 0f) * raycastDirectionsInWorldSpace[i];
+
+                RaycastHit hit;
+                if (Physics.Raycast(rayStartPoint, randomsedDirection, out hit, Mathf.Infinity, raycastLayerMask))
+                {
+                    raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, hit.point));
+                    raycastsUsedForCurrentDirection.Add(new UsedRaycast(rayStartPoint, hit.point));
+                    Debug.Log("hit: " + i + " distance = " + new UsedRaycast(rayStartPoint, hit.point).distance);
+                }
+                else
+                {
+                    raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, rayStartPoint + randomsedDirection * 100, true));
+                    //raycastsUsedForCurrentDirection.Add(new UsedRaycast(rayStartPoint, rayStartPoint + randomsedDirection * maxRaycastDistance));
+
+                }   
+            }
+
+            float allDistancesCombined = 0;
+            //go through all the ratings and add the mean value to the cuirrent rating
+            foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
+            {
+                allDistancesCombined += raycast.distance;
+            }
+
+            float meanDistance;
+            if (raycastsUsedForCurrentDirection.Count > 0)
+            {
+                meanDistance = allDistancesCombined / raycastsUsedForCurrentDirection.Count;
+            }
+            else
+            {
+                meanDistance = Mathf.Infinity;
+            }
+          
+            Debug.Log("i: " + i + " mean distance: " + meanDistance);
+            raycastsUsedForCurrentDirection.Clear();
+
+            coverRating.standingDistanceRating[i] = meanDistance;
+        }
     }
 
-    public void BakeQualityCoverRating(float crouchedHeight, float standingHeight, float numberOfRaycasts)
+    private void OnDrawGizmos()
     {
-        Debug.Log("Bake Quality");
-
+        foreach (UsedRaycast item in raycastsUsedForGeneratingRating)
+        {
+            Gizmos.DrawLine(item.start, item.end);
+        }
     }
+
+
 }

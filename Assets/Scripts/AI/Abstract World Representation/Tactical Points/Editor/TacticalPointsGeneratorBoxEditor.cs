@@ -19,21 +19,16 @@ public class TacticalPointsGeneratorBoxEditor : Editor
             myTacticalPointsGeneratorBox.Generate();
         }
 
-        if (GUILayout.Button("Bake Cover Distance Rating"))
-        {
-            myTacticalPointsGeneratorBox.BakeCoverDistanceRating();
-        }
 
-        if (GUILayout.Button("Bake Cover Quality Rating"))
+        if (GUILayout.Button("Bake Cover Ratings"))
         {
-            myTacticalPointsGeneratorBox.BakeCoverQualityRating();
+            myTacticalPointsGeneratorBox.BakeCoverRatings();
         }
 
         if (GUILayout.Button("Generate Points & Bake all Ratings "))
         {
             myTacticalPointsGeneratorBox.Generate();
-            myTacticalPointsGeneratorBox.BakeCoverDistanceRating();
-            myTacticalPointsGeneratorBox.BakeCoverQualityRating();
+            myTacticalPointsGeneratorBox.BakeCoverRatings();
         }
     }
 }

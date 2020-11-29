@@ -11,6 +11,8 @@ public class TacticalPointsManager : MonoBehaviour
     public float maxSnapDistanceToNavmesh;
     public int distanceRaycastsPerPoint;
     public int qualityRaycastsPerPoint;
+    //public float maxRaycastDistance;
+    public LayerMask raycastLayerMask;
 
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
     public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
@@ -51,19 +53,12 @@ public class TacticalPointsManager : MonoBehaviour
         }
     }
 
-    public void BakeAllCoverDistanceRatings()
+    public void BakeAllCoverRatings()
     {
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.BakeDistanceCoverRating(crouchedCoverHeight, standingCoverHeight, distanceRaycastsPerPoint);
+            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, distanceRaycastsPerPoint, raycastLayerMask);
         }
     }
 
-    public void BakeAllCoverQualityRatings()
-    {
-        foreach (TacticalPoint point in tacticalPoints)
-        {
-            point.BakeQualityCoverRating(crouchedCoverHeight, standingCoverHeight, qualityRaycastsPerPoint);
-        }
-    }
 }
