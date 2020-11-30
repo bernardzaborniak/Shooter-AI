@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public enum TacticalPointType
 {
@@ -81,7 +82,7 @@ public class TacticalPoint : MonoBehaviour
 
     //public HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>(); 
     //HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
-    UsedRaycast[][][] raycastsUsedForGeneratingRating; //first array is for standing/crouching, second is for the 8 directions, third is for the raycast per directions
+    [SerializeField] UsedRaycast[][][] raycastsUsedForGeneratingRating; //first array is for standing/crouching, second is for the 8 directions, third is for the raycast per directions
 
 
     #region Update Cover Shoot Points inside Editor
@@ -298,6 +299,9 @@ public class TacticalPoint : MonoBehaviour
                 #endregion
             }
         }
+
+        //var so = new SerializedObject(coverRating);
+        coverRating.ApplyModifiedProperties(); //? something like this?
     }
 
     public UsedRaycast[][][] GetRaycastsUsedForGeneratingRating()
