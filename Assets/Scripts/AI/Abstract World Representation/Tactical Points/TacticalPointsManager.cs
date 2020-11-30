@@ -9,8 +9,8 @@ public class TacticalPointsManager : MonoBehaviour
     public float standingCoverHeight;
     public float crouchedCoverHeight;
     public float maxSnapDistanceToNavmesh;
-    public int distanceRaycastsPerPoint;
-    public int qualityRaycastsPerPoint;
+   // public int distanceRaycastsPerPoint;
+    public int raycastsPerCoverRating;
     //public float maxRaycastDistance;
     public LayerMask raycastLayerMask;
 
@@ -57,7 +57,7 @@ public class TacticalPointsManager : MonoBehaviour
     {
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, distanceRaycastsPerPoint, raycastLayerMask);
+            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask);
         }
     }
 
