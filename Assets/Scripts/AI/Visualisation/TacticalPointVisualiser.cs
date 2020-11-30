@@ -66,9 +66,11 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     [Header("Raycast Visualisation")]
     [Tooltip("this should have the length of 8 - corresponding to the driections")]
+    public bool showCrouchedRaycasts;
+    public bool showStandingRaycasts;
     public bool[] showRaycastsSubSettings;
 
-    bool showRaycasts;
+    bool showRaycasts; //is set by manager settings in update
 
     #endregion
 
@@ -170,7 +172,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             pointRenderer.SetPropertyBlock(propertyBlock);
 
             //Raycast
-            showRaycasts = visualisationSetting.showRatingRaycasts; //The Raycasts are being drawn in onDrawGizmos
+            showRaycasts = visualisationSetting.showCoverRatingRaycasts; //The Raycasts are being drawn in onDrawGizmos
 
 
         }
@@ -241,30 +243,68 @@ public class TacticalPointVisualiser : MonoBehaviour
         renderer.SetPropertyBlock(propertyBlock);
     }
 
+    Color GetMappedDistanceRatingColor()
+    {
+
+    }
+
+    Color GetMappedQualityRatingColor()
+    {
+
+    }
+
     private void OnDrawGizmos()
     {
         if (showRaycasts)
         {
-            for (int i = 0; i < 8; i++)
+            for (int dir = 0; dir < 8; dir++)
             {
-                if (showRaycastsSubSettings[i])
+                if (showRaycastsSubSettings[dir])
                 {
                     //TODO
 
                     //crouched
+                    if (showCrouchedRaycasts)
+                    {
+                        //1. get raycast, calculate color
 
-                    //1. get raycast, calculate color
-                    //2. draw raycast
+                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[0][dir])
+                        {
+                            //calculate color
+                            float clampedRating = Mathf.Clamp(raycast.distance, bestDistance, worstDistance);
+                            float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
+                            Color currentMappedCol = Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
+
+                            Gizmos.color = currentMappedCol;
+
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }
+                        //2. draw raycast
+                    }
+
+                    
 
 
                     //standing
+                    if (showStandingRaycasts)
+                    {
+                        //1. get raycast, calculate color
+                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[1][dir])
+                        {
+                            float clampedRating = Mathf.Clamp(raycast.distance, bestDistance, worstDistance);
+                            float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
+                            Color currentMappedCol = Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
 
-                    //1. get raycast, calculate color
-                    //2. draw raycast
+                            Gizmos.color = currentMappedCol;
+
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }
+                        //2. draw raycast
+
+                    }
+
                 }
             }
-
-
         }
     }
 

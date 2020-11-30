@@ -51,12 +51,16 @@ public class TacticalPoint : MonoBehaviour
         public Vector3 end;
         public float distance;
 
-        public UsedRaycast(Vector3 start, Vector3 end, bool infinity = false)
+        bool infinite;
+
+        public UsedRaycast(Vector3 start, Vector3 end, bool infinite = false)
         {
             this.start = start;
             this.end = end;
 
-            if (infinity)
+            this.infinite = infinite;
+
+            if (infinite)
             {
                 distance = Mathf.Infinity;
             }
@@ -65,12 +69,19 @@ public class TacticalPoint : MonoBehaviour
                 distance = Vector3.Distance(end, start);
             }
         }
+
+        public bool IsInfinite()
+        {
+            return infinite;
+        }
     }
 
     //TODO rework the way raycasts are saved for better visualisation
     //this should be an array of 8 - if this would be the case we can leave out the next hashset? - no or yes- just have an infinity if statement in the mean calculation
-    public HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>(); 
-    HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
+
+    //public HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>(); 
+    //HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
+    UsedRaycast[][][] raycastsUsedForGeneratingRating; //first array is for standing/crouching, second is for the 8 directions, third is for the raycast per directions
 
 
     #region Update Cover Shoot Points inside Editor
@@ -152,11 +163,23 @@ public class TacticalPoint : MonoBehaviour
         TacticalPointsManager.Instance.RemoveTacticalPoint(this);
     }
 
-    public void BakeCoverRatings(float crouchedHeight, float standingHeight, float raycastFactor, LayerMask raycastLayerMask)
+    public void BakeCoverRatings(float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask)
     {
-        raycastsUsedForGeneratingRating.Clear();
+        // Instantiate the array
+        int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
 
-        // Go Throuhg once for standing and once for crouching.
+        raycastsUsedForGeneratingRating = new UsedRaycast[2][][];
+        for (int i = 0; i < 2; i++)
+        {
+            raycastsUsedForGeneratingRating[i] = new UsedRaycast[8][];
+            for (int j = 0; j < 8; j++)
+            {
+                raycastsUsedForGeneratingRating[i][j] = new UsedRaycast[numberOfRaycastsPerDirection];
+            }
+        }
+        
+
+        // Go through once for standing and once for crouching.
         for (int p = 0; p < 2; p++) 
         {
             // Go through every of the 8 directions
@@ -178,10 +201,9 @@ public class TacticalPoint : MonoBehaviour
 
                 #region Cast and Fill raycastsUsedForCurrentDirection with raycasts based on the grid (raycastFactor*raycastFactor)
 
-                raycastsUsedForCurrentDirection.Clear();
-
                 // Use A Grid for casting the raycasts.
                 float directionGridSize = 45 / raycastFactor;
+                int r = 0;
                 for (float x = -22.5f; x < 22.5; x = x + directionGridSize)
                 {
                     for (float y = -22.5f; y < 22.5; y = y + directionGridSize)
@@ -195,14 +217,13 @@ public class TacticalPoint : MonoBehaviour
                         RaycastHit hit;
                         if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
                         {
-                            raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, hit.point));
-                            raycastsUsedForCurrentDirection.Add(new UsedRaycast(rayStartPoint, hit.point));
+                            raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, hit.point);
                         }
                         else
                         {
-                            raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
-                            //raycastsUsedForCurrentDirection are ignored if they dont hit anything
+                            raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true);
                         }
+                        r++;
                     }
                 }
 
@@ -212,20 +233,25 @@ public class TacticalPoint : MonoBehaviour
 
                 float meanDistance;
                 float allDistancesCombined = 0;
-
+                int numberOfRaycastsWhichAreNotInfinite = 0;
                 //go through all the ratings and add the mean value to the cuirrent rating
-                foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
+
+                for (int n = 0; n < raycastsUsedForGeneratingRating[p][i].Length; n++)
                 {
-                    allDistancesCombined += raycast.distance;
+                    if (!raycastsUsedForGeneratingRating[p][i][n].IsInfinite())
+                    {
+                        numberOfRaycastsWhichAreNotInfinite++;
+                        allDistancesCombined += raycastsUsedForGeneratingRating[p][i][n].distance;
+                    }
                 }
 
-                if (raycastsUsedForCurrentDirection.Count > 0)
+                if (numberOfRaycastsWhichAreNotInfinite == 0)
                 {
-                    meanDistance = allDistancesCombined / raycastsUsedForCurrentDirection.Count;
+                    meanDistance = Mathf.Infinity;
                 }
                 else
                 {
-                    meanDistance = Mathf.Infinity;
+                    meanDistance = allDistancesCombined / numberOfRaycastsWhichAreNotInfinite;
                 }
 
                 #endregion
@@ -235,18 +261,21 @@ public class TacticalPoint : MonoBehaviour
                 float averageAbsoluteDeviation;
                 float allDeviationsCombined = 0;
 
-                foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
+                for (int n = 0; n < raycastsUsedForGeneratingRating[p][i].Length; n++)
                 {
-                    allDeviationsCombined += Mathf.Abs(raycast.distance - meanDistance);
+                    if (!raycastsUsedForGeneratingRating[p][i][n].IsInfinite())
+                    {
+                        allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating[p][i][n].distance - meanDistance);
+                    }
                 }
 
-                if (raycastsUsedForCurrentDirection.Count > 0)
+                if(numberOfRaycastsWhichAreNotInfinite == 0)
                 {
-                    averageAbsoluteDeviation = allDeviationsCombined / raycastsUsedForCurrentDirection.Count;
+                    averageAbsoluteDeviation = Mathf.Infinity;
                 }
                 else
                 {
-                    averageAbsoluteDeviation = Mathf.Infinity;
+                    averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsWhichAreNotInfinite;
                 }
 
                 #endregion
@@ -271,14 +300,30 @@ public class TacticalPoint : MonoBehaviour
         }
     }
 
+    public UsedRaycast[][][] GetRaycastsUsedForGeneratingRating()
+    {
+        return raycastsUsedForGeneratingRating;
+    }
+
     private void OnDrawGizmos()
     {
         //Debug.Log("Gizmos: -------  raycastsUsedForGeneratingRating.Count: " + raycastsUsedForGeneratingRating.Count);
 
-        /*foreach (UsedRaycast item in raycastsUsedForGeneratingRating)
+        /*if (raycastsUsedForGeneratingRating != null)
         {
-            Gizmos.DrawLine(item.start, item.end);
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    foreach (UsedRaycast usedRaycast in raycastsUsedForGeneratingRating[i][j])
+                    {
+                        Gizmos.DrawLine(usedRaycast.start, usedRaycast.end);
+                    }
+                }
+            }
+
         }*/
+        
     }
 
 
