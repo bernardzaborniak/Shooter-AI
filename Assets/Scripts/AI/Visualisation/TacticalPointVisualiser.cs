@@ -64,6 +64,12 @@ public class TacticalPointVisualiser : MonoBehaviour
         "Color_74F223A0"
     };
 
+    [Header("Raycast Visualisation")]
+    [Tooltip("this should have the length of 8 - corresponding to the driections")]
+    public bool[] showRaycastsSubSettings;
+
+    bool showRaycasts;
+
     #endregion
 
 
@@ -162,10 +168,16 @@ public class TacticalPointVisualiser : MonoBehaviour
 
             }
             pointRenderer.SetPropertyBlock(propertyBlock);
+
+            //Raycast
+            showRaycasts = visualisationSetting.showRatingRaycasts; //The Raycasts are being drawn in onDrawGizmos
+
+
         }
         else
         {
             pointRenderer.enabled = false;
+            showRaycasts = false;
 
             for (int i = 0; i < 8; i++)
             {
@@ -180,6 +192,8 @@ public class TacticalPointVisualiser : MonoBehaviour
                 crouchedQualityRenderer.enabled = false;
             }
         }
+
+
 
 
     }
@@ -225,6 +239,33 @@ public class TacticalPointVisualiser : MonoBehaviour
             propertyBlock.SetColor(propertyNames[i], currentMappedCol);
         }
         renderer.SetPropertyBlock(propertyBlock);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (showRaycasts)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (showRaycastsSubSettings[i])
+                {
+                    //TODO
+
+                    //crouched
+
+                    //1. get raycast, calculate color
+                    //2. draw raycast
+
+
+                    //standing
+
+                    //1. get raycast, calculate color
+                    //2. draw raycast
+                }
+            }
+
+
+        }
     }
 
 }

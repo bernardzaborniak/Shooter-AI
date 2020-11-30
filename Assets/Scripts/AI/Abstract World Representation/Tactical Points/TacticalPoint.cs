@@ -45,7 +45,7 @@ public class TacticalPoint : MonoBehaviour
         new Vector3(-1,0,1),
     };
 
-    class UsedRaycast
+    public class UsedRaycast
     {
         public Vector3 start;
         public Vector3 end;
@@ -66,7 +66,10 @@ public class TacticalPoint : MonoBehaviour
             }
         }
     }
-    HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>();
+
+    //TODO rework the way raycasts are saved for better visualisation
+    //this should be an array of 8 - if this would be the case we can leave out the next hashset? - no or yes- just have an infinity if statement in the mean calculation
+    public HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>(); 
     HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
 
 
@@ -151,97 +154,120 @@ public class TacticalPoint : MonoBehaviour
 
     public void BakeCoverRatings(float crouchedHeight, float standingHeight, float raycastFactor, LayerMask raycastLayerMask)
     {
-        Debug.Log("Bake Distance");
-
-        //2. cast and save Raycasts
         raycastsUsedForGeneratingRating.Clear();
 
-        //float randomiseRange = 22.5f;
-
-        for (int i = 0; i < 8; i++)
+        // Go Throuhg once for standing and once for crouching.
+        for (int p = 0; p < 2; p++) 
         {
-
-            raycastsUsedForCurrentDirection.Clear();
-
-            Vector3 rayStartPoint = transform.position + new Vector3(0, standingHeight, 0) + Random.insideUnitSphere * radius;
-
-            //Dont randomise the direction -  use a grid instead
-            float directionGridSize = 45 / raycastFactor;
-            for (float x = -22.5f; x < 22.5; x = x + directionGridSize)
+            // Go through every of the 8 directions
+            for (int i = 0; i < 8; i++)
             {
-                for (float y = -22.5f; y < 22.5; y = y + directionGridSize)
+                #region Determine start point depending if standing or crouching and on radius
+
+                Vector3 rayStartPoint = Vector3.zero;
+                if (p == 0)
                 {
-                    // take a forward transform, rotate it by the grids y and x offset, later roatte it around y axies - the quaternion order of application is inverse (right to left)
-                    Vector3 rotatedRaycastDirectionInLocalSpace = Quaternion.AngleAxis(i * 45, transform.up) * Quaternion.Euler(x + directionGridSize / 2, y + directionGridSize / 2, 0f) * Vector3.forward;
+                    rayStartPoint = transform.position + new Vector3(0, crouchedHeight, 0) + Random.insideUnitSphere * radius;
+                }
+                else if (p == 1)
+                {
+                    rayStartPoint = transform.position + new Vector3(0, standingHeight, 0) + Random.insideUnitSphere * radius;
+                }
 
-                    //this could be left out if the point wouldn not be aligned to the world forward
-                    Vector3 raycastDirectionInWorldSpace = transform.TransformDirection(rotatedRaycastDirectionInLocalSpace);
+                #endregion
 
-                    RaycastHit hit;
-                    if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
+                #region Cast and Fill raycastsUsedForCurrentDirection with raycasts based on the grid (raycastFactor*raycastFactor)
+
+                raycastsUsedForCurrentDirection.Clear();
+
+                // Use A Grid for casting the raycasts.
+                float directionGridSize = 45 / raycastFactor;
+                for (float x = -22.5f; x < 22.5; x = x + directionGridSize)
+                {
+                    for (float y = -22.5f; y < 22.5; y = y + directionGridSize)
                     {
-                        raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, hit.point));
-                        raycastsUsedForCurrentDirection.Add(new UsedRaycast(rayStartPoint, hit.point));
-                    }
-                    else
-                    {
-                        raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
+                        // Take a forward transform, rotate it by the grids y and x offset, later roatte it around y axies - the quaternion order of application is inverse (right to left).
+                        Vector3 rotatedRaycastDirectionInLocalSpace = Quaternion.AngleAxis(i * 45, transform.up) * Quaternion.Euler(x + directionGridSize / 2, y + directionGridSize / 2, 0f) * Vector3.forward;
 
+                        // This could be left out if the point would always be aligned to the world forward.
+                        Vector3 raycastDirectionInWorldSpace = transform.TransformDirection(rotatedRaycastDirectionInLocalSpace);
+
+                        RaycastHit hit;
+                        if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
+                        {
+                            raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, hit.point));
+                            raycastsUsedForCurrentDirection.Add(new UsedRaycast(rayStartPoint, hit.point));
+                        }
+                        else
+                        {
+                            raycastsUsedForGeneratingRating.Add(new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
+                            //raycastsUsedForCurrentDirection are ignored if they dont hit anything
+                        }
                     }
                 }
+
+                #endregion
+
+                #region Calculate the meanDistance -> DistanceRating
+
+                float meanDistance;
+                float allDistancesCombined = 0;
+
+                //go through all the ratings and add the mean value to the cuirrent rating
+                foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
+                {
+                    allDistancesCombined += raycast.distance;
+                }
+
+                if (raycastsUsedForCurrentDirection.Count > 0)
+                {
+                    meanDistance = allDistancesCombined / raycastsUsedForCurrentDirection.Count;
+                }
+                else
+                {
+                    meanDistance = Mathf.Infinity;
+                }
+
+                #endregion
+
+                #region Calculate the average absolute deviation -> QualityRating
+
+                float averageAbsoluteDeviation;
+                float allDeviationsCombined = 0;
+
+                foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
+                {
+                    allDeviationsCombined += Mathf.Abs(raycast.distance - meanDistance);
+                }
+
+                if (raycastsUsedForCurrentDirection.Count > 0)
+                {
+                    averageAbsoluteDeviation = allDeviationsCombined / raycastsUsedForCurrentDirection.Count;
+                }
+                else
+                {
+                    averageAbsoluteDeviation = Mathf.Infinity;
+                }
+
+                #endregion
+
+                //TODO try it once with mittlere Abweichung and once with Median der Abweichungen
+
+                #region Set the Rating
+
+                if (p == 0)
+                {
+                    coverRating.crouchedDistanceRating[i] = meanDistance;
+                    coverRating.crouchedQualityRating[i] = averageAbsoluteDeviation;
+                }
+                else if (p == 1)
+                {
+                    coverRating.standingDistanceRating[i] = meanDistance;
+                    coverRating.standingQualityRating[i] = averageAbsoluteDeviation;
+                }
+
+                #endregion
             }
-
-
-
-            float allDistancesCombined = 0;
-            //go through all the ratings and add the mean value to the cuirrent rating
-            foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
-            {
-                allDistancesCombined += raycast.distance;
-            }
-
-            float meanDistance;
-            if (raycastsUsedForCurrentDirection.Count > 0)
-            {
-                meanDistance = allDistancesCombined / raycastsUsedForCurrentDirection.Count;
-            }
-            else
-            {
-                meanDistance = Mathf.Infinity;
-            }
-            // Debug.Log("i: " + i + " raycastsUsedForCurrentDirection.Count: " + raycastsUsedForCurrentDirection.Count);
-            // Debug.Log("i: " + i + " mean distance: " + meanDistance);
-
-            coverRating.standingDistanceRating[i] = meanDistance;
-
-
-            //Calculate cover Quality: 
-            //Average absolute deviation contributes towards the quality
-            float allDeviationsCombined = 0;
-            foreach (UsedRaycast raycast in raycastsUsedForCurrentDirection)
-            {
-                allDeviationsCombined += Mathf.Abs(raycast.distance - meanDistance);
-                // Debug.Log("i: " + i + " deviation added : " + Mathf.Abs(raycast.distance - meanDistance));
-                //Debug.Log("i: " + i + " deviation after adding: : " + allDeviationsCombined);
-
-            }
-            //Debug.Log("i: " + i + " raycastsUsedForCurrentDirection.Count: " + raycastsUsedForCurrentDirection.Count);
-            //Debug.Log("i: " + i + " allDeviationsCombined: " + allDeviationsCombined);
-
-            float averageAbsoluteDeviation;
-            if (raycastsUsedForCurrentDirection.Count > 0)
-            {
-                averageAbsoluteDeviation = allDeviationsCombined / raycastsUsedForCurrentDirection.Count;
-            }
-            else
-            {
-                averageAbsoluteDeviation = Mathf.Infinity;
-            }
-            // Debug.Log("i: " + i + " averageAbsoluteDeviation: " + averageAbsoluteDeviation);
-
-            coverRating.standingQualityRating[i] = averageAbsoluteDeviation;
-            //try it once with mittlere Abweichung and once with Median der Abweichungen
-
         }
     }
 
@@ -249,10 +275,10 @@ public class TacticalPoint : MonoBehaviour
     {
         //Debug.Log("Gizmos: -------  raycastsUsedForGeneratingRating.Count: " + raycastsUsedForGeneratingRating.Count);
 
-        foreach (UsedRaycast item in raycastsUsedForGeneratingRating)
+        /*foreach (UsedRaycast item in raycastsUsedForGeneratingRating)
         {
             Gizmos.DrawLine(item.start, item.end);
-        }
+        }*/
     }
 
 
