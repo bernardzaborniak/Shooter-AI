@@ -203,8 +203,6 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     void UpdateRatingRing(bool showText, bool quality, Quaternion alignTextRot, Renderer renderer, float[] rating, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
-        float clampedRating;
-        float normalizedRating;
         Color currentMappedCol;
 
         propertyBlock = new MaterialPropertyBlock();
@@ -212,18 +210,14 @@ public class TacticalPointVisualiser : MonoBehaviour
 
         for (int i = 0; i < 8; i++)
         {
-            if (quality) //0 to 1
+            if (quality)
             {
-                clampedRating = Mathf.Clamp(rating[i], worstValue, bestValue);
+                currentMappedCol = GetMappedQualityRatingColor(rating[i]);
             }
             else
             {
-                clampedRating = Mathf.Clamp(rating[i], bestValue, worstValue);
+                currentMappedCol = GetMappedDistanceRatingColor(rating[i]);
             }
-
-
-            normalizedRating = Utility.Remap(clampedRating, worstValue, bestValue, 0, 1);
-            currentMappedCol = Color.Lerp(worstColor, bestColor, normalizedRating);
 
             if (showText)
             {
@@ -243,14 +237,18 @@ public class TacticalPointVisualiser : MonoBehaviour
         renderer.SetPropertyBlock(propertyBlock);
     }
 
-    Color GetMappedDistanceRatingColor()
+    Color GetMappedDistanceRatingColor(float distance)
     {
-
+        float clampedRating = Mathf.Clamp(distance, bestDistance, worstDistance);
+        float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
+        return Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
     }
 
-    Color GetMappedQualityRatingColor()
+    Color GetMappedQualityRatingColor(float quality)
     {
-
+        float clampedRating = Mathf.Clamp(quality, worstQuality, bestQuality);
+        float normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
+        return Color.Lerp(worstQualityColor, bestQualityColor, normalizedRating);
     }
 
     private void OnDrawGizmos()
@@ -266,20 +264,12 @@ public class TacticalPointVisualiser : MonoBehaviour
                     //crouched
                     if (showCrouchedRaycasts)
                     {
-                        //1. get raycast, calculate color
-
+                        //get raycast, calculate color, draw it
                         foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[0][dir])
                         {
-                            //calculate color
-                            float clampedRating = Mathf.Clamp(raycast.distance, bestDistance, worstDistance);
-                            float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
-                            Color currentMappedCol = Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
-
-                            Gizmos.color = currentMappedCol;
-
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
                             Gizmos.DrawLine(raycast.start, raycast.end);
                         }
-                        //2. draw raycast
                     }
 
                     
@@ -288,19 +278,12 @@ public class TacticalPointVisualiser : MonoBehaviour
                     //standing
                     if (showStandingRaycasts)
                     {
-                        //1. get raycast, calculate color
+                        //get raycast, calculate color, draw it
                         foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[1][dir])
                         {
-                            float clampedRating = Mathf.Clamp(raycast.distance, bestDistance, worstDistance);
-                            float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
-                            Color currentMappedCol = Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
-
-                            Gizmos.color = currentMappedCol;
-
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
                             Gizmos.DrawLine(raycast.start, raycast.end);
                         }
-                        //2. draw raycast
-
                     }
 
                 }
