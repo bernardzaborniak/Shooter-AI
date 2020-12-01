@@ -265,7 +265,13 @@ public class TacticalPointVisualiser : MonoBehaviour
                     if (showCrouchedRaycasts)
                     {
                         //get raycast, calculate color, draw it
-                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[0][dir])
+                        /*foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[0][dir])
+                        {
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }*/
+                        Debug.Log("ray array length: " + pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0, dir).Length);
+                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0,dir))
                         {
                             Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
                             Gizmos.DrawLine(raycast.start, raycast.end);
@@ -279,7 +285,12 @@ public class TacticalPointVisualiser : MonoBehaviour
                     if (showStandingRaycasts)
                     {
                         //get raycast, calculate color, draw it
-                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[1][dir])
+                        /*foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating()[1][dir])
+                        {
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }*/
+                        foreach (TacticalPoint.UsedRaycast raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(1, dir))
                         {
                             Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
                             Gizmos.DrawLine(raycast.start, raycast.end);
