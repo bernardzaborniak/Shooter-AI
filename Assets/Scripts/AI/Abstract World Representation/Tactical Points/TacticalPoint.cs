@@ -48,45 +48,7 @@ public class TacticalPoint : MonoBehaviour
         new Vector3(-1,0,1),
     };
 
-    [System.Serializable]
-    public class UsedRaycast
-    {
-        public Vector3 start;
-        public Vector3 end;
-        public float distance;
 
-        bool infinite;
-
-        public UsedRaycast(Vector3 start, Vector3 end, bool infinite = false)
-        {
-            this.start = start;
-            this.end = end;
-
-            this.infinite = infinite;
-
-            if (infinite)
-            {
-                distance = Mathf.Infinity;
-            }
-            else
-            {
-                distance = Vector3.Distance(end, start);
-            }
-        }
-
-        public bool IsInfinite()
-        {
-            return infinite;
-        }
-    }
-
-    //TODO rework the way raycasts are saved for better visualisation
-    //this should be an array of 8 - if this would be the case we can leave out the next hashset? - no or yes- just have an infinity if statement in the mean calculation
-
-    //public HashSet<UsedRaycast> raycastsUsedForGeneratingRating = new HashSet<UsedRaycast>(); 
-    //HashSet<UsedRaycast> raycastsUsedForCurrentDirection = new HashSet<UsedRaycast>();
-    
-   // UsedRaycast[][][] raycastsUsedForGeneratingRating; //first array is for standing/crouching, second is for the 8 directions, third is for the raycast per directions
     public PointCastRaysContainer raycastsUsedForGeneratingRating;
 
 
@@ -228,12 +190,12 @@ public class TacticalPoint : MonoBehaviour
                         if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
                         {
                             //raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, hit.point);
-                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new UsedRaycast(rayStartPoint, hit.point));
+                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
                         }
                         else
                         {
                             //raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true);
-                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
+                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
 
                         }
                         r++;
