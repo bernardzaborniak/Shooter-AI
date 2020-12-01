@@ -70,7 +70,6 @@ public class TacticalPointVisualiser : MonoBehaviour
     public bool showStandingRaycasts;
     public bool[] showRaycastsSubSettings;
 
-    bool showRaycasts; //is set by manager settings in update
 
     #endregion
 
@@ -171,15 +170,10 @@ public class TacticalPointVisualiser : MonoBehaviour
             }
             pointRenderer.SetPropertyBlock(propertyBlock);
 
-            //Raycast
-            showRaycasts = visualisationSetting.showCoverRatingRaycasts; //The Raycasts are being drawn in onDrawGizmos
-
-
         }
         else
         {
             pointRenderer.enabled = false;
-            showRaycasts = false;
 
             for (int i = 0; i < 8; i++)
             {
@@ -253,35 +247,41 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (showRaycasts)
+        //crouched
+        if (showCrouchedRaycasts)
         {
             for (int dir = 0; dir < 8; dir++)
             {
                 if (showRaycastsSubSettings[dir])
                 {
-                    //crouched
-                    if (showCrouchedRaycasts)
-                    {
-                        foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0,dir))
-                        {
-                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
-                            Gizmos.DrawLine(raycast.start, raycast.end);
-                        }
-                    }
-                  
-                    //standing
-                    if (showStandingRaycasts)
-                    {
-                        foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(1, dir))
-                        {
-                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
-                            Gizmos.DrawLine(raycast.start, raycast.end);
-                        }
-                    }
 
+                    foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0, dir))
+                    {
+                        Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                        Gizmos.DrawLine(raycast.start, raycast.end);
+                    }
                 }
             }
         }
-    }
 
+        //standing
+        if (showStandingRaycasts)
+        {
+            for (int dir = 0; dir < 8; dir++)
+            {
+                if (showRaycastsSubSettings[dir])
+                {
+                    foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(1, dir))
+                    {
+                        Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                        Gizmos.DrawLine(raycast.start, raycast.end);
+                    }
+                }
+
+            }
+        }
+
+    }
 }
+
+

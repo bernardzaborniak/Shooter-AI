@@ -24,8 +24,6 @@ public class VisualisationManager : MonoBehaviour
         public bool showCoverQualityRating;
         [ConditionalHide("showCoverQualityRating")]
         public bool showCoverQualityRatingNumbers;
-        [Space(5)]
-        public bool showCoverRatingRaycasts;
 
     }
 
