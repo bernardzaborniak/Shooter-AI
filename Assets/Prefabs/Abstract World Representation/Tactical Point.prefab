@@ -152,7 +152,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7362155681532420679}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -536,7 +536,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7362155682374101243}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -599,7 +599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7362155682590928131
 Transform:
   m_ObjectHideFlags: 0
@@ -637,7 +637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7362155682838657764
 Transform:
   m_ObjectHideFlags: 0
@@ -753,6 +753,21 @@ MonoBehaviour:
   raycastsUsedForGeneratingRating:
     raycastsUsedForGeneratingRating: []
     currentNumberOfRaycastsPerDirection: 0
+  OnBakeCoverRating:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6342983248935365253}
+        m_TargetAssemblyTypeName: TacticalPointVisualiser, Assembly-CSharp
+        m_MethodName: UpdateCoverRingMaterialsAndText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!23 &2269259421604854345
 MeshRenderer:
   m_ObjectHideFlags: 0

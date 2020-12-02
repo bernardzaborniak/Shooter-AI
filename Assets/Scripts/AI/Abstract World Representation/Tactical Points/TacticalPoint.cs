@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
+
 
 public enum TacticalPointType
 {
@@ -50,6 +52,8 @@ public class TacticalPoint : MonoBehaviour
 
 
     public PointCastRaysContainer raycastsUsedForGeneratingRating;
+
+    public UnityEvent OnBakeCoverRating;
 
 
     #region Update Cover Shoot Points inside Editor
@@ -133,21 +137,10 @@ public class TacticalPoint : MonoBehaviour
 
     public void BakeCoverRatings(float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask)
     {
-        // Instantiate the array
-        //Undo.RecordObject(this, "Bake Cover Ratings");
-
+        
 
         int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
 
-        /*raycastsUsedForGeneratingRating = new UsedRaycast[2][][];
-        for (int i = 0; i < 2; i++)
-        {
-            raycastsUsedForGeneratingRating[i] = new UsedRaycast[8][];
-            for (int j = 0; j < 8; j++)
-            {
-                raycastsUsedForGeneratingRating[i][j] = new UsedRaycast[numberOfRaycastsPerDirection];
-            }
-        }*/
         raycastsUsedForGeneratingRating.SetUpRays(numberOfRaycastsPerDirection);
 
 
@@ -189,12 +182,10 @@ public class TacticalPoint : MonoBehaviour
                         RaycastHit hit;
                         if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
                         {
-                            //raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, hit.point);
                             raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
                         }
                         else
                         {
-                            //raycastsUsedForGeneratingRating[p][i][r] = new UsedRaycast(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true);
                             raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
 
                         }
@@ -211,16 +202,6 @@ public class TacticalPoint : MonoBehaviour
                 int numberOfRaycastsWhichAreNotInfinite = 0;
                 //go through all the ratings and add the mean value to the cuirrent rating
 
-                /*for (int n = 0; n < raycastsUsedForGeneratingRating[p][i].Length; n++)
-                {
-                    if (!raycastsUsedForGeneratingRating[p][i][n].IsInfinite())
-                    {
-                        numberOfRaycastsWhichAreNotInfinite++;
-                        allDistancesCombined += raycastsUsedForGeneratingRating[p][i][n].distance;
-                    }
-                }*/
-
-                //for (int n = 0; n < raycastsUsedForGeneratingRating.GetAllRaysOfDirection(p,i).Length; n++)
                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
                     if (!raycastsUsedForGeneratingRating.GetRay(p,i,n).IsInfinite())
@@ -246,14 +227,7 @@ public class TacticalPoint : MonoBehaviour
                 float averageAbsoluteDeviation;
                 float allDeviationsCombined = 0;
 
-                /*for (int n = 0; n < raycastsUsedForGeneratingRating[p][i].Length; n++)
-                {
-                    if (!raycastsUsedForGeneratingRating[p][i][n].IsInfinite())
-                    {
-                        allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating[p][i][n].distance - meanDistance);
-                    }
-                }*/
-               // for (int n = 0; n < raycastsUsedForGeneratingRating.GetAllRaysOfDirection(p, i).Length; n++)
+
                  for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
                     if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
@@ -292,54 +266,13 @@ public class TacticalPoint : MonoBehaviour
             }
         }
 
-        //var so = new SerializedObject(coverRating);
-        //coverRating.ApplyModifiedProperties(); //? something like this?
-        //TODO
-        //EditorUtility.SetDirty(coverRating);
-        //SerializedObject so = new SerializedObject(this);
-        //so.FindProperty("coverRating.crouchedDistanceRating")
-
         EditorUtility.SetDirty(this);
-        
-        //so.ApplyModifiedProperties();
-
-
-        //EditorUtility.SetDirty(raycastsUsedForGeneratingRating);
-        //Undo.RecordObject(this, "Bake Cover Ratings");
-        //EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-
-
+        OnBakeCoverRating.Invoke();
     }
 
-    /*public UsedRaycast[][][] GetRaycastsUsedForGeneratingRating()
-    {
-        return raycastsUsedForGeneratingRating;
-    }*/
     public PointCastRaysContainer GetRaycastsUsedForGeneratingRating()
     {
         return raycastsUsedForGeneratingRating;
     }
-
-    private void OnDrawGizmos()
-    {
-        //Debug.Log("Gizmos: -------  raycastsUsedForGeneratingRating.Count: " + raycastsUsedForGeneratingRating.Count);
-
-        /*if (raycastsUsedForGeneratingRating != null)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    foreach (UsedRaycast usedRaycast in raycastsUsedForGeneratingRating[i][j])
-                    {
-                        Gizmos.DrawLine(usedRaycast.start, usedRaycast.end);
-                    }
-                }
-            }
-
-        }*/
-        
-    }
-
 
 }
