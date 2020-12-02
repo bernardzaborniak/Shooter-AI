@@ -115,8 +115,10 @@ public static class Utility
 
     #endregion
 
+    #region Launch Angle Calculations
+
     //Formel von  https://gamedev.stackexchange.com/questions/53552/how-can-i-find-a-projectiles-launch-angle
-    
+
     public static float CalculateProjectileLaunchAngle(float launchVelocity, Vector3 startPosition, Vector3 targetPosition, bool directShot = true)
     {
         Vector3 distDelta = targetPosition - startPosition;
@@ -164,4 +166,22 @@ public static class Utility
 
         return timeInAir;
     }
+
+    #endregion
+
+    public static Quaternion CalculateRandomBloomInConeShapeAroundTransformForward(Transform relativeTransform, float bloomAngle) //relative transform would be the shoot point transform
+    {
+        // Imagine a circle one unit in front of the 0/0/0 point - the radius of the circle is depending on the desired bloom/spread angle. Now in this circle we do the randomInsideCircle.
+       
+        //tan(alpha) = b/a  -> tan(alpha) * a = b
+        //a = 1, b varies
+
+        float unitSphereRadius = Mathf.Tan(bloomAngle * Mathf.Deg2Rad);
+
+        //to make the random more often in the middle of the circle, we add a random scaler, which reduces the radius
+        Vector2 insideUnitCircle = Random.insideUnitCircle * unitSphereRadius * Random.Range(0.05f, 1f);
+
+        return Quaternion.LookRotation(relativeTransform.TransformDirection(new Vector3(insideUnitCircle.x, insideUnitCircle.y, 1f)));
+    }
 }
+

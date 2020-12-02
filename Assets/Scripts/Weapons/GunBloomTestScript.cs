@@ -71,22 +71,24 @@ public class GunBloomTestScript : MonoBehaviour
         rays[7].rotation = Quaternion.LookRotation(transform.TransformDirection(new Vector3(normalizedDirection.x, normalizedDirection.y, 1f)));
     }
 
-    Quaternion GetRotationWithSpreadAdded(float spreadAngle)
+    /*Quaternion GetRotationWithSpreadAdded(float spreadAngle)
     {
+        Utility.CalculateRandomBloomInConeShapeAroundDirection(transform,spreadAngle);
+
         //tan(alpha) = b/a  -> tan(alpha) * a = b
         //a  = 1, b varies
-        float unitSphereRadius = Mathf.Tan(spreadAngle * Mathf.Deg2Rad);
+         float unitSphereRadius = Mathf.Tan(spreadAngle * Mathf.Deg2Rad);
 
-        Vector2 insideUnitCircle = Random.insideUnitCircle * unitSphereRadius;
+         Vector2 insideUnitCircle = Random.insideUnitCircle * unitSphereRadius;
 
-        return Quaternion.LookRotation(transform.TransformDirection(new Vector3(insideUnitCircle.x, insideUnitCircle.y, 1f)));
-    }
+         return Quaternion.LookRotation(transform.TransformDirection(new Vector3(insideUnitCircle.x, insideUnitCircle.y, 1f)));
+    }*/
 
     void ShootRaysRandomly()
     {
         for (int i = 0; i < rays.Length; i++)
         {
-            rays[i].rotation = GetRotationWithSpreadAdded(spread);
+            rays[i].rotation = Utility.CalculateRandomBloomInConeShapeAroundTransformForward(transform, spread);
         }
 
     }

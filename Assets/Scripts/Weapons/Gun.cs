@@ -71,7 +71,7 @@ public class Gun : Item, IItemWithIKHandPositions
             if(Time.time> nextShootTime)
             {
                 #region Spawn & Activate Bullet
-                Projectile projectile = PoolingManager.Instance.SpawnAmmoFromPool(ammoType, shootPoint.position, shootPoint.rotation * Quaternion.Euler(Random.Range(-bloom, bloom), Random.Range(-bloom, bloom), 0f)).GetComponent<Projectile>();
+                Projectile projectile = PoolingManager.Instance.SpawnAmmoFromPool(ammoType, shootPoint.position, Utility.CalculateRandomBloomInConeShapeAroundTransformForward(shootPoint,bloom)).GetComponent<Projectile>();
 
                 //IMoveable wieldingEntityMoveable = wieldingEntity.GetComponent<IMoveable>();
                 Vector3 weaponHolderMovementSpeed = Vector3.zero;
