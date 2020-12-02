@@ -105,9 +105,9 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    public void UpdateVisualiser(Quaternion cameraRot, VisualisationManager.Settings visualisationSetting)
+    public void UpdateVisualiser(Quaternion cameraRot, VisualisationManager.Settings visualisationSetting, bool cullText = false)
     {
-        //enables7disables components based on rating and aligns the text rotation to camera
+        //enables/disables components based on rating and aligns the text rotation to camera
 
         #region Determine whether the point should be drawn
         bool drawPoint = false;
@@ -136,7 +136,7 @@ public class TacticalPointVisualiser : MonoBehaviour
                 standingDistanceRenderer.enabled = true;
                 crouchedDistanceRenderer.enabled = true;
 
-                if (visualisationSetting.showCoverDistanceRatingNumbers)
+                if (visualisationSetting.showCoverDistanceRatingNumbers && !cullText)
                 {
                     tmp_standingDistanceRatingParent.SetActive(true);
                     tmp_crouchedDistanceRatingParent.SetActive(true);
@@ -168,7 +168,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             {
                 standingQualityRenderer.enabled = true;
                 crouchedQualityRenderer.enabled = true;
-                if (visualisationSetting.showCoverQualityRatingNumbers)
+                if (visualisationSetting.showCoverQualityRatingNumbers && !cullText)
                 {
                     tmp_standingQualityRatingParent.SetActive(true);
                     tmp_crouchedQualityRatingParent.SetActive(true);
@@ -209,11 +209,6 @@ public class TacticalPointVisualiser : MonoBehaviour
 
             }
             pointRenderer.SetPropertyBlock(propertyBlock);
-            //is this causing the performance problem?- addplying property block every frame?
-            //}
-
-
-
         }
         else
         {
@@ -282,7 +277,6 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     public void UpdateCoverRingMaterialsAndText()
     {
-        Debug.Log("UpdateCoverRingMaterialsAndText");
         UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);

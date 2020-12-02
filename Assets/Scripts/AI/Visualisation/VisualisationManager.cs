@@ -29,6 +29,10 @@ public class VisualisationManager : MonoBehaviour
 
     public Settings settings;
 
+    [Space(5)]
+    public float ratingTextCullDistance;
+    float ratingTextCullDistanceSquared;
+
     #region Singleton Code
     public static VisualisationManager Instance;
 
@@ -41,7 +45,8 @@ public class VisualisationManager : MonoBehaviour
         }
         else   it kept destroying itself in the editor :(
         {*/
-            Instance = this;
+        Instance = this;
+        ratingTextCullDistanceSquared = ratingTextCullDistance * ratingTextCullDistance;
        // }
     }
     #endregion
@@ -53,10 +58,23 @@ public class VisualisationManager : MonoBehaviour
         if (Application.isPlaying)
         {
             Quaternion camRot = camTransform.rotation;
+            Vector3 camPos = camTransform.position;
+            
+            float currentDistanceSquared;
 
             foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
             {
-                visualiser.UpdateVisualiser(camRot, settings);
+                currentDistanceSquared = (visualiser.transform.position - camPos).sqrMagnitude;
+                if(currentDistanceSquared< ratingTextCullDistanceSquared)
+                {
+                    visualiser.UpdateVisualiser(camRot, settings, false);
+
+                }
+                else
+                {
+                    visualiser.UpdateVisualiser(camRot, settings, true);
+                }
+
             }
         }
 
@@ -69,10 +87,23 @@ public class VisualisationManager : MonoBehaviour
         if (!Application.isPlaying)
         {
             Quaternion camRot = SceneView.lastActiveSceneView.rotation;
+            Vector3 camPos = SceneView.lastActiveSceneView.camera.transform.position;
+
+            float currentDistanceSquared;
 
             foreach (TacticalPointVisualiser visualiser in tacticalPointVisualisers)
             {
-                visualiser.UpdateVisualiser(camRot, settings);
+                currentDistanceSquared = (visualiser.transform.position - camPos).sqrMagnitude;
+                if (currentDistanceSquared < ratingTextCullDistanceSquared)
+                {
+                    visualiser.UpdateVisualiser(camRot, settings, false);
+
+                }
+                else
+                {
+                    visualiser.UpdateVisualiser(camRot, settings, true);
+                }
+
             }
         }
     }
