@@ -96,6 +96,8 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     public void UpdateVisualiser(Quaternion cameraRot, VisualisationManager.Settings visualisationSetting)
     {
+        
+
         #region Determine whether the point should be drawn
         bool drawPoint = false;
         if (pointToVisualise.tacticalPointType == TacticalPointType.OpenFieldPoint)
@@ -169,6 +171,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
             }
             pointRenderer.SetPropertyBlock(propertyBlock);
+            //is this causing the performance problem?- addplying property block every frame?
 
         }
         else
@@ -189,7 +192,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             }
         }
 
-
+        
 
 
     }
