@@ -32,22 +32,24 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     {
         Debug.Log("Generate clicked");
         #region Get Navmesh Vertices & Tris Middles
-
+        //The vertices and middle points of the navmesh triangles are used, to improve the point posiitoning - a rigid grid isnt always the best
 
         NavMeshTriangulation triangulation = NavMesh.CalculateTriangulation();
+
+        // Save the Vertices
         navmeshVertices = new Vector3[triangulation.vertices.Length];
         for (int i = 0; i < triangulation.vertices.Length; i++)
         {
             navmeshVertices[i] = triangulation.vertices[i];
         }
 
-
+        // Save the Triangle Middle Points
         HashSet<Vector3> navmeshTriangleMiddles = new HashSet<Vector3>();
         int triangleIndex = 0;
         Vector3[] currentTriangleVertices = new Vector3[3];
-
         foreach (int indice in triangulation.indices)
         {
+            //the triangulation.indices have the indexes of the vertexes which for mtriangles together, always in groups of 3
             if (triangleIndex == 3)
             {
                 triangleIndex = 0;
@@ -66,7 +68,6 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
             {
                 currentTriangleVertices[triangleIndex] = navmeshVertices[indice];
             }
-
             triangleIndex++;
         }
 
@@ -90,8 +91,6 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
 
         #region Spawn new Points
 
-       
-
         //get bounding box / collider box edges
         Vector3 lowerLeftPosition = generatorBoundingBox.center - generatorBoundingBox.size/2;
         Vector3 upperRightPosition = generatorBoundingBox.center + generatorBoundingBox.size / 2;
@@ -109,12 +108,12 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                 NavMeshHit hit;
                 if(NavMesh.SamplePosition(transform.TransformPoint(new Vector3(x, 0, y)), out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
                 {
-                    //1. check if its not too close to the edge of the navmesh -> readjust if needed -> move a little away from navmesh vertex
                     Vector3 spawnPosition = hit.position;
+
+                    // 1. check if its not too close to the edge of the navmesh , 
                     Vector3 closestEdge = Vector3.zero;
                     if(NavMesh.FindClosestEdge(spawnPosition, out hit, NavMesh.AllAreas))
                     {
-                        //spawnPosition += (spawnPosition - hit.position).normalized * minDistanceOfGeneratedPointToNavmeshVertex;
                         closestEdge = hit.position;
                     }
 
@@ -131,14 +130,15 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                         }
                     }
 
-                    if((closestEdge - spawnPosition).sqrMagnitude < closesTriMiddleSquaredDistance)
+                    // 2. if its coser to the edge than to a tri middle point -> move towards tri middle point
+                    if ((closestEdge - spawnPosition).sqrMagnitude < closesTriMiddleSquaredDistance)
                     {
                         Vector3 directionTowardsNearestTriMiddle = closestTriangleMiddle - spawnPosition;
                         directionTowardsNearestTriMiddle.y = 0;
                         spawnPosition += directionTowardsNearestTriMiddle * 0.5f;
                     }
 
-
+                    // 3. After moving towards middle point, resample on Navmesh again
                     if (NavMesh.SamplePosition(spawnPosition, out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
                     {
                         spawnPosition = hit.position;
@@ -146,14 +146,12 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
 
 
 
-                        //Spawn
-                        string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(manager.openFieldPointPrefab);
+                    //4. Spawn while not loosing the prefab reference
+                    string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(manager.openFieldPointPrefab);
                     //Get prefab object from path
                     Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
                     //Instantiate the prefab in the scene, as a sibling of current gameObject
-                    //GameObject spawnedPoint = PrefabUtility.InstantiatePrefab(prefab, transform.parent) as GameObject;
                     GameObject spawnedPoint = PrefabUtility.InstantiatePrefab(prefab, transform) as GameObject;
-                    //spawnedPoint.transform.SetParent(transform);
                     spawnedPoint.transform.position = spawnPosition;
                     spawnedPoint.transform.rotation = Quaternion.identity; //let them all have the same rotation for easier comparing
 
