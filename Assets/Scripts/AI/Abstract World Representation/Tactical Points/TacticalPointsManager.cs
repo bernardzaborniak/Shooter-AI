@@ -18,7 +18,7 @@ public class TacticalPointsManager : MonoBehaviour
     public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
 
     [Tooltip("If an distance equals Infinity, we take this distance instead for bettr calculation")]
-    public float distanceValueForInfinity;
+    public float maxCoverRayLength;
 
 
     public static TacticalPointsManager Instance;
@@ -60,7 +60,7 @@ public class TacticalPointsManager : MonoBehaviour
     {
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask);
+            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask, maxCoverRayLength);
         }
     }
 

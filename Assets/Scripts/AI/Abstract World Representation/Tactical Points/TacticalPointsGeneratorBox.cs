@@ -82,7 +82,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         foreach (Transform generatedPoint in transform) //theyre all children
         {
             TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
-            point.BakeCoverRatings(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.raycastsPerCoverRating, manager.raycastLayerMask);
+            point.BakeCoverRatings(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.raycastsPerCoverRating, manager.raycastLayerMask, manager.maxCoverRayLength);
         }
     }
 

@@ -135,10 +135,8 @@ public class TacticalPoint : MonoBehaviour
         TacticalPointsManager.Instance.RemoveTacticalPoint(this);
     }
 
-    public void BakeCoverRatings(float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask)
+    public void BakeCoverRatings(float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask, float maxRayLength)
     {
-        
-
         int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
 
         raycastsUsedForGeneratingRating.SetUpRays(numberOfRaycastsPerDirection);
@@ -180,12 +178,14 @@ public class TacticalPoint : MonoBehaviour
                         Vector3 raycastDirectionInWorldSpace = transform.TransformDirection(rotatedRaycastDirectionInLocalSpace);
 
                         RaycastHit hit;
-                        if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, Mathf.Infinity, raycastLayerMask, QueryTriggerInteraction.Ignore))
+                        if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, maxRayLength, raycastLayerMask, QueryTriggerInteraction.Ignore))
                         {
                             raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
                         }
                         else
                         {
+                            //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * distanceValueForInfinity, true));
+                            //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * distanceValueForInfinity));
                             raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
 
                         }
@@ -204,12 +204,16 @@ public class TacticalPoint : MonoBehaviour
 
                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
-                    if (!raycastsUsedForGeneratingRating.GetRay(p,i,n).IsInfinite())
-                    {
-                        numberOfRaycastsWhichAreNotInfinite++;
-                        allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
-                    }
+                     if (!raycastsUsedForGeneratingRating.GetRay(p,i,n).IsInfinite())
+                     {
+                         numberOfRaycastsWhichAreNotInfinite++;
+                         allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
+                     }
+                    //allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
+
                 }
+
+                //meanDistance = allDistancesCombined / numberOfRaycastsPerDirection;
 
                 if (numberOfRaycastsWhichAreNotInfinite == 0)
                 {
@@ -228,22 +232,31 @@ public class TacticalPoint : MonoBehaviour
                 float allDeviationsCombined = 0;
 
 
-                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
                     if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
                     {
                         allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating.GetRay(p, i, n).distance - meanDistance);
                     }
+                    else
+                    {
+                        allDeviationsCombined += maxRayLength - meanDistance;
+                    }
                 }
+
+                //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
 
                 if (numberOfRaycastsWhichAreNotInfinite == 0)
                 {
-                    averageAbsoluteDeviation = Mathf.Infinity;
+                    averageAbsoluteDeviation = maxRayLength;//Mathf.Infinity;
                 }
                 else
                 {
-                    averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsWhichAreNotInfinite;
+                    //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsWhichAreNotInfinite;
+                    averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
                 }
+
+                float qualityRating = Utility.Remap(averageAbsoluteDeviation,maxRayLength,0, 0, 1);
 
                 #endregion
 
@@ -254,12 +267,14 @@ public class TacticalPoint : MonoBehaviour
                 if (p == 0)
                 {
                     coverRating.crouchedDistanceRating[i] = meanDistance;
-                    coverRating.crouchedQualityRating[i] = averageAbsoluteDeviation;
+                    //coverRating.crouchedQualityRating[i] = averageAbsoluteDeviation;
+                    coverRating.crouchedQualityRating[i] = qualityRating;
                 }
                 else if (p == 1)
                 {
                     coverRating.standingDistanceRating[i] = meanDistance;
-                    coverRating.standingQualityRating[i] = averageAbsoluteDeviation;
+                    //coverRating.standingQualityRating[i] = averageAbsoluteDeviation;
+                    coverRating.standingQualityRating[i] = qualityRating;
                 }
 
                 #endregion
