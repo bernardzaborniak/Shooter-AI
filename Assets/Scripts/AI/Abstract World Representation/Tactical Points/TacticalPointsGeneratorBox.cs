@@ -31,7 +31,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     public void Generate()
     {
         Debug.Log("Generate clicked");
-        #region Get Navmesh Vertices
+        #region Get Navmesh Vertices & Tris Middles
 
 
         NavMeshTriangulation triangulation = NavMesh.CalculateTriangulation();
@@ -39,6 +39,35 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         for (int i = 0; i < triangulation.vertices.Length; i++)
         {
             navmeshVertices[i] = triangulation.vertices[i];
+        }
+
+
+        HashSet<Vector3> navmeshTriangleMiddles = new HashSet<Vector3>();
+        int triangleIndex = 0;
+        Vector3[] currentTriangleVertices = new Vector3[3];
+
+        foreach (int indice in triangulation.indices)
+        {
+            if (triangleIndex == 3)
+            {
+                triangleIndex = 0;
+
+                Vector3 newTriangleMiddle = Vector3.zero;
+                for (int i = 0; i < 3; i++)
+                {
+                    newTriangleMiddle += currentTriangleVertices[i];
+                }
+                navmeshTriangleMiddles.Add(newTriangleMiddle * (1f / 3f));
+
+                currentTriangleVertices = new Vector3[3];
+                currentTriangleVertices[triangleIndex] = navmeshVertices[indice];
+            }
+            else
+            {
+                currentTriangleVertices[triangleIndex] = navmeshVertices[indice];
+            }
+
+            triangleIndex++;
         }
 
 
@@ -61,6 +90,8 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
 
         #region Spawn new Points
 
+       
+
         //get bounding box / collider box edges
         Vector3 lowerLeftPosition = generatorBoundingBox.center - generatorBoundingBox.size/2;
         Vector3 upperRightPosition = generatorBoundingBox.center + generatorBoundingBox.size / 2;
@@ -80,39 +111,43 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                 {
                     //1. check if its not too close to the edge of the navmesh -> readjust if needed -> move a little away from navmesh vertex
                     Vector3 spawnPosition = hit.position;
-
+                    Vector3 closestEdge = Vector3.zero;
                     if(NavMesh.FindClosestEdge(spawnPosition, out hit, NavMesh.AllAreas))
                     {
-                        spawnPosition += (spawnPosition - hit.position).normalized * minDistanceOfGeneratedPointToNavmeshVertex;
+                        //spawnPosition += (spawnPosition - hit.position).normalized * minDistanceOfGeneratedPointToNavmeshVertex;
+                        closestEdge = hit.position;
                     }
 
-
-                   /* HashSet<Vector3> verticesUnderMinDistance = new HashSet<Vector3>();
-                    float squaredThreshold = minDistanceOfGeneratedPointToNavmeshVertex * minDistanceOfGeneratedPointToNavmeshVertex;
-                    //float closestSquaredDistance = Mathf.Infinity;
-
-                    for (int i = 0; i < navmeshVertices.Length; i++)
+                    Vector3 closestTriangleMiddle = Vector3.zero;
+                    float closesTriMiddleSquaredDistance = Mathf.Infinity;
+                    foreach (Vector3 middle in navmeshTriangleMiddles)
                     {
-                        float currentSquaredDistance = (navmeshVertices[i] - spawnPosition).sqrMagnitude;
-                        if(currentSquaredDistance < minDistanceOfGeneratedPointToNavmeshVertex * minDistanceOfGeneratedPointToNavmeshVertex)
+                        float currentSquaredDistance = (middle - spawnPosition).sqrMagnitude;
+
+                        if(currentSquaredDistance< closesTriMiddleSquaredDistance)
                         {
-                            verticesUnderMinDistance.Add(navmeshVertices[i]);
+                            closesTriMiddleSquaredDistance = currentSquaredDistance;
+                            closestTriangleMiddle = middle;
                         }
-                           // minDistanceOfGeneratedPointToNavmeshVertex
                     }
 
-                    Vector3 meanVectorAwayFromVetices = Vector3.zero;
-                    foreach (Vector3 vertex in verticesUnderMinDistance)
+                    if((closestEdge - spawnPosition).sqrMagnitude < closesTriMiddleSquaredDistance)
                     {
-                        meanVectorAwayFromVetices += (spawnPosition - vertex);
+                        Vector3 directionTowardsNearestTriMiddle = closestTriangleMiddle - spawnPosition;
+                        directionTowardsNearestTriMiddle.y = 0;
+                        spawnPosition += directionTowardsNearestTriMiddle * 0.5f;
                     }
-                    meanVectorAwayFromVetices.y = 0;
-
-                    spawnPosition += meanVectorAwayFromVetices.normalized * minDistanceOfGeneratedPointToNavmeshVertex;*/
 
 
-                    //Spawn
-                    string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(manager.openFieldPointPrefab);
+                    if (NavMesh.SamplePosition(spawnPosition, out hit, manager.maxSnapDistanceToNavmesh, NavMesh.AllAreas))
+                    {
+                        spawnPosition = hit.position;
+                    }
+
+
+
+                        //Spawn
+                        string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(manager.openFieldPointPrefab);
                     //Get prefab object from path
                     Object prefab = AssetDatabase.LoadAssetAtPath(prefabPath, typeof(Object));
                     //Instantiate the prefab in the scene, as a sibling of current gameObject
