@@ -86,6 +86,20 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         }
     }
 
+    public void DeleteAllGeneratedPoints()
+    {
+        tacticalPointsToDestroy.Clear();
+        foreach (Transform generatedPoint in transform) //theyre all children
+        {
+            tacticalPointsToDestroy.Add(generatedPoint.gameObject);
+        }
+
+        foreach (GameObject generatedPoint in tacticalPointsToDestroy) //theyre all children
+        {
+            DestroyImmediate(generatedPoint);
+        }
+    }
+
 
     void OnEnable()
     {

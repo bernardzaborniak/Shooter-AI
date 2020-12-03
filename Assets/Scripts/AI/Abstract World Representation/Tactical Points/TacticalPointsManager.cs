@@ -17,6 +17,9 @@ public class TacticalPointsManager : MonoBehaviour
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
     public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
 
+    [Tooltip("If an distance equals Infinity, we take this distance instead for bettr calculation")]
+    public float distanceValueForInfinity;
+
 
     public static TacticalPointsManager Instance;
 

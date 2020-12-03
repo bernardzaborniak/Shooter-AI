@@ -80,7 +80,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     void OnEnable()
     {
-        VisualisationManager.Instance.AddTacticalPointVisualiser(this);
+        AIVisualisationManager.Instance.AddTacticalPointVisualiser(this);
 
         //update values and colors on enable too
 
@@ -92,7 +92,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     void OnDisable()
     {
-        VisualisationManager.Instance.RemoveTacticalPointVisualise(this);
+        AIVisualisationManager.Instance.RemoveTacticalPointVisualise(this);
     }
 
     public void EnableVisualiser()
@@ -105,7 +105,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    public void UpdateVisualiser(Quaternion cameraRot, VisualisationManager.Settings visualisationSetting, bool cullText = false)
+    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting, bool cullText = false)
     {
         //enables/disables components based on rating and aligns the text rotation to camera
 

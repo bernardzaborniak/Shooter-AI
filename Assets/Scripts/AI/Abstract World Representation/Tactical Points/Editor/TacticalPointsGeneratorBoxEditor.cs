@@ -30,5 +30,10 @@ public class TacticalPointsGeneratorBoxEditor : Editor
             myTacticalPointsGeneratorBox.Generate();
             myTacticalPointsGeneratorBox.BakeCoverRatings();
         }
+
+        if (GUILayout.Button("Delete All Generated Points "))
+        {
+            myTacticalPointsGeneratorBox.DeleteAllGeneratedPoints();
+        }
     }
 }
