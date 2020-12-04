@@ -105,13 +105,13 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
-    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting, bool cullText = false)
+    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting)//, bool cullText = false)
     {
         //enables/disables components based on rating and aligns the text rotation to camera
 
         #region Determine whether the point should be drawn
-        bool drawPoint = false;
-        if (pointToVisualise.tacticalPointType == TacticalPointType.OpenFieldPoint)
+        //bool drawPoint = false;
+        /*if (pointToVisualise.tacticalPointType == TacticalPointType.OpenFieldPoint)
         {
             if (visualisationSetting.showOpenFieldPoints) drawPoint = true;
         }
@@ -122,12 +122,12 @@ public class TacticalPointVisualiser : MonoBehaviour
         else if (pointToVisualise.tacticalPointType == TacticalPointType.CoverShootPoint)
         {
             if (visualisationSetting.showCoverShootPoints) drawPoint = true;
-        }
+        }*/
         #endregion
 
-        if (drawPoint)
-        {
-            pointRenderer.enabled = true;
+        //if (drawPoint)
+        //{
+         //   pointRenderer.enabled = true;
 
 
             //Distance
@@ -136,7 +136,7 @@ public class TacticalPointVisualiser : MonoBehaviour
                 standingDistanceRenderer.enabled = true;
                 crouchedDistanceRenderer.enabled = true;
 
-                if (visualisationSetting.showCoverDistanceRatingNumbers && !cullText)
+                if (visualisationSetting.showCoverDistanceRatingNumbers) //&& !cullText)
                 {
                     tmp_standingDistanceRatingParent.SetActive(true);
                     tmp_crouchedDistanceRatingParent.SetActive(true);
@@ -168,7 +168,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             {
                 standingQualityRenderer.enabled = true;
                 crouchedQualityRenderer.enabled = true;
-                if (visualisationSetting.showCoverQualityRatingNumbers && !cullText)
+                if (visualisationSetting.showCoverQualityRatingNumbers)// && !cullText)
                 {
                     tmp_standingQualityRatingParent.SetActive(true);
                     tmp_crouchedQualityRatingParent.SetActive(true);
@@ -197,7 +197,7 @@ public class TacticalPointVisualiser : MonoBehaviour
             }
 
             // Set Taken Bool
-            propertyBlock = new MaterialPropertyBlock();
+            /*propertyBlock = new MaterialPropertyBlock();
             pointRenderer.GetPropertyBlock(propertyBlock);
             if (pointToVisualise.IsPointFull())
             {
@@ -208,9 +208,9 @@ public class TacticalPointVisualiser : MonoBehaviour
                 propertyBlock.SetFloat(takenBoolName, 0f);
 
             }
-            pointRenderer.SetPropertyBlock(propertyBlock);
-        }
-        else
+            pointRenderer.SetPropertyBlock(propertyBlock);*/
+        //}
+        /*else
         {
             pointRenderer.enabled = false;
 
@@ -225,7 +225,7 @@ public class TacticalPointVisualiser : MonoBehaviour
                 crouchedDistanceRenderer.enabled = false;
                 crouchedQualityRenderer.enabled = false;
 
-        }
+        }*/
 
 
 
@@ -234,7 +234,7 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     public void UpdateCoverRingMaterialsAndText()
     {
-        Debug.Log("Visualiser Point  UpdatePointRatings");
+        //Debug.Log("Visualiser Point  UpdatePointRatings");
         UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);

@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camTransform: {fileID: 0}
+  tacticalPointsManager: {fileID: 1496856624026167384}
   settings:
     showOpenFieldPoints: 1
     showCoverPoints: 1
@@ -199,7 +200,9 @@ MonoBehaviour:
     showCoverDistanceRatingNumbers: 1
     showCoverQualityRating: 1
     showCoverQualityRatingNumbers: 1
-  ratingTextCullDistance: 5
+  ratingRingCullDistance: 0
+  coverRatingRingPoolSize: 0
+  tacticalPointVisualiserPrefab: {fileID: 331152618312217738, guid: f6f3d46d569755741bdc22ad8cea584f, type: 3}
 --- !u!1 &1496856623587286488
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49988d5ca9385834a9f41631f38c6c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tacticalPointsSceneInfo: {fileID: 0}
   openFieldPointPrefab: {fileID: 3119587345217111679, guid: 76c9a18b50e23a844ba86909a93fc960, type: 3}
   standingCoverHeight: 1.8
   crouchedCoverHeight: 0.8

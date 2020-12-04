@@ -37,6 +37,8 @@ public class TacticalPoint : MonoBehaviour
     public float radius;
     public int capacity;
 
+    public Renderer pointRenderer;
+
 
 
     //calculate cover quality algorythm
