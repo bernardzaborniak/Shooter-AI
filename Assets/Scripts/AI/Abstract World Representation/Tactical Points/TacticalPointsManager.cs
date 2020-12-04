@@ -46,6 +46,7 @@ public class TacticalPointsManager : MonoBehaviour
         UpdatePointRatings();
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if(Time.frameCount%10 == 0)
@@ -59,6 +60,7 @@ public class TacticalPointsManager : MonoBehaviour
             }
         } 
     }
+#endif
 
 
     public void AddTacticalPointsGeneratorBox(TacticalPointsGeneratorBox generator)

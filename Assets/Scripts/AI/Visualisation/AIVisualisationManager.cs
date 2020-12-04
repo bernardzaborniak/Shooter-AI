@@ -113,6 +113,10 @@ public class AIVisualisationManager : MonoBehaviour
             {
                 visualisersToRemoveFromUse.Add(visualiserInUse);
             }
+            else
+            {
+                visualiserInUse.UpdateVisualiser(camRot, settings);
+            }
         }
 
         foreach (TacticalPointVisualiser visualiserToRemoveFromUse in visualisersToRemoveFromUse)
@@ -171,8 +175,10 @@ public class AIVisualisationManager : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-
-            UpdateVisualisersShown(false);
+            if(Time.frameCount % 12 == 0)
+            {
+                UpdateVisualisersShown(false);
+            }
         }
     }
 
@@ -181,7 +187,10 @@ public class AIVisualisationManager : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            UpdateVisualisersShown(true);
+            if (Time.frameCount % 12 == 0)
+            {
+                UpdateVisualisersShown(true);
+            }
         }
     }
 

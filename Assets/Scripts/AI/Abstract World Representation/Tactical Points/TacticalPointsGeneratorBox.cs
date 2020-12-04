@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+#if UNITY_EDITOR
 using UnityEditor;
 
 [ExecuteInEditMode]
@@ -202,6 +203,5 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     {
         TacticalPointsManager.Instance.RemoveTacticalPointsGeneratorBox(this);
     }
-
-
 }
+#endif

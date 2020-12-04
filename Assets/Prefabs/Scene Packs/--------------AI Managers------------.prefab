@@ -200,8 +200,8 @@ MonoBehaviour:
     showCoverDistanceRatingNumbers: 1
     showCoverQualityRating: 1
     showCoverQualityRatingNumbers: 1
-  ratingRingCullDistance: 0
-  coverRatingRingPoolSize: 0
+  ratingRingCullDistance: 10
+  coverRatingRingPoolSize: 20
   tacticalPointVisualiserPrefab: {fileID: 331152618312217738, guid: f6f3d46d569755741bdc22ad8cea584f, type: 3}
 --- !u!1 &1496856623587286488
 GameObject:
