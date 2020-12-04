@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.46169513, g: 0.5124164, b: 0.58993304, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -946,8 +946,7 @@ MeshFilter:
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &501357398 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &501357400
@@ -962,6 +961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 2
   Target: {fileID: 1304514155}
   Pole: {fileID: 448357870}
@@ -1053,8 +1053,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &544516145 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100008, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100008, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &544516147
@@ -1069,6 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 2
   Target: {fileID: 700930730}
   Pole: {fileID: 378856924}
@@ -1252,6 +1252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 2
   Target: {fileID: 292921278}
   Pole: {fileID: 0}
@@ -1260,8 +1261,7 @@ MonoBehaviour:
   SnapBackStrength: 1
 --- !u!1 &699661356 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100068, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100068, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &699661357
@@ -1399,8 +1399,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &779499400 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100010, guid: 501a1c242d0d8124ba3406778e346e75,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100010, guid: 501a1c242d0d8124ba3406778e346e75, type: 3}
   m_PrefabInstance: {fileID: 135927183}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &779499402
@@ -1415,6 +1414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 3
   Target: {fileID: 1794438429}
   Pole: {fileID: 815754212}
@@ -1586,8 +1586,7 @@ Animator:
   m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &956312083 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100012, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100012, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &956312085
@@ -1602,6 +1601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 2
   Target: {fileID: 999563910}
   Pole: {fileID: 67094606}
@@ -1882,14 +1882,12 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1019610136 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400014, guid: 501a1c242d0d8124ba3406778e346e75,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 400014, guid: 501a1c242d0d8124ba3406778e346e75, type: 3}
   m_PrefabInstance: {fileID: 135927183}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1162827109 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100002, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100002, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1162827111
@@ -1904,6 +1902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ca45bb53dc94f478358a1b6475653d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  automaticlyUpdateInLateUpdate: 1
   ChainLength: 2
   Target: {fileID: 1794948050}
   Pole: {fileID: 989258804}
@@ -2072,14 +2071,12 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1548488836 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400068, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 400068, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1649953187 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 100048, guid: 9251f384b071861468e65c0fc55b87e9,
-    type: 3}
+  m_CorrespondingSourceObject: {fileID: 100048, guid: 9251f384b071861468e65c0fc55b87e9, type: 3}
   m_PrefabInstance: {fileID: 1743944540}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1649953189

@@ -167,7 +167,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     }
 
 
-    public void BakeCoverRatings()
+    /*public void BakeCoverRatings()
     {
         //Debug.Log("BakeCoverDistanceRating clicked");
         foreach (Transform generatedPoint in transform) //theyre all children
@@ -175,7 +175,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
             TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
             point.BakeCoverRatings(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.raycastsPerCoverRating, manager.raycastLayerMask, manager.maxCoverRayLength);
         }
-    }
+    }*/
 
     public void DeleteAllGeneratedPoints()
     {

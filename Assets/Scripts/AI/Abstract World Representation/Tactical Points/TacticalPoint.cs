@@ -15,13 +15,13 @@ public enum TacticalPointType
 
 }
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class TacticalPoint : MonoBehaviour
 {
     public TacticalPointType tacticalPointType;
     public GameEntity usingEntity;
     [Space(5)]
-    public PointCoverRating coverRating;
+    [System.NonSerialized] public PointCoverRating coverRating;
 
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
@@ -37,6 +37,8 @@ public class TacticalPoint : MonoBehaviour
     public float radius;
     public int capacity;
 
+
+
     //calculate cover quality algorythm
     Vector3[] raycastDirectionsInLocalSpace =
     {
@@ -51,9 +53,11 @@ public class TacticalPoint : MonoBehaviour
     };
 
 
-    public PointCastRaysContainer raycastsUsedForGeneratingRating;
+    [System.NonSerialized] public PointCastRaysContainer raycastsUsedForGeneratingRating;
 
-    public UnityEvent OnBakeCoverRating;
+    public UnityEvent OnUpdateRating;
+
+    [HideInInspector] public int pointReferenceID; //used as reference in the serialized data of the scriptable object the manager communicates to.
 
 
     #region Update Cover Shoot Points inside Editor
@@ -135,11 +139,16 @@ public class TacticalPoint : MonoBehaviour
         TacticalPointsManager.Instance.RemoveTacticalPoint(this);
     }
 
-    public void BakeCoverRatings(float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask, float maxRayLength)
+    public (PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer) BakeCoverRatings(ref PointCoverRating pointCoverRating, ref PointCastRaysContainer pointCastRaysContainer, float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask, float maxRayLength)
     {
+        //PointCoverRating pointCoverRating = new PointCoverRating();
+        //PointCastRaysContainer pointCastRaysContainer = new PointCastRaysContainer();
+
+
         int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
 
-        raycastsUsedForGeneratingRating.SetUpRays(numberOfRaycastsPerDirection);
+        //raycastsUsedForGeneratingRating.SetUpRays(numberOfRaycastsPerDirection);
+        pointCastRaysContainer.SetUpRays(numberOfRaycastsPerDirection);
 
 
         // Go through once for standing and once for crouching.
@@ -180,13 +189,16 @@ public class TacticalPoint : MonoBehaviour
                         RaycastHit hit;
                         if (Physics.Raycast(rayStartPoint, raycastDirectionInWorldSpace, out hit, maxRayLength, raycastLayerMask, QueryTriggerInteraction.Ignore))
                         {
-                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
+                            //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
+                            pointCastRaysContainer.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, hit.point));
                         }
                         else
                         {
                             //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * distanceValueForInfinity, true));
                             //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * distanceValueForInfinity));
-                            raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
+
+                            //raycastsUsedForGeneratingRating.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
+                            pointCastRaysContainer.SetRay(p, i, r, new RaycastUsedToGenerateCoverRating(rayStartPoint, rayStartPoint + raycastDirectionInWorldSpace * 100, true));
 
                         }
                         r++;
@@ -204,10 +216,12 @@ public class TacticalPoint : MonoBehaviour
 
                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
-                     if (!raycastsUsedForGeneratingRating.GetRay(p,i,n).IsInfinite())
+                     //if (!raycastsUsedForGeneratingRating.GetRay(p,i,n).IsInfinite())
+                     if (!pointCastRaysContainer.GetRay(p,i,n).IsInfinite())
                      {
                          numberOfRaycastsWhichAreNotInfinite++;
-                         allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
+                         //allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
+                         allDistancesCombined += pointCastRaysContainer.GetRay(p, i, n).distance;
                      }
                     //allDistancesCombined += raycastsUsedForGeneratingRating.GetRay(p, i, n).distance;
 
@@ -234,9 +248,11 @@ public class TacticalPoint : MonoBehaviour
 
                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
-                    if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
+                    //if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
+                    if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
                     {
-                        allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating.GetRay(p, i, n).distance - meanDistance);
+                       // allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating.GetRay(p, i, n).distance - meanDistance);
+                        allDeviationsCombined += Mathf.Abs(pointCastRaysContainer.GetRay(p, i, n).distance - meanDistance);
                     }
                     else
                     {
@@ -266,28 +282,71 @@ public class TacticalPoint : MonoBehaviour
 
                 if (p == 0)
                 {
-                    coverRating.crouchedDistanceRating[i] = meanDistance;
+                    //coverRating.crouchedDistanceRating[i] = meanDistance;
+                    pointCoverRating.crouchedDistanceRating[i] = meanDistance;
                     //coverRating.crouchedQualityRating[i] = averageAbsoluteDeviation;
-                    coverRating.crouchedQualityRating[i] = qualityRating;
+                    //coverRating.crouchedQualityRating[i] = qualityRating;
+                    pointCoverRating.crouchedQualityRating[i] = qualityRating;
                 }
                 else if (p == 1)
                 {
-                    coverRating.standingDistanceRating[i] = meanDistance;
+                    // coverRating.standingDistanceRating[i] = meanDistance;
+                    pointCoverRating.standingDistanceRating[i] = meanDistance;
                     //coverRating.standingQualityRating[i] = averageAbsoluteDeviation;
-                    coverRating.standingQualityRating[i] = qualityRating;
+                    //coverRating.standingQualityRating[i] = qualityRating;
+                    pointCoverRating.standingQualityRating[i] = qualityRating;
                 }
 
                 #endregion
             }
         }
 
-        EditorUtility.SetDirty(this);
-        OnBakeCoverRating.Invoke();
+        //EditorUtility.SetDirty(this);
+        
+
+        return (pointCoverRating, pointCastRaysContainer);
+    }
+
+    public void UpdateRatings(PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer)
+    {
+        Debug.Log("Tactical Point  UpdatePointRatings");
+
+        coverRating = pointCoverRating;
+        raycastsUsedForGeneratingRating = pointCastRaysContainer;
+
+        OnUpdateRating.Invoke();
     }
 
     public PointCastRaysContainer GetRaycastsUsedForGeneratingRating()
     {
         return raycastsUsedForGeneratingRating;
+    }
+
+    public void ResetRotation()
+    {
+        if(tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            //save old positions
+            Vector3[] oldPositions = new Vector3[coverShootPoints.Length];
+            for (int i = 0; i < oldPositions.Length; i++)
+            {
+                oldPositions[i] = coverShootPoints[i].transform.position;
+            }
+
+            //rotate parent
+            transform.rotation = Quaternion.identity;
+
+            //restore old posiitons
+            for (int i = 0; i < oldPositions.Length; i++)
+            {
+                coverShootPoints[i].transform.position = oldPositions[i];
+                coverShootPoints[i].transform.rotation = Quaternion.identity;
+            }
+        }
+        else
+        {
+            transform.rotation = Quaternion.identity;
+        }
     }
 
 }

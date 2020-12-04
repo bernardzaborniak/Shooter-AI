@@ -5,6 +5,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class TacticalPointsManager : MonoBehaviour
 {
+    public TacticalPointsSceneInfo tacticalPointsSceneInfo;
+
     public GameObject openFieldPointPrefab;
     public float standingCoverHeight;
     public float crouchedCoverHeight;
@@ -25,8 +27,15 @@ public class TacticalPointsManager : MonoBehaviour
 
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
     {
+        Debug.Log("Manager on Enable: " + gameObject);
         Instance = this;
     }
+
+    private void Start()
+    {
+        UpdatePointRatings();
+    }
+
 
     public void AddTacticalPointsGeneratorBox(TacticalPointsGeneratorBox generator)
     {
@@ -58,9 +67,39 @@ public class TacticalPointsManager : MonoBehaviour
 
     public void BakeAllCoverRatings()
     {
+        Debug.Log("manager  bake all cover ratings called");
+        tacticalPointsSceneInfo.ResetInfo();
+
+        int id = 0;
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.BakeCoverRatings(crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask, maxCoverRayLength);
+            point.pointReferenceID = id;
+            id++;
+
+            PointCoverRating pointCoverRating = new PointCoverRating();
+            PointCastRaysContainer pointCastRaysContainer = new PointCastRaysContainer();
+
+            point.BakeCoverRatings(ref pointCoverRating, ref pointCastRaysContainer, crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask, maxCoverRayLength);
+
+            tacticalPointsSceneInfo.AddPointInfo(point.pointReferenceID, pointCoverRating, pointCastRaysContainer);
+        }
+    }
+
+    public void UpdatePointRatings()
+    {
+        Debug.Log("manager UpdatePointRatings");
+
+        foreach (TacticalPoint point in tacticalPoints)
+        {
+            point.UpdateRatings(tacticalPointsSceneInfo.GetCoverRating(point.pointReferenceID), tacticalPointsSceneInfo.GetRaysCast(point.pointReferenceID));
+        }
+    }
+
+    public void ResetAllPointRotations()
+    {
+        foreach (TacticalPoint point in tacticalPoints)
+        {
+            point.ResetRotation();
         }
     }
 

@@ -19,13 +19,15 @@ public class PointCoverRating
     public float[] crouchedDistanceRating;
     public float[] crouchedQualityRating;
 
-    public void SetUp()
+    public PointCoverRating()
     {
         standingDistanceRating = new float[8];
         standingQualityRating = new float[8];
         crouchedDistanceRating = new float[8];
         crouchedQualityRating = new float[8];
     }
+
+    
 
     public float DetermineQualityOfCover(Vector3 directionFromPositionToThreat, bool crouching)
     {

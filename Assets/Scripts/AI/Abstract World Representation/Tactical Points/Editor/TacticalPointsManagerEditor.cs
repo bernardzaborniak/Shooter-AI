@@ -19,13 +19,21 @@ public class TacticalPointsManagerEditor : Editor
 
         if (GUILayout.Button("Bake All Cover Ratings"))
         {
+            Debug.Log("manager editor bake all cover ratings called");
+            myTacticalPointsManager.ResetAllPointRotations();
             myTacticalPointsManager.BakeAllCoverRatings();
+            
         }
 
-        if (GUILayout.Button("Generate Points & Bake all Ratings "))
+        if (GUILayout.Button("Update Point Rating Visuals "))
         {
-            myTacticalPointsManager.GenerateAll();
-            myTacticalPointsManager.BakeAllCoverRatings();
+            Debug.Log("Editor Update Point Rating Visuals");
+            myTacticalPointsManager.UpdatePointRatings();
+        }
+
+        if (GUILayout.Button("Reset All Point Rotations "))
+        {
+            myTacticalPointsManager.ResetAllPointRotations();
         }
     }     
 }

@@ -14,6 +14,10 @@ public class PointCastRaysContainer
     [SerializeField] RaycastUsedToGenerateCoverRating[] raycastsUsedForGeneratingRating;
     [SerializeField] int currentNumberOfRaycastsPerDirection;
     
+    public PointCastRaysContainer()
+    {
+
+    }
 
     public void SetUpRays(int numberOfRaycastsPerDirection)
     {

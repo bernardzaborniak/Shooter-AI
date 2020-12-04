@@ -5,7 +5,7 @@ using TMPro;
 
 //TODO Move this enum to the tactical point calsss later on
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class TacticalPointVisualiser : MonoBehaviour
 {
     #region Fields
@@ -87,7 +87,7 @@ public class TacticalPointVisualiser : MonoBehaviour
         //TODO also dont use updateVisualiser from the visualiationManager, use ONTacticalPointValuesChanged instead, which is called by the tactical point
 
         //UpdateVisualiser  will only take care of the text alignement
-        UpdateCoverRingMaterialsAndText();
+        //UpdateCoverRingMaterialsAndText();
     }
 
     void OnDisable()
@@ -232,6 +232,14 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     }
 
+    public void UpdateCoverRingMaterialsAndText()
+    {
+        Debug.Log("Visualiser Point  UpdatePointRatings");
+        UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
+        UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
+        UpdateRatingRing(true, crouchedQualityRenderer, pointToVisualise.coverRating.crouchedQualityRating, tmp_crouchedQualityRatingParent, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
+    }
 
     void UpdateRatingRing(bool quality, Renderer renderer, float[] rating, GameObject textParent, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
@@ -274,17 +282,6 @@ public class TacticalPointVisualiser : MonoBehaviour
         float normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
         return Color.Lerp(worstQualityColor, bestQualityColor, normalizedRating);
     }
-
-    public void UpdateCoverRingMaterialsAndText()
-    {
-        UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
-        UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
-        UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
-        UpdateRatingRing(true, crouchedQualityRenderer, pointToVisualise.coverRating.crouchedQualityRating, tmp_crouchedQualityRatingParent, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
-    }
-
-
-
 
     private void OnDrawGizmos()
     {

@@ -20,7 +20,7 @@ public class TacticalPointsGeneratorBoxEditor : Editor
         }
 
 
-        if (GUILayout.Button("Bake Cover Ratings"))
+       /* if (GUILayout.Button("Bake Cover Ratings"))
         {
             myTacticalPointsGeneratorBox.BakeCoverRatings();
         }
@@ -29,7 +29,7 @@ public class TacticalPointsGeneratorBoxEditor : Editor
         {
             myTacticalPointsGeneratorBox.Generate();
             myTacticalPointsGeneratorBox.BakeCoverRatings();
-        }
+        }*/
 
         if (GUILayout.Button("Delete All Generated Points "))
         {
