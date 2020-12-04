@@ -78,7 +78,7 @@ public class TacticalPointVisualiser : MonoBehaviour
     #endregion
 
 
-    void OnEnable()
+    /*void OnEnable()
     {
         AIVisualisationManager.Instance.AddTacticalPointVisualiser(this);
 
@@ -93,7 +93,7 @@ public class TacticalPointVisualiser : MonoBehaviour
     void OnDisable()
     {
         AIVisualisationManager.Instance.RemoveTacticalPointVisualise(this);
-    }
+    }*/
 
     public void EnableVisualiser()
     {

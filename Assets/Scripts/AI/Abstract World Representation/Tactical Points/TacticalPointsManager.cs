@@ -22,6 +22,8 @@ public class TacticalPointsManager : MonoBehaviour
     [Tooltip("If an distance equals Infinity, we take this distance instead for bettr calculation")]
     public float maxCoverRayLength;
 
+   // public TacticalPoint[] pointes;
+
 
     public static TacticalPointsManager Instance;
 
@@ -29,11 +31,33 @@ public class TacticalPointsManager : MonoBehaviour
     {
         Debug.Log("Manager on Enable: " + gameObject);
         Instance = this;
+
+        //Get All Points
+        //tacticalPoints.Clear();
+
+        //TacticalPoint[] points = FindObjectsOfType<TacticalPoint>();
+        //pointes = points;
+
+        //Get All Point Generators
     }
 
     private void Start()
     {
         UpdatePointRatings();
+    }
+
+    private void Update()
+    {
+        if(Time.frameCount%10 == 0)
+        {
+            if (!Application.isPlaying)
+            {
+                foreach (TacticalPoint point in tacticalPoints)
+                {
+                    point.UpdateCoverShootPoints();
+                }
+            }
+        } 
     }
 
 

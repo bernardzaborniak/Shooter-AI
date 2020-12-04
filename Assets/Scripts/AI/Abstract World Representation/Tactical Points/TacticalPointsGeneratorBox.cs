@@ -203,4 +203,5 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         TacticalPointsManager.Instance.RemoveTacticalPointsGeneratorBox(this);
     }
 
+
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
+//using UnityEngine.EventSystems;
+//using UnityEngine.Events;
 
 
 public enum TacticalPointType
@@ -15,7 +15,7 @@ public enum TacticalPointType
 
 }
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class TacticalPoint : MonoBehaviour
 {
     public TacticalPointType tacticalPointType;
@@ -55,7 +55,7 @@ public class TacticalPoint : MonoBehaviour
 
     [System.NonSerialized] public PointCastRaysContainer raycastsUsedForGeneratingRating;
 
-    public UnityEvent OnUpdateRating;
+   // public UnityEvent OnUpdateRating;
 
     [HideInInspector] public int pointReferenceID; //used as reference in the serialized data of the scriptable object the manager communicates to.
 
@@ -64,7 +64,7 @@ public class TacticalPoint : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    void Update()
+    /*void Update()
     {
         if (!Application.isPlaying)
         {
@@ -86,7 +86,29 @@ public class TacticalPoint : MonoBehaviour
             }
         }
 
+    }*/
+
+
+    public void UpdateCoverShootPoints()
+    {
+        if (tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            coverShootPoints = new TacticalPoint[coverShootPointsParent.childCount];
+            for (int i = 0; i < coverShootPointsParent.childCount; i++)
+            {
+                TacticalPoint tp = coverShootPointsParent.GetChild(i).GetComponent<TacticalPoint>();
+                if (tp)
+                {
+                    coverShootPoints[i] = tp;
+                }
+                else
+                {
+                    Debug.Log("children of coverShootPointsParent on: " + gameObject.name + " is not a tactical point -> fix this");
+                }
+            }
+        }
     }
+
 #endif
 
     #endregion
@@ -314,7 +336,7 @@ public class TacticalPoint : MonoBehaviour
         coverRating = pointCoverRating;
         raycastsUsedForGeneratingRating = pointCastRaysContainer;
 
-        OnUpdateRating.Invoke();
+        //OnUpdateRating.Invoke();
     }
 
     public PointCastRaysContainer GetRaycastsUsedForGeneratingRating()
