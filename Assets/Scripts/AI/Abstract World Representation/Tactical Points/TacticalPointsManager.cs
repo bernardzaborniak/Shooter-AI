@@ -39,6 +39,7 @@ public class TacticalPointsManager : MonoBehaviour
         //pointes = points;
 
         //Get All Point Generators
+        //UpdatePointRatings();
     }
 
     private void Start()

@@ -29,7 +29,7 @@ Transform:
   m_Children:
   - {fileID: 1716094165648245895}
   m_Father: {fileID: 1635692597825557446}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7968255948659408002
 PrefabInstance:
@@ -151,6 +151,10 @@ PrefabInstance:
       propertyPath: coverShootPoints.Array.data[0]
       value: 
       objectReference: {fileID: 5389394481685980531}
+    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: pointRenderer
+      value: 
+      objectReference: {fileID: 8063276483948305679}
     - target: {fileID: 7362155681532420679, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_IsActive
       value: 1

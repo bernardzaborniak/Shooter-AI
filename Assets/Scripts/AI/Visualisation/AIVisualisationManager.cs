@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class AIVisualisationManager : MonoBehaviour
 {
     public Transform camTransform;
     public TacticalPointsManager tacticalPointsManager;
     //public HashSet<TacticalPointVisualiser> tacticalPointVisualisers = new HashSet<TacticalPointVisualiser>();
+    [Tooltip("Locks the current visualisers, new ones dont show up and old ones dont dissapear")]
+    public bool lockVisualisers;
 
     [System.Serializable]
     public class Settings
@@ -58,9 +60,9 @@ public class AIVisualisationManager : MonoBehaviour
 
         //delete old ones
         HashSet<GameObject> visualisersToDestroy = new HashSet<GameObject>();
-        foreach (TacticalPointVisualiser visualiser in transform) //theyre all children
+        foreach (Transform visTransform in transform) //theyre all children
         {
-            visualisersToDestroy.Add(visualiser.gameObject);
+            visualisersToDestroy.Add(visTransform.gameObject);
         }
         foreach (GameObject visualiser in visualisersToDestroy) //theyre all children
         {
@@ -86,45 +88,59 @@ public class AIVisualisationManager : MonoBehaviour
 
     void UpdateVisualisersShown(bool inSceneView)
     {
-        Quaternion camRot = camTransform.rotation;
+        Quaternion camRot;
         Vector3 camPos;
         if (inSceneView)
         {
              camPos = SceneView.lastActiveSceneView.camera.transform.position;
+            camRot = SceneView.lastActiveSceneView.rotation;
         }
         else
         {
             camPos = camTransform.position;
+            camRot = camTransform.rotation;
         }
 
         float currentDistanceSquared;
         TacticalPointVisualiser visualiser;
 
+        //Debug.Log("tacticalPointVisualisersNotInUse: " + tacticalPointVisualisersNotInUse.Count);
 
         //1. go through visualisers in use and check if they shouldnt be enqueued again 
         HashSet<TacticalPointVisualiser> visualisersToRemoveFromUse = new HashSet<TacticalPointVisualiser>();
-       // Debug.Log("tacticalPointVisualisersInUse: " + tacticalPointVisualisersInUse.Count);
+        //Debug.Log("tacticalPointVisualisersInUse: " + tacticalPointVisualisersInUse.Count);
         //Debug.Log("tacticalPointsBeingCurrentlyVisualised: " + tacticalPointsBeingCurrentlyVisualised.Count);
         foreach (TacticalPointVisualiser visualiserInUse in tacticalPointVisualisersInUse)
         {
-            currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
-
-            if (currentDistanceSquared > ratingRingCullDistanceSquared)
+            //check if visualiser should be disabled tgether with point renderer according to settings
+            if (!ShowPointAccordingToSettings(visualiserInUse.pointToVisualise))
             {
                 visualisersToRemoveFromUse.Add(visualiserInUse);
             }
             else
             {
-                visualiserInUse.UpdateVisualiser(camRot, settings);
-            }
+                currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
+
+                if (currentDistanceSquared > ratingRingCullDistanceSquared)
+                {
+                    visualisersToRemoveFromUse.Add(visualiserInUse);
+                }
+                else
+                {
+                    visualiserInUse.UpdateVisualiser(camRot, settings);
+                }
+            } 
         }
 
         foreach (TacticalPointVisualiser visualiserToRemoveFromUse in visualisersToRemoveFromUse)
         {
             visualiserToRemoveFromUse.gameObject.SetActive(false);
+            visualiserToRemoveFromUse.transform.SetParent(transform);
+
 
             tacticalPointVisualisersInUse.Remove(visualiserToRemoveFromUse);
             tacticalPointsBeingCurrentlyVisualised.Remove(visualiserToRemoveFromUse.pointToVisualise);
+            visualiserToRemoveFromUse.pointToVisualise = null;
 
             tacticalPointVisualisersNotInUse.Enqueue(visualiserToRemoveFromUse); //bring it back into the queue which can be used
         }
@@ -132,64 +148,99 @@ public class AIVisualisationManager : MonoBehaviour
         //Debug.Log("visualiser update: tacticalPointsManager.tacticalPoints size" + tacticalPointsManager.tacticalPoints.Count);
         foreach (TacticalPoint point in tacticalPointsManager.tacticalPoints)
         {
-            if (!tacticalPointsBeingCurrentlyVisualised.Contains(point))
+            //1. check if point is shown at all
+
+            if (ShowPointAccordingToSettings(point))
             {
-                currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
+                point.pointRenderer.enabled = true;
 
-                if (tacticalPointVisualisersNotInUse.Count > 0)
+                if (!tacticalPointsBeingCurrentlyVisualised.Contains(point))
                 {
-                    if (currentDistanceSquared < ratingRingCullDistanceSquared)
+                    currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
+
+                    if (tacticalPointVisualisersNotInUse.Count > 0)
                     {
-                        // Glue an Visualiser to another Point 
+                        if (currentDistanceSquared < ratingRingCullDistanceSquared)
+                        {
+                            // Glue an Visualiser to another Point 
 
-                        //manage collections
-                        visualiser = tacticalPointVisualisersNotInUse.Dequeue();         
-                        tacticalPointsBeingCurrentlyVisualised.Add(point);
-                        tacticalPointVisualisersInUse.Add(visualiser);
+                            //manage collections
+                            visualiser = tacticalPointVisualisersNotInUse.Dequeue();
+                            tacticalPointsBeingCurrentlyVisualised.Add(point);
+                            tacticalPointVisualisersInUse.Add(visualiser);
 
-                        //logic & graphic update
-                        visualiser.pointToVisualise = point;
-                        visualiser.UpdateVisualiser(camRot, settings);
-                        visualiser.UpdateCoverRingMaterialsAndText();
+                            //logic & graphic update
+                            visualiser.pointToVisualise = point;
+                            visualiser.UpdateVisualiser(camRot, settings);
+                            visualiser.UpdateCoverRingMaterialsAndText();
 
-                        //positioning & activating
-                        visualiser.transform.SetParent(point.transform);
-                        visualiser.transform.localPosition = Vector3.zero;
-                        visualiser.gameObject.SetActive(true);
+                            //positioning & activating
+                            visualiser.transform.SetParent(point.transform);
+                            visualiser.transform.position = point.transform.position;
+                            visualiser.gameObject.SetActive(true);
 
-                    }
-                    else
-                    {
-                        //visualiser.UpdateVisualiser(camRot, settings, true);
+                        }
+                        else
+                        {
+                            //visualiser.UpdateVisualiser(camRot, settings, true);
+                        }
                     }
                 }
             }
-            
-           
-
+            else
+            {
+                point.pointRenderer.enabled = false;
+            }
+ 
         }
+    }
+
+    bool ShowPointAccordingToSettings(TacticalPoint point)
+    {
+        if (point.tacticalPointType == TacticalPointType.OpenFieldPoint)
+        {
+            if (settings.showOpenFieldPoints) return true;
+        }
+        else if (point.tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            if (settings.showCoverPoints) return true;
+        }
+        else if (point.tacticalPointType == TacticalPointType.CoverShootPoint)
+        {
+            if (settings.showCoverShootPoints) return true;
+        }
+
+        return false;
     }
 
 
     void Update()
     {
-        if (Application.isPlaying)
+        if (!lockVisualisers)
         {
-            if(Time.frameCount % 12 == 0)
+            if (Application.isPlaying)
             {
-                UpdateVisualisersShown(false);
+                if (Time.frameCount % 12 == 0)
+                {
+                    UpdateVisualisersShown(false);
+                }
             }
         }
+        
     }
 
     //On GUI Updates more often in Edit mode than update, ensures smooth text alignment
     private void OnRenderObject()
     {
-        if (!Application.isPlaying)
+        if (!lockVisualisers)
         {
-            if (Time.frameCount % 12 == 0)
+            if (!Application.isPlaying)
             {
+                //if (Time.frameCount % 12 == 0)
+                //{
+                //Debug.Log("vis render ");
                 UpdateVisualisersShown(true);
+                //}
             }
         }
     }

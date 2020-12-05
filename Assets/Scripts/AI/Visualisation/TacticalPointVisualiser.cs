@@ -234,7 +234,13 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     public void UpdateCoverRingMaterialsAndText()
     {
-        //Debug.Log("Visualiser Point  UpdatePointRatings");
+        Debug.Log("Visualiser Point  UpdatePointRatings");
+        Debug.Log("standingDistanceRenderer: " + standingDistanceRenderer);
+        Debug.Log("pointToVisualise: " + pointToVisualise);
+        Debug.Log("pointToVisualise.coverRating: " + pointToVisualise.coverRating);
+
+        Debug.Log("pointToVisualise.coverRating.standingDistanceRating: " + pointToVisualise.coverRating.standingDistanceRating);
+
         UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
@@ -285,39 +291,43 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //crouched
-        if (showCrouchedRaycasts)
+        if (pointToVisualise)
         {
-            for (int dir = 0; dir < 8; dir++)
+            //crouched
+            if (showCrouchedRaycasts)
             {
-                if (showRaycastsSubSettings[dir])
+                for (int dir = 0; dir < 8; dir++)
                 {
-
-                    foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0, dir))
+                    if (showRaycastsSubSettings[dir])
                     {
-                        Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
-                        Gizmos.DrawLine(raycast.start, raycast.end);
+
+                        foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(0, dir))
+                        {
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }
                     }
                 }
             }
-        }
 
-        //standing
-        if (showStandingRaycasts)
-        {
-            for (int dir = 0; dir < 8; dir++)
+            //standing
+            if (showStandingRaycasts)
             {
-                if (showRaycastsSubSettings[dir])
+                for (int dir = 0; dir < 8; dir++)
                 {
-                    foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(1, dir))
+                    if (showRaycastsSubSettings[dir])
                     {
-                        Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
-                        Gizmos.DrawLine(raycast.start, raycast.end);
+                        foreach (RaycastUsedToGenerateCoverRating raycast in pointToVisualise.GetRaycastsUsedForGeneratingRating().GetAllRaysOfDirection(1, dir))
+                        {
+                            Gizmos.color = GetMappedDistanceRatingColor(raycast.distance);
+                            Gizmos.DrawLine(raycast.start, raycast.end);
+                        }
                     }
-                }
 
+                }
             }
         }
+        
 
     }
 }

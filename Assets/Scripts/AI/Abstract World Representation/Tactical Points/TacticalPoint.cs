@@ -21,7 +21,7 @@ public class TacticalPoint : MonoBehaviour
     public TacticalPointType tacticalPointType;
     public GameEntity usingEntity;
     [Space(5)]
-    [System.NonSerialized] public PointCoverRating coverRating;
+    [System.NonSerialized] public PointCoverRating coverRating = new PointCoverRating();
 
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
@@ -55,7 +55,7 @@ public class TacticalPoint : MonoBehaviour
     };
 
 
-    [System.NonSerialized] public PointCastRaysContainer raycastsUsedForGeneratingRating;
+    [System.NonSerialized] public PointCastRaysContainer raycastsUsedForGeneratingRating = new PointCastRaysContainer();
 
    // public UnityEvent OnUpdateRating;
 
@@ -345,7 +345,7 @@ public class TacticalPoint : MonoBehaviour
 
     public void UpdateRatings(PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer)
     {
-        Debug.Log("Tactical Point  UpdatePointRatings");
+        //Debug.Log("Tactical Point  UpdatePointRatings");
 
         coverRating = pointCoverRating;
         raycastsUsedForGeneratingRating = pointCastRaysContainer;
