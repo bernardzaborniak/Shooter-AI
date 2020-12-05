@@ -192,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camTransform: {fileID: 0}
   tacticalPointsManager: {fileID: 1496856624026167384}
+  lockVisualisers: 0
   settings:
     showOpenFieldPoints: 1
     showCoverPoints: 1
@@ -203,6 +204,7 @@ MonoBehaviour:
   ratingRingCullDistance: 10
   coverRatingRingPoolSize: 20
   tacticalPointVisualiserPrefab: {fileID: 331152618312217738, guid: f6f3d46d569755741bdc22ad8cea584f, type: 3}
+  updateVisualisersInEditModeInterval: 0.5
 --- !u!1 &1496856623587286488
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +474,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   maxCoverRayLength: 1000
+  updateRatingsInEditModeInterval: 2
 --- !u!1 &1496856624175742821
 GameObject:
   m_ObjectHideFlags: 0

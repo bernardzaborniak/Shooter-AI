@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [ExecuteInEditMode]
 public class TacticalPointsManager : MonoBehaviour
 {
@@ -27,6 +31,12 @@ public class TacticalPointsManager : MonoBehaviour
     // Singleton Instance
     public static TacticalPointsManager Instance;
 
+    // For Optimising Update Times in edit mode
+    public float updateRatingsInEditModeInterval = 2;
+    float nextUpdateRatingsTime;
+
+
+
     #endregion
 
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
@@ -48,6 +58,13 @@ public class TacticalPointsManager : MonoBehaviour
             foreach (TacticalPoint point in tacticalPoints)
             {
                 point.UpdateCoverShootPoints();
+            }
+
+            // Update the ratings every x seconds, otherwise it has to be done with a button after reloading, which is annoying.
+            if(EditorApplication.timeSinceStartup > nextUpdateRatingsTime)
+            {
+                nextUpdateRatingsTime = (float)EditorApplication.timeSinceStartup + updateRatingsInEditModeInterval;
+                UpdatePointRatings();
             }
         }
     }

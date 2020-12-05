@@ -49,6 +49,10 @@ public class AIVisualisationManager : MonoBehaviour
     //for changing the point material
     string takenBoolName = "Boolean_C1FD8F9C";
 
+    // For Optimising Update Times in edit mode
+    public float updateVisualisersInEditModeInterval = 0.5f;
+    float nextUpdateVisualisersTime;
+
     #endregion
 
 
@@ -119,8 +123,13 @@ public class AIVisualisationManager : MonoBehaviour
         {
             if (!Application.isPlaying)
             {
-                UpdateVisualisersShown(true); //maybe this should be done every x frames too? But how to achieve this in Edit mode?
+                if (EditorApplication.timeSinceStartup > nextUpdateVisualisersTime)
+                {
+                    nextUpdateVisualisersTime = (float)EditorApplication.timeSinceStartup + updateVisualisersInEditModeInterval;
+                    UpdateVisualisersShown(true); //maybe this should be done every x frames too? But how to achieve this in Edit mode?
+                }
             }
+
         }
     }
 
@@ -128,17 +137,21 @@ public class AIVisualisationManager : MonoBehaviour
     {
         #region Prepare Variables
 
+        Vector3 camForward;
         Quaternion camRot;
         Vector3 camPos;
+
         if (inSceneView)
         {
              camPos = SceneView.lastActiveSceneView.camera.transform.position;
             camRot = SceneView.lastActiveSceneView.rotation;
+            camForward = SceneView.lastActiveSceneView.camera.transform.forward;
         }
         else
         {
             camPos = camTransform.position;
             camRot = camTransform.rotation;
+            camForward = camTransform.forward;
         }
 
         float currentDistanceSquared;
@@ -159,17 +172,25 @@ public class AIVisualisationManager : MonoBehaviour
             }
             else
             {
-                // If not, Check if visualiser should be disabled tgether with point renderer according to distance.
-                currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
-
-                if (currentDistanceSquared > ratingRingCullDistanceSquared)
+                // If not, Check if the visualiser should be disabled because its no longer visible to the camera
+                if (Vector3.Angle(-camForward, (camPos - visualiserInUse.transform.position))>40)
                 {
                     visualisersToRemoveFromUse.Add(visualiserInUse);
                 }
                 else
                 {
-                    visualiserInUse.UpdateVisualiser(camRot, settings);
-                }
+                    // If not, Check if visualiser should be disabled tgether with point renderer according to distance.
+                    currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
+
+                    if (currentDistanceSquared > ratingRingCullDistanceSquared)
+                    {
+                        visualisersToRemoveFromUse.Add(visualiserInUse);
+                    }
+                    else
+                    {
+                        visualiserInUse.UpdateVisualiser(camRot, settings);
+                    }
+                }               
             } 
         }
 
@@ -195,10 +216,11 @@ public class AIVisualisationManager : MonoBehaviour
             {
                 point.pointRenderer.enabled = true;
 
+
                 #region Set Taken Bool
 
                 if (Application.isPlaying) // Only in play Mode soldiers can "take" a point.
-                {            
+                {
                     MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
                     point.pointRenderer.GetPropertyBlock(propertyBlock);
                     if (point.IsPointFull())
@@ -212,37 +234,43 @@ public class AIVisualisationManager : MonoBehaviour
                     }
                     point.pointRenderer.SetPropertyBlock(propertyBlock);
                 }
-                
+
                 #endregion
 
-                if (!tacticalPointsBeingCurrentlyVisualised.Contains(point))
+                //Check if its visible to the camera
+                if (Vector3.Angle(-camForward, (camPos - point.transform.position)) < 40)
                 {
-                    currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
 
-                    if (tacticalPointVisualisersNotInUse.Count > 0)
+                    if (!tacticalPointsBeingCurrentlyVisualised.Contains(point))
                     {
-                        if (currentDistanceSquared < ratingRingCullDistanceSquared)
+                        currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
+
+                        if (tacticalPointVisualisersNotInUse.Count > 0)
                         {
-                            // Glue an Visualiser to another Point 
+                            if (currentDistanceSquared < ratingRingCullDistanceSquared)
+                            {
+                                // Glue an Visualiser to another Point 
 
-                            // manage collections
-                            visualiser = tacticalPointVisualisersNotInUse.Dequeue();
-                            tacticalPointsBeingCurrentlyVisualised.Add(point);
-                            tacticalPointVisualisersInUse.Add(visualiser);
+                                // manage collections
+                                visualiser = tacticalPointVisualisersNotInUse.Dequeue();
+                                tacticalPointsBeingCurrentlyVisualised.Add(point);
+                                tacticalPointVisualisersInUse.Add(visualiser);
 
-                            // logic & graphic update
-                            visualiser.pointToVisualise = point;
-                            visualiser.UpdateVisualiser(camRot, settings);
-                            visualiser.UpdateCoverRingMaterialsAndText();
+                                // logic & graphic update
+                                visualiser.pointToVisualise = point;
+                                visualiser.UpdateVisualiser(camRot, settings);
+                                visualiser.UpdateCoverRingMaterialsAndText();
 
-                            // positioning & activating
-                            //I dont parent the object, as it is more performance intinsive and can lead to potential errors
-                            visualiser.transform.position = point.transform.position;
-                            visualiser.gameObject.SetActive(true);
+                                // positioning & activating
+                                //I dont parent the object, as it is more performance intinsive and can lead to potential errors
+                                visualiser.transform.position = point.transform.position;
+                                visualiser.gameObject.SetActive(true);
 
+                            }
                         }
                     }
                 }
+
             }
             else
             {
