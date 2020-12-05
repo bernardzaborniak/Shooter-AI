@@ -14,7 +14,7 @@ public class TacticalPointsSceneInfoEditor : Editor
         TacticalPointsSceneInfo targetTacticalPointsSceneInfo = (TacticalPointsSceneInfo)target;
         //myTacticalPointsGeneratorBox.testInt = EditorGUILayout.IntField("testIntef", myTacticalPointsGeneratorBox.testInt);
         
-        if(targetTacticalPointsSceneInfo.pointRatings == null)
+        /*if(targetTacticalPointsSceneInfo.pointRatings == null)
         {
             Debug.Log("the cover ratings are null, rebake!");
         }
@@ -27,7 +27,7 @@ public class TacticalPointsSceneInfoEditor : Editor
 
             //foreach (var kvp in raycastUsedPerPoint)
                // GUILayout.Label("Key: " + kvp.Key + " value: " + kvp.Value);
-        }
+        }*/
 
         /*if (GUILayout.Button("Generate Points"))
         {

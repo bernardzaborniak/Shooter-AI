@@ -99,7 +99,8 @@ public class TacticalPointsManager : MonoBehaviour
         int id = 0;
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.pointReferenceID = id;
+            //point.pointReferenceID = id;
+            point.SetPointReferenceID(id);
             id++;
 
             PointCoverRating pointCoverRating = new PointCoverRating();
@@ -107,7 +108,8 @@ public class TacticalPointsManager : MonoBehaviour
 
             point.BakeCoverRatings(ref pointCoverRating, ref pointCastRaysContainer, crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask, maxCoverRayLength);
 
-            tacticalPointsSceneInfo.AddPointInfo(point.pointReferenceID, pointCoverRating, pointCastRaysContainer);
+            //tacticalPointsSceneInfo.AddPointInfo(point.pointReferenceID, pointCoverRating, pointCastRaysContainer);
+            tacticalPointsSceneInfo.AddPointInfo(point.GetPointReferenceID(), pointCoverRating, pointCastRaysContainer);
         }
     }
 
@@ -117,7 +119,7 @@ public class TacticalPointsManager : MonoBehaviour
 
         foreach (TacticalPoint point in tacticalPoints)
         {
-            point.UpdateRatings(tacticalPointsSceneInfo.GetCoverRating(point.pointReferenceID), tacticalPointsSceneInfo.GetRaysCast(point.pointReferenceID));
+            point.UpdateRatings(tacticalPointsSceneInfo.GetCoverRating(point.GetPointReferenceID()), tacticalPointsSceneInfo.GetRaysCast(point.GetPointReferenceID()));
         }
     }
 

@@ -59,7 +59,8 @@ public class TacticalPoint : MonoBehaviour
 
    // public UnityEvent OnUpdateRating;
 
-    [HideInInspector] public int pointReferenceID; //used as reference in the serialized data of the scriptable object the manager communicates to.
+    //[HideInInspector]
+    [SerializeField] int pointReferenceID; //used as reference in the serialized data of the scriptable object the manager communicates to.
 
 
     #region Update Cover Shoot Points inside Editor
@@ -89,6 +90,17 @@ public class TacticalPoint : MonoBehaviour
         }
 
     }*/
+
+    public void SetPointReferenceID(int id)
+    {
+        pointReferenceID = id;
+        EditorUtility.SetDirty(this);
+
+    }
+    public int GetPointReferenceID()
+    {
+        return pointReferenceID;
+    }
 
 
     public void UpdateCoverShootPoints()
