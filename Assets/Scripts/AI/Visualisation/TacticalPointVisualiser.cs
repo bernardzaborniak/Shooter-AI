@@ -33,9 +33,9 @@ public class TacticalPointVisualiser : MonoBehaviour
     public Color worstQualityColor;
 
 
-    [Header("Point Visualisation")]
-    public Renderer pointRenderer;
-    string takenBoolName = "Boolean_C1FD8F9C";
+    //[Header("Point Visualisation")]
+    // public Renderer pointRenderer;
+    // string takenBoolName = "Boolean_C1FD8F9C";
 
 
     [Header("Text References")]
@@ -77,170 +77,78 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     #endregion
 
-
-    /*void OnEnable()
+    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting)
     {
-        AIVisualisationManager.Instance.AddTacticalPointVisualiser(this);
-
-        //update values and colors on enable too
-
-        //TODO also dont use updateVisualiser from the visualiationManager, use ONTacticalPointValuesChanged instead, which is called by the tactical point
-
-        //UpdateVisualiser  will only take care of the text alignement
-        //UpdateCoverRingMaterialsAndText();
-    }
-
-    void OnDisable()
-    {
-        AIVisualisationManager.Instance.RemoveTacticalPointVisualise(this);
-    }*/
-
-    public void EnableVisualiser()
-    {
-
-    }
-
-    public void DisableVisualiser()
-    {
-
-    }
-
-    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting)//, bool cullText = false)
-    {
-        //enables/disables components based on rating and aligns the text rotation to camera
-
-        #region Determine whether the point should be drawn
-        //bool drawPoint = false;
-        /*if (pointToVisualise.tacticalPointType == TacticalPointType.OpenFieldPoint)
+        //Distance Rating
+        if (visualisationSetting.showCoverDistanceRating)
         {
-            if (visualisationSetting.showOpenFieldPoints) drawPoint = true;
-        }
-        else if (pointToVisualise.tacticalPointType == TacticalPointType.CoverPoint)
-        {
-            if (visualisationSetting.showCoverPoints) drawPoint = true;
-        }
-        else if (pointToVisualise.tacticalPointType == TacticalPointType.CoverShootPoint)
-        {
-            if (visualisationSetting.showCoverShootPoints) drawPoint = true;
-        }*/
-        #endregion
+            standingDistanceRenderer.enabled = true;
+            crouchedDistanceRenderer.enabled = true;
 
-        //if (drawPoint)
-        //{
-         //   pointRenderer.enabled = true;
-
-
-            //Distance
-            if (visualisationSetting.showCoverDistanceRating)
+            if (visualisationSetting.showCoverDistanceRatingNumbers)
             {
-                standingDistanceRenderer.enabled = true;
-                crouchedDistanceRenderer.enabled = true;
+                tmp_standingDistanceRatingParent.SetActive(true);
+                tmp_crouchedDistanceRatingParent.SetActive(true);
 
-                if (visualisationSetting.showCoverDistanceRatingNumbers) //&& !cullText)
+                //align to camera
+                for (int i = 0; i < 8; i++)
                 {
-                    tmp_standingDistanceRatingParent.SetActive(true);
-                    tmp_crouchedDistanceRatingParent.SetActive(true);
-
-                    //align to camera
-                    for (int i = 0; i < 8; i++)
-                    {
-                        tmp_standingDistanceRating[i].transform.rotation = cameraRot;
-                        tmp_crouchedDistanceRating[i].transform.rotation = cameraRot;
-                    }
-                }
-                else
-                {
-                    tmp_standingDistanceRatingParent.SetActive(false);
-                    tmp_crouchedDistanceRatingParent.SetActive(false);
+                    tmp_standingDistanceRating[i].transform.rotation = cameraRot;
+                    tmp_crouchedDistanceRating[i].transform.rotation = cameraRot;
                 }
             }
             else
             {
-                standingDistanceRenderer.enabled = false;
-                crouchedDistanceRenderer.enabled = false;
-
                 tmp_standingDistanceRatingParent.SetActive(false);
                 tmp_crouchedDistanceRatingParent.SetActive(false);
             }
-
-            //Quality
-            if (visualisationSetting.showCoverQualityRating)
-            {
-                standingQualityRenderer.enabled = true;
-                crouchedQualityRenderer.enabled = true;
-                if (visualisationSetting.showCoverQualityRatingNumbers)// && !cullText)
-                {
-                    tmp_standingQualityRatingParent.SetActive(true);
-                    tmp_crouchedQualityRatingParent.SetActive(true);
-
-                    //align to camera
-                    for (int i = 0; i < 8; i++)
-                    {
-                        tmp_standingQualityRating[i].transform.rotation = cameraRot;
-                        tmp_crouchedQualityRating[i].transform.rotation = cameraRot;
-                    }
-                }
-                else
-                {
-                    tmp_standingQualityRatingParent.SetActive(false);
-                    tmp_crouchedQualityRatingParent.SetActive(false);
-                }
-            }
-            else
-            {
-                standingQualityRenderer.enabled = false;
-                crouchedQualityRenderer.enabled = false;
-
-                tmp_standingQualityRatingParent.SetActive(false);
-                tmp_crouchedQualityRatingParent.SetActive(false);
-
-            }
-
-            // Set Taken Bool
-            /*propertyBlock = new MaterialPropertyBlock();
-            pointRenderer.GetPropertyBlock(propertyBlock);
-            if (pointToVisualise.IsPointFull())
-            {
-                propertyBlock.SetFloat(takenBoolName, 1f);
-            }
-            else
-            {
-                propertyBlock.SetFloat(takenBoolName, 0f);
-
-            }
-            pointRenderer.SetPropertyBlock(propertyBlock);*/
-        //}
-        /*else
+        }
+        else
         {
-            pointRenderer.enabled = false;
+            standingDistanceRenderer.enabled = false;
+            crouchedDistanceRenderer.enabled = false;
 
+            tmp_standingDistanceRatingParent.SetActive(false);
+            tmp_crouchedDistanceRatingParent.SetActive(false);
+        }
 
-                tmp_standingDistanceRatingParent.SetActive(false);
-                tmp_crouchedDistanceRatingParent.SetActive(false);
+        //Quality Rating
+        if (visualisationSetting.showCoverQualityRating)
+        {
+            standingQualityRenderer.enabled = true;
+            crouchedQualityRenderer.enabled = true;
+            if (visualisationSetting.showCoverQualityRatingNumbers)
+            {
+                tmp_standingQualityRatingParent.SetActive(true);
+                tmp_crouchedQualityRatingParent.SetActive(true);
+
+                //align to camera
+                for (int i = 0; i < 8; i++)
+                {
+                    tmp_standingQualityRating[i].transform.rotation = cameraRot;
+                    tmp_crouchedQualityRating[i].transform.rotation = cameraRot;
+                }
+            }
+            else
+            {
                 tmp_standingQualityRatingParent.SetActive(false);
                 tmp_crouchedQualityRatingParent.SetActive(false);
+            }
+        }
+        else
+        {
+            standingQualityRenderer.enabled = false;
+            crouchedQualityRenderer.enabled = false;
 
-                standingDistanceRenderer.enabled = false;
-                standingQualityRenderer.enabled = false;
-                crouchedDistanceRenderer.enabled = false;
-                crouchedQualityRenderer.enabled = false;
+            tmp_standingQualityRatingParent.SetActive(false);
+            tmp_crouchedQualityRatingParent.SetActive(false);
 
-        }*/
-
-
-
-
+        }
     }
 
     public void UpdateCoverRingMaterialsAndText()
     {
-        Debug.Log("Visualiser Point  UpdatePointRatings");
-        Debug.Log("standingDistanceRenderer: " + standingDistanceRenderer);
-        Debug.Log("pointToVisualise: " + pointToVisualise);
-        Debug.Log("pointToVisualise.coverRating: " + pointToVisualise.coverRating);
-
-        Debug.Log("pointToVisualise.coverRating.standingDistanceRating: " + pointToVisualise.coverRating.standingDistanceRating);
-
+        // Updates the colors of the directions and the text inside the text components & text color.
         UpdateRatingRing(false, standingDistanceRenderer, pointToVisualise.coverRating.standingDistanceRating, tmp_standingDistanceRatingParent, tmp_standingDistanceRating, standingDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(false, crouchedDistanceRenderer, pointToVisualise.coverRating.crouchedDistanceRating, tmp_crouchedDistanceRatingParent, tmp_crouchedDistanceRating, crouchedDistanceRenderer, worstDistance, bestDistance, worstDistanceColor, bestDistanceColor);
         UpdateRatingRing(true, standingQualityRenderer, pointToVisualise.coverRating.standingQualityRating, tmp_standingQualityRatingParent, tmp_standingQualityRating, standingQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
@@ -291,6 +199,8 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // The Gizmos Visualise the Raycasts
+
         if (pointToVisualise)
         {
             //crouched
@@ -327,7 +237,7 @@ public class TacticalPointVisualiser : MonoBehaviour
                 }
             }
         }
-        
+
 
     }
 }
