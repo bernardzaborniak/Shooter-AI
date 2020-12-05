@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -9,6 +10,8 @@ using UnityEditor;
 [RequireComponent(typeof(BoxCollider))]
 public class TacticalPointsGeneratorBox : MonoBehaviour
 {
+    #region Fields
+
     HashSet<GameObject> tacticalPointsToDestroy = new HashSet<GameObject>();
     [Range(0,5)]
     public int testInt;
@@ -23,6 +26,19 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
 
     public float minDistanceOfGeneratedPointToNavmeshVertex;
     Vector3[] navmeshVertices;
+
+    #endregion
+
+    void OnEnable()
+    {
+        TacticalPointsManager.Instance.AddTacticalPointsGeneratorBox(this);
+        manager = TacticalPointsManager.Instance;
+    }
+
+    void OnDisable()
+    {
+        TacticalPointsManager.Instance.RemoveTacticalPointsGeneratorBox(this);
+    }
 
     private void Start()
     {
@@ -167,17 +183,6 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         #endregion
     }
 
-
-    /*public void BakeCoverRatings()
-    {
-        //Debug.Log("BakeCoverDistanceRating clicked");
-        foreach (Transform generatedPoint in transform) //theyre all children
-        {
-            TacticalPoint point = generatedPoint.GetComponent<TacticalPoint>();
-            point.BakeCoverRatings(manager.crouchedCoverHeight, manager.standingCoverHeight, manager.raycastsPerCoverRating, manager.raycastLayerMask, manager.maxCoverRayLength);
-        }
-    }*/
-
     public void DeleteAllGeneratedPoints()
     {
         tacticalPointsToDestroy.Clear();
@@ -192,16 +197,5 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
         }
     }
 
-
-    void OnEnable()
-    {
-        TacticalPointsManager.Instance.AddTacticalPointsGeneratorBox(this);
-        manager = TacticalPointsManager.Instance;
-    }
-
-    void OnDisable()
-    {
-        TacticalPointsManager.Instance.RemoveTacticalPointsGeneratorBox(this);
-    }
 }
 #endif

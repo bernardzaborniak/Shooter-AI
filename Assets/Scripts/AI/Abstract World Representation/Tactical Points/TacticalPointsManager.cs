@@ -5,41 +5,33 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class TacticalPointsManager : MonoBehaviour
 {
+    #region Fields
+
+    [Tooltip("For Now this scriptable object needs to be created by hand and referenced here - I create it in the scene folder just where lighting data and similar are saved")]
     public TacticalPointsSceneInfo tacticalPointsSceneInfo;
 
     public GameObject openFieldPointPrefab;
     public float standingCoverHeight;
     public float crouchedCoverHeight;
+    [Tooltip("The Distance of the navmesh.SamplePosition distance")]
     public float maxSnapDistanceToNavmesh;
-   // public int distanceRaycastsPerPoint;
     public int raycastsPerCoverRating;
-    //public float maxRaycastDistance;
     public LayerMask raycastLayerMask;
 
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
     public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
 
-    [Tooltip("If an distance equals Infinity, we take this distance instead for bettr calculation")]
+    [Tooltip("If an distance equals Infinity, we take this distance instead for better calculation")]
     public float maxCoverRayLength;
 
-   // public TacticalPoint[] pointes;
-
-
+    // Singleton Instance
     public static TacticalPointsManager Instance;
+
+    #endregion
 
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
     {
-        Debug.Log("Manager on Enable: " + gameObject);
         Instance = this;
-
-        //Get All Points
-        //tacticalPoints.Clear();
-
-        //TacticalPoint[] points = FindObjectsOfType<TacticalPoint>();
-        //pointes = points;
-
-        //Get All Point Generators
-        //UpdatePointRatings();
     }
 
     private void Start()
@@ -50,19 +42,18 @@ public class TacticalPointsManager : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        if(Time.frameCount%10 == 0)
+        if (!Application.isPlaying)
         {
-            if (!Application.isPlaying)
+            // Sets the references for new instantiated CoverShootPoint children of CoverPoint
+            foreach (TacticalPoint point in tacticalPoints)
             {
-                foreach (TacticalPoint point in tacticalPoints)
-                {
-                    point.UpdateCoverShootPoints();
-                }
+                point.UpdateCoverShootPoints();
             }
-        } 
+        }
     }
 #endif
 
+    #region Add & Remove From Managed Collections
 
     public void AddTacticalPointsGeneratorBox(TacticalPointsGeneratorBox generator)
     {
@@ -84,6 +75,8 @@ public class TacticalPointsManager : MonoBehaviour
         tacticalPoints.Remove(point);
     }
 
+    #endregion
+
     public void GenerateAll()
     {
         foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
@@ -94,13 +87,11 @@ public class TacticalPointsManager : MonoBehaviour
 
     public void BakeAllCoverRatings()
     {
-        Debug.Log("manager  bake all cover ratings called");
         tacticalPointsSceneInfo.ResetInfo();
 
         int id = 0;
         foreach (TacticalPoint point in tacticalPoints)
         {
-            //point.pointReferenceID = id;
             point.SetPointReferenceID(id);
             id++;
 
@@ -109,15 +100,12 @@ public class TacticalPointsManager : MonoBehaviour
 
             point.BakeCoverRatings(ref pointCoverRating, ref pointCastRaysContainer, crouchedCoverHeight, standingCoverHeight, raycastsPerCoverRating, raycastLayerMask, maxCoverRayLength);
 
-            //tacticalPointsSceneInfo.AddPointInfo(point.pointReferenceID, pointCoverRating, pointCastRaysContainer);
             tacticalPointsSceneInfo.AddPointInfo(point.GetPointReferenceID(), pointCoverRating, pointCastRaysContainer);
         }
     }
 
     public void UpdatePointRatings()
     {
-        Debug.Log("manager UpdatePointRatings");
-
         foreach (TacticalPoint point in tacticalPoints)
         {
             point.UpdateRatings(tacticalPointsSceneInfo.GetCoverRating(point.GetPointReferenceID()), tacticalPointsSceneInfo.GetRaysCast(point.GetPointReferenceID()));
