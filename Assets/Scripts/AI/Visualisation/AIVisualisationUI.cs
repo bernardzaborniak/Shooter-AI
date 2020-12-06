@@ -34,6 +34,7 @@ public class AIVisualisationUI : MonoBehaviour
 
     public void OnShowOpenFieldPointsButtonClicked(ToogleableButton button)
     {
+        Debug.Log("open points clickd");
         manager.settings.showOpenFieldPoints = button.active;
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 
+// GOT it from https://github.com/Unity-Technologies/SRPBatcherBenchmark/blob/master/Assets/Scripts/SRPBatcherProfiler.cs
 namespace UnityEngine.Experimental.Rendering
 {
     public class SRPBatcherProfiler : MonoBehaviour

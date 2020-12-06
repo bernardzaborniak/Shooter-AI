@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//got it  from Eli from Wire Whiz, expanded it a bit
 //https://wirewhiz.com/how-to-code-two-bone-ik-in-unity/
 
 public class WhireWhizTwoBoneIK : MonoBehaviour

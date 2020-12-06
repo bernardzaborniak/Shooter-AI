@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// This class ombines some usefull functions
 public static class Utility
 {
     public static float Remap(this float value, float from1, float to1, float from2, float to2)
@@ -11,6 +12,7 @@ public static class Utility
 
     #region Quaternion Utils
 
+    //the queternion utils are from a guy from github: siehe unten
     /*
      * https://gist.github.com/maxattack/4c7b4de00f5c1b95a33b
     Copyright 2016 Max Kaufmann (max.kaufmann@gmail.com)

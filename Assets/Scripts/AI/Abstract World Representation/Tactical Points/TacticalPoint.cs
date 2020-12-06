@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public enum TacticalPointType
 {
@@ -123,17 +125,21 @@ public class TacticalPoint : MonoBehaviour
 
     #region Used For Baking & Setting Up Ratings
 
+#if UNITY_EDITOR
     public void SetPointReferenceID(int id)
     {
         pointReferenceID = id;
-        EditorUtility.SetDirty(this);
 
+        EditorUtility.SetDirty(this);
     }
+#endif
+
     public int GetPointReferenceID()
     {
         return pointReferenceID;
     }
 
+#if UNITY_EDITOR
     public (PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer) BakeCoverRatings(ref PointCoverRating pointCoverRating, ref PointCastRaysContainer pointCastRaysContainer, float crouchedHeight, float standingHeight, int raycastFactor, LayerMask raycastLayerMask, float maxRayLength)
     {
         int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
@@ -273,6 +279,7 @@ public class TacticalPoint : MonoBehaviour
 
         return (pointCoverRating, pointCastRaysContainer);
     }
+#endif
 
     public void UpdateRatings(PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer)
     {

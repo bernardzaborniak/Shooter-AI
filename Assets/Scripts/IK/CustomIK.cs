@@ -5,6 +5,8 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
+
+// this script is from the internet to- it think i created it following a tutorial, but it isnt working too well
 public class CustomIK : MonoBehaviour
 {
     public int chainLength;

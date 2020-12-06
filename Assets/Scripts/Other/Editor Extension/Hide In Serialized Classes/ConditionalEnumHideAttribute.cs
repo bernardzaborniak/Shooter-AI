@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System;
-using System.Collections;
+
 
 //Original version of the ConditionalEnumHideAttribute created by Brecht Lecluyse (www.brechtos.com)
 //Modified by: -

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
 
 [CustomEditor(typeof(TacticalPointsGeneratorBox))]
@@ -25,4 +24,3 @@ public class TacticalPointsGeneratorBoxEditor : Editor
         }
     }
 }
-#endif

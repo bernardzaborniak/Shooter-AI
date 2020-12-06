@@ -22,7 +22,10 @@ public class TacticalPointsManager : MonoBehaviour
     public int raycastsPerCoverRating;
     public LayerMask raycastLayerMask;
 
+
+#if UNITY_EDITOR
     public HashSet<TacticalPointsGeneratorBox> tacticalPointGenerators = new HashSet<TacticalPointsGeneratorBox>();
+#endif
     public HashSet<TacticalPoint> tacticalPoints = new HashSet<TacticalPoint>();
 
     [Tooltip("If an distance equals Infinity, we take this distance instead for better calculation")]
@@ -72,6 +75,7 @@ public class TacticalPointsManager : MonoBehaviour
 
     #region Add & Remove From Managed Collections
 
+#if UNITY_EDITOR
     public void AddTacticalPointsGeneratorBox(TacticalPointsGeneratorBox generator)
     {
         tacticalPointGenerators.Add(generator);
@@ -81,6 +85,7 @@ public class TacticalPointsManager : MonoBehaviour
     {
         tacticalPointGenerators.Remove(generator);
     }
+#endif
 
     public void AddTacticalPoint(TacticalPoint point)
     {
@@ -94,6 +99,8 @@ public class TacticalPointsManager : MonoBehaviour
 
     #endregion
 
+
+#if UNITY_EDITOR
     public void GenerateAll()
     {
         foreach (TacticalPointsGeneratorBox generator in tacticalPointGenerators)
@@ -101,7 +108,10 @@ public class TacticalPointsManager : MonoBehaviour
             generator.Generate();
         }
     }
+#endif
 
+
+#if UNITY_EDITOR
     public void BakeAllCoverRatings()
     {
         tacticalPointsSceneInfo.ResetInfo();
@@ -120,6 +130,7 @@ public class TacticalPointsManager : MonoBehaviour
             tacticalPointsSceneInfo.AddPointInfo(point.GetPointReferenceID(), pointCoverRating, pointCastRaysContainer);
         }
     }
+#endif
 
     public void UpdatePointRatings()
     {

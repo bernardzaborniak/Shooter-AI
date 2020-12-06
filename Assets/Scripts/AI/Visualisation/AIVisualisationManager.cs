@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [ExecuteInEditMode]
 public class AIVisualisationManager : MonoBehaviour
@@ -115,6 +118,7 @@ public class AIVisualisationManager : MonoBehaviour
 
     }
 
+#if UNITY_EDITOR
     private void OnRenderObject()
     {
         // This is called only in Edit Mode.
@@ -132,27 +136,24 @@ public class AIVisualisationManager : MonoBehaviour
 
         }
     }
+#endif
 
     void UpdateVisualisersShown(bool inSceneView)
     {
         #region Prepare Variables
 
-        Vector3 camForward;
-        Quaternion camRot;
-        Vector3 camPos;
+        Vector3 camPos = camTransform.position;
+        Quaternion camRot = camTransform.rotation;
+        Vector3 camForward = camTransform.forward;
 
+#if UNITY_EDITOR
         if (inSceneView)
         {
-             camPos = SceneView.lastActiveSceneView.camera.transform.position;
+            camPos = SceneView.lastActiveSceneView.camera.transform.position;
             camRot = SceneView.lastActiveSceneView.rotation;
             camForward = SceneView.lastActiveSceneView.camera.transform.forward;
         }
-        else
-        {
-            camPos = camTransform.position;
-            camRot = camTransform.rotation;
-            camForward = camTransform.forward;
-        }
+#endif
 
         float currentDistanceSquared;
         TacticalPointVisualiser visualiser;

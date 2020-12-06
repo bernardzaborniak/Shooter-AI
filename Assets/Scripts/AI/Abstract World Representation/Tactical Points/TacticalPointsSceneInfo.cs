@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "TacticalPointsSceneInfo.asset", menuName = "AI/AbstractWorldRepresentation")]
 public class TacticalPointsSceneInfo : ScriptableObject
@@ -20,7 +22,9 @@ public class TacticalPointsSceneInfo : ScriptableObject
         pointRatingValues.Clear();
         raycastUsedValues.Clear();
 
+#if UNITY_EDITOR
         EditorUtility.SetDirty(this); // Set dirty is necessary so the changes wont reset on Scene Reload or EnterPlayMode.
+#endif
     }
 
     public void AddPointInfo(int pointID, PointCoverRating pointCoverRating, PointCastRaysContainer pointCastRaysContainer)
@@ -29,7 +33,9 @@ public class TacticalPointsSceneInfo : ScriptableObject
         pointRatingValues.Add(pointCoverRating);
         raycastUsedValues.Add(pointCastRaysContainer);
 
+#if UNITY_EDITOR
         EditorUtility.SetDirty(this); // Set dirty is necessary so the changes wont reset on Scene Reload or EnterPlayMode.
+#endif
     }
 
     public PointCoverRating GetCoverRating(int pointID)
