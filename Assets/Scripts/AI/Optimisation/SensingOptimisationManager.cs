@@ -39,9 +39,9 @@ public class SensingOptimisationManager : ScriptOptimisationManager
 
         foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
         {
-            LODGroups[0].AddOptimiser(optimiser);
+            //LODGroups[0].AddOptimiser(optimiser);
 
-            /* directionTowardsObject = optimiser.GetPosition() - playerPosition;
+             directionTowardsObject = optimiser.GetPosition() - playerPosition;
 
              angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
              if (angle < playerViewConeAngle)
@@ -62,7 +62,7 @@ public class SensingOptimisationManager : ScriptOptimisationManager
                  LODGroups[2].AddOptimiser(optimiser);
              }
 
- */
+ 
         }
     }
 }

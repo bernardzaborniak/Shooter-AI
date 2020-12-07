@@ -95,12 +95,14 @@ public class ScriptOptimisationLODGroup
            }
        }*/
 
-        Debug.Log("group size: " + updateGroups[currentUpdateCycleFrame].Count);//
+        //Debug.Log("group size: " + updateGroups[currentUpdateCycleFrame].Count + " currentUpdateCycleFrame: " + currentUpdateCycleFrame);//
         foreach (IScriptOptimiser optimiser in updateGroups[currentUpdateCycleFrame])
         {
-            Debug.Log("update optimiser");
+            //Debug.Log("update optimiser");
             optimiser.UpdateOptimiser();
         }
+
+        //Debug.Log("update group end");
 
 
         /*for (int i = 0; i < nextGroupUnscaledUpdateTimes.Length; i++)

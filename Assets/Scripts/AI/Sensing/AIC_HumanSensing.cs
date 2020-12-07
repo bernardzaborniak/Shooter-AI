@@ -22,7 +22,7 @@ public class AIC_HumanSensing : AIComponent
     int myTeamID;
 
     //for debug only:
-    float lastSenseTime = 0;
+    //float lastSenseTime = 0;
 
 
 
@@ -34,26 +34,26 @@ public class AIC_HumanSensing : AIComponent
         nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
         myTeamID = myEntity.teamID;
 
-        lastSenseTime = Time.unscaledTime;
+        //lastSenseTime = Time.unscaledTime;
     }
 
     public override void UpdateComponent()
     {
-        if (Time.time > nextSensingTime)
-        //if(optimiser.ShouldSensingBeUpdated())
+        //if (Time.time > nextSensingTime)
+        if(optimiser.ShouldSensingBeUpdated())
         {
             UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
-            Debug.Log("update sensing, interval: " + (Time.unscaledTime - lastSenseTime));
-            lastSenseTime = Time.unscaledTime;
+           // Debug.Log("update sensing, interval: " + (Time.unscaledTime - lastSenseTime));
+            //lastSenseTime = Time.unscaledTime;
 
-            //optimiser.OnSensingWasUpdated();
-            nextSensingTime = Time.time + sensingInterval;
+            optimiser.OnSensingWasUpdated();
+            //nextSensingTime = Time.time + sensingInterval;
 
-            for (int i = 0; i < 5; i++)
+            /*for (int i = 0; i < 5; i++)
             {
                 Debug.Log("I sense :)");
-            }
+            }*/
 
             #region scan for enemies
 

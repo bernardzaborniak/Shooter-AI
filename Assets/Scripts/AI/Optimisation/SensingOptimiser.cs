@@ -8,6 +8,8 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
 
     [SerializeField] bool updateSensingNextTimePossible;
 
+    float lastSenseTime = 0;
+
     private void OnEnable()
     {
          SensingOptimisationManager.Instance.AddOptimiser(this);
@@ -21,6 +23,9 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
     public void UpdateOptimiser()
     {
         updateSensingNextTimePossible = true;
+
+        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s");
+        lastSenseTime = Time.time;
     }
 
     public Vector3 GetPosition()
