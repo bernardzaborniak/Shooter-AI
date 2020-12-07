@@ -8,5 +8,7 @@ public interface IScriptOptimiser
 
     Vector3 GetPosition();
 
+    string GetName(); // Debug
+
 
 }

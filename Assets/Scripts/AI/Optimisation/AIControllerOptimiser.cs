@@ -37,4 +37,9 @@ public class AIControllerOptimiser : MonoBehaviour, IScriptOptimiser
     {
         updateAIControllerNextTimePossible = false;
     }
+
+    public string GetName()
+    {
+        return transform.parent.name;
+    }
 }

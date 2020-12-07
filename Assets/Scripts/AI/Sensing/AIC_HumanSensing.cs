@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class AIC_HumanSensing : AIComponent
 {
+    public SensingOptimiser optimiser;
     //public GameEntity nearestEnemy;
     public SensingEntityVisibilityInfo nearestEnemyInfo;
     public HashSet<GameEntity> enemiesInSensingRadius = new HashSet<GameEntity>();
     Collider[] collidersInRadius;
 
-    public float sensingInterval;
+    public float sensingInterval = 0.5f;
     float nextSensingTime;
     public float sensingRadius;
     public LayerMask sensingLayerMask;
@@ -19,6 +20,9 @@ public class AIC_HumanSensing : AIComponent
     public LayerMask postSensingLayerMask;
 
     int myTeamID;
+
+    //for debug only:
+    float lastSenseTime = 0;
 
 
 
@@ -29,13 +33,27 @@ public class AIC_HumanSensing : AIComponent
 
         nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
         myTeamID = myEntity.teamID;
+
+        lastSenseTime = Time.unscaledTime;
     }
 
     public override void UpdateComponent()
     {
-        if(Time.time > nextSensingTime)
+        //if (Time.time > nextSensingTime)
+        if(optimiser.ShouldSensingBeUpdated())
         {
-            nextSensingTime = Time.time + sensingInterval;
+            UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
+
+            Debug.Log("update sensing, interval: " + (Time.unscaledTime - lastSenseTime));
+            lastSenseTime = Time.unscaledTime;
+
+            optimiser.OnSensingWasUpdated();
+            //nextSensingTime = Time.time + sensingInterval;
+
+            for (int i = 0; i < 5; i++)
+            {
+                Debug.Log("I sense :)");
+            }
 
             #region scan for enemies
 
@@ -101,6 +119,8 @@ public class AIC_HumanSensing : AIComponent
             }
 
             #endregion
+
+            UnityEngine.Profiling.Profiler.EndSample();
 
         }
     }

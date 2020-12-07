@@ -88,6 +88,7 @@ public class AIController : EntityComponent
             aIComponents[i].UpdateComponent();
         }
 
+        UnityEngine.Profiling.Profiler.BeginSample("AI Controller Profiling");
 
 
 
@@ -141,8 +142,6 @@ public class AIController : EntityComponent
 
         if (nearestEnemyInfo != null)
         {
-
-
             #region Positioning 
             if (positioningState == PositioningState.OpenField)
             {
@@ -610,7 +609,7 @@ public class AIController : EntityComponent
         }*/
 
 
-
+        UnityEngine.Profiling.Profiler.EndSample();
     }
 
 

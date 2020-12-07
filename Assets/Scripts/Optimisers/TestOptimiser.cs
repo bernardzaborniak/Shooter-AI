@@ -36,4 +36,9 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
         return transform.position;
     }
 
+    public string GetName()
+    {
+        return transform.parent.name;
+    }
+
 }

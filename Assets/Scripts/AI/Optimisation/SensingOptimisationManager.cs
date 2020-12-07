@@ -39,28 +39,30 @@ public class SensingOptimisationManager : ScriptOptimisationManager
 
         foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
         {
-            directionTowardsObject = optimiser.GetPosition() - playerPosition;
+            LODGroups[0].AddOptimiser(optimiser);
 
-            angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
-            if (angle < playerViewConeAngle)
-            {
-                squaredDistance = directionTowardsObject.sqrMagnitude;
+            /* directionTowardsObject = optimiser.GetPosition() - playerPosition;
 
-                if (squaredDistance > distanceOfLOD1StartSquared)
-                {
-                    LODGroups[1].AddOptimiser(optimiser);
-                }
-                else
-                {
-                    LODGroups[0].AddOptimiser(optimiser);
-                }
-            }
-            else
-            {
-                LODGroups[2].AddOptimiser(optimiser);
-            }
+             angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
+             if (angle < playerViewConeAngle)
+             {
+                 squaredDistance = directionTowardsObject.sqrMagnitude;
 
+                 if (squaredDistance > distanceOfLOD1StartSquared)
+                 {
+                     LODGroups[1].AddOptimiser(optimiser);
+                 }
+                 else
+                 {
+                     LODGroups[0].AddOptimiser(optimiser);
+                 }
+             }
+             else
+             {
+                 LODGroups[2].AddOptimiser(optimiser);
+             }
 
+ */
         }
     }
 }

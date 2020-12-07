@@ -29,6 +29,7 @@ public class ScriptOptimisationLODGroup
 
     [Header("Debug")]
     public int[] debugGroupSizes;
+    public int[] debugGroupSizesFilledInOtherLoop; //
 
 
     #endregion
@@ -44,6 +45,7 @@ public class ScriptOptimisationLODGroup
 
         groupsUpdateDelays = new float[updateGroups];
         debugGroupSizes = new int[updateGroups];
+        debugGroupSizesFilledInOtherLoop = new int[updateGroups]; //
         nextGroupUnscaledUpdateTimes = new float[updateGroups];
         groupsUpdatedThisCycle = new bool[updateGroups];
 
@@ -62,6 +64,7 @@ public class ScriptOptimisationLODGroup
 
     public void UpdateLODGroup()
     {
+        Debug.Log("Update groudp ------------------------------------------------" + name);
         if (Time.unscaledTime > nextGeneralUpdateTime)
         {
             nextGeneralUpdateTime = Time.unscaledTime + updateInterval;
@@ -80,11 +83,21 @@ public class ScriptOptimisationLODGroup
             {
                 if (Time.unscaledTime > nextGroupUnscaledUpdateTimes[i])
                 {
+                    Debug.Log("group update: " + i + "---------------------");//
+                    Debug.Log("group size: " + i + " : " + groups[i].Count);//
+
                     groupsUpdatedThisCycle[i] = true;
+
+                    int debugCounter = 0; //
                     foreach (IScriptOptimiser item in groups[i])
                     {
+                        debugCounter++; //
+                        Debug.Log("UpdateOptimiser");
                         item.UpdateOptimiser();
                     }
+                    debugGroupSizesFilledInOtherLoop[i] = debugCounter; //
+                    Debug.Log("group size 2: " + i + " : " + debugCounter);//
+
                 }
             }
         }

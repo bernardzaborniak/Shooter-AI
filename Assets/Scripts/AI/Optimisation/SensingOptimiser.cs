@@ -6,7 +6,7 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
 {
     //instead of directly updating the sensing script, the optimiser just tells the sensing script when an update would be good and performant.
 
-    bool updateSensingNextTimePossible;
+    [SerializeField] bool updateSensingNextTimePossible;
 
     private void OnEnable()
     {
@@ -36,5 +36,10 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
     public void OnSensingWasUpdated()
     {
         updateSensingNextTimePossible = false;
+    }
+
+    public string GetName()
+    {
+        return transform.parent.name;
     }
 }
