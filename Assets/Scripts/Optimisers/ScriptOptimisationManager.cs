@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-
-
 public class ScriptOptimisationManager : MonoBehaviour
 {
     #region Fields
@@ -14,39 +11,55 @@ public class ScriptOptimisationManager : MonoBehaviour
     public Transform playerTransform;
     public float playerViewConeAngle;
 
-    [Tooltip("Only Temporary - use something more modular later for the group switch conditions")]
-    public float distanceOfLOD1Start;
-    float distanceOfLOD1StartSquared;
+    //[Tooltip("Only Temporary - use something more modular later for the group switch conditions")]
+    //[SerializeField]  float distanceOfLOD1Start;
+    //float distanceOfLOD1StartSquared;
 
     //have a group of all optimisers this manager manages
-    HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
+    protected HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
 
     [Tooltip("every x seconds all optimisers are sorted into LOD groups based on distance or angle from camera")]
     public float sortIntoLODGroupsInterval;
-    float nextSortIntoLODGroupsTime;
-
-
-    [Header("Debug")]
-    public int[] LODGroupSizes;
+    protected float nextSortIntoLODGroupsTime;
 
 
     [Header("LOD Groups")]
     [Space(10)]
     public ScriptOptimisationLODGroup[] LODGroups;
 
+    [Header("Debug")]
+    public int[] LODGroupSizes;
+
     #endregion
 
-    public static ScriptOptimisationManager Instance;
-    void Awake()
+    //public static ScriptOptimisationManager Instance;  //only declare classes which derive from this script as singleton
+    /* protected void Awake()
+     {
+         if (Instance != null)
+         {
+             DestroyImmediate(Instance);
+         }
+         else
+         {
+             Instance = this;
+         }
+
+         /*for (int i = 0; i < LODGroups.Length; i++)
+         {
+             LODGroups[i].SetUpLODGroup();
+         }
+
+         nextSortIntoLODGroupsTime = 0.01f;
+         LODGroupSizes = new int[LODGroups.Length];
+     }*/
+
+    private void Start()
     {
-        if (Instance != null)
-        {
-            DestroyImmediate(Instance);
-        }
-        else
-        {
-            Instance = this;
-        }
+        SetUpOptimisationManager();
+    }
+    protected virtual void SetUpOptimisationManager()
+    {
+        //distanceOfLOD1StartSquared = distanceOfLOD1Start * distanceOfLOD1Start;
 
         for (int i = 0; i < LODGroups.Length; i++)
         {
@@ -57,12 +70,12 @@ public class ScriptOptimisationManager : MonoBehaviour
         LODGroupSizes = new int[LODGroups.Length];
     }
 
-    void Start()
+    private void Update()
     {
-        distanceOfLOD1StartSquared = distanceOfLOD1Start * distanceOfLOD1Start;
+        UpdateOptimisationManager();
     }
-
-    void Update()
+    //protected void Update()
+    protected virtual void UpdateOptimisationManager()
     {
         for (int i = 0; i < LODGroups.Length; i++)
         {
@@ -77,12 +90,12 @@ public class ScriptOptimisationManager : MonoBehaviour
         }
     }
 
-    public void AddOptimiser(IScriptOptimiser optimiser)
+    public virtual void AddOptimiser(IScriptOptimiser optimiser)
     {
         optimisersRegisteredInManager.Add(optimiser);
     }
 
-    public void RemoveOptimiser(IScriptOptimiser optimiser)
+    public virtual void RemoveOptimiser(IScriptOptimiser optimiser)
     {
         optimisersRegisteredInManager.Remove(optimiser);
 
@@ -96,9 +109,9 @@ public class ScriptOptimisationManager : MonoBehaviour
         }
     }
 
-    public void SortOptimisersIntoLODGroups()
+    public virtual void SortOptimisersIntoLODGroups()
     {
-        Vector3 playerCameraForward = playerTransform.forward;
+       /* Vector3 playerCameraForward = playerTransform.forward;
 
         Vector3 directionTowardsObject;  //maybe also have the option to optimise dased ona angle?
         float squaredDistance = 0;
@@ -134,7 +147,7 @@ public class ScriptOptimisationManager : MonoBehaviour
             }
 
             
-        }
+        }*/
     }
 
 }
@@ -142,7 +155,7 @@ public class ScriptOptimisationManager : MonoBehaviour
 [System.Serializable]
 public class ScriptOptimisationLODGroup
 {
-    #region fields
+    #region Fields
 
     public string name;
     [Min(0)]
@@ -151,6 +164,7 @@ public class ScriptOptimisationLODGroup
 
     HashSet<IScriptOptimiser> objectsInLODGroup = new HashSet<IScriptOptimiser>();
     [Min(1)]
+    [Tooltip("roughly updateInterval * 90 at 90 fps, or times 60 on 60 fps system")]
     public int updateGroups = 3;
     HashSet<IScriptOptimiser>[] groups;
 
@@ -158,13 +172,13 @@ public class ScriptOptimisationLODGroup
     float[] nextGroupUnscaledUpdateTimes;
     public bool[] groupsUpdatedThisCycle;
 
-    [Header("Debug")]
-    public int[] debugGroupSizes;
-
-
     //for determining biggestAndSmallestGroup
     HashSet<IScriptOptimiser> smallestOrLargestGroup;
     int smallestOrLargestGroupSize;
+
+    [Header("Debug")]
+    public int[] debugGroupSizes;
+
 
     #endregion
 
