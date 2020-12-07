@@ -9,17 +9,18 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
     float current;
     float speed = 1;
 
+    float lastSenseTime = 0;
 
     private void OnEnable()
     {
         //ScriptOptimisationManager.Instance.AddOptimiser(this);
-        SensingOptimisationManager.Instance.AddOptimiser(this);
+        TestOptimisationManager.Instance.AddOptimiser(this);
     }
 
     private void OnDisable()
     {
         //ScriptOptimisationManager.Instance.RemoveOptimiser(this);
-        SensingOptimisationManager.Instance.RemoveOptimiser(this);
+        TestOptimisationManager.Instance.RemoveOptimiser(this);
     }
 
     public void UpdateOptimiser()
@@ -28,7 +29,10 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
 
         transform.localScale = new Vector3(current, current, current);
 
-        Debug.Log("yee");
+       // Debug.Log("yee");
+
+        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s");
+        lastSenseTime = Time.time;
     }
 
     public Vector3 GetPosition()
