@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
+public class AIControllerOptimiser : MonoBehaviour, IScriptOptimiser
 {
     //instead of directly updating the sensing script, the optimiser just tells the sensing script when an update would be good and performant.
 
-    bool updateSensingNextTimePossible;
+    bool updateAIControllerNextTimePossible;
 
     private void OnEnable()
     {
-         SensingOptimisationManager.Instance.AddOptimiser(this);
+        AIControllerOptimisationManager.Instance.AddOptimiser(this);
     }
 
     private void OnDisable()
     {
-         SensingOptimisationManager.Instance.RemoveOptimiser(this);
+        AIControllerOptimisationManager.Instance.RemoveOptimiser(this);
     }
 
     public void UpdateOptimiser()
     {
-        updateSensingNextTimePossible = true;
+        updateAIControllerNextTimePossible = true;
     }
 
     public Vector3 GetPosition()
@@ -30,11 +30,11 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
 
     public bool ShouldSensingBeUpdated()
     {
-        return updateSensingNextTimePossible;
+        return updateAIControllerNextTimePossible;
     }
 
     public void OnSensingWasUpdated()
     {
-        updateSensingNextTimePossible = false;
+        updateAIControllerNextTimePossible = false;
     }
 }
