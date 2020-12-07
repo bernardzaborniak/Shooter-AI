@@ -14,9 +14,11 @@ public class ScriptOptimisationManager : MonoBehaviour
     //have a group of all optimisers this manager manages
     protected HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
 
-    [Tooltip("every x seconds all optimisers are sorted into LOD groups based on distance or angle from camera")]
-    public float sortIntoLODGroupsInterval;
-    protected float nextSortIntoLODGroupsTime;
+    // [Tooltip("every x seconds all optimisers are sorted into LOD groups based on distance or angle from camera")]
+    // public float sortIntoLODGroupsInterval;
+    [Tooltip("every x frames all optimisers are sorted into LOD groups based on distance or angle from camera - for 90 fps - write 90 in this field")]
+    public int sortIntoLODGroupsFrameInterval;
+    protected int nextSortIntoLODGroupsFrameCount;
 
 
     [Header("LOD Groups")]
@@ -44,7 +46,8 @@ public class ScriptOptimisationManager : MonoBehaviour
             LODGroups[i].SetUpLODGroup();
         }
 
-        nextSortIntoLODGroupsTime = 0.01f;
+        //nextSortIntoLODGroupsTime = 0.01f;
+        nextSortIntoLODGroupsFrameCount = 0;
         LODGroupSizes = new int[LODGroups.Length];
     }
 
@@ -61,11 +64,17 @@ public class ScriptOptimisationManager : MonoBehaviour
             LODGroupSizes[i] = LODGroups[i].GetLODGroupSize();
         }
 
-        if(Time.unscaledTime > nextSortIntoLODGroupsTime)
+        /* if(Time.unscaledTime > nextSortIntoLODGroupsTime)
+         {
+             nextSortIntoLODGroupsTime = Time.unscaledTime + sortIntoLODGroupsInterval;
+             SortOptimisersIntoLODGroups();
+         }*/
+        if (Time.frameCount > nextSortIntoLODGroupsFrameCount)
         {
-            nextSortIntoLODGroupsTime = Time.unscaledTime + sortIntoLODGroupsInterval;
+            nextSortIntoLODGroupsFrameCount = Time.frameCount + sortIntoLODGroupsFrameInterval;
             SortOptimisersIntoLODGroups();
         }
+
     }
 
     public virtual void AddOptimiser(IScriptOptimiser optimiser)

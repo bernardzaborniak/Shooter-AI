@@ -9,87 +9,113 @@ public class ScriptOptimisationLODGroup
     #region Fields
 
     public string name;
-    [Min(0)]
-    public float updateInterval = 1 / 30;
-    float nextGeneralUpdateTime;
+    [Min(1)]
+    //public float updateInterval = 1 / 30;
+    [Tooltip("Update Interval In Frames")]
+    public int updateCycleFrameInterval;//= 1 / 30;
+    //float nextGeneralUpdateTime;
+    int nextStartUpdateCycleFrameCount;
 
     HashSet<IScriptOptimiser> objectsInLODGroup = new HashSet<IScriptOptimiser>();
-    [Min(1)]
-    [Tooltip("roughly updateInterval * 90 at 90 fps, or times 60 on 60 fps system")]
-    public int updateGroups = 3;
-    HashSet<IScriptOptimiser>[] groups;
+    //[Min(1)]
+    //[Tooltip("roughly updateInterval * 90 at 90 fps, or times 60 on 60 fps system")]
+    int updateGroupsAmount; //= 3;
+    HashSet<IScriptOptimiser>[] updateGroups;
 
-    float[] groupsUpdateDelays;
-    float[] nextGroupUnscaledUpdateTimes;
-    public bool[] groupsUpdatedThisCycle;
+    //float[] groupsUpdateDelays;
+    int[] groupsUpdateFrameDelays;
+    //float[] nextGroupUnscaledUpdateTimes;
+    //public bool[] groupsUpdatedThisCycle;
+
+    int currentUpdateCycleFrame;
 
     //for determining biggestAndSmallestGroup
-    HashSet<IScriptOptimiser> smallestOrLargestGroup;
-    int smallestOrLargestGroupSize;
+    HashSet<IScriptOptimiser> smallestUpdateGroup;
+    int smallestGroupSize;
 
     [Header("Debug")]
     public int[] debugGroupSizes;
-    public int[] debugGroupSizesFilledInOtherLoop; //
+    //public int[] debugGroupSizesFilledInOtherLoop; //
 
 
     #endregion
 
     public void SetUpLODGroup()
     {
-        groups = new HashSet<IScriptOptimiser>[updateGroups];
+        updateGroupsAmount = updateCycleFrameInterval;
+        updateGroups = new HashSet<IScriptOptimiser>[updateGroupsAmount];
 
-        for (int i = 0; i < groups.Length; i++)
+        for (int i = 0; i < updateGroups.Length; i++)
         {
-            groups[i] = new HashSet<IScriptOptimiser>();
+            updateGroups[i] = new HashSet<IScriptOptimiser>();
         }
 
-        groupsUpdateDelays = new float[updateGroups];
-        debugGroupSizes = new int[updateGroups];
-        debugGroupSizesFilledInOtherLoop = new int[updateGroups]; //
-        nextGroupUnscaledUpdateTimes = new float[updateGroups];
-        groupsUpdatedThisCycle = new bool[updateGroups];
+        //groupsUpdateFrameDelays = new float[updateGroupsAmount];
+        groupsUpdateFrameDelays = new int[updateGroupsAmount];
+        debugGroupSizes = new int[updateGroupsAmount];
+        //debugGroupSizesFilledInOtherLoop = new int[updateGroupsAmount]; //
+        //nextGroupUnscaledUpdateTimes = new float[updateGroupsAmount];
+        //groupsUpdatedThisCycle = new bool[updateGroupsAmount];
 
-        float delay = 0;
+        //float delay = 0;
+        int individualUpdateGroupDelay = 0;
 
-        for (int i = 0; i < groupsUpdateDelays.Length; i++)
+        for (int i = 0; i < groupsUpdateFrameDelays.Length; i++)
         {
-            delay = (updateInterval / updateGroups) * i;
-            groupsUpdateDelays[i] = delay;
-
-            nextGroupUnscaledUpdateTimes[i] = delay;
+            //individualUpdateGroupDelay = (updateCycleFrameInterval / updateGroupsAmount) * i;
+            groupsUpdateFrameDelays[i] = individualUpdateGroupDelay;
+            individualUpdateGroupDelay++;
+            //nextGroupUnscaledUpdateTimes[i] = individualUpdateGroupDelay;
         }
 
-        nextGeneralUpdateTime = 0;
+        //nextGeneralUpdateTime = 0;
+        nextStartUpdateCycleFrameCount = 0;
+        currentUpdateCycleFrame = 0;
     }
 
     public void UpdateLODGroup()
     {
         Debug.Log("Update groudp ------------------------------------------------" + name);
-        if (Time.unscaledTime > nextGeneralUpdateTime)
+
+        if(Time.frameCount >= nextStartUpdateCycleFrameCount)
         {
-            nextGeneralUpdateTime = Time.unscaledTime + updateInterval;
-
-            for (int i = 0; i < nextGroupUnscaledUpdateTimes.Length; i++)
-            {
-                nextGroupUnscaledUpdateTimes[i] = Time.unscaledTime + groupsUpdateDelays[i];
-
-                groupsUpdatedThisCycle[i] = false;
-            }
+            nextStartUpdateCycleFrameCount = Time.frameCount + updateCycleFrameInterval;
+            currentUpdateCycleFrame = 0;
         }
 
-        for (int i = 0; i < nextGroupUnscaledUpdateTimes.Length; i++)
+        /*if (Time.unscaledTime > nextGeneralUpdateTime)
+       {
+           nextGeneralUpdateTime = Time.unscaledTime + updateCycleFrameInterval;
+
+           for (int i = 0; i < nextGroupUnscaledUpdateTimes.Length; i++)
+           {
+               nextGroupUnscaledUpdateTimes[i] = Time.unscaledTime + groupsUpdateFrameDelays[i];
+
+               groupsUpdatedThisCycle[i] = false;
+           }
+       }*/
+
+        Debug.Log("group size: " + updateGroups[currentUpdateCycleFrame].Count);//
+        foreach (IScriptOptimiser optimiser in updateGroups[currentUpdateCycleFrame])
+        {
+            Debug.Log("update optimiser");
+            optimiser.UpdateOptimiser();
+        }
+
+
+        /*for (int i = 0; i < nextGroupUnscaledUpdateTimes.Length; i++)
         {
             if (!groupsUpdatedThisCycle[i])
             {
                 if (Time.unscaledTime > nextGroupUnscaledUpdateTimes[i])
                 {
                     Debug.Log("group update: " + i + "---------------------");//
-                    Debug.Log("group size: " + i + " : " + groups[i].Count);//
+                    Debug.Log("group size: " + i + " : " + updateGroups[i].Count);//
 
                     groupsUpdatedThisCycle[i] = true;
 
                     int debugCounter = 0; //
-                    foreach (IScriptOptimiser item in groups[i])
+                    foreach (IScriptOptimiser item in updateGroups[i])
                     {
                         debugCounter++; //
                         Debug.Log("UpdateOptimiser");
@@ -100,14 +126,20 @@ public class ScriptOptimisationLODGroup
 
                 }
             }
-        }
+        }*/
 
-        for (int i = 0; i < groups.Length; i++)
+        for (int i = 0; i < updateGroups.Length; i++)
         {
-            debugGroupSizes[i] = groups[i].Count;
+            debugGroupSizes[i] = updateGroups[i].Count;
         }
 
         //after x seconds, change the number of things in each group if needed - if one group gets too big difference >1
+
+
+
+        currentUpdateCycleFrame++;
+
+       
     }
 
     public void AddOptimiser(IScriptOptimiser optimiser)
@@ -118,9 +150,9 @@ public class ScriptOptimisationLODGroup
 
     public void RemoveOptimiser(IScriptOptimiser optimiser)
     {
-        for (int i = 0; i < groups.Length; i++)
+        for (int i = 0; i < updateGroups.Length; i++)
         {
-            groups[i].Remove(optimiser);
+            updateGroups[i].Remove(optimiser);
         }
         objectsInLODGroup.Remove(optimiser);
 
@@ -145,19 +177,19 @@ public class ScriptOptimisationLODGroup
 
     HashSet<IScriptOptimiser> GetSmallestGroup()
     {
-        smallestOrLargestGroupSize = int.MaxValue;
+        smallestGroupSize = int.MaxValue;
         //smallestOrLargestGroup = groups[0];
 
-        for (int i = 0; i < groups.Length; i++)
+        for (int i = 0; i < updateGroups.Length; i++)
         {
-            if (groups[i].Count < smallestOrLargestGroupSize)
+            if (updateGroups[i].Count < smallestGroupSize)
             {
-                smallestOrLargestGroupSize = groups[i].Count;
-                smallestOrLargestGroup = groups[i];
+                smallestGroupSize = updateGroups[i].Count;
+                smallestUpdateGroup = updateGroups[i];
             }
         }
 
-        return smallestOrLargestGroup;
+        return smallestUpdateGroup;
     }
 
     public bool ContainsOptimiser(IScriptOptimiser optimiser)
@@ -167,9 +199,9 @@ public class ScriptOptimisationLODGroup
 
     public void ClearGroup()
     {
-        for (int i = 0; i < groups.Length; i++)
+        for (int i = 0; i < updateGroups.Length; i++)
         {
-            groups[i].Clear();
+            updateGroups[i].Clear();
         }
         objectsInLODGroup.Clear();
     }

@@ -39,16 +39,16 @@ public class AIC_HumanSensing : AIComponent
 
     public override void UpdateComponent()
     {
-        //if (Time.time > nextSensingTime)
-        if(optimiser.ShouldSensingBeUpdated())
+        if (Time.time > nextSensingTime)
+        //if(optimiser.ShouldSensingBeUpdated())
         {
             UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
             Debug.Log("update sensing, interval: " + (Time.unscaledTime - lastSenseTime));
             lastSenseTime = Time.unscaledTime;
 
-            optimiser.OnSensingWasUpdated();
-            //nextSensingTime = Time.time + sensingInterval;
+            //optimiser.OnSensingWasUpdated();
+            nextSensingTime = Time.time + sensingInterval;
 
             for (int i = 0; i < 5; i++)
             {
