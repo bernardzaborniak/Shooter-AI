@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1442209871090441112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733483243224265197}
+  - component: {fileID: 3102230076493328307}
+  m_Layer: 0
+  m_Name: Sensing Optimiser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &733483243224265197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442209871090441112}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3066405126588703445}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3102230076493328307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442209871090441112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3dbbc48bd75b154f93925abe80e2c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  playerViewConeAngle: 80
+  sortIntoLODGroupsInterval: 0.06666667
+  LODGroups:
+  - name: LOD0
+    updateInterval: 0.011111111
+    updateGroups: 1
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  - name: LOD1
+    updateInterval: 0.06666667
+    updateGroups: 6
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  - name: LOD Last
+    updateInterval: 0.16666667
+    updateGroups: 15
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  LODGroupSizes: 
+  distanceOfLOD1Start: 20
 --- !u!1 &3066405126588703446
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,6 +92,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3066405127195505467}
+  - {fileID: 733483243224265197}
+  - {fileID: 5988517412958987135}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,3 +147,67 @@ MonoBehaviour:
   - ammoType: 1
     prefab: {fileID: 4418169066698541896, guid: 758d3f203a947454e9757437de85f223, type: 3}
     size: 200
+--- !u!1 &5535569795069852340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5988517412958987135}
+  - component: {fileID: 1512796296223080582}
+  m_Layer: 0
+  m_Name: AI Controller Optimiser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5988517412958987135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535569795069852340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3066405126588703445}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1512796296223080582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5535569795069852340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60432c5ff56f152408b0c41af97437a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  playerViewConeAngle: 80
+  sortIntoLODGroupsInterval: 0.07777778
+  LODGroups:
+  - name: LOD0
+    updateInterval: 0.011111111
+    updateGroups: 1
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  - name: LOD1
+    updateInterval: 0.06666667
+    updateGroups: 6
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  - name: LOD Last
+    updateInterval: 0.16666667
+    updateGroups: 15
+    groupsUpdatedThisCycle: 
+    debugGroupSizes: 
+  LODGroupSizes: 
+  distanceOfLOD1Start: 20

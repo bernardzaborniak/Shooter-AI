@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIController : MonoBehaviour
+public class AIController : EntityComponent
 {
     public GameEntity entityAttachedTo;
     public AIComponent[] aIComponents;
@@ -61,9 +61,10 @@ public class AIController : MonoBehaviour
     float switchingBetweenCoverHidingAndShootingIntervalMax = 4;
     float nextChangeCoverStanceTime;
 
-    
 
-    void Start()
+
+    //void Start()
+    public override void SetUpComponent(GameEntity entity)
     {
         for (int i = 0; i < aIComponents.Length; i++)
         {
@@ -78,25 +79,9 @@ public class AIController : MonoBehaviour
         targetPositionVisualised.SetParent(null);
     }
 
-    public void SetFinalTargetPosition(Vector3 targetPosition)
-    {
-        finalMoveDestination = targetPosition + new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
 
-        //Sammple position on navmesh to prevent ai standing around cause of missing path
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(finalMoveDestination, out hit, 10.0f, NavMesh.AllAreas))
-        {
-            finalMoveDestination = hit.position;
-        }
-        else
-        {
-            //finalMoveDestination = targetPosition.position;
-            finalMoveDestination = targetPosition;
-        }
-
-    }
-
-    void Update()
+    //void Update()
+    public override void UpdateComponent()
     {
         for (int i = 0; i < aIComponents.Length; i++)
         {
@@ -625,6 +610,25 @@ public class AIController : MonoBehaviour
         }*/
 
 
+
+    }
+
+
+    public void SetFinalTargetPosition(Vector3 targetPosition)
+    {
+        finalMoveDestination = targetPosition + new Vector3(UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset), 0, UnityEngine.Random.Range(-targetMaxOffset, targetMaxOffset));
+
+        //Sammple position on navmesh to prevent ai standing around cause of missing path
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(finalMoveDestination, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            finalMoveDestination = hit.position;
+        }
+        else
+        {
+            //finalMoveDestination = targetPosition.position;
+            finalMoveDestination = targetPosition;
+        }
 
     }
 
