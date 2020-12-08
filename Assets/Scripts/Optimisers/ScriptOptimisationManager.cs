@@ -13,6 +13,7 @@ public class ScriptOptimisationManager : MonoBehaviour
 
     //have a group of all optimisers this manager manages
     protected HashSet<IScriptOptimiser> optimisersRegisteredInManager = new HashSet<IScriptOptimiser>();
+    protected HashSet<IScriptOptimiser> optimisersRegisteredButNotAddedToALODGroupYet = new HashSet<IScriptOptimiser>();
 
     [Tooltip("every x frames all optimisers are sorted into LOD groups based on distance or angle from camera - for 90 fps - write 90 in this field")]
     public int sortIntoLODGroupsFrameInterval;
@@ -73,11 +74,14 @@ public class ScriptOptimisationManager : MonoBehaviour
     public virtual void AddOptimiser(IScriptOptimiser optimiser)
     {
         optimisersRegisteredInManager.Add(optimiser);
+        optimisersRegisteredButNotAddedToALODGroupYet.Add(optimiser);
     }
 
     public virtual void RemoveOptimiser(IScriptOptimiser optimiser)
     {
         optimisersRegisteredInManager.Remove(optimiser);
+        optimisersRegisteredButNotAddedToALODGroupYet.Remove(optimiser);
+
 
         for (int i = 0; i < LODGroups.Length; i++)
         {

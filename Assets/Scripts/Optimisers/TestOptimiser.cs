@@ -10,6 +10,7 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
     float speed = 1;
 
     float lastSenseTime = 0;
+    int lastSenseFrameCount = 0;
 
     private void OnEnable()
     {
@@ -31,8 +32,9 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
 
        // Debug.Log("yee");
 
-        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s");
+        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s & " + (Time.frameCount - lastSenseFrameCount) + " frames");
         lastSenseTime = Time.time;
+        lastSenseFrameCount = Time.frameCount;
     }
 
     public Vector3 GetPosition()

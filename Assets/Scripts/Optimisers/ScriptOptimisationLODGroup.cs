@@ -68,7 +68,7 @@ public class ScriptOptimisationLODGroup
         }
 
 
-
+        Debug.Log("update group: " + name + " on frame: " + currentUpdateCycleFrame + "----------------------------");
         //Debug.Log("group size: " + updateGroups[currentUpdateCycleFrame].Count + " currentUpdateCycleFrame: " + currentUpdateCycleFrame);//
         foreach (IScriptOptimiser optimiser in updateGroups[currentUpdateCycleFrame])
         {
@@ -89,6 +89,11 @@ public class ScriptOptimisationLODGroup
         currentUpdateCycleFrame++;
 
        
+    }
+
+    public HashSet<IScriptOptimiser> GetObjectsInGroup()
+    {
+        return objectsInLODGroup;
     }
 
     public void AddOptimiser(IScriptOptimiser optimiser)
