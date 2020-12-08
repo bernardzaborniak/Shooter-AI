@@ -9,18 +9,18 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
     float current;
     float speed = 1;
 
-    float lastSenseTime = 0;
-    int lastSenseFrameCount = 0;
+    float lastSenseTime;
+    int lastSenseFrameCount;
 
     private void OnEnable()
     {
-        //ScriptOptimisationManager.Instance.AddOptimiser(this);
         TestOptimisationManager.Instance.AddOptimiser(this);
+        lastSenseTime = Time.time;
+        lastSenseFrameCount = Time.frameCount;
     }
 
     private void OnDisable()
     {
-        //ScriptOptimisationManager.Instance.RemoveOptimiser(this);
         TestOptimisationManager.Instance.RemoveOptimiser(this);
     }
 
@@ -29,8 +29,6 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
         current = Mathf.Sin(Time.time) * speed;
 
         transform.localScale = new Vector3(current, current, current);
-
-       // Debug.Log("yee");
 
         Debug.Log("updated after " + (Time.time - lastSenseTime) + " s & " + (Time.frameCount - lastSenseFrameCount) + " frames");
         lastSenseTime = Time.time;

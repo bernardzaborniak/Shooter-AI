@@ -45,22 +45,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   playerViewConeAngle: 80
-  sortIntoLODGroupsInterval: 0.06666667
+  sortIntoLODGroupsFrameInterval: 60
   LODGroups:
   - name: LOD0
-    updateInterval: 0.011111111
-    updateGroups: 1
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 30
     debugGroupSizes: 
   - name: LOD1
-    updateInterval: 0.06666667
-    updateGroups: 6
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 60
     debugGroupSizes: 
   - name: LOD Last
-    updateInterval: 0.16666667
-    updateGroups: 15
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 90
     debugGroupSizes: 
   LODGroupSizes: 
   distanceOfLOD1Start: 20
@@ -192,22 +186,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   playerViewConeAngle: 80
-  sortIntoLODGroupsInterval: 0.07777778
+  sortIntoLODGroupsFrameInterval: 0
   LODGroups:
   - name: LOD0
-    updateInterval: 0.011111111
-    updateGroups: 1
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 0
     debugGroupSizes: 
   - name: LOD1
-    updateInterval: 0.06666667
-    updateGroups: 6
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 0
     debugGroupSizes: 
   - name: LOD Last
-    updateInterval: 0.16666667
-    updateGroups: 15
-    groupsUpdatedThisCycle: 
+    updateCycleFrameInterval: 0
     debugGroupSizes: 
   LODGroupSizes: 
   distanceOfLOD1Start: 20

@@ -8,11 +8,14 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
 
     [SerializeField] bool updateSensingNextTimePossible;
 
-    float lastSenseTime = 0;
+    //float lastSenseTime;
+    //int lastSenseFrameCount;
 
     private void OnEnable()
     {
          SensingOptimisationManager.Instance.AddOptimiser(this);
+        //lastSenseTime = Time.time;
+        //lastSenseFrameCount = Time.frameCount;
     }
 
     private void OnDisable()
@@ -24,8 +27,10 @@ public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
     {
         updateSensingNextTimePossible = true;
 
-        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s");
-        lastSenseTime = Time.time;
+       // Debug.Log("updated after " + (Time.time - lastSenseTime) + " s & " + (Time.frameCount - lastSenseFrameCount) + " frames");
+        //Debug.Log("hash: " + gameObject.GetHashCode());
+        //lastSenseTime = Time.time;
+        //lastSenseFrameCount = Time.frameCount;
     }
 
     public Vector3 GetPosition()

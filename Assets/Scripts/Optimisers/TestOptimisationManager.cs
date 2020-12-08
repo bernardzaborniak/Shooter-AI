@@ -37,7 +37,7 @@ public class TestOptimisationManager : ScriptOptimisationManager
 
     public override void SortOptimisersIntoLODGroups()
     {
-        bool alternativeSortMode = false; //i have 2 sort algorythms, cant decide whch is better - the alternative mode seems to be less acurrate but cleaner
+        
 
         Vector3 playerCameraForward = playerTransform.forward;
 
@@ -46,7 +46,7 @@ public class TestOptimisationManager : ScriptOptimisationManager
         float angle = 0;
         Vector3 playerPosition = playerTransform.position;
 
-        Debug.Log("Resort");
+        bool alternativeSortMode = false; //i have 2 sort algorythms, cant decide whch is better - the alternative mode seems to be less acurrate but cleaner
 
         if (alternativeSortMode)
         {
@@ -58,8 +58,6 @@ public class TestOptimisationManager : ScriptOptimisationManager
 
             foreach (IScriptOptimiser optimiser in optimisersRegisteredInManager)
             {
-                //LODGroups[0].AddOptimiser(optimiser);
-
                 directionTowardsObject = optimiser.GetPosition() - playerPosition;
 
                 angle = Vector3.Angle(directionTowardsObject, playerCameraForward);
