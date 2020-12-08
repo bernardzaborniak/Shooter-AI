@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Sensing Component saves information about other entities it has seen in this container
-public class SensingEntityVisibilityInfo 
+public class AIC_S_EntityVisibilityInfo 
 {
     public GameEntity entity;
-    public VisibilityInfo visInfo;
+    public EntityVisibilityInfo visInfo;
     public int entityTeamID;
 
 
@@ -21,18 +21,40 @@ public class SensingEntityVisibilityInfo
     Vector3 lastSeenAimPosition;
     Vector3 lastSeenCriticalAimPosition;
 
-
-
     public float timeWhenLastSeen;
     float timeDelayAfterWhichPositionIsntUpdated = 1.5f; //if we seen this entity more than x seconds ago, we wont have acess to the current position of the entity, just the last posiiton
 
+    public float lastSquaredDistanceMeasured;
 
-    public SensingEntityVisibilityInfo()
+
+
+    public AIC_S_EntityVisibilityInfo(EntityVisibilityInfo visInfo)
     {
+        this.visInfo = visInfo;
+        timeWhenLastSeen = Time.time;
 
+        entity = visInfo.entityAssignedTo;
+        lastSeenEntityPosition = entity.transform.position;
+        entityTeamID = entity.teamID;
+
+        // Set Movement Speeds.
+        if (visInfo.HasMovement())
+        {
+            hasMovement = true;
+            lastSeenVelocity = visInfo.GetCurrentVelocity();
+            lastSeenAngularVelocity = visInfo.GetCurrentAngularVelocity();
+        }
+        else
+        {
+            hasMovement = false;
+        }
+
+        //Set Aim Positions.
+        lastSeenAimPosition = entity.GetAimPosition();
+        lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
     }
 
-    public void SetUpInfo(VisibilityInfo visInfo)//, IMoveable moveable)
+    /*public void SetUpInfo(EntityVisibilityInfo visInfo)//, IMoveable moveable)
     {
         this.visInfo = visInfo;
         timeWhenLastSeen = Time.time;
@@ -59,7 +81,7 @@ public class SensingEntityVisibilityInfo
 
 
 
-    }
+    }*/
 
    /* public bool IsValid()
     {
@@ -92,6 +114,7 @@ public class SensingEntityVisibilityInfo
 
         return lastSeenCriticalAimPosition;
     }
+
 
     public Vector3 GetCurrentVelocity()
     {
@@ -131,9 +154,7 @@ public class SensingEntityVisibilityInfo
             }
         }
         
-
         return lastSeenEntityPosition;
-
     }
 
 }

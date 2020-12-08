@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //communicates with sensing - results in the info about seeing another entity by the sensing component
-public class VisibilityInfo : MonoBehaviour
+public class EntityVisibilityInfo : MonoBehaviour
 {
     public GameEntity entityAssignedTo;
 
@@ -30,8 +30,6 @@ public class VisibilityInfo : MonoBehaviour
         return hasMovement;
     }
 
-
-
     public Vector3  GetCurrentVelocity()
     {
         return moveable.GetCurrentVelocity();
@@ -41,6 +39,11 @@ public class VisibilityInfo : MonoBehaviour
     {
         return moveable.GetCurrentAngularVelocity();
     }
+
+    /*public int GetTeamID()
+    {
+        return entityAssignedTo.teamID;
+    }*/
 
 
 }

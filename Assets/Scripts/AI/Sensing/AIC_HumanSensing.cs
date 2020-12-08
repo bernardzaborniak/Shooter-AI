@@ -6,9 +6,10 @@ using UnityEngine;
 public class AIC_HumanSensing : AIComponent
 {
     public SensingOptimiser optimiser;
-    //public GameEntity nearestEnemy;
-    public SensingEntityVisibilityInfo nearestEnemyInfo;
-    public HashSet<GameEntity> enemiesInSensingRadius = new HashSet<GameEntity>();
+    public AIC_S_EntityVisibilityInfo nearestEnemyInfo;
+   // public HashSet<(SensingEntityVisibilityInfo, float)> enemiesInSensingRadius = new HashSet<(SensingEntityVisibilityInfo, float)>();
+    public HashSet<AIC_S_EntityVisibilityInfo> enemiesInSensingRadius = new HashSet<AIC_S_EntityVisibilityInfo>();
+    public HashSet<AIC_S_EntityVisibilityInfo> friendliesInSensingRadius = new HashSet<AIC_S_EntityVisibilityInfo>();
     Collider[] collidersInRadius;
 
     public float sensingInterval = 0.5f;
@@ -16,15 +17,27 @@ public class AIC_HumanSensing : AIComponent
     public float sensingRadius;
     public LayerMask sensingLayerMask;
 
-    public HashSet<Tuple<TacticalPoint,float>> postsInSensingRadius = new HashSet<Tuple<TacticalPoint, float>>();
+    //public HashSet<(SensingTacticalPointVisibilityInfo, float)> postsInSensingRadius = new HashSet<(SensingTacticalPointVisibilityInfo, float)>();
+    public HashSet<AIC_S_TacticalPointVisibilityInfo> postsInSensingRadius = new HashSet<AIC_S_TacticalPointVisibilityInfo>();
     public LayerMask postSensingLayerMask;
 
     int myTeamID;
 
-    //for debug only:
-    //float lastSenseTime = 0;
 
+    #region Variables cached to optimise garbage collection
 
+    //Cached for UpdateComponent() Method
+    AIC_S_EntityVisibilityInfo entityVisInfo;
+    AIC_S_TacticalPointVisibilityInfo tPointVisInfo;
+
+    float smallestDistanceSqr;
+    float currentDistanceSqr;
+    Vector3 myPosition;
+
+    //GameEntity currentEntity;
+    TacticalPoint currentTPoint;
+
+    #endregion
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -33,8 +46,6 @@ public class AIC_HumanSensing : AIComponent
 
         nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
         myTeamID = myEntity.teamID;
-
-        //lastSenseTime = Time.unscaledTime;
     }
 
     public override void UpdateComponent()
@@ -44,57 +55,51 @@ public class AIC_HumanSensing : AIComponent
         {
             UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
-           // Debug.Log("update sensing, interval: " + (Time.unscaledTime - lastSenseTime));
-            //lastSenseTime = Time.unscaledTime;
-
             optimiser.OnSensingWasUpdated();
-            //nextSensingTime = Time.time + sensingInterval;
-
-            /*for (int i = 0; i < 5; i++)
-            {
-                Debug.Log("I sense :)");
-            }*/
 
             #region scan for enemies
 
             collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, sensingLayerMask);
             
             enemiesInSensingRadius.Clear();
+            friendliesInSensingRadius.Clear();
 
-            float smallestDistanceSqr = Mathf.Infinity;
-            float currentDistanceSqr;
-            GameEntity currentEntity;
-            Vector3 myPosition = transform.position;
+            smallestDistanceSqr = Mathf.Infinity;
+            myPosition = transform.position;
 
             nearestEnemyInfo = null;
 
             for (int i = 0; i < collidersInRadius.Length; i++)
             {
-                currentEntity = collidersInRadius[i].GetComponent<GameEntity>();
-                if (currentEntity)
-                {
-                    if(currentEntity.teamID != myTeamID)
+                // currentEntity = collidersInRadius[i].GetComponent<GameEntity>();
+                // if (currentEntity)
+                //{
+                entityVisInfo = new AIC_S_EntityVisibilityInfo(collidersInRadius[i].GetComponent<EntityVisibilityInfo>());   //to optimise garbage collection i could pool this opjects thus limiting the total number of visible enemies at once - which seems like a good idea
+                currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
+                entityVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
+
+                // if (currentEntity.teamID != myTeamID)
+                if (entityVisInfo.entityTeamID != myTeamID)
+                {  
+                    enemiesInSensingRadius.Add(entityVisInfo);
+
+                    if (currentDistanceSqr < smallestDistanceSqr)
                     {
-                        enemiesInSensingRadius.Add(currentEntity);
+                        smallestDistanceSqr = currentDistanceSqr;
 
-                        currentDistanceSqr = (myPosition - currentEntity.transform.position).sqrMagnitude;
-                        if (currentDistanceSqr < smallestDistanceSqr)
-                        {
-                            smallestDistanceSqr = currentDistanceSqr;
-
-                            VisibilityInfo visInfo = currentEntity.GetComponent<VisibilityInfo>();
-                            nearestEnemyInfo = new SensingEntityVisibilityInfo();
-                            nearestEnemyInfo.SetUpInfo(visInfo);
-                           // nearestEnemyInfo.visibilityInfo = currentEntity.GetComponent<VisibilityInfo>();
-                           // nearestEnemyInfo.timeWhenLastSeen = Time.time;
-                        }
-                    }           
+                        nearestEnemyInfo = entityVisInfo;
+                    }
                 }
+                else
+                {
+                    friendliesInSensingRadius.Add(entityVisInfo);
+                }
+                // }
             }
 
             #endregion
 
-            #region Scan for Posts
+            #region Scan for Tactical Points
 
             collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, postSensingLayerMask);
 
@@ -102,20 +107,31 @@ public class AIC_HumanSensing : AIComponent
 
             smallestDistanceSqr = Mathf.Infinity;
             currentDistanceSqr = 0;
-            TacticalPoint currentPost;
+   
             myPosition = transform.position;
 
             for (int i = 0; i < collidersInRadius.Length; i++)
             {
-                currentPost = collidersInRadius[i].GetComponent<TacticalPoint>();
-                if (currentPost)
+                currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
+
+                if (!currentTPoint.IsPointFull())
                 {
-                    if (!currentPost.IsPointFull())
-                    {
-                        currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
-                        postsInSensingRadius.Add(new Tuple<TacticalPoint, float>(currentPost, currentDistanceSqr));
-                    }
+                    tPointVisInfo = new AIC_S_TacticalPointVisibilityInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
+                    currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
+                    tPointVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
+                    postsInSensingRadius.Add(tPointVisInfo);
+                    
                 }
+
+
+                //if (currentPost)
+                //{
+                //if (!tPointVisInfo.point.IsPointFull())
+                //{
+                //currentDistanceSqr = (myPosition - currentPost.transform.position).sqrMagnitude;
+                //postsInSensingRadius.Add((new AIC_S_TacticalPointVisibilityInfo(currentPost.GetComponent<TacticalPointVisibilityInfo>()), currentDistanceSqr));
+                //}
+                //}
             }
 
             #endregion

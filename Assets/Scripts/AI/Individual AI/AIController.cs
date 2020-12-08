@@ -27,7 +27,7 @@ public class AIController : EntityComponent
     public float targetMaxOffset;
     Vector3 finalMoveDestination;
 
-    SensingEntityVisibilityInfo nearestEnemyInfoLastFrame;
+    AIC_S_EntityVisibilityInfo nearestEnemyInfoLastFrame;
 
 
     //public float throwGrenadeVelocity;
@@ -96,7 +96,7 @@ public class AIController : EntityComponent
 
         #region Set needed Variables
 
-        SensingEntityVisibilityInfo nearestEnemyInfo = sensing.nearestEnemyInfo;
+        AIC_S_EntityVisibilityInfo nearestEnemyInfo = sensing.nearestEnemyInfo;
 
         Vector3 directionToNearestEnemy = Vector3.zero;
         float distanceToNearestEnemy = 0;
@@ -135,7 +135,7 @@ public class AIController : EntityComponent
         }*/
 
         //cover
-        HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
+        //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
 
 
         #endregion
