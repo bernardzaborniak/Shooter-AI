@@ -54,34 +54,6 @@ public class AIC_S_EntityVisibilityInfo
         lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
     }
 
-    /*public void SetUpInfo(EntityVisibilityInfo visInfo)//, IMoveable moveable)
-    {
-        this.visInfo = visInfo;
-        timeWhenLastSeen = Time.time;
-
-        entity = visInfo.entityAssignedTo;
-        lastSeenEntityPosition = entity.transform.position;
-        entityTeamID = entity.teamID;
-
-        // Set Movement Speeds.
-        if (visInfo.HasMovement())
-        {
-            hasMovement = true;
-            lastSeenVelocity = visInfo.GetCurrentVelocity();
-            lastSeenAngularVelocity = visInfo.GetCurrentAngularVelocity();
-        }
-        else
-        {
-            hasMovement = false;
-        }
-
-        //Set Aim Positions.
-        lastSeenAimPosition = entity.GetAimPosition();
-        lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
-
-
-
-    }*/
 
    /* public bool IsValid()
     {
