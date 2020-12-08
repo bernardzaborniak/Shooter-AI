@@ -33,8 +33,8 @@ public class AIVisualisationManager : MonoBehaviour
     public TacticalPointsManager tacticalPointsManager;
 
     [Header("Visualisation Settings")]
-    [Tooltip("Locks the current visualisers, new ones dont show up and old ones dont dissapear")]
-    public bool lockVisualisers;
+    [Tooltip("Locks the current tactical points visualisers, new ones dont show up and old ones dont dissapear")]
+    public bool lockTPVisualisers;
     public Settings settings;
 
     [Header("Visualisation Optimisation")]
@@ -42,8 +42,8 @@ public class AIVisualisationManager : MonoBehaviour
     public float ratingRingCullDistance;
     float ratingRingCullDistanceSquared;
 
-    public int coverRatingRingPoolSize;
-    public GameObject tacticalPointVisualiserPrefab;
+    //public int coverRatingRingPoolSize;
+    public TacticalPointVisualiser[] tacticalPointVisualisers;
 
     Queue<TacticalPointVisualiser> tacticalPointVisualisersNotInUse;
     HashSet<TacticalPointVisualiser> tacticalPointVisualisersInUse;
@@ -56,6 +56,11 @@ public class AIVisualisationManager : MonoBehaviour
     public float updateVisualisersInEditModeInterval = 0.5f;
     float nextUpdateVisualisersTime;
 
+    [Header("For Selecting Soldiers")]
+    public GameEntity currentSelectedSoldier;
+    public GameObject selectedSoldierVisualiser;
+    public LayerMask selectingSoldiersLayerMask;
+
     #endregion
 
 
@@ -65,23 +70,12 @@ public class AIVisualisationManager : MonoBehaviour
         tacticalPointVisualisersInUse = new HashSet<TacticalPointVisualiser>();
         tacticalPointsBeingCurrentlyVisualised = new HashSet<TacticalPoint>();
 
-        // Delete old Visualiser children.
-        HashSet<GameObject> visualisersToDestroy = new HashSet<GameObject>();
-        foreach (Transform visTransform in transform) //theyre all children
-        {
-            visualisersToDestroy.Add(visTransform.gameObject);
-        }
-        foreach (GameObject visualiser in visualisersToDestroy) 
-        {
-            DestroyImmediate(visualiser);
-        }
+        selectedSoldierVisualiser.SetActive(false);
 
-        // Instantiate new Visualisers children.
-        for (int i = 0; i < coverRatingRingPoolSize; i++)
+        for (int i = 0; i < tacticalPointVisualisers.Length; i++)
         {
-            TacticalPointVisualiser obj = Instantiate(tacticalPointVisualiserPrefab, transform).GetComponent<TacticalPointVisualiser>();
-            obj.gameObject.SetActive(false);
-            tacticalPointVisualisersNotInUse.Enqueue(obj);
+            tacticalPointVisualisers[i].gameObject.SetActive(false);
+            tacticalPointVisualisersNotInUse.Enqueue(tacticalPointVisualisers[i]);
         }
 
         // Square Distances for optimisation purposes.
@@ -90,22 +84,53 @@ public class AIVisualisationManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Destroy them on disable, just to make sure.
-        HashSet<GameObject> visualisersToDestroy = new HashSet<GameObject>();
-        foreach (Transform visTransform in transform) //theyre all children
-        {
-            visualisersToDestroy.Add(visTransform.gameObject);
-        }
-        foreach (GameObject visualiser in visualisersToDestroy) 
-        {
-            DestroyImmediate(visualiser);
-        }
+
     }
 
     void Update()
     {
+        #region Select/ Deselect Soldier & visalise
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 200,selectingSoldiersLayerMask))
+            {
+                Debug.Log("hit: " + hit.collider.gameObject.name);
+                //MoveTo(hit.point);
+                if (hit.transform.gameObject.GetComponent<GameEntity>())
+                {
+                    currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
+                }
+                else
+                {
+                    currentSelectedSoldier = null;
+                }
+
+            }
+            else
+            {
+                currentSelectedSoldier = null;
+            }
+        }
+
+        if (currentSelectedSoldier != null)
+        {
+            selectedSoldierVisualiser.SetActive(true);
+            selectedSoldierVisualiser.transform.position = currentSelectedSoldier.transform.position;
+        }
+        else
+        {
+            selectedSoldierVisualiser.SetActive(false);
+        }
+
+        #endregion
+
+
         // Update is called only in Play Mode.
-        if (!lockVisualisers)
+        if (!lockTPVisualisers)
         {
             if (Application.isPlaying)
             {
@@ -123,7 +148,7 @@ public class AIVisualisationManager : MonoBehaviour
     {
         // This is called only in Edit Mode.
         // On GUI Updates more often in Edit mode than update, ensures smooth text alignment
-        if (!lockVisualisers)
+        if (!lockTPVisualisers)
         {
             if (!Application.isPlaying)
             {

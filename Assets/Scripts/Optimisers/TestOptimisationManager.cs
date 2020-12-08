@@ -31,7 +31,7 @@ public class TestOptimisationManager : ScriptOptimisationManager
     {
         base.UpdateOptimisationManager();
 
-        Debug.Log("time since last Update: " + (Time.time - lastUpdateTime) + "-------------------------------------------------------");
+        //Debug.Log("time since last Update: " + (Time.time - lastUpdateTime) + "-------------------------------------------------------");
         lastUpdateTime = Time.time;
     }
 

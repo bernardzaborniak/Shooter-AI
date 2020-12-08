@@ -30,7 +30,7 @@ public class TestOptimiser : MonoBehaviour, IScriptOptimiser
 
         transform.localScale = new Vector3(current, current, current);
 
-        Debug.Log("updated after " + (Time.time - lastSenseTime) + " s & " + (Time.frameCount - lastSenseFrameCount) + " frames");
+        //Debug.Log("updated after " + (Time.time - lastSenseTime) + " s & " + (Time.frameCount - lastSenseFrameCount) + " frames");
         lastSenseTime = Time.time;
         lastSenseFrameCount = Time.frameCount;
     }
