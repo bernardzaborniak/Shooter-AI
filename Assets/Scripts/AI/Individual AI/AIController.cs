@@ -136,6 +136,7 @@ public class AIController : EntityComponent
 
         //cover
         //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
+        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.postsInSensingRadius;
 
 
         #endregion
@@ -176,18 +177,19 @@ public class AIController : EntityComponent
                     float closestDistance = Mathf.Infinity;
                     Vector3 myPos = transform.position;
 
-                    foreach (Tuple<TacticalPoint,float> postTuple in possiblePosts)
+                    //foreach (Tuple<TacticalPoint,float> postTuple in possiblePosts)
+                    foreach (AIC_S_TacticalPointVisibilityInfo postInfo in possiblePosts)
                     {
                         //check angle
-                        Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postTuple.Item1.GetPostPosition();
-                        float angle = Vector3.Angle(directionFromCoverToEnemy, postTuple.Item1.transform.forward);
+                        Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.point.GetPostPosition();
+                        float angle = Vector3.Angle(directionFromCoverToEnemy, postInfo.point.transform.forward); //using forward for now - this should be reworked to work based on current rating
 
                         if (angle < 80)
                         {
-                            if (postTuple.Item2 < closestDistance)
+                            if (postInfo.lastSquaredDistanceMeasured < closestDistance)
                             {
-                                closestDistance = postTuple.Item2;
-                                closestTacticalPoint = postTuple.Item1;
+                                closestDistance = postInfo.lastSquaredDistanceMeasured;
+                                closestTacticalPoint = postInfo.point;
                             }
                         }
                     }
