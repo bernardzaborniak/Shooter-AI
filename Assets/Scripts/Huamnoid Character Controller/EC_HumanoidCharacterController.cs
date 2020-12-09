@@ -210,6 +210,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit))
                 {
+                    Debug.Log("g: " + gameObject.name + " move to ");
                     MoveTo(hit.point, true);
 
                 }
@@ -358,6 +359,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void MoveTo(Vector3 destination, bool sprint = false)
     {
+        //Debug.Log("move to ----------------");
         //if (!AreModifiersPreventing())
         if (DoModifersAllowMovement())
         {
