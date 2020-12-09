@@ -171,6 +171,7 @@ public class AIVisualisationManager : MonoBehaviour
         Quaternion camRot = camTransform.rotation;
         Vector3 camForward = camTransform.forward;
 
+
 #if UNITY_EDITOR
         if (inSceneView)
         {
