@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class AIVisualisationUI : MonoBehaviour
 {
@@ -17,6 +18,23 @@ public class AIVisualisationUI : MonoBehaviour
     public ToogleableButton showCoverQualityRatingButton;
     public ToogleableButton showCoverQualityRatingNumbersButton;
 
+    [Header("Selected Soldier Info")]
+    public GameObject soldierSelectionUI;
+    public TextMeshProUGUI tmp_EntityName;
+    public TextMeshProUGUI tmp_EntityTeamID;
+
+    [Header("Detailed Info Menus")]
+    public GameObject sensingMenu;
+    public GameObject decisionmakerMenu;
+
+    public enum DetailedMenuState
+    {
+        NoMenu,
+        SensingMenuOpen,
+        DecisionmakerMenuOpen
+    }
+    public DetailedMenuState detailedMenuState = DetailedMenuState.NoMenu;
+
 
     void Update()
     {
@@ -29,6 +47,17 @@ public class AIVisualisationUI : MonoBehaviour
 
         showCoverQualityRatingButton.SetActiveExternally(manager.settings.showCoverQualityRating);
         showCoverQualityRatingNumbersButton.SetActiveExternally(manager.settings.showCoverQualityRatingNumbers);
+
+        if(manager.currentSelectedSoldier)
+        {
+            tmp_EntityName.text = manager.currentSelectedSoldier.name + " " + manager.currentSelectedSoldier.GetHashCode();
+            tmp_EntityTeamID.text = manager.currentSelectedSoldier.teamID.ToString();
+        }
+        else
+        {
+            tmp_EntityName.text = "";
+            tmp_EntityTeamID.text = "";
+        }
 
     }
 
@@ -65,6 +94,62 @@ public class AIVisualisationUI : MonoBehaviour
     public void OnShowCoverQualityRatingNumbersButtonClicked(ToogleableButton button)
     {
         manager.settings.showCoverQualityRatingNumbers = button.active;
+    }
+
+    public void OnHideSoldierSelectionInfoButtonClicked(ToogleableButton button)
+    {
+        if (button.active)
+        {
+            soldierSelectionUI.SetActive(false);
+        }
+        else
+        {
+            soldierSelectionUI.SetActive(true);
+        }
+    }
+
+    public void OnOpenSensingMenuButtonCLicked()
+    {
+        if(detailedMenuState == DetailedMenuState.SensingMenuOpen)
+        {
+            sensingMenu.SetActive(false);
+            detailedMenuState = DetailedMenuState.NoMenu;
+        }
+        else if(detailedMenuState == DetailedMenuState.DecisionmakerMenuOpen)
+        {
+            sensingMenu.SetActive(true);
+            decisionmakerMenu.SetActive(false);
+
+            detailedMenuState = DetailedMenuState.SensingMenuOpen;
+        }
+        else if(detailedMenuState == DetailedMenuState.NoMenu)
+        {
+            sensingMenu.SetActive(true);
+            detailedMenuState = DetailedMenuState.SensingMenuOpen;
+
+        }
+    }
+
+    public void OnOpenDecisionMakingMenuButtonClicked()
+    {
+        if (detailedMenuState == DetailedMenuState.DecisionmakerMenuOpen)
+        {
+            decisionmakerMenu.SetActive(false);
+            detailedMenuState = DetailedMenuState.NoMenu;
+        }
+        else if (detailedMenuState == DetailedMenuState.SensingMenuOpen)
+        {
+            sensingMenu.SetActive(false);
+            decisionmakerMenu.SetActive(true);
+
+            detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
+        }
+        else if (detailedMenuState == DetailedMenuState.NoMenu)
+        {
+            decisionmakerMenu.SetActive(true);
+            detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
+
+        }
     }
 
 }
