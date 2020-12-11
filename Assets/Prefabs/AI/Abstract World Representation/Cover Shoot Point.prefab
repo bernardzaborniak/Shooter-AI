@@ -107,7 +107,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cover Shoot Point
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3513111682691924800, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
 --- !u!23 &4928979965720268 stripped
 MeshRenderer:

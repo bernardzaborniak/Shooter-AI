@@ -14,7 +14,8 @@ public class SensingInfo
     public HashSet<AIC_S_EntityVisibilityInfo> friendliesInSensingRadius = new HashSet<AIC_S_EntityVisibilityInfo>();
 
     //tacticalPoints
-    public HashSet<AIC_S_TacticalPointVisibilityInfo> tacticalPointsInSensingRadius = new HashSet<AIC_S_TacticalPointVisibilityInfo>();
+    public HashSet<AIC_S_TacticalPointVisibilityInfo> tPointsCoverInSensingRadius = new HashSet<AIC_S_TacticalPointVisibilityInfo>();
+    public HashSet<AIC_S_TacticalPointVisibilityInfo> tPointsOpenFieldInSensingRadius = new HashSet<AIC_S_TacticalPointVisibilityInfo>();
 
     public float lastTimeInfoWasUpdated;
 

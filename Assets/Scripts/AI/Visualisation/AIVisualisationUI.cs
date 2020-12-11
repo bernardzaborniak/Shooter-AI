@@ -28,7 +28,8 @@ public class AIVisualisationUI : MonoBehaviour
     public GameObject sensingUIItemPrefab;
     public Transform sensingEnemiesPanelParent;
     public Transform sensingFriendliesPanelParent;
-    public Transform sensingTacticalPointsPanelParent;
+    public Transform sensingTPointsCoverPanelParent;
+    public Transform sensingTPointsopenFieldPanelParent;
 
 
     [Header("Decisionmaking Menu")]
@@ -165,7 +166,7 @@ public class AIVisualisationUI : MonoBehaviour
 
         if (sensingInfo != null)
         {
-            // Update Enemies Panel
+            // Update Enemies Panel --------------------------------
 
             //delete old
             for (int i = 0; i < sensingEnemiesPanelParent.childCount; i++)
@@ -181,7 +182,7 @@ public class AIVisualisationUI : MonoBehaviour
             }
 
 
-            // Update Friendlies Panel
+            // Update Friendlies Panel --------------------------------
 
             //delete old
             for (int i = 0; i < sensingFriendliesPanelParent.childCount; i++)
@@ -197,18 +198,34 @@ public class AIVisualisationUI : MonoBehaviour
             }
 
 
-            // Update TPoints Panel
+            // Update TPoints Cover Panel --------------------------------
 
             //delete old
-            for (int i = 0; i < sensingTacticalPointsPanelParent.childCount; i++)
+            for (int i = 0; i < sensingTPointsCoverPanelParent.childCount; i++)
             {
-                Destroy(sensingTacticalPointsPanelParent.GetChild(i).gameObject);
+                Destroy(sensingTPointsCoverPanelParent.GetChild(i).gameObject);
             }
 
             //create new
-            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tacticalPointsInSensingRadius)
+            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsCoverInSensingRadius)
             {
-                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTacticalPointsPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
+                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel.SetUp((tPoint.point.tacticalPointType.ToString() + tPoint.point.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen);
+            }
+
+
+            // Update TPoints OpenField Panel --------------------------------
+
+            //delete old
+            for (int i = 0; i < sensingTPointsopenFieldPanelParent.childCount; i++)
+            {
+                Destroy(sensingTPointsopenFieldPanelParent.GetChild(i).gameObject);
+            }
+
+            //create new
+            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsOpenFieldInSensingRadius)
+            {
+                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsopenFieldPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
                 topicPanel.SetUp((tPoint.point.tacticalPointType.ToString() + tPoint.point.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen);
             }
 
@@ -228,9 +245,14 @@ public class AIVisualisationUI : MonoBehaviour
                 Destroy(sensingFriendliesPanelParent.GetChild(i).gameObject);
             }
 
-            for (int i = 0; i < sensingTacticalPointsPanelParent .childCount; i++)
+            for (int i = 0; i < sensingTPointsCoverPanelParent.childCount; i++)
             {
-                Destroy(sensingTacticalPointsPanelParent.GetChild(i).gameObject);
+                Destroy(sensingTPointsCoverPanelParent.GetChild(i).gameObject);
+            }
+
+            for (int i = 0; i < sensingTPointsopenFieldPanelParent.childCount; i++)
+            {
+                Destroy(sensingTPointsopenFieldPanelParent.GetChild(i).gameObject);
             }
         }
     }

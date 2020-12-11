@@ -136,7 +136,7 @@ public class AIController : EntityComponent
 
         //cover
         //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
-        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.currentSensingInfo.tacticalPointsInSensingRadius;
+        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.currentSensingInfo.tPointsCoverInSensingRadius;
 
 
         #endregion

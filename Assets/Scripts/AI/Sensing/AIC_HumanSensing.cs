@@ -110,7 +110,8 @@ public class AIC_HumanSensing : AIComponent
             #region Scan for Tactical Points
 
             // cache variables 
-            currentSensingInfo.tacticalPointsInSensingRadius.Clear();
+            currentSensingInfo.tPointsCoverInSensingRadius.Clear();
+            currentSensingInfo.tPointsOpenFieldInSensingRadius.Clear();
             smallestDistanceSqr = Mathf.Infinity;
             currentDistanceSqr = 0;
             myPosition = transform.position;
@@ -131,7 +132,18 @@ public class AIC_HumanSensing : AIComponent
                         tPointVisInfo = new AIC_S_TacticalPointVisibilityInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
                         currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
                         tPointVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
-                        currentSensingInfo.tacticalPointsInSensingRadius.Add(tPointVisInfo);
+                        if(tPointVisInfo.point.tacticalPointType == TacticalPointType.CoverPoint)
+                        {
+                            currentSensingInfo.tPointsCoverInSensingRadius.Add(tPointVisInfo);
+                        }
+                        else if(tPointVisInfo.point.tacticalPointType == TacticalPointType.OpenFieldPoint)
+                        {
+                            currentSensingInfo.tPointsOpenFieldInSensingRadius.Add(tPointVisInfo);
+                        }
+                        else
+                        {
+                            Debug.Log("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
+                        }
 
                     }
                 }
