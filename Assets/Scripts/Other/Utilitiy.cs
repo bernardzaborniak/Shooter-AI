@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.EventSystems; // used for DoesMouseClickOnThisPositionHitUIElement();
+
+
 // This class ombines some usefull functions
 public static class Utility
 {
@@ -184,6 +187,19 @@ public static class Utility
         Vector2 insideUnitCircle = Random.insideUnitCircle * unitSphereRadius * Random.Range(0.05f, 1f);
 
         return Quaternion.LookRotation(relativeTransform.TransformDirection(new Vector3(insideUnitCircle.x, insideUnitCircle.y, 1f)));
+    }
+
+    public static bool DoesMouseClickOnThisPositionHitUIElement(Vector3 mousePosition)
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(pointerEventData, results);
+
+        if (results.Count > 0) return true;
+        else return false;
     }
 }
 

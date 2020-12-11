@@ -99,18 +99,28 @@ public class AIVisualisationManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 200,selectingSoldiersLayerMask))
+            if (!Utility.DoesMouseClickOnThisPositionHitUIElement(Input.mousePosition))
             {
-                Debug.Log("hit: " + hit.collider.gameObject.name);
-                //MoveTo(hit.point);
-                if (hit.transform.gameObject.GetComponent<GameEntity>())
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, 200, selectingSoldiersLayerMask))
                 {
-                    currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
-                    selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().currentSensingInfo; //not the nicest way to get this sensing component;
-                    lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
+                    Debug.Log("hit: " + hit.collider.gameObject.name);
+                    //MoveTo(hit.point);
+                    if (hit.transform.gameObject.GetComponent<GameEntity>())
+                    {
+                        currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
+                        selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().currentSensingInfo; //not the nicest way to get this sensing component;
+                        lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
+                    }
+                    else
+                    {
+                        currentSelectedSoldier = null;
+                        selectedSoldiersSensingInfo = null;
+                        lastUpdateSensingUITime = 0;
+                    }
+
                 }
                 else
                 {
@@ -118,14 +128,7 @@ public class AIVisualisationManager : MonoBehaviour
                     selectedSoldiersSensingInfo = null;
                     lastUpdateSensingUITime = 0;
                 }
-
-            }
-            else
-            {
-                currentSelectedSoldier = null;
-                selectedSoldiersSensingInfo = null;
-                lastUpdateSensingUITime = 0;
-            }
+            }   
         }
 
         if (currentSelectedSoldier != null)
