@@ -31,6 +31,7 @@ public class AIVisualisationManager : MonoBehaviour
     [Header("References")]
     public Transform camTransform;
     public TacticalPointsManager tacticalPointsManager;
+    public AIVisualisationUI aIVisualisationUI;
 
     [Header("Visualisation Settings")]
     [Tooltip("Locks the current tactical points visualisers, new ones dont show up and old ones dont dissapear")]
@@ -60,6 +61,11 @@ public class AIVisualisationManager : MonoBehaviour
     public GameEntity currentSelectedSoldier;
     public GameObject selectedSoldierVisualiser;
     public LayerMask selectingSoldiersLayerMask;
+
+    //for updating sensing UI
+    SensingInfo selectedSoldiersSensingInfo;
+    SensingInfo selectedSoldiersSensingInfoLastFrame;
+    float lastUpdateSensingUITime;
 
     #endregion
 
@@ -103,16 +109,22 @@ public class AIVisualisationManager : MonoBehaviour
                 if (hit.transform.gameObject.GetComponent<GameEntity>())
                 {
                     currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
+                    selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().currentSensingInfo; //not the nicest way to get this sensing component;
+                    lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
                 }
                 else
                 {
                     currentSelectedSoldier = null;
+                    selectedSoldiersSensingInfo = null;
+                    lastUpdateSensingUITime = 0;
                 }
 
             }
             else
             {
                 currentSelectedSoldier = null;
+                selectedSoldiersSensingInfo = null;
+                lastUpdateSensingUITime = 0;
             }
         }
 
@@ -125,6 +137,13 @@ public class AIVisualisationManager : MonoBehaviour
         {
             selectedSoldierVisualiser.SetActive(false);
         }
+
+        if (Application.isPlaying)
+        {
+            UpdateSensingUI();
+            selectedSoldiersSensingInfoLastFrame = selectedSoldiersSensingInfo;
+        }
+
 
         #endregion
 
@@ -324,5 +343,38 @@ public class AIVisualisationManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    //update everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
+    void UpdateSensingUI( )
+    {
+        //Update UI only if needed
+
+        //if deselected soldier
+        if(selectedSoldiersSensingInfo == null && selectedSoldiersSensingInfoLastFrame != null)
+        {
+            aIVisualisationUI.UpdateSensingUI(null);
+        }
+        //if selected soldier
+        else if(selectedSoldiersSensingInfo != null && selectedSoldiersSensingInfoLastFrame == null)
+        {
+            aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+        }
+        //if selected different soldier
+        else if (selectedSoldiersSensingInfo  != selectedSoldiersSensingInfoLastFrame)
+        {
+            aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+        }
+        //else only update ui everytime the sensing component updated
+        else if(selectedSoldiersSensingInfo != null)
+        {
+            if(lastUpdateSensingUITime != selectedSoldiersSensingInfo.lastTimeInfoWasUpdated)
+            {
+                aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+                lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
+            }
+        }
+
+        //Update the last sensed Times everytime?
     }
 }

@@ -11,10 +11,14 @@ public class AIC_S_TacticalPointVisibilityInfo
 
     public float lastSquaredDistanceMeasured;
 
+    public float timeWhenLastSeen;
+
     public AIC_S_TacticalPointVisibilityInfo(TacticalPointVisibilityInfo visInfo)
     {
         this.visInfo = visInfo;
         point = visInfo.tacticalPointAssignedTo;
+
+        timeWhenLastSeen = Time.time;
     }
 
 

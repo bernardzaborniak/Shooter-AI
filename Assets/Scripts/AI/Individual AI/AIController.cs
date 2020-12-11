@@ -96,7 +96,7 @@ public class AIController : EntityComponent
 
         #region Set needed Variables
 
-        AIC_S_EntityVisibilityInfo nearestEnemyInfo = sensing.nearestEnemyInfo;
+        AIC_S_EntityVisibilityInfo nearestEnemyInfo = sensing.currentSensingInfo.nearestEnemyInfo;
 
         Vector3 directionToNearestEnemy = Vector3.zero;
         float distanceToNearestEnemy = 0;
@@ -136,7 +136,7 @@ public class AIController : EntityComponent
 
         //cover
         //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
-        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.postsInSensingRadius;
+        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.currentSensingInfo.tacticalPointsInSensingRadius;
 
 
         #endregion

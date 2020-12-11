@@ -23,8 +23,15 @@ public class AIVisualisationUI : MonoBehaviour
     public TextMeshProUGUI tmp_EntityName;
     public TextMeshProUGUI tmp_EntityTeamID;
 
-    [Header("Detailed Info Menus")]
+    [Header("Sensing Menu")]
     public GameObject sensingMenu;
+    public GameObject sensingUIItemPrefab;
+    public Transform sensingEnemiesPanelParent;
+    public Transform sensingFriendliesPanelParent;
+    public Transform sensingTacticalPointsPanelParent;
+
+
+    [Header("Decisionmaking Menu")]
     public GameObject decisionmakerMenu;
 
     public enum DetailedMenuState
@@ -149,6 +156,82 @@ public class AIVisualisationUI : MonoBehaviour
             decisionmakerMenu.SetActive(true);
             detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
 
+        }
+    }
+
+    public void UpdateSensingUI(SensingInfo sensingInfo)
+    {
+        //Reset the UI - delete all enemies & friendlies etc
+
+        if (sensingInfo != null)
+        {
+            // Update Enemies Panel
+
+            //delete old
+            for (int i = 0; i < sensingEnemiesPanelParent.childCount; i++)
+            {
+                Destroy(sensingEnemiesPanelParent.GetChild(i).gameObject);
+            }
+
+            //create new
+            foreach(AIC_S_EntityVisibilityInfo enemy in sensingInfo.enemiesInSensingRadius)
+            {
+                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingEnemiesPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel.SetUp((enemy.entity.name + enemy.entity.GetHashCode()), enemy.lastSquaredDistanceMeasured, enemy.timeWhenLastSeen);
+            }
+
+
+            // Update Friendlies Panel
+
+            //delete old
+            for (int i = 0; i < sensingFriendliesPanelParent.childCount; i++)
+            {
+                Destroy(sensingFriendliesPanelParent.GetChild(i).gameObject);
+            }
+
+            //create new
+            foreach (AIC_S_EntityVisibilityInfo friendly in sensingInfo.friendliesInSensingRadius)
+            {
+                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingFriendliesPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel.SetUp((friendly.entity.name + friendly.entity.GetHashCode()), friendly.lastSquaredDistanceMeasured, friendly.timeWhenLastSeen);
+            }
+
+
+            // Update TPoints Panel
+
+            //delete old
+            for (int i = 0; i < sensingTacticalPointsPanelParent.childCount; i++)
+            {
+                Destroy(sensingTacticalPointsPanelParent.GetChild(i).gameObject);
+            }
+
+            //create new
+            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tacticalPointsInSensingRadius)
+            {
+                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTacticalPointsPanelParent).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel.SetUp((tPoint.point.tacticalPointType.ToString() + tPoint.point.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen);
+            }
+
+
+        }
+        else
+        {
+            // Delete Old
+
+            for (int i = 0; i < sensingEnemiesPanelParent.childCount; i++)
+            {
+                Destroy(sensingEnemiesPanelParent.GetChild(i).gameObject);
+            }
+
+            for (int i = 0; i < sensingFriendliesPanelParent.childCount; i++)
+            {
+                Destroy(sensingFriendliesPanelParent.GetChild(i).gameObject);
+            }
+
+            for (int i = 0; i < sensingTacticalPointsPanelParent .childCount; i++)
+            {
+                Destroy(sensingTacticalPointsPanelParent.GetChild(i).gameObject);
+            }
         }
     }
 
