@@ -56,7 +56,7 @@ public class AIC_HumanSensing : AIComponent
     public override void UpdateComponent()
     {
         //if (Time.time > nextSensingTime)
-        if(optimiser.ShouldSensingBeUpdated())
+        if(optimiser.ShouldSensingBeUpdated() && Time.time - currentSensingInfo.lastTimeInfoWasUpdated > 0) //only update if more than 0,0 seconds have passed, dont update when time is stopped inside the game
         {
             UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
