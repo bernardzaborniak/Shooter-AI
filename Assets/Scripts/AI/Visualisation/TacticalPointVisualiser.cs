@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-//TODO Move this enum to the tactical point calsss later on
-
-//[ExecuteInEditMode]
+// Responsible for visualising the rating of a cover point.
 public class TacticalPointVisualiser : MonoBehaviour
 {
     #region Fields
@@ -55,7 +53,6 @@ public class TacticalPointVisualiser : MonoBehaviour
     public Renderer crouchedDistanceRenderer;
     public Renderer crouchedQualityRenderer;
 
-    MaterialPropertyBlock propertyBlock; //Used to hange material values in a performant way
 
     string[] propertyNames = new string[] {
         "Color_AEBF42CB" ,
@@ -74,18 +71,32 @@ public class TacticalPointVisualiser : MonoBehaviour
     public bool showStandingRaycasts;
     public bool[] showRaycastsSubSettings;
 
+    #region cached variables
+
+    // ----- UpdateRatingRing --------
+    Color currentMappedCol;
+    MaterialPropertyBlock propertyBlock; //Used to hange material values in a performant way
+    //-------------
+
+    // ----- GetMappedColor --------
+    float clampedRating;
+    float normalizedRating;
+    //--------
 
     #endregion
 
-    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSetting)
+
+    #endregion
+
+    public void UpdateVisualiser(Quaternion cameraRot, AIVisualisationManager.Settings visualisationSettings)
     {
         //Distance Rating
-        if (visualisationSetting.showCoverDistanceRating)
+        if (visualisationSettings.showCoverDistanceRating)
         {
             standingDistanceRenderer.enabled = true;
             crouchedDistanceRenderer.enabled = true;
 
-            if (visualisationSetting.showCoverDistanceRatingNumbers)
+            if (visualisationSettings.showCoverDistanceRatingNumbers)
             {
                 tmp_standingDistanceRatingParent.SetActive(true);
                 tmp_crouchedDistanceRatingParent.SetActive(true);
@@ -113,11 +124,11 @@ public class TacticalPointVisualiser : MonoBehaviour
         }
 
         //Quality Rating
-        if (visualisationSetting.showCoverQualityRating)
+        if (visualisationSettings.showCoverQualityRating)
         {
             standingQualityRenderer.enabled = true;
             crouchedQualityRenderer.enabled = true;
-            if (visualisationSetting.showCoverQualityRatingNumbers)
+            if (visualisationSettings.showCoverQualityRatingNumbers)
             {
                 tmp_standingQualityRatingParent.SetActive(true);
                 tmp_crouchedQualityRatingParent.SetActive(true);
@@ -155,11 +166,10 @@ public class TacticalPointVisualiser : MonoBehaviour
         UpdateRatingRing(true, crouchedQualityRenderer, pointToVisualise.coverRating.crouchedQualityRating, tmp_crouchedQualityRatingParent, tmp_crouchedQualityRating, crouchedQualityRenderer, worstQuality, bestQuality, worstQualityColor, bestQualityColor);
     }
 
-    void UpdateRatingRing(bool quality, Renderer renderer, float[] rating, GameObject textParent, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
+    void UpdateRatingRing(bool quality,  Renderer renderer,  float[] rating,  GameObject textParent, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
-        Color currentMappedCol;
-
         propertyBlock = new MaterialPropertyBlock();
+
         renderer.GetPropertyBlock(propertyBlock);
 
         for (int i = 0; i < 8; i++)
@@ -185,15 +195,15 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     Color GetMappedDistanceRatingColor(float distance)
     {
-        float clampedRating = Mathf.Clamp(distance, bestDistance, worstDistance);
-        float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
+        clampedRating = Mathf.Clamp(distance, bestDistance, worstDistance);
+        normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
         return Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
     }
 
     Color GetMappedQualityRatingColor(float quality)
     {
-        float clampedRating = Mathf.Clamp(quality, worstQuality, bestQuality);
-        float normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
+        clampedRating = Mathf.Clamp(quality, worstQuality, bestQuality);
+        normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
         return Color.Lerp(worstQualityColor, bestQualityColor, normalizedRating);
     }
 

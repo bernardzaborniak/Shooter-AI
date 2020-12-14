@@ -2,13 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Manages Update Times of all AIC_sensing components with the SensingOptimiser
 public class SensingOptimisationManager : ScriptOptimisationManager
 {
+    #region Fields
+
     [Header("Group Sorting Conditions")]
     [SerializeField] float distanceOfLOD1Start;
     float distanceOfLOD1StartSquared;
 
     public static SensingOptimisationManager Instance;  //only declare classes which derive from this script as singleton
+
+    #region Variables chached to prevent garbage collection
+
+    // ----- Used inside SortOptimisersintoLODGroups()---------
+
+    Vector3 playerCameraForward;
+    Vector3 directionTowardsObject; 
+    float squaredDistance;
+    float angle;
+    Vector3 playerPosition;
+    bool alternativeSortMode;
+
+    HashSet<IScriptOptimiser>[] optimiserToRemoveFromGroups;
+    HashSet<IScriptOptimiser>[] optimiserToAddToGroups;
+
+    // ---------------------------------
+
+    #endregion
+
+    #endregion
+
+
     void Awake()
     {
         if (Instance != null)
@@ -21,18 +46,24 @@ public class SensingOptimisationManager : ScriptOptimisationManager
         }
 
         distanceOfLOD1StartSquared = distanceOfLOD1Start * distanceOfLOD1Start;
+
+        optimiserToRemoveFromGroups = new HashSet<IScriptOptimiser>[LODGroups.Length];
+        optimiserToAddToGroups = new HashSet<IScriptOptimiser>[LODGroups.Length];
+        for (int i = 0; i < LODGroups.Length; i++)
+        {
+            optimiserToRemoveFromGroups[i] = new HashSet<IScriptOptimiser>();
+            optimiserToAddToGroups[i] = new HashSet<IScriptOptimiser>();
+        }
     }
+
 
     public override void SortOptimisersIntoLODGroups()
     {
-        Vector3 playerCameraForward = playerTransform.forward;
-
-        Vector3 directionTowardsObject;  //maybe also have the option to optimise dased ona angle?
-        float squaredDistance = 0;
-        float angle = 0;
-        Vector3 playerPosition = playerTransform.position;
-
-        bool alternativeSortMode = false; //i have 2 sort algorythms, cant decide whch is better - the alternative mode seems to be less acurrate but cleaner
+         playerCameraForward = playerTransform.forward;
+         squaredDistance = 0;
+         angle = 0;
+         playerPosition = playerTransform.position;
+         alternativeSortMode = false; //i have 2 sort algorythms, cant decide whch is better - the alternative mode seems to be less acurrate but cleaner
 
         if (alternativeSortMode)
         {
@@ -69,17 +100,15 @@ public class SensingOptimisationManager : ScriptOptimisationManager
         }
         else
         {
-            HashSet<IScriptOptimiser>[] optimiserToRemoveFromGroups = new HashSet<IScriptOptimiser>[LODGroups.Length];
-            HashSet<IScriptOptimiser>[] optimiserToAddToGroups = new HashSet<IScriptOptimiser>[LODGroups.Length];
             for (int i = 0; i < LODGroups.Length; i++)
             {
-                optimiserToRemoveFromGroups[i] = new HashSet<IScriptOptimiser>();
-                optimiserToAddToGroups[i] = new HashSet<IScriptOptimiser>();
+                optimiserToRemoveFromGroups[i].Clear();
+                optimiserToAddToGroups[i].Clear();
             }
 
             #region Fill the ToRemove and ToAdd Groups
 
-            //first check all optimisers which arent assigned to a group?
+            // First check all optimisers which arent assigned to a group?
             foreach (IScriptOptimiser optimiser in optimisersRegisteredButNotAddedToALODGroupYet)
             {
                 directionTowardsObject = optimiser.GetPosition() - playerPosition;

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Sensing Component saves information about tactical points it has seen in this container
-
-public class AIC_S_TacticalPointVisibilityInfo 
+// SensingInfo Component saves information about tactical points it has seen in this container.
+public class AI_SI_TacticalPointVisibilityInfo 
 {
     public TacticalPoint point;
     public TacticalPointVisibilityInfo visInfo;
@@ -14,7 +13,7 @@ public class AIC_S_TacticalPointVisibilityInfo
     public float timeWhenLastSeen;
     public int frameCountWhenLastSeen;
 
-    public AIC_S_TacticalPointVisibilityInfo(TacticalPointVisibilityInfo visInfo)
+    public AI_SI_TacticalPointVisibilityInfo(TacticalPointVisibilityInfo visInfo)
     {
         this.visInfo = visInfo;
         point = visInfo.tacticalPointAssignedTo;
@@ -22,6 +21,4 @@ public class AIC_S_TacticalPointVisibilityInfo
         timeWhenLastSeen = Time.time;
         frameCountWhenLastSeen = Time.frameCount;
     }
-
-
 }

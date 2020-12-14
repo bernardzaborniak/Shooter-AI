@@ -64,8 +64,8 @@ public class AIVisualisationManager : MonoBehaviour
     public LayerMask selectingSoldiersLayerMask;
 
     //for updating sensing UI
-    SensingInfo selectedSoldiersSensingInfo;
-    SensingInfo selectedSoldiersSensingInfoLastFrame;
+    AI_SensingInfo selectedSoldiersSensingInfo;
+    AI_SensingInfo selectedSoldiersSensingInfoLastFrame;
     float lastUpdateSensingFrameCount;
 
     #endregion
@@ -362,24 +362,24 @@ public class AIVisualisationManager : MonoBehaviour
         //if deselected soldier
         if(selectedSoldiersSensingInfo == null && selectedSoldiersSensingInfoLastFrame != null)
         {
-            aIVisualisationUI.UpdateSensingUI(null);
+            aIVisualisationUI.UpdateSensingUIItems(null);
         }
         //if selected soldier
         else if(selectedSoldiersSensingInfo != null && selectedSoldiersSensingInfoLastFrame == null)
         {
-            aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+            aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
         }
         //if selected different soldier
         else if (selectedSoldiersSensingInfo  != selectedSoldiersSensingInfoLastFrame)
         {
-            aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+            aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
         }
         //else only update ui everytime the sensing component updated
         else if(selectedSoldiersSensingInfo != null)
         {
             if(lastUpdateSensingFrameCount != selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated)
             {
-                aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
+                aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
                 lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
             }
         }

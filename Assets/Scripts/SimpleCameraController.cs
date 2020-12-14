@@ -14,9 +14,7 @@ namespace UnityTemplateProjects
         [Header("For Framing on Objects")]
         [Tooltip("The smaller the smooth time, the fast the framing")]
         public float framingSmoothTime;
-        //Vector3 frameDirection; //direction from cam to target on start of framing progress.
         public Vector3 targetTransformFrameCameraPosOffset;
-        //public float framingDistanceFromObjectToCamera;
         Transform frameTargetTransform;
 
         Vector3 currentTargetPosition;
@@ -259,15 +257,6 @@ namespace UnityTemplateProjects
 
             targetTransformFrameCameraPosOffset = (transform.position - frameTargetTransform.position).normalized * 5;
             targetTransformFrameCameraPosOffset.y += 1.5f;
-
-            //old way
-            //currentTargetPosition = target.position - directionFromCameraToFramedObject.normalized * framingDistanceFromObjectToCamera;
-            //currentTargetRotation = Quaternion.LookRotation(directionFromCameraToFramedObject);
-
-            //new way
-            //- calculate in update
-            //frameDirection
-
 
             cameraControllType = CameraControllType.LerpingTowardsTarget;
         }

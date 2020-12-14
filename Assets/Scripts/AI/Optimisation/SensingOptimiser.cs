@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Interface between AIC_Sensing and Sensing Optimiser - tells the Sensing Component when to update According to the optimiser.
 public class SensingOptimiser : MonoBehaviour, IScriptOptimiser
 {
     //instead of directly updating the sensing script, the optimiser just tells the sensing script when an update would be good and performant.

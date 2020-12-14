@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Sensing Component saves information about other entities it has seen in this container
-public class AIC_S_EntityVisibilityInfo 
+// SensingInfo Component saves information about other entities it has seen in this container.
+public class AI_SI_EntityVisibilityInfo 
 {
+    #region Fields
+
     public GameEntity entity;
     public EntityVisibilityInfo visInfo;
     public int entityTeamID;
 
-
     Vector3 lastSeenEntityPosition;
+    public float lastSquaredDistanceMeasured;
 
     //Movement
     public bool hasMovement;
@@ -21,16 +23,16 @@ public class AIC_S_EntityVisibilityInfo
     Vector3 lastSeenAimPosition;
     Vector3 lastSeenCriticalAimPosition;
 
+    //Information Freshness
     public float timeWhenLastSeen;
     public int frameCountWhenLastSeen;
 
     float timeDelayAfterWhichPositionIsntUpdated = 1.5f; //if we seen this entity more than x seconds ago, we wont have acess to the current position of the entity, just the last posiiton
 
-    public float lastSquaredDistanceMeasured;
+    #endregion
 
 
-
-    public AIC_S_EntityVisibilityInfo(EntityVisibilityInfo visInfo)
+    public AI_SI_EntityVisibilityInfo(EntityVisibilityInfo visInfo)
     {
         this.visInfo = visInfo;
         timeWhenLastSeen = Time.time;
@@ -40,7 +42,7 @@ public class AIC_S_EntityVisibilityInfo
         lastSeenEntityPosition = entity.transform.position;
         entityTeamID = entity.teamID;
 
-        // Set Movement Speeds.
+        //Set Movement Speeds
         if (visInfo.HasMovement())
         {
             hasMovement = true;
@@ -52,16 +54,15 @@ public class AIC_S_EntityVisibilityInfo
             hasMovement = false;
         }
 
-        //Set Aim Positions.
+        //Set Aim Positions
         lastSeenAimPosition = entity.GetAimPosition();
         lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
     }
 
-
-   /* public bool IsValid()
+    public bool IsAlive()
     {
         return entity;
-    }*/
+    }
 
     public Vector3 GetAimPosition()
     {
@@ -89,7 +90,6 @@ public class AIC_S_EntityVisibilityInfo
 
         return lastSeenCriticalAimPosition;
     }
-
 
     public Vector3 GetCurrentVelocity()
     {

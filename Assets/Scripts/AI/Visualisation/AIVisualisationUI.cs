@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// UI corresponding to the Visualisation Manager
 public class AIVisualisationUI : MonoBehaviour
 {
+    #region Fields
+
     public AIVisualisationManager manager;
 
     [Header("Tactical Points Options")]
@@ -27,12 +30,7 @@ public class AIVisualisationUI : MonoBehaviour
     public GameObject sensingMenu;
     public GameObject sensingUIItemPrefab;
 
-    /*public Transform sensingEnemiesPanelParent;  //parents containing all the spawned items
-    public Transform sensingFriendliesPanelParent;
-    public Transform sensingTPointsCoverPanelParent;
-    public Transform sensingTPointsOpenFieldPanelParent;*/
-
-    public UIExpandCollapsePanel sensingEnemiesPanel;  //parents containing all the spawned items
+    public UIExpandCollapsePanel sensingEnemiesPanel;  
     public UIExpandCollapsePanel sensingFriendliesPanel;
     public UIExpandCollapsePanel sensingTPointsCoverPanel;
     public UIExpandCollapsePanel sensingTPointsOpenFieldPanel;
@@ -49,6 +47,19 @@ public class AIVisualisationUI : MonoBehaviour
         DecisionmakerMenuOpen
     }
     public DetailedMenuState detailedMenuState = DetailedMenuState.NoMenu;
+
+    #region Variables cached to reduce garbage
+
+    // ----- UpdateSensingUIItems-------
+
+    HashSet<GameObject> objectsToDestroy = new HashSet<GameObject>();
+    AI_VIS_UI_SensingItem topicPanel;
+
+    //--------------------
+
+    #endregion
+
+    #endregion
 
 
     void Update()
@@ -91,7 +102,6 @@ public class AIVisualisationUI : MonoBehaviour
     {
         manager.settings.showCoverShootPoints = button.active;
     }
-
 
     public void OnShowCoverDistanceRatingButtonClicked(ToogleableButton button)
     {
@@ -167,15 +177,14 @@ public class AIVisualisationUI : MonoBehaviour
         }
     }
 
-    public void UpdateSensingUI(SensingInfo sensingInfo)
+    public void UpdateSensingUIItems(AI_SensingInfo sensingInfo)
     {
         //Reset the UI - delete all enemies & friendlies etc
 
         if (sensingInfo != null)
-        {
-            // Update Enemies Panel --------------------------------
-
-            HashSet<GameObject> objectsToDestroy = new HashSet<GameObject>();
+        {     
+            // Destroy old items immediately to prevent UI visuali bugs due to vertuical group & content size fitter
+            objectsToDestroy.Clear();
             for (int i = 0; i < sensingEnemiesPanel.panelToExpand.childCount; i++)
             {
                 objectsToDestroy.Add(sensingEnemiesPanel.panelToExpand.GetChild(i).gameObject);
@@ -198,76 +207,44 @@ public class AIVisualisationUI : MonoBehaviour
                 DestroyImmediate(obj);
             }
 
-
-            //delete old
-            /* for (int i = 0; i < sensingEnemiesPanelParent.childCount; i++)
-             {
-                 Destroy(sensingEnemiesPanelParent.GetChild(i).gameObject);
-             }*/
-
-            //create new
-            foreach (AIC_S_EntityVisibilityInfo enemy in sensingInfo.enemiesInSensingRadius)
+            // Update Enemies Panel --------------------------------
+            foreach (AI_SI_EntityVisibilityInfo enemy in sensingInfo.enemiesInSensingRadius)
             {
-                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingEnemiesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
-                topicPanel.SetUp((enemy.entity.name + enemy.entity.GetHashCode()), enemy.lastSquaredDistanceMeasured, enemy.timeWhenLastSeen, enemy.frameCountWhenLastSeen, enemy.entity.transform, manager);
+                if (enemy.IsAlive())
+                {
+                    topicPanel = Instantiate(sensingUIItemPrefab, sensingEnemiesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    topicPanel.SetUp((enemy.entity.name + enemy.entity.GetHashCode()), enemy.lastSquaredDistanceMeasured, enemy.timeWhenLastSeen, enemy.frameCountWhenLastSeen, enemy.entity.transform, manager);
+                }
             }
             sensingEnemiesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.enemiesInSensingRadius.Count);
 
-
             // Update Friendlies Panel --------------------------------
-
-            //delete old
-            /*for (int i = 0; i < sensingFriendliesPanelParent.childCount; i++)
+            foreach (AI_SI_EntityVisibilityInfo friendly in sensingInfo.friendliesInSensingRadius)
             {
-                Destroy(sensingFriendliesPanelParent.GetChild(i).gameObject);
-            }*/
+                if (friendly.IsAlive())
+                {
+                    topicPanel = Instantiate(sensingUIItemPrefab, sensingFriendliesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    topicPanel.SetUp((friendly.entity.name + friendly.entity.GetHashCode()), friendly.lastSquaredDistanceMeasured, friendly.timeWhenLastSeen, friendly.frameCountWhenLastSeen, friendly.entity.transform, manager);
+                }
 
-            //create new
-            foreach (AIC_S_EntityVisibilityInfo friendly in sensingInfo.friendliesInSensingRadius)
-            {
-                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingFriendliesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
-                topicPanel.SetUp((friendly.entity.name + friendly.entity.GetHashCode()), friendly.lastSquaredDistanceMeasured, friendly.timeWhenLastSeen, friendly.frameCountWhenLastSeen, friendly.entity.transform, manager);
             }
             sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.friendliesInSensingRadius.Count);
 
-
-
             // Update TPoints Cover Panel --------------------------------
-
-            //delete old
-            /*for (int i = 0; i < sensingTPointsCoverPanelParent.childCount; i++)
+            foreach (AI_SI_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsCoverInSensingRadius)
             {
-                Destroy(sensingTPointsCoverPanelParent.GetChild(i).gameObject);
-            }*/
-
-            //create new
-            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsCoverInSensingRadius)
-            {
-                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                 topicPanel.SetUp((tPoint.point.tacticalPointType.ToString() + tPoint.point.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.point.transform, manager);
             }
             sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointsCoverInSensingRadius.Count);
 
-
-
             // Update TPoints OpenField Panel --------------------------------
-
-            //delete old
-            /*for (int i = 0; i < sensingTPointsopenFieldPanelParent.childCount; i++)
+            foreach (AI_SI_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsOpenFieldInSensingRadius)
             {
-                Destroy(sensingTPointsopenFieldPanelParent.GetChild(i).gameObject);
-            }*/
-
-            //create new
-            foreach (AIC_S_TacticalPointVisibilityInfo tPoint in sensingInfo.tPointsOpenFieldInSensingRadius)
-            {
-                AI_VIS_UI_SensingItem topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                 topicPanel.SetUp((tPoint.point.tacticalPointType.ToString() + tPoint.point.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.point.transform, manager);
             }
             sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointsOpenFieldInSensingRadius.Count);
-
-
-
         }
         else
         {

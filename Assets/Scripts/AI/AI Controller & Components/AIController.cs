@@ -27,7 +27,7 @@ public class AIController : EntityComponent
     public float targetMaxOffset;
     Vector3 finalMoveDestination;
 
-    AIC_S_EntityVisibilityInfo nearestEnemyInfoLastFrame;
+    AI_SI_EntityVisibilityInfo nearestEnemyInfoLastFrame;
 
 
     //public float throwGrenadeVelocity;
@@ -96,7 +96,7 @@ public class AIController : EntityComponent
 
         #region Set needed Variables
 
-        AIC_S_EntityVisibilityInfo nearestEnemyInfo = sensing.currentSensingInfo.nearestEnemyInfo;
+        AI_SI_EntityVisibilityInfo nearestEnemyInfo = sensing.currentSensingInfo.nearestEnemyInfo;
 
         Vector3 directionToNearestEnemy = Vector3.zero;
         float distanceToNearestEnemy = 0;
@@ -136,7 +136,7 @@ public class AIController : EntityComponent
 
         //cover
         //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
-        HashSet<AIC_S_TacticalPointVisibilityInfo> possiblePosts = sensing.currentSensingInfo.tPointsCoverInSensingRadius;
+        HashSet<AI_SI_TacticalPointVisibilityInfo> possiblePosts = sensing.currentSensingInfo.tPointsCoverInSensingRadius;
 
 
         #endregion
@@ -178,7 +178,7 @@ public class AIController : EntityComponent
                     Vector3 myPos = transform.position;
 
                     //foreach (Tuple<TacticalPoint,float> postTuple in possiblePosts)
-                    foreach (AIC_S_TacticalPointVisibilityInfo postInfo in possiblePosts)
+                    foreach (AI_SI_TacticalPointVisibilityInfo postInfo in possiblePosts)
                     {
                         //check angle
                         Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.point.GetPostPosition();
