@@ -68,8 +68,24 @@ public class AIVisualisationManager : MonoBehaviour
     AI_SensingInfo selectedSoldiersSensingInfoLastFrame;
     float lastUpdateSensingFrameCount;
 
+    #region Variables Cached to reduce garbage
+
+    //--------- UpdateVisualisersShown -------
+
+    Vector3 camPos;
+    Quaternion camRot;
+    Vector3 camForward;
+
+    float currentDistanceSquared;
+    TacticalPointVisualiser visualiser;
+
+    HashSet<TacticalPointVisualiser> visualisersToRemoveFromUse = new HashSet<TacticalPointVisualiser>();
+
+    // --------------------
+
     #endregion
 
+    #endregion
 
     void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
     {
@@ -87,11 +103,6 @@ public class AIVisualisationManager : MonoBehaviour
 
         // Square Distances for optimisation purposes.
         ratingRingCullDistanceSquared = ratingRingCullDistance * ratingRingCullDistance;
-    }
-
-    private void OnDisable()
-    {
-
     }
 
     void Update()
@@ -168,7 +179,7 @@ public class AIVisualisationManager : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnRenderObject()
+    void OnRenderObject()
     {
         // This is called only in Edit Mode.
         // On GUI Updates more often in Edit mode than update, ensures smooth text alignment
@@ -191,9 +202,9 @@ public class AIVisualisationManager : MonoBehaviour
     {
         #region Prepare Variables
 
-        Vector3 camPos = cameraController.transform.position;
-        Quaternion camRot = cameraController.transform.rotation;
-        Vector3 camForward = cameraController.transform.forward;
+        camPos = cameraController.transform.position;
+        camRot = cameraController.transform.rotation;
+        camForward = cameraController.transform.forward;
 
 
 #if UNITY_EDITOR
@@ -209,14 +220,12 @@ public class AIVisualisationManager : MonoBehaviour
         }
 #endif
 
-        float currentDistanceSquared;
-        TacticalPointVisualiser visualiser;
 
         #endregion
 
         #region 1. Go through visualisers in use and check if they shouldnt be enqueued again, cause their distance is too great 
 
-        HashSet<TacticalPointVisualiser> visualisersToRemoveFromUse = new HashSet<TacticalPointVisualiser>();
+        visualisersToRemoveFromUse.Clear();
 
         foreach (TacticalPointVisualiser visualiserInUse in tacticalPointVisualisersInUse)
         {
@@ -354,13 +363,14 @@ public class AIVisualisationManager : MonoBehaviour
         return false;
     }
 
-    //update everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
     void UpdateSensingUI( )
     {
-        //Update UI only if needed
+        // Update UI only if needed
+        // -> everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
+
 
         //if deselected soldier
-        if(selectedSoldiersSensingInfo == null && selectedSoldiersSensingInfoLastFrame != null)
+        if (selectedSoldiersSensingInfo == null && selectedSoldiersSensingInfoLastFrame != null)
         {
             aIVisualisationUI.UpdateSensingUIItems(null);
         }
@@ -383,8 +393,6 @@ public class AIVisualisationManager : MonoBehaviour
                 lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
             }
         }
-
-        //Update the last sensed Times everytime?
     }
 
     public void FrameCameraOnObject(Transform objectToFrameOn)
