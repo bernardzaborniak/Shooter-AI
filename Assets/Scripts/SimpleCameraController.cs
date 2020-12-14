@@ -14,6 +14,10 @@ namespace UnityTemplateProjects
         [Header("For Framing on Objects")]
         [Tooltip("The smaller the smooth time, the fast the framing")]
         public float framingSmoothTime;
+        //Vector3 frameDirection; //direction from cam to target on start of framing progress.
+        public Vector3 targetTransformFrameCameraPosOffset;
+        //public float framingDistanceFromObjectToCamera;
+        Transform frameTargetTransform;
 
         Vector3 currentTargetPosition;
         Vector3 dampPosVelocity;
@@ -24,8 +28,7 @@ namespace UnityTemplateProjects
         [Tooltip("Will be deleted later")]
         public Transform debugTargetToLerpAt;
 
-        public Vector3 directionFromCameraToFramedObject;
-        public float framingDistanceFromObjectToCamera;
+       
 
         public enum CameraControllType
         {
@@ -215,18 +218,26 @@ namespace UnityTemplateProjects
             }
             else
             {
-                if(GetInputTranslationDirection() != Vector3.zero)
+                if(frameTargetTransform == null)
                 {
                     EnterControllCameryByPlayerMode();
                     return;
                 }
-                if (Input.GetMouseButtonDown(1))
+                else if(GetInputTranslationDirection() != Vector3.zero)
+                {
+                    EnterControllCameryByPlayerMode();
+                    return;
+                }
+                else if (Input.GetMouseButtonDown(1))
                 {
                     Cursor.lockState = CursorLockMode.Locked;
 
                     EnterControllCameryByPlayerMode();
                     return;
                 }
+
+                currentTargetPosition = frameTargetTransform.position + targetTransformFrameCameraPosOffset;
+                currentTargetRotation = Quaternion.LookRotation((frameTargetTransform.position + new Vector3(0, 2, 0)) - transform.position);
 
                 transform.position = Vector3.SmoothDamp(transform.position, currentTargetPosition, ref dampPosVelocity, framingSmoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
                 transform.rotation = Utility.SmoothDamp(transform.rotation, currentTargetRotation, ref dampRotVelocity, framingSmoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
@@ -244,10 +255,19 @@ namespace UnityTemplateProjects
 
         void EnterLerpCameraToTargetMode(Transform target)
         {
-            directionFromCameraToFramedObject = target.position - transform.position;
+            frameTargetTransform = target;
 
-            currentTargetPosition = target.position - directionFromCameraToFramedObject.normalized * framingDistanceFromObjectToCamera;
-            currentTargetRotation = Quaternion.LookRotation(directionFromCameraToFramedObject);
+            targetTransformFrameCameraPosOffset = (transform.position - frameTargetTransform.position).normalized * 5;
+            targetTransformFrameCameraPosOffset.y += 1.5f;
+
+            //old way
+            //currentTargetPosition = target.position - directionFromCameraToFramedObject.normalized * framingDistanceFromObjectToCamera;
+            //currentTargetRotation = Quaternion.LookRotation(directionFromCameraToFramedObject);
+
+            //new way
+            //- calculate in update
+            //frameDirection
+
 
             cameraControllType = CameraControllType.LerpingTowardsTarget;
         }
