@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIExpandCollapsePanel : MonoBehaviour
 {
-    public GameObject panelToExpand;
+    public Transform panelToExpand;
     [Tooltip("Content Size Fitters inside layout groups need to be updated per script to layout properly - unity bug? or I am using it wrong, but it makes sense")]
     public ContentSizeFitter contentSizeFitterToUpdate;
+
+    public TextMeshProUGUI tmp_numberOfItemsInsidePanel;
 
     public void OnExpandOrHideToogleableButtonClicked(ToogleableButton button)
     {
         if (button.active)
         {
-            panelToExpand.SetActive(true);
+            panelToExpand.gameObject.SetActive(true);
         }
         else
         {
-            panelToExpand.SetActive(false);
+            panelToExpand.gameObject.SetActive(false);
         }
         //UpdateContentSizeFitter();
         // Invoke("UpdateContentSizeFitterDelayed", 0.02f);  // a delay of 0.1f does not work, the UI System seems to update delayed. If it isnt working, increase the delay to 0.5f or smth.
@@ -33,7 +36,12 @@ public class UIExpandCollapsePanel : MonoBehaviour
         transform.parent.GetComponent<VerticalLayoutGroup>().enabled = true;*/
     }
 
-    void UpdateContentSizeFitterDelayed()
+    public void UpdateNumberOfItemsInsidePanel(int itemsInsidePanel)
+    {
+        tmp_numberOfItemsInsidePanel.text = itemsInsidePanel.ToString();
+    }
+
+   /* void UpdateContentSizeFitterDelayed()
     {
         //this
         contentSizeFitterToUpdate.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -44,6 +52,6 @@ public class UIExpandCollapsePanel : MonoBehaviour
         //contentSizeFitterToUpdate.enabled = true;
 
         // This seemingly meaningless code forses the contentFitter to "Update". Otherwise it doesnt update when expanded or collapsed
-    }
+    }*/
 
 }

@@ -30,7 +30,7 @@ public class AIVisualisationManager : MonoBehaviour
     }
 
     [Header("References")]
-    public Transform camTransform;
+    public UnityTemplateProjects.SimpleCameraController cameraController;
     public TacticalPointsManager tacticalPointsManager;
     public AIVisualisationUI aIVisualisationUI;
 
@@ -191,9 +191,9 @@ public class AIVisualisationManager : MonoBehaviour
     {
         #region Prepare Variables
 
-        Vector3 camPos = camTransform.position;
-        Quaternion camRot = camTransform.rotation;
-        Vector3 camForward = camTransform.forward;
+        Vector3 camPos = cameraController.transform.position;
+        Quaternion camRot = cameraController.transform.rotation;
+        Vector3 camForward = cameraController.transform.forward;
 
 
 #if UNITY_EDITOR
@@ -385,5 +385,10 @@ public class AIVisualisationManager : MonoBehaviour
         }
 
         //Update the last sensed Times everytime?
+    }
+
+    public void FrameCameraOnObject(Transform objectToFrameOn)
+    {
+        cameraController.FrameOnObject(objectToFrameOn);
     }
 }

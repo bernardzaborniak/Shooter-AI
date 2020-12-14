@@ -228,8 +228,8 @@ namespace UnityTemplateProjects
                     return;
                 }
 
-                transform.position = Vector3.SmoothDamp(transform.position, currentTargetPosition, ref dampPosVelocity, framingSmoothTime);
-                transform.rotation = Utility.SmoothDamp(transform.rotation, currentTargetRotation, ref dampRotVelocity, framingSmoothTime);
+                transform.position = Vector3.SmoothDamp(transform.position, currentTargetPosition, ref dampPosVelocity, framingSmoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
+                transform.rotation = Utility.SmoothDamp(transform.rotation, currentTargetRotation, ref dampRotVelocity, framingSmoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
 
                 m_TargetCameraState.SetFromTransform(transform);
                 m_InterpolatingCameraState.SetFromTransform(transform);

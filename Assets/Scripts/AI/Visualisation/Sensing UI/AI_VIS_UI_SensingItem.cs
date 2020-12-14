@@ -13,12 +13,18 @@ public class AI_VIS_UI_SensingItem : MonoBehaviour
     int frameCountLastSensed;
     float timeLastSensed;
 
-    public void SetUp(string sensedThingName, float sensedThingDistance, float timeLastSensed, int frameCountLastSensed)
+    Transform referencedObjectTransform;
+    AIVisualisationManager managerReference;
+
+    public void SetUp(string sensedThingName, float sensedThingDistance, float timeLastSensed, int frameCountLastSensed, Transform referencedObjectTransform, AIVisualisationManager managerReference)
     {
         tmp_sensedThingName.text = sensedThingName;
         tmp_sensedThingDistance.text = Mathf.Sqrt(sensedThingDistance).ToString("F1");
         this.timeLastSensed = timeLastSensed;
         this.frameCountLastSensed = frameCountLastSensed;
+
+        this.referencedObjectTransform = referencedObjectTransform;
+        this.managerReference = managerReference;
 
         Update();
     }
@@ -33,5 +39,11 @@ public class AI_VIS_UI_SensingItem : MonoBehaviour
         //just update the time
         tmp_sensedTimeSinceLastSeen.text = (Time.time - timeLastSensed).ToString("F2");
         tmp_sensedFrameCountLastSeen.text = (Time.frameCount - frameCountLastSensed).ToString("F1");
+    }
+
+    public void OnFrameOnObjectButtonClicked()
+    {
+        Debug.Log("button clicked");
+        managerReference.FrameCameraOnObject(referencedObjectTransform);
     }
 }
