@@ -65,7 +65,7 @@ public class AIC_HumanSensing : AIComponent
             currentSensingInfo.lastTimeInfoWasUpdated = Time.time;
             currentSensingInfo.lastFrameCountInfoWasUpdated = Time.frameCount;
 
-            #region Scan for Enemies
+            #region Scan for other Soldiers
 
             // cache variables 
             currentSensingInfo.enemiesInSensingRadius.Clear();
@@ -101,7 +101,10 @@ public class AIC_HumanSensing : AIComponent
                     }
                     else
                     {
-                        currentSensingInfo.friendliesInSensingRadius.Add(entityVisInfo);
+                        if(entityVisInfo.entity != myEntity)
+                        {
+                            currentSensingInfo.friendliesInSensingRadius.Add(entityVisInfo);
+                        }
                     }
                 }            
             }
