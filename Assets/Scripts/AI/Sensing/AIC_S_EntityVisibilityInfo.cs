@@ -22,6 +22,8 @@ public class AIC_S_EntityVisibilityInfo
     Vector3 lastSeenCriticalAimPosition;
 
     public float timeWhenLastSeen;
+    public int frameCountWhenLastSeen;
+
     float timeDelayAfterWhichPositionIsntUpdated = 1.5f; //if we seen this entity more than x seconds ago, we wont have acess to the current position of the entity, just the last posiiton
 
     public float lastSquaredDistanceMeasured;
@@ -32,6 +34,7 @@ public class AIC_S_EntityVisibilityInfo
     {
         this.visInfo = visInfo;
         timeWhenLastSeen = Time.time;
+        frameCountWhenLastSeen = Time.frameCount;
 
         entity = visInfo.entityAssignedTo;
         lastSeenEntityPosition = entity.transform.position;

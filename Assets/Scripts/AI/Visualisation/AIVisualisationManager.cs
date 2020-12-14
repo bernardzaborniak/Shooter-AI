@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -65,7 +66,7 @@ public class AIVisualisationManager : MonoBehaviour
     //for updating sensing UI
     SensingInfo selectedSoldiersSensingInfo;
     SensingInfo selectedSoldiersSensingInfoLastFrame;
-    float lastUpdateSensingUITime;
+    float lastUpdateSensingFrameCount;
 
     #endregion
 
@@ -112,13 +113,13 @@ public class AIVisualisationManager : MonoBehaviour
                     {
                         currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
                         selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().currentSensingInfo; //not the nicest way to get this sensing component;
-                        lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
+                        lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
                     }
                     else
                     {
                         currentSelectedSoldier = null;
                         selectedSoldiersSensingInfo = null;
-                        lastUpdateSensingUITime = 0;
+                        lastUpdateSensingFrameCount = 0;
                     }
 
                 }
@@ -126,7 +127,7 @@ public class AIVisualisationManager : MonoBehaviour
                 {
                     currentSelectedSoldier = null;
                     selectedSoldiersSensingInfo = null;
-                    lastUpdateSensingUITime = 0;
+                    lastUpdateSensingFrameCount = 0;
                 }
             }   
         }
@@ -139,6 +140,7 @@ public class AIVisualisationManager : MonoBehaviour
         else
         {
             selectedSoldierVisualiser.SetActive(false);
+            selectedSoldiersSensingInfo = null;
         }
 
         if (Application.isPlaying)
@@ -197,9 +199,13 @@ public class AIVisualisationManager : MonoBehaviour
 #if UNITY_EDITOR
         if (inSceneView)
         {
-            camPos = SceneView.lastActiveSceneView.camera.transform.position;
-            camRot = SceneView.lastActiveSceneView.rotation;
-            camForward = SceneView.lastActiveSceneView.camera.transform.forward;
+            try  //we do a try cause sometimes this causes a nullpointer exception if the correct window isnt focused
+            {
+                camPos = SceneView.lastActiveSceneView.camera.transform.position;
+                camRot = SceneView.lastActiveSceneView.rotation;
+                camForward = SceneView.lastActiveSceneView.camera.transform.forward;
+            }
+            catch (Exception e) { }
         }
 #endif
 
@@ -371,10 +377,10 @@ public class AIVisualisationManager : MonoBehaviour
         //else only update ui everytime the sensing component updated
         else if(selectedSoldiersSensingInfo != null)
         {
-            if(lastUpdateSensingUITime != selectedSoldiersSensingInfo.lastTimeInfoWasUpdated)
+            if(lastUpdateSensingFrameCount != selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated)
             {
                 aIVisualisationUI.UpdateSensingUI(selectedSoldiersSensingInfo);
-                lastUpdateSensingUITime = selectedSoldiersSensingInfo.lastTimeInfoWasUpdated;
+                lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
             }
         }
 

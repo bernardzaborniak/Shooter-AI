@@ -18,6 +18,7 @@ public class SensingInfo
     public HashSet<AIC_S_TacticalPointVisibilityInfo> tPointsOpenFieldInSensingRadius = new HashSet<AIC_S_TacticalPointVisibilityInfo>();
 
     public float lastTimeInfoWasUpdated;
+    public int lastFrameCountInfoWasUpdated;
 
 
 

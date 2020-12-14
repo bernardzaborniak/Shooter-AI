@@ -12,6 +12,7 @@ public class AIC_S_TacticalPointVisibilityInfo
     public float lastSquaredDistanceMeasured;
 
     public float timeWhenLastSeen;
+    public int frameCountWhenLastSeen;
 
     public AIC_S_TacticalPointVisibilityInfo(TacticalPointVisibilityInfo visInfo)
     {
@@ -19,6 +20,7 @@ public class AIC_S_TacticalPointVisibilityInfo
         point = visInfo.tacticalPointAssignedTo;
 
         timeWhenLastSeen = Time.time;
+        frameCountWhenLastSeen = Time.frameCount;
     }
 
 

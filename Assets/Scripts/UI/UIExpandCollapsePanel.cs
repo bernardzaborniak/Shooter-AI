@@ -20,7 +20,17 @@ public class UIExpandCollapsePanel : MonoBehaviour
             panelToExpand.SetActive(false);
         }
         //UpdateContentSizeFitter();
-        Invoke("UpdateContentSizeFitterDelayed", 0.02f);  // a delay of 0.1f does not work, the UI System seems to update delayed. If it isnt working, increase the delay to 0.5f or smth.
+        // Invoke("UpdateContentSizeFitterDelayed", 0.02f);  // a delay of 0.1f does not work, the UI System seems to update delayed. If it isnt working, increase the delay to 0.5f or smth.
+
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(transform.parent.GetComponent<RectTransform>());
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(transform.parent.GetComponent<RectTransform>());
+
+
+        /*Canvas.ForceUpdateCanvases();  // *
+        GetComponent<VerticalLayoutGroup>().enabled = false; // **
+        GetComponent<VerticalLayoutGroup>().enabled = true;
+        transform.parent.GetComponent<VerticalLayoutGroup>().enabled = false; // **
+        transform.parent.GetComponent<VerticalLayoutGroup>().enabled = true;*/
     }
 
     void UpdateContentSizeFitterDelayed()

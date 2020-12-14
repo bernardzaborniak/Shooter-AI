@@ -63,6 +63,7 @@ public class AIC_HumanSensing : AIComponent
             optimiser.OnSensingWasUpdated();
 
             currentSensingInfo.lastTimeInfoWasUpdated = Time.time;
+            currentSensingInfo.lastFrameCountInfoWasUpdated = Time.frameCount;
 
             #region Scan for Enemies
 

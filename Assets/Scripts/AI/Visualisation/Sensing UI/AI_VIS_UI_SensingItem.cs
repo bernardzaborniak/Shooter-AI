@@ -8,13 +8,19 @@ public class AI_VIS_UI_SensingItem : MonoBehaviour
     public TextMeshProUGUI tmp_sensedThingName;
     public TextMeshProUGUI tmp_sensedThingDistance;
     public TextMeshProUGUI tmp_sensedTimeSinceLastSeen;
+    public TextMeshProUGUI tmp_sensedFrameCountLastSeen;
+
+    int frameCountLastSensed;
     float timeLastSensed;
 
-    public void SetUp(string sensedThingName, float sensedThingDistance, float timeLastSensed)
+    public void SetUp(string sensedThingName, float sensedThingDistance, float timeLastSensed, int frameCountLastSensed)
     {
         tmp_sensedThingName.text = sensedThingName;
-        tmp_sensedThingDistance.text = sensedThingDistance.ToString("F1");
+        tmp_sensedThingDistance.text = Mathf.Sqrt(sensedThingDistance).ToString("F1");
         this.timeLastSensed = timeLastSensed;
+        this.frameCountLastSensed = frameCountLastSensed;
+
+        Update();
     }
 
     /*public void UpdateTimeSinceLastSeen(float sensedTimeSinceLastSeen)
@@ -25,6 +31,7 @@ public class AI_VIS_UI_SensingItem : MonoBehaviour
     private void Update()
     {
         //just update the time
-        tmp_sensedTimeSinceLastSeen.text = (Time.time - timeLastSensed).ToString("F1");
+        tmp_sensedTimeSinceLastSeen.text = (Time.time - timeLastSensed).ToString("F2");
+        tmp_sensedFrameCountLastSeen.text = (Time.frameCount - frameCountLastSensed).ToString("F1");
     }
 }
