@@ -15,24 +15,20 @@ MonoBehaviour:
   considerationName: 
   description: 
   considerationCurve:
-    m: 0
-    k: 0
-    b: 0
-    c: 0
-    bi_threshold: 0
+    curveType: 0
+    bi_threshold: 0.5
     bi_inverse: 0
-    lin_Slope: 0
+    lin_Slope: 1
     lin_Shift: 0
-    q_Slope: 0.57
-    q_Exponent: 2.25
-    q_VertShift: -0.24
-    q_HorizShift: -0.16
-    logistic_Slope: 0.14
+    q_Slope: 1
+    q_Exponent: 2
+    q_VertShift: 0
+    q_HorizShift: 0
+    logistic_Slope: 0.15
     logistic_XShift: 0
     logistic_YShift: 0
     logistic_YScalar: 1
-    logit_A: -0.034
-    logit_B: -0.074
-    curveType: 3
-  horizontalVisualisationTextureResolution: 100
-  verticalVisualisationTextureResolution: 100
+    logit_A: 0.035
+    logit_B: 0.075
+  horizontalVisualisationTextureResolution: 250
+  verticalVisualisationTextureResolution: 250

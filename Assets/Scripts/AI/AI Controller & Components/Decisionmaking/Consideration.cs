@@ -6,6 +6,7 @@ using UnityEngine;
 public class Consideration : ScriptableObject
 {
     public string considerationName;
+    [TextArea]
     public string description;
 
     // Input
@@ -13,6 +14,7 @@ public class Consideration : ScriptableObject
     //Respnonse Cirve parameters & Type
 
     // Input parameters ( min, max, tags, etc..)
+    [Space(20)]
     public ConsiderationCurve considerationCurve;
 
     [Header("Curve Visualisation")]

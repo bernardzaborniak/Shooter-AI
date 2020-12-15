@@ -10,58 +10,65 @@ using UnityEngine;
 [System.Serializable]
 public class ConsiderationCurve 
 {
+    public enum CurveType
+    {
+        Binary,
+        Linear,
+        Quadratic,
+        Logistic, //like a smoothdamp
+        Logit //as your moving away from the centerpoint you get more and more extreme reactions
+    }
 
-    [Tooltip("slope / slope of the line at inflection point")]
-    [SerializeField] float m;
-    [Tooltip("exponent / vertical size of the curve")]
-    [SerializeField] float k;
-    [Tooltip("y-intercept (vertical shift)")]
-    [SerializeField] float b;
-    [Tooltip("x-intercept / x-intercept at the inflection point (horizontal shift)")]
-    [SerializeField] float c;
+    public CurveType curveType;
+
 
     [Header("Binary Values")]
     [Range(0,1)]
-    [SerializeField] float bi_threshold;
+    [ConditionalEnumHide("curveType", 0)]
+    [SerializeField] float bi_threshold = 0.5f;
+    [ConditionalEnumHide("curveType", 0)]
     [SerializeField] bool bi_inverse;
 
     [Header("Linear Values")]
-    [SerializeField] float lin_Slope;
+    [ConditionalEnumHide("curveType", 1)]
+    [SerializeField] float lin_Slope = 1;
+    [ConditionalEnumHide("curveType", 1)]
     [SerializeField] float lin_Shift;
 
     [Header("Quadratic Values")]
-    [SerializeField] float q_Slope;
-    [SerializeField] float q_Exponent;
+    [ConditionalEnumHide("curveType", 2)]
+    [SerializeField] float q_Slope = 1;
+    [ConditionalEnumHide("curveType", 2)]
+    [SerializeField] float q_Exponent = 2;
+    [ConditionalEnumHide("curveType", 2)]
     [SerializeField] float q_VertShift;
+    [ConditionalEnumHide("curveType", 2)]
     [SerializeField] float q_HorizShift;
 
     [Header("Logistic Values")]
-    [SerializeField] float logistic_Slope;
+    [ConditionalEnumHide("curveType", 3)]
+    [SerializeField] float logistic_Slope = 0.15f;
+    [ConditionalEnumHide("curveType", 3)]
     [SerializeField] float logistic_XShift;
+    [ConditionalEnumHide("curveType", 3)]
     [SerializeField] float logistic_YShift;
+    [ConditionalEnumHide("curveType", 3)]
     [SerializeField] float logistic_YScalar = 1;
 
     [Header("Logit Values")] //I cant really describe what thoose values do
     [Range(-0.3f, 0.3f)]
-    [SerializeField] float logit_A;
+    [ConditionalEnumHide("curveType", 4)]
+    [SerializeField] float logit_A = 0.035f;
     [Range(-0.3f, 0.3f)]
-    [SerializeField] float logit_B;
+    [ConditionalEnumHide("curveType", 4)]
+    [SerializeField] float logit_B = 0.075f;
 
 
 
 
 
 
-    public enum CurveType
-    {
-        Linear,
-        Quadratic,
-        Logistic, //like a smoothdamp
-        Logit, //as your moving away from the centerpoint you get more and more extreme reactions
-        Binary
-    }
 
-    public CurveType curveType;
 
 
     public float GetRemappedValueBinary(float input)
