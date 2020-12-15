@@ -82,47 +82,48 @@ public class ConsiderationCurve
     public float GetRemappedValueQuadratic(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-
-
-        return Mathf.Clamp(q_Slope * Mathf.Pow(input- q_HorizShift, q_Exponent) + q_VertShift, 0,1);
+        return Mathf.Clamp
+            (
+                q_Slope * Mathf.Pow(input- q_HorizShift, q_Exponent) + q_VertShift,
+                0,
+                1
+            );
     }
 
     public float GetRemappedValueLinear(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-
-
-        return Mathf.Clamp(lin_Slope * input  + lin_Shift, 0, 1);
+        return Mathf.Clamp
+            (
+                lin_Slope * input  + lin_Shift, 
+                0, 
+                1
+            );
     }
 
 
     public float GetRemappedValueLogistic(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-        //return Mathf.Clamp((k*(1/(1+Mathf.Pow(1000*Mathf.Epsilon*m,-1*input+c))))+b, 0, 1);
-        //return Mathf.Clamp((k*(1/(1+1000*Mathf.Epsilon* Mathf.Pow(m,-1*input+c))))+b, 0, 1);
-
-       // float bruch = 1 / (1+ Mathf.Pow(Mathf.Epsilon* m, -1 * input + c));
-        float bruch = 1 / (1+ Mathf.Pow(Mathf.Epsilon, -input + c));
-        //float bruch = 1 / (1+ Mathf.Pow(Mathf.Epsilon, -input + c));
-        //float value = (k * (bruch) + b);
-        
-        
-        //float value = 1 / (1 + Mathf.Pow(Mathf.Epsilon * m, -input + c));
-        //float value = 1f / (1 + Mathf.Pow(Mathf.Epsilon * m, -input + c));
-        
-        float value = (logistic_YScalar / (1 + Mathf.Pow(Mathf.Epsilon, -logistic_Slope*(input-(logistic_XShift + 0.5f)))))+logistic_YShift;
-        return Mathf.Clamp(value, 0, 1);
+  
+        return Mathf.Clamp
+            (
+                (logistic_YScalar / (1 + Mathf.Pow(Mathf.Epsilon, -logistic_Slope * (input - (logistic_XShift + 0.5f))))) + logistic_YShift,
+                0, 
+                1
+            );
     }
 
     public float GetRemappedValueLogit(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
 
-        //float value = Mathf.Log((input + logit_XShift) / (1 - (input + logit_XShift)), logit_Base) + logit_YShift;
-        float value = (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B;
-        //float value = (Mathf.Log(input / (1 - input), logit_Base) + logit_A); /// logit_B;
-        return Mathf.Clamp(value, 0, 1);
+        return Mathf.Clamp
+            (
+                (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B,
+                0, 
+                1
+            );
     }
 
 
@@ -131,23 +132,27 @@ public class ConsiderationCurve
         int textureWidth = texture.width;
         int textureHeight = texture.height;
 
-        int grid10Resolution = texture.height / 10;
+        int grid10XResolution = texture.width / 10;
+        int grid10YResolution = texture.height / 10;
         Color grid10Color = new Color(0.9f, 0.9f, 0.9f);
-        int grid2Resolution = texture.height / 2;
+        int grid2XResolution = texture.width / 2;
+        int grid2YResolution = texture.height / 2;
         Color grid2Color = new Color(0.75f, 0.75f, 0.75f);
 
 
 
         for (int x = 0; x < textureWidth; x++)
         {
+
+
+
             for (int y = 0; y < textureHeight; y++)
             {
-                //colour everything white
-                if(x% grid10Resolution == 0 || y% grid10Resolution == 0)
+                if (x % grid10XResolution == 0 || y % grid10YResolution == 0)
                 {
                     texture.SetPixel(x, y, grid10Color);
                 }
-                else if(x % grid2Resolution == 0 || y % grid2Resolution == 0 || x % grid2Resolution == 1 || y % grid2Resolution == 1)
+                else if (x % grid2XResolution == 0 || x % grid2XResolution == 1 || y % grid2YResolution == 0 || y % grid2YResolution == 1)
                 {
                     texture.SetPixel(x, y, grid2Color);
                 }
@@ -158,12 +163,8 @@ public class ConsiderationCurve
             }
 
             //here color the current output pixel black
-
             if (curveType == CurveType.Linear)
             {
-                //return 0-1
-                //GetRemappedValueLinear(x / (textureWidth * 1f)) * textureWidth
-
                 texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
             }
             else if(curveType == CurveType.Quadratic)
