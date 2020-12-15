@@ -35,6 +35,20 @@ public class ConsiderationCurve
     [SerializeField] float q_VertShift;
     [SerializeField] float q_HorizShift;
 
+    [Header("Logistic Values")]
+    [SerializeField] float logistic_Slope;
+    [SerializeField] float logistic_XShift;
+    [SerializeField] float logistic_YShift;
+    [SerializeField] float logistic_YScalar = 1;
+
+    [Header("Logit Values")] //I cant really describe what thoose values do
+    [Range(-0.3f, 0.3f)]
+    [SerializeField] float logit_A;
+    [Range(-0.3f, 0.3f)]
+    [SerializeField] float logit_B;
+
+
+
 
 
 
@@ -42,8 +56,8 @@ public class ConsiderationCurve
     {
         Linear,
         Quadratic,
-        Logistic,
-        Logit,
+        Logistic, //like a smoothdamp
+        Logit, //as your moving away from the centerpoint you get more and more extreme reactions
         Binary
     }
 
@@ -95,40 +109,78 @@ public class ConsiderationCurve
         
         
         //float value = 1 / (1 + Mathf.Pow(Mathf.Epsilon * m, -input + c));
-        float value = 1f / (1 + Mathf.Pow(Mathf.Epsilon * m, -input + c));
+        //float value = 1f / (1 + Mathf.Pow(Mathf.Epsilon * m, -input + c));
+        
+        float value = (logistic_YScalar / (1 + Mathf.Pow(Mathf.Epsilon, -logistic_Slope*(input-(logistic_XShift + 0.5f)))))+logistic_YShift;
         return Mathf.Clamp(value, 0, 1);
     }
 
+    public float GetRemappedValueLogit(float input)
+    {
+        // Input should be between 0 and 1, return is between 0 and 1 too
+
+        //float value = Mathf.Log((input + logit_XShift) / (1 - (input + logit_XShift)), logit_Base) + logit_YShift;
+        float value = (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B;
+        //float value = (Mathf.Log(input / (1 - input), logit_Base) + logit_A); /// logit_B;
+        return Mathf.Clamp(value, 0, 1);
+    }
+
+
     public void GetCurveVisualisationTexture(ref Texture2D texture)
     {
-        int textureResolution = texture.height;
+        int textureWidth = texture.width;
+        int textureHeight = texture.height;
+
+        int grid10Resolution = texture.height / 10;
+        Color grid10Color = new Color(0.9f, 0.9f, 0.9f);
+        int grid2Resolution = texture.height / 2;
+        Color grid2Color = new Color(0.75f, 0.75f, 0.75f);
 
 
-        for (int x = 0; x < textureResolution; x++)
+
+        for (int x = 0; x < textureWidth; x++)
         {
-            for (int y = 0; y < textureResolution; y++)
+            for (int y = 0; y < textureHeight; y++)
             {
                 //colour everything white
-                texture.SetPixel(x, y, Color.white);
+                if(x% grid10Resolution == 0 || y% grid10Resolution == 0)
+                {
+                    texture.SetPixel(x, y, grid10Color);
+                }
+                else if(x % grid2Resolution == 0 || y % grid2Resolution == 0 || x % grid2Resolution == 1 || y % grid2Resolution == 1)
+                {
+                    texture.SetPixel(x, y, grid2Color);
+                }
+                else
+                {
+                    texture.SetPixel(x, y, Color.white);
+                }
             }
 
             //here color the current output pixel black
 
             if (curveType == CurveType.Linear)
             {
-                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureResolution * 1f)) * textureResolution), 0, textureResolution - 1), Color.black);
+                //return 0-1
+                //GetRemappedValueLinear(x / (textureWidth * 1f)) * textureWidth
+
+                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
             }
             else if(curveType == CurveType.Quadratic)
             {
-                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (textureResolution * 1f)) * textureResolution), 0, textureResolution - 1), Color.black);
+                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
             }
             else if(curveType == CurveType.Logistic)
             {
-                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLogistic(x / (textureResolution * 1f)) * textureResolution), 0, textureResolution - 1), Color.black);
+                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLogistic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
+            }
+            else if(curveType == CurveType.Logit)
+            {
+                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueLogit(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
             }
             else if(curveType == CurveType.Binary)
             {
-                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueBinary(x / (textureResolution * 1f)) * textureResolution), 0, textureResolution - 1), Color.black);
+                texture.SetPixel(x, Mathf.Clamp((int)(GetRemappedValueBinary(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1), Color.black);
             }
         }
 

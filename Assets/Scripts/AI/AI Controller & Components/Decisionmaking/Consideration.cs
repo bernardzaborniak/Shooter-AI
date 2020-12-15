@@ -15,5 +15,10 @@ public class Consideration : ScriptableObject
     // Input parameters ( min, max, tags, etc..)
     public ConsiderationCurve considerationCurve;
 
+    [Header("Curve Visualisation")]
+    public int horizontalVisualisationTextureResolution = 250;
+    public int verticalVisualisationTextureResolution = 250;
+
+
 
 }

@@ -27,4 +27,13 @@ MonoBehaviour:
     q_Exponent: 2.25
     q_VertShift: -0.24
     q_HorizShift: -0.16
-    curveType: 1
+    logistic_Slope: 0.14
+    logistic_XShift: 0
+    logistic_YShift: 0
+    logistic_YScalar: 1
+    logit_Base: 0.26
+    logit_YShift: 0.46
+    logit_XShift: -0.07
+    logit_A: 5
+    logit_B: 10
+    curveType: 3
