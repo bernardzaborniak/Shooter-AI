@@ -21,6 +21,8 @@ public class Grenade : Item
     public float grenadeExplosionTimeDelay;
     bool exploded;
 
+    [Tooltip("walls & soldiers should be inside this layermask")]
+    public LayerMask grenadeExplosionBlockingUnitsAndBlockingSurfacesLayermask;
     [Tooltip("This Layers block grenade damage")]
     public LayerMask grenadeExplosionBlockingLayerMask;
 
@@ -94,8 +96,7 @@ public class Grenade : Item
         explosionEffect.Play();
 
         //damage
-        Collider[] collidersInExplosionRange;
-        collidersInExplosionRange = Physics.OverlapSphere(transform.position, explosionRadius);
+        Collider[] collidersInExplosionRange = Physics.OverlapSphere(transform.position, explosionRadius, grenadeExplosionBlockingUnitsAndBlockingSurfacesLayermask);
 
         Vector3 grenadePosition = transform.position;
 

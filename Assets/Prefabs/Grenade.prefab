@@ -137,9 +137,12 @@ MonoBehaviour:
   explosionForceAtCenter: 50
   grenadeType: 0
   grenadeExplosionTimeDelay: 4
+  grenadeExplosionBlockingUnitsAndBlockingSurfacesLayermask:
+    serializedVersion: 2
+    m_Bits: 768
   grenadeExplosionBlockingLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 512
   rigidbody: {fileID: 5520165462031673673}
   throwingTime: 2.5
   throwVelocityAt10mDistance: 10
