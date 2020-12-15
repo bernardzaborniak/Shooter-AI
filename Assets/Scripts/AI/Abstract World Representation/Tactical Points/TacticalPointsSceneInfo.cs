@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "TacticalPointsSceneInfo.asset", menuName = "AI/AbstractWorldRepresentation")]
+//[CreateAssetMenu(fileName = "TacticalPointsSceneInfo.asset", menuName = "AI/AbstractWorldRepresentation")]
+[CreateAssetMenu(menuName = "AI/Tactical Points Scene Info", fileName = "TacticalPointsSceneInfo")]
+
 public class TacticalPointsSceneInfo : ScriptableObject
 {
     // 2 Lists are used for Serialization - Saving the data between sessions - just like lightmap
