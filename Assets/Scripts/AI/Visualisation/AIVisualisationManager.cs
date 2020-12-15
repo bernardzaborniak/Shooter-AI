@@ -72,13 +72,6 @@ public class AIVisualisationManager : MonoBehaviour
 
     //--------- UpdateVisualisersShown -------
 
-    Vector3 camPos;
-    Quaternion camRot;
-    Vector3 camForward;
-
-    float currentDistanceSquared;
-    TacticalPointVisualiser visualiser;
-
     HashSet<TacticalPointVisualiser> visualisersToRemoveFromUse = new HashSet<TacticalPointVisualiser>();
 
     // --------------------
@@ -202,9 +195,9 @@ public class AIVisualisationManager : MonoBehaviour
     {
         #region Prepare Variables
 
-        camPos = cameraController.transform.position;
-        camRot = cameraController.transform.rotation;
-        camForward = cameraController.transform.forward;
+        Vector3 camPos = cameraController.transform.position;
+        Quaternion camRot = cameraController.transform.rotation;
+        Vector3 camForward = cameraController.transform.forward;
 
 
 #if UNITY_EDITOR
@@ -244,7 +237,7 @@ public class AIVisualisationManager : MonoBehaviour
                 else
                 {
                     // If not, Check if visualiser should be disabled tgether with point renderer according to distance.
-                    currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
+                    float currentDistanceSquared = (visualiserInUse.transform.position - camPos).sqrMagnitude;
 
                     if (currentDistanceSquared > ratingRingCullDistanceSquared)
                     {
@@ -307,7 +300,7 @@ public class AIVisualisationManager : MonoBehaviour
 
                     if (!tacticalPointsBeingCurrentlyVisualised.Contains(point))
                     {
-                        currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
+                        float currentDistanceSquared = (point.transform.position - camPos).sqrMagnitude;
 
                         if (tacticalPointVisualisersNotInUse.Count > 0)
                         {
@@ -316,7 +309,7 @@ public class AIVisualisationManager : MonoBehaviour
                                 // Glue an Visualiser to another Point 
 
                                 // manage collections
-                                visualiser = tacticalPointVisualisersNotInUse.Dequeue();
+                                TacticalPointVisualiser visualiser = tacticalPointVisualisersNotInUse.Dequeue();
                                 tacticalPointsBeingCurrentlyVisualised.Add(point);
                                 tacticalPointVisualisersInUse.Add(visualiser);
 

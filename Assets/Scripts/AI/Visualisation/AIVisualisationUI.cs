@@ -53,7 +53,7 @@ public class AIVisualisationUI : MonoBehaviour
     // ----- UpdateSensingUIItems-------
 
     HashSet<GameObject> objectsToDestroy = new HashSet<GameObject>();
-    AI_VIS_UI_SensingItem topicPanel;
+    
 
     //--------------------
 
@@ -206,6 +206,8 @@ public class AIVisualisationUI : MonoBehaviour
             {
                 DestroyImmediate(obj);
             }
+
+            AI_VIS_UI_SensingItem topicPanel;
 
             // Update Enemies Panel --------------------------------
             foreach (AI_SI_EntityVisibilityInfo enemy in sensingInfo.enemiesInSensingRadius)

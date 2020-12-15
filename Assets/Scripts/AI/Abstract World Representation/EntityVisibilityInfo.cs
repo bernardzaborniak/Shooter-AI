@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//communicates with sensing - results in the info about seeing another entity by the sensing component
+// Interface between Sensing and the visibility probe system and the attached entity visibility values - results in the info about seeing another entity by the sensing component
 public class EntityVisibilityInfo : MonoBehaviour
 {
     public GameEntity entityAssignedTo;

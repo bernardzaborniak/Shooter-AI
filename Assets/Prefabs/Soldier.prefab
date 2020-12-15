@@ -962,8 +962,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0f103c3cd7b8140a79e79989808b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  optimiser: {fileID: 4214416404046456006}
-  sensingInterval: 0.5
   sensingRadius: 25
   sensingLayerMask:
     serializedVersion: 2
@@ -971,6 +969,8 @@ MonoBehaviour:
   postSensingLayerMask:
     serializedVersion: 2
     m_Bits: 33554432
+  colliderArraySize: 30
+  optimiser: {fileID: 4214416404046456006}
 --- !u!114 &3586266366417383842
 MonoBehaviour:
   m_ObjectHideFlags: 0

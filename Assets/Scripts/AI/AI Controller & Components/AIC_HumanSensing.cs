@@ -13,6 +13,8 @@ public class AIC_HumanSensing : AIComponent
     public float sensingRadius;
     public LayerMask sensingLayerMask;
     public LayerMask postSensingLayerMask;
+    [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
+    public int colliderArraySize = 30;
     //public float sensingInterval = 0.5f;
     //float nextSensingTime;
 
@@ -25,18 +27,6 @@ public class AIC_HumanSensing : AIComponent
 
     int myTeamID;
 
-    // Cached for UpdateComponent() Method---------------
-    AI_SI_EntityVisibilityInfo entityVisInfo;
-    AI_SI_TacticalPointVisibilityInfo tPointVisInfo;
-
-    float smallestDistanceSqr;
-    float currentDistanceSqr;
-    Vector3 myPosition;
-
-    //GameEntity currentEntity;
-    TacticalPoint currentTPoint;
-    // ---------------------------------------------------
-
     #endregion
 
 
@@ -46,6 +36,8 @@ public class AIC_HumanSensing : AIComponent
 
        // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
         myTeamID = myEntity.teamID; // cached for optimisation.
+
+
     }
 
     public override void UpdateComponent()
@@ -62,15 +54,15 @@ public class AIC_HumanSensing : AIComponent
 
             #region Scan for other Soldiers
 
-            // cache variables 
+            // variables 
             currentSensingInfo.enemiesInSensingRadius.Clear();
             currentSensingInfo.friendliesInSensingRadius.Clear();
-            smallestDistanceSqr = Mathf.Infinity;
-            myPosition = transform.position;
+            float smallestDistanceSqr = Mathf.Infinity;
+            Vector3 myPosition = transform.position;
             currentSensingInfo.nearestEnemyInfo = null;
 
             // fill collections
-            collidersInRadius = new Collider[30]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
+            collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
             Physics.OverlapSphereNonAlloc(transform.position, sensingRadius, collidersInRadius, sensingLayerMask); //use non alloc to prevent garbage
 
 
@@ -78,8 +70,8 @@ public class AIC_HumanSensing : AIComponent
             {
                 if(collidersInRadius[i] != null)
                 {
-                    entityVisInfo = new AI_SI_EntityVisibilityInfo(collidersInRadius[i].GetComponent<EntityVisibilityInfo>());   //to optimise garbage collection i could pool this opjects thus limiting the total number of visible enemies at once - which seems like a good idea
-                    currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
+                    AI_SI_EntityVisibilityInfo entityVisInfo = new AI_SI_EntityVisibilityInfo(collidersInRadius[i].GetComponent<EntityVisibilityInfo>());   //to optimise garbage collection i could pool this opjects thus limiting the total number of visible enemies at once - which seems like a good idea
+                    float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
                     entityVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
 
                     if (entityVisInfo.entityTeamID != myTeamID)
@@ -107,11 +99,10 @@ public class AIC_HumanSensing : AIComponent
 
             #region Scan for Tactical Points
 
-            // cache variables 
+            // variables 
             currentSensingInfo.tPointsCoverInSensingRadius.Clear();
             currentSensingInfo.tPointsOpenFieldInSensingRadius.Clear();
             smallestDistanceSqr = Mathf.Infinity;
-            currentDistanceSqr = 0;
             myPosition = transform.position;
 
             // fill collections
@@ -123,12 +114,12 @@ public class AIC_HumanSensing : AIComponent
             {
                 if (collidersInRadius[i] != null)
                 {
-                    currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
+                    TacticalPoint currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
 
                     if (!currentTPoint.IsPointFull())
                     {
-                        tPointVisInfo = new AI_SI_TacticalPointVisibilityInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
-                        currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
+                        AI_SI_TacticalPointVisibilityInfo tPointVisInfo = new AI_SI_TacticalPointVisibilityInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
+                        float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
                         tPointVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
                         if(tPointVisInfo.point.tacticalPointType == TacticalPointType.CoverPoint)
                         {

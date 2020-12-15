@@ -71,20 +71,6 @@ public class TacticalPointVisualiser : MonoBehaviour
     public bool showStandingRaycasts;
     public bool[] showRaycastsSubSettings;
 
-    #region cached variables
-
-    // ----- UpdateRatingRing --------
-    Color currentMappedCol;
-    MaterialPropertyBlock propertyBlock; //Used to hange material values in a performant way
-    //-------------
-
-    // ----- GetMappedColor --------
-    float clampedRating;
-    float normalizedRating;
-    //--------
-
-    #endregion
-
 
     #endregion
 
@@ -168,7 +154,9 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     void UpdateRatingRing(bool quality,  Renderer renderer,  float[] rating,  GameObject textParent, TextMeshPro[] text, Renderer ratingVisRenderer, float worstValue, float bestValue, Color worstColor, Color bestColor)
     {
-        propertyBlock = new MaterialPropertyBlock();
+        Color currentMappedCol;
+
+        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
         renderer.GetPropertyBlock(propertyBlock);
 
@@ -195,15 +183,15 @@ public class TacticalPointVisualiser : MonoBehaviour
 
     Color GetMappedDistanceRatingColor(float distance)
     {
-        clampedRating = Mathf.Clamp(distance, bestDistance, worstDistance);
-        normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
+        float clampedRating = Mathf.Clamp(distance, bestDistance, worstDistance);
+        float normalizedRating = Utility.Remap(clampedRating, worstDistance, bestDistance, 0, 1);
         return Color.Lerp(worstDistanceColor, bestDistanceColor, normalizedRating);
     }
 
     Color GetMappedQualityRatingColor(float quality)
     {
-        clampedRating = Mathf.Clamp(quality, worstQuality, bestQuality);
-        normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
+        float clampedRating = Mathf.Clamp(quality, worstQuality, bestQuality);
+        float normalizedRating = Utility.Remap(clampedRating, worstQuality, bestQuality, 0, 1);
         return Color.Lerp(worstQualityColor, bestQualityColor, normalizedRating);
     }
 

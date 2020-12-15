@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIC_AimingController : AIComponent
 {
+    #region fields
+
     [Header("For Calculating Direction")]
     [Tooltip("Reference for aiming, propably spine 3")]
     public Transform aimingReference;
@@ -30,6 +32,9 @@ public class AIC_AimingController : AIComponent
 
     DirectionToAimCalculationMode directionToAimCalculationMode;
 
+
+    #endregion
+
     public override void SetUpComponent(GameEntity entity)
     {
         base.SetUpComponent(entity);
@@ -53,8 +58,8 @@ public class AIC_AimingController : AIComponent
         {
             if (currentTargetVelocity != Vector3.zero)
             {
-                
-                Vector3 directionToTarget = target - aimingReference.position;
+
+                Vector3  directionToTarget = target - aimingReference.position;
                 float projectileTimeOfFlight = directionToTarget.magnitude / projectileLaunchVelocity;
                 aimDirection = (target + currentTargetVelocity * projectileTimeOfFlight) - aimingReference.position;
             }
@@ -68,6 +73,9 @@ public class AIC_AimingController : AIComponent
         {
             Vector3 directionToTarget = target - aimingReference.position;
             Vector3 directionToTargetNoY = new Vector3(directionToTarget.x, 0, directionToTarget.z);
+
+            //TODO Check if setting vector is faster than creating new one
+
             float launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
 
             if (currentTargetVelocity != Vector3.zero)

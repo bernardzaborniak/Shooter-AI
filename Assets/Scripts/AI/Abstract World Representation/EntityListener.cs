@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Wil represent an entits "ears" recieves and saves audio inofrmation or smells
 public class EntityListener : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
