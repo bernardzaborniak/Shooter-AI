@@ -7,6 +7,7 @@ using UnityEngine;
 //Makes sure that the constraints are applied in the correct order (updates them) and (optimizes them - not yet implemented)
 public class HumanoidConstraintController : MonoBehaviour
 {
+    //the animation optimisation things are not really working so far
     [Header("Animator")]
     public bool optimiseAnimator;
     public Animator animator;

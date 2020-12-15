@@ -65,27 +65,28 @@ public class HumanoidDeathEffect : MonoBehaviour
     void CopyOriginalBonePositionsToCorpse()
     {
         // The corpse may be missing come bones if the head or somehting was blown off
-        foreach(BoneTransformCopyHelper helper in boneTransformCopyHelpers)
+
+        for (int i = 0; i < boneTransformCopyHelpers.Length; i++)
         {
-            helper.corpseBone.position = helper.originalBone.position;
-            helper.corpseBone.rotation = helper.originalBone.rotation;
+            boneTransformCopyHelpers[i].corpseBone.position = boneTransformCopyHelpers[i].originalBone.position;
+            boneTransformCopyHelpers[i].corpseBone.rotation = boneTransformCopyHelpers[i].originalBone.rotation;
         }
 
         if (copyFingerBones)
         {
-            foreach (BoneTransformCopyHelper helper in fingersBoneTransformCopyHelpers)
+            for (int i = 0; i < fingersBoneTransformCopyHelpers.Length; i++)
             {
-                helper.corpseBone.position = helper.originalBone.position;
-                helper.corpseBone.rotation = helper.originalBone.rotation;
+                fingersBoneTransformCopyHelpers[i].corpseBone.position = fingersBoneTransformCopyHelpers[i].originalBone.position;
+                fingersBoneTransformCopyHelpers[i].corpseBone.rotation = fingersBoneTransformCopyHelpers[i].originalBone.rotation;
             }
         }
     }
 
     void SetVelocityOfRagdoll(Vector3 movementVelocityAtTimeOfDeath, Vector3 angularVelocityAtTimeOfDeath)
     {
-        foreach(Rigidbody rb in ragdollRigidbodys)
+        for (int i = 0; i < ragdollRigidbodys.Length; i++)
         {
-            rb.velocity = movementVelocityAtTimeOfDeath;
+            ragdollRigidbodys[i].velocity = movementVelocityAtTimeOfDeath;
         }
 
         rigidBodyToApplyAngularVelocityTo.angularVelocity = angularVelocityAtTimeOfDeath;
@@ -100,10 +101,11 @@ public class HumanoidDeathEffect : MonoBehaviour
         {
             //rigidBodyToApplyAngularVelocityTo.AddForceAtPosition(damageInfo.force * 100000, damageInfo.damageDealPoint, ForceMode.Impulse);
             //Debug.Log("damageInfo.force: " + damageInfo.force);
-            foreach (Rigidbody rb in ragdollRigidbodys)
+            
+            for (int i = 0; i < ragdollRigidbodys.Length; i++)
             {
 
-                rb.AddForceAtPosition(damageInfo.force, damageInfo.damageDealPoint, ForceMode.Impulse);
+                ragdollRigidbodys[i].AddForceAtPosition(damageInfo.force, damageInfo.damageDealPoint, ForceMode.Impulse);
                 //rb.AddExplosionForce(damageInfo.force.magnitude, damageInfo.damageDealPoint, 10);
             }
         } 
@@ -112,27 +114,26 @@ public class HumanoidDeathEffect : MonoBehaviour
     void OptimiseDeathEffect()
     {
         //1. destroy rigidbodies
-        foreach (Rigidbody rb in ragdollRigidbodys)
+        for (int i = 0; i < ragdollRigidbodys.Length; i++)
         {
-            CharacterJoint cj = rb.gameObject.GetComponent<CharacterJoint>();
+            CharacterJoint cj = ragdollRigidbodys[i].gameObject.GetComponent<CharacterJoint>();
             if (cj)
             {
                 Destroy(cj);
             }
 
-            Destroy(rb);
+            Destroy(ragdollRigidbodys[i]);
         }
 
         //2. bake skinned mesh into normal mesh
         Mesh staticMesh = new Mesh();
         skinnedMeshRender.BakeMesh(staticMesh);
-        Material mat = skinnedMeshRender.material;
         Destroy(skinnedMeshRender);
 
         MeshFilter mF = bakedMeshRendererGO.AddComponent<MeshFilter>();
         mF.mesh = staticMesh;
         MeshRenderer mr = bakedMeshRendererGO.AddComponent<MeshRenderer>();
-        mr.material = mat;
+        mr.material = skinnedMeshRender.material;
 
         if (destroySkeletonAndCollidersToImprovePerformance)
         {
