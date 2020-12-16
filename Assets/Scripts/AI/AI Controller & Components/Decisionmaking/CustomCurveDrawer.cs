@@ -155,22 +155,28 @@ public class CustomCurveDrawer : PropertyDrawer
         // TODO draw grid & numbers here
         Rect gridRect = GUILayoutUtility.GetLastRect();
         //EditorGUI.DrawRect(gridRect, new Color(1f, 0, 0, 0.5f));
-        Color thickLinesColor = new Color(0, 0, 0, 0.5f);
-        Color thinLinesColor = new Color(0, 0, 0, 0.3f);
+        Color thickLinesColor = new Color(0, 0, 0, 0.3f);
+        float thickLinesThickness = 1.3f;
+        Color thinLinesColor = new Color(0, 0, 0, 0.1f);
+        float thinLinesThickness = 1f;
+
 
         //Draw thick middle lines
-        EditorGUI.DrawRect(new Rect(gridRect.x + gridRect.width / 2, gridRect.y +1, 2, gridRect.height-1), thickLinesColor);
-        EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + gridRect.height/2, gridRect.width, 2), thickLinesColor);
-
-        //10 thin horizontal lines
-        for (int i = 0; i < 10; i++)
-        {
-
-        }
+        //vertical
+        EditorGUI.DrawRect(new Rect(gridRect.x + gridRect.width / 2, gridRect.y +1, thickLinesThickness, gridRect.height-1), thickLinesColor);
+        //horizontal
+        EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + gridRect.height/2, gridRect.width, thickLinesThickness), thickLinesColor); 
 
         //10 thin vertical lines
         for (int i = 0; i < 10; i++)
         {
+            EditorGUI.DrawRect(new Rect(gridRect.x + (gridRect.width / 10)*i, gridRect.y + 1, thinLinesThickness, gridRect.height - 1), thinLinesColor);
+        }
+
+        //10 thin horizontal lines
+        for (int i = 0; i < 10; i++)
+        {
+            EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + (gridRect.height / 10)*i, gridRect.width, thinLinesThickness), thinLinesColor);
 
         }
 
