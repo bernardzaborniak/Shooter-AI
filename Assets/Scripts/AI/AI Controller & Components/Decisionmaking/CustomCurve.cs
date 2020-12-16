@@ -198,6 +198,69 @@ public class CustomCurve
 
     }
 
+    public void GetkeyframesForVisualisation(int keyFramesCount)
+    {
+       /* int textureWidth = texture.width;
+        int textureHeight = texture.height;
+
+        int grid10XResolution = texture.width / 10;
+        int grid10YResolution = texture.height / 10;
+        Color grid10Color = new Color(0.9f, 0.9f, 0.9f);
+        int grid2XResolution = texture.width / 2;
+        int grid2YResolution = texture.height / 2;
+        Color grid2Color = new Color(0.75f, 0.75f, 0.75f);
+
+
+        for (int x = 0; x < textureWidth; x++)
+        {
+            for (int y = 0; y < textureHeight; y++)
+            {
+                if (x % grid10XResolution == 0 || y % grid10YResolution == 0)
+                {
+                    texture.SetPixel(x, y, grid10Color);
+                }
+                else if (x % grid2XResolution == 0 || x % grid2XResolution == 1 || y % grid2YResolution == 0 || y % grid2YResolution == 1)
+                {
+                    texture.SetPixel(x, y, grid2Color);
+                }
+                else
+                {
+                    texture.SetPixel(x, y, Color.white);
+                }
+            }
+
+            int yPos = 0;
+            //here color the current output pixel black
+            if (curveType == CurveType.Linear)
+            {
+                yPos = Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+            }
+            else if (curveType == CurveType.Quadratic)
+            {
+                yPos = Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+            }
+            else if (curveType == CurveType.Logistic)
+            {
+                yPos = Mathf.Clamp((int)(GetRemappedValueLogistic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+            }
+            else if (curveType == CurveType.Logit)
+            {
+                yPos = Mathf.Clamp((int)(GetRemappedValueLogit(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+
+            }
+            else if (curveType == CurveType.Binary)
+            {
+                yPos = Mathf.Clamp((int)(GetRemappedValueBinary(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+            }
+
+            texture.SetPixel(x, yPos, Color.black);
+
+        }
+
+        texture.Apply(); */
+
+    }
+
 }
 
 /*
