@@ -8,34 +8,23 @@ public class CustomCurveDrawer : PropertyDrawer
 {
     Color curveColor = new Color(0f, 0f, 1f);
 
-
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
         Rect verticalGroup = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        //int indent = EditorGUI.indentLevel;
-        //EditorGUI.indentLevel = 1;
 
-        //EditorGUILayout.
-        //EditorGUILayout.LabelField("Curve", EditorStyles.boldLabel, GUILayout.Width(Screen.width * 0.9f));
-        //EditorGUILayout.Lab
-
-        //EditorGUILayout.(GUILayoutUtility.GetLastRect(), new Color(1f, 0, 0, 0.5f));
-
-
-        #region Curve Params
-
-        SerializedProperty curveTypeProp = property.FindPropertyRelative("curveType");
-
-
+        // ------ Header & Type ------
         EditorGUILayout.LabelField("Curve Options", EditorStyles.boldLabel);
 
+        SerializedProperty curveTypeProp = property.FindPropertyRelative("curveType");
         EditorGUILayout.PropertyField(curveTypeProp);
-        
+
         EditorGUILayout.Space(5);
 
+        #region Draw Curve Params according to Enum
 
-        //if(curveType == Curve)
+        // ------ Parameters according to enum Value ------
+
         int curveType = curveTypeProp.enumValueIndex;
 
         if(curveType == 0)
@@ -90,21 +79,17 @@ public class CustomCurveDrawer : PropertyDrawer
 
         #endregion
 
-        #region Curve Visualisation
+        #region Draw Curve Visualisation
 
         EditorGUILayout.Space(10);
-        //EditorGUILayout.LabelField("Curve Visualisation", EditorStyles.boldLabel);
 
-        //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
+
+        // ------  Get Visualisation Keyframes and connect them via correct tangents ----------
 
         SerializedProperty curveVisualisationPositionsProp = property.FindPropertyRelative("curveVisualisationPositions");
         int keyNumber = curveVisualisationPositionsProp.arraySize;
         Keyframe[] keys = new Keyframe[keyNumber];
-        //Vector3 previousPosition; //stored to get the curve tangents right
-        //Vector3 nextPosition; //stored to get the curve tangents right
 
-
-        //Debug.Log("Draw keys 2 -------------------------------------------------------------------");
         for (int i = 0; i < keyNumber; i++)
         {
             Vector2 previousPos;
@@ -125,42 +110,32 @@ public class CustomCurveDrawer : PropertyDrawer
             else
             {
                 nextPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(keyNumber-1).vector2Value;
+                // nextPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(i).vector2Value + (curveVisualisationPositionsProp.GetArrayElementAtIndex(i).vector2Value - curveVisualisationPositionsProp.GetArrayElementAtIndex(i - 1).vector2Value);
+
             }
 
 
             SerializedProperty prop = curveVisualisationPositionsProp.GetArrayElementAtIndex(i);
 
             Vector2 keyPos = prop.vector2Value;
-            //Debug.Log("keyPos 2: " + keyPos);
             Vector2 inTangent = previousPos - keyPos;
             Vector2 outTangent = nextPos - keyPos;
 
             keys[i] = new Keyframe(prop.vector2Value.x, prop.vector2Value.y, inTangent.y/inTangent.x, outTangent.y / outTangent.x);
         }
 
-        //Vector2[] keyPositions = curveVisualisationPositionsProp.
-        //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
 
-        //Disabling & Enabling GUI Elements as a workaround to make the curve read only
+        // ----- Disabling & Enabling GUI Elements as a workaround to make the curve read only -----
 
-        //int indent = EditorGUI.indentLevel;
-        //EditorGUI.indentLevel = 1;
-
-        // Saving previous GUI enabled value
         var previousGUIState = GUI.enabled;
-        // Disabling edit for property
         GUI.enabled = false;
-        // Drawing Property
-       
         EditorGUILayout.CurveField(new AnimationCurve(keys), curveColor, new Rect(0,0,1,1), GUILayout.Height(Screen.width *0.9f), GUILayout.Width(Screen.width * 0.9f));
-        //Rect curveRect = new Rect(verticalGroup.x, GUILayoutUtility.GetLastRect().y + 10, Screen.width * 0.9f, Screen.width * 0.9f);
-        //EditorGUI.CurveField(curveRect, new AnimationCurve(keys), curveColor, new Rect(0,0,1,1));
-        // Setting old GUI enabled value
         GUI.enabled = previousGUIState;
 
-        // ---------------- draw grid & numbers here --------------------
-        Rect gridRect = GUILayoutUtility.GetLastRect();
+
+        // ---------------- Draw grid & Numbers above the Curve --------------------
         
+        Rect gridRect = GUILayoutUtility.GetLastRect();  
         Color thickLinesColor = new Color(0, 0, 0, 0.3f);
         float thickLinesThickness = 1.3f;
         Color thinLinesColor = new Color(0, 0, 0, 0.1f);
@@ -180,33 +155,24 @@ public class CustomCurveDrawer : PropertyDrawer
         for (int i = 0; i < 10; i++)
         {
             EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + (gridRect.height / 10)*i, gridRect.width, thinLinesThickness), thinLinesColor);
-
         }
 
-       
         // Draw Input & Output Text
-
         GUIStyle axiesStyle = new GUIStyle(EditorStyles.label);
         axiesStyle.normal.textColor = Color.white;
         axiesStyle.fontSize = 15;
 
-
         //Draw Output Axies
         Rect outputRect = new Rect(gridRect.position.x, gridRect.position.y + gridRect.height/2 + 20, 50, 30);
-
         EditorGUIUtility.RotateAroundPivot(-90f, outputRect.position);
-
         EditorGUI.LabelField(outputRect, "Output", axiesStyle);
-
         EditorGUIUtility.RotateAroundPivot(90f, outputRect.position);
 
         //Draw Input Axies
         Rect inputRect = new Rect(gridRect.position.x + gridRect.width / 2 - 20, gridRect.position.y + gridRect.height - 30, 50, 30);
         EditorGUI.LabelField(inputRect, "Input", axiesStyle);
 
-
         //Draw 0s and 1s
-
         axiesStyle.fontSize = 17;
 
         Rect zeroRect = new Rect(gridRect.position.x + 8, gridRect.position.y + gridRect.height - 30, 50, 30);
@@ -215,42 +181,12 @@ public class CustomCurveDrawer : PropertyDrawer
         Rect oneRect1 = new Rect(gridRect.position.x + 8, gridRect.position.y, 50, 30);
         EditorGUI.LabelField(oneRect1, "1", axiesStyle);
 
-
         Rect oneRect2 = new Rect(gridRect.position.x + gridRect.width - 20, gridRect.position.y + gridRect.height - 30, 50, 30);
         EditorGUI.LabelField(oneRect2, "1", axiesStyle);
-
-
-
-
 
         #endregion
 
         EditorGUILayout.EndVertical();
-
-        //EditorGUI.indentLevel = indent;
-
-        //EditorGUI.indentLevel = 0;
-
-        //EditorGUI.PropertyField(new Rect(position.x, position.y+50, position.width, position.height), curveType, GUIContent.none);
-
-        // Draw scale
-        /*EditorGUI.Slider
-            (
-                new Rect(position.x, position.y, position.width - curveWidth, position.height),
-                scale, min, max, label
-            );
-
-        // Draw curve
-        int indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 1;
-
-        EditorGUI.PropertyField
-            (
-                new Rect(position.width - curveWidth, position.y, curveWidth, position.height),
-                curve, GUIContent.none
-            );
-
-        EditorGUI.indentLevel = indent;*/
 
     }
 }

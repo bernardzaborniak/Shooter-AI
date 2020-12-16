@@ -2,95 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-//using UnityEditor.UIElements;
-//using UnityEngine.UIElements;
 
-/*
-[System.Serializable]
-public class ConsiderationInputBase
-{
-    public int valueBase1;
-}
-
-[System.Serializable]
-public class ConsiderationInputInt : ConsiderationInputBase
-{
-    public int valueDeriv1;
-    public int valueDeriv2;
-
-}
-
-[CustomPropertyDrawer((typeof(ConsiderationInputBase)))]
-public class ConsiderationInputUIE : PropertyDrawer
-{
-    //public override VisualElement CreatePropertyGUI(SerializedProperty property)
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        // Using BeginProperty / EndProperty on the parent property means that
-        // prefab override logic works on the entire property.
-        EditorGUI.BeginProperty(position, label, property);
-
-        // Draw label
-        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-
-        // Don't make child fields be indented
-        var indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 0;
-
-        // Calculate rects
-        var valueBase1Rect = new Rect(position.x, position.y, 30, position.height);
-
-
-        // Draw fields - pass GUIContent.none to each so they are drawn without labels
-        EditorGUI.PropertyField(valueBase1Rect, property.FindPropertyRelative("valueBase1"), GUIContent.none);
-
-
-        // Set indent back to what it was
-        EditorGUI.indentLevel = indent;
-
-        EditorGUI.EndProperty();
-    }
-}
-
-[CustomPropertyDrawer((typeof(ConsiderationInputInt)))]
-public class ConsiderationInputIntUIE : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        // Using BeginProperty / EndProperty on the parent property means that
-        // prefab override logic works on the entire property.
-        EditorGUI.BeginProperty(position, label, property);
-
-        // Draw label
-        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-
-        // Don't make child fields be indented
-        var indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 0;
-
-        // Calculate rects
-        var valueBase1Rect = new Rect(position.x, position.y, 30, position.height);
-        var valueDeriv1Rect = new Rect(position.x + 35, position.y, 50, position.height);
-        var valueDeriv2Rect = new Rect(position.x + 90, position.y, position.width - 90, position.height);
-
-
-        // Draw fields - pass GUIContent.none to each so they are drawn without labels
-        EditorGUI.PropertyField(valueBase1Rect, property.FindPropertyRelative("valueBase1"), GUIContent.none);
-        EditorGUI.PropertyField(valueBase1Rect, property.FindPropertyRelative("valueDeriv1"), GUIContent.none);
-        EditorGUI.PropertyField(valueBase1Rect, property.FindPropertyRelative("valueDeriv2"), GUIContent.none);
-
-
-        // Set indent back to what it was
-        EditorGUI.indentLevel = indent;
-
-        EditorGUI.EndProperty();
-    }
-}*/
-
-/*public class ConsiderationInput
-{
-
-}*/
 
 [System.Serializable]
 public class ConsiderationInputParams
@@ -190,7 +102,7 @@ public class Consideration : ScriptableObject
 
     private void OnValidate()
     {
-        considerationCurve.UpdateCurveVisualisation();
+        considerationCurve.UpdateCurveVisualisationKeyframes();
         //Debug.Log("on valuidate enum changed");
         /*if(considerationInputType == ConsiderationInputType.Float)
         {
