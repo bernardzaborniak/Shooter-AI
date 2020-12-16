@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   considerationName: 
   description: 
-  considerationInputType: 1
+  considerationInputParams:
+    considerationInputType: 0
   considerationCurve:
-    curveType: 0
+    curveType: 3
     bi_threshold: 0.5
     bi_inverse: 0
     lin_Slope: 1
