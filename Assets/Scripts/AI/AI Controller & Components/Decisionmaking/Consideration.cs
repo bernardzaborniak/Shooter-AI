@@ -174,18 +174,7 @@ public class Consideration : ScriptableObject
     public ConsiderationInputParams considerationInputParams;
 
 
-    private void OnValidate()
-    {
-        Debug.Log("on valuidate enum changed");
-        /*if(considerationInputType == ConsiderationInputType.Float)
-        {
-            considerationInputClass = new ConsiderationInput();
-        }
-        else
-        {
-            considerationInputClass = new ConsiderationInputInt();
-        }*/
-    }
+   
 
     // Input
 
@@ -198,6 +187,20 @@ public class Consideration : ScriptableObject
     [Header("Curve Visualisation")]
     public int horizontalVisualisationTextureResolution = 250;
     public int verticalVisualisationTextureResolution = 250;
+
+    private void OnValidate()
+    {
+        considerationCurve.UpdateCurveVisualisation();
+        //Debug.Log("on valuidate enum changed");
+        /*if(considerationInputType == ConsiderationInputType.Float)
+        {
+            considerationInputClass = new ConsiderationInput();
+        }
+        else
+        {
+            considerationInputClass = new ConsiderationInputInt();
+        }*/
+    }
 
 
 

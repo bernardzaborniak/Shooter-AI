@@ -8,17 +8,20 @@ public class CustomCurveDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+
+        int indent = EditorGUI.indentLevel;
+        EditorGUI.indentLevel = 1;
+
+        #region Curve Params
+
         SerializedProperty curveTypeProp = property.FindPropertyRelative("curveType");
 
-        //EditorGUI.LabelField(new Rect(position.x, position.y, position.width, position.height), "Curve Params", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("Curve Params", EditorStyles.boldLabel);
 
         EditorGUILayout.PropertyField(curveTypeProp);
         
         EditorGUILayout.Space(5);
 
-        int indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 1;
 
         //if(curveType == Curve)
         int curveType = curveTypeProp.enumValueIndex;
@@ -71,9 +74,76 @@ public class CustomCurveDrawer : PropertyDrawer
 
             EditorGUILayout.Slider(logit_A, -0.3f, 0.3f);
             EditorGUILayout.Slider(logit_B, -0.3f, 0.3f);
-           // EditorGUILayout.PropertyField(logit_A);
-           // EditorGUILayout.PropertyField(logit_B);
         }
+
+        #endregion
+
+        #region Curve Visualisation
+
+        EditorGUILayout.Space(5);
+        EditorGUILayout.LabelField("Curve Visualisation", EditorStyles.boldLabel);
+
+        //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
+
+        SerializedProperty curveVisualisationPositionsProp = property.FindPropertyRelative("curveVisualisationPositions");
+        int keyNumber = curveVisualisationPositionsProp.arraySize;
+        Keyframe[] keys = new Keyframe[keyNumber];
+        //Vector3 previousPosition; //stored to get the curve tangents right
+        //Vector3 nextPosition; //stored to get the curve tangents right
+
+
+        //Debug.Log("Draw keys 2 -------------------------------------------------------------------");
+        for (int i = 0; i < keyNumber; i++)
+        {
+            Vector2 previousPos;
+            if (i != 0)
+            {
+                previousPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(i - 1).vector2Value;
+            }
+            else
+            {
+                previousPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(0).vector2Value;
+            }
+
+            Vector2 nextPos;
+            if (i+1 != keyNumber)
+            {
+                nextPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(i + 1).vector2Value;
+            }
+            else
+            {
+                nextPos = curveVisualisationPositionsProp.GetArrayElementAtIndex(keyNumber-1).vector2Value;
+            }
+
+
+            SerializedProperty prop = curveVisualisationPositionsProp.GetArrayElementAtIndex(i);
+
+            Vector2 keyPos = prop.vector2Value;
+            //Debug.Log("keyPos 2: " + keyPos);
+            Vector2 inTangent = previousPos - keyPos;
+            Vector2 outTangent = nextPos - keyPos;
+
+            keys[i] = new Keyframe(prop.vector2Value.x, prop.vector2Value.y, inTangent.y/inTangent.x, outTangent.y / outTangent.x);
+        }
+        
+        //Vector2[] keyPositions = curveVisualisationPositionsProp.
+        //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
+
+        //TODO reenable the readonly elements here
+
+        // Saving previous GUI enabled value
+        //var previousGUIState = GUI.enabled;
+        // Disabling edit for property
+        //GUI.enabled = false;
+        // Drawing Property
+        EditorGUILayout.CurveField(new AnimationCurve(keys),Color.blue,new Rect(0,0,1,1), GUILayout.Height(400), GUILayout.Width(400));
+
+        // Setting old GUI enabled value
+        //GUI.enabled = previousGUIState;
+
+        #endregion
+
+
 
         EditorGUI.indentLevel = indent;
 

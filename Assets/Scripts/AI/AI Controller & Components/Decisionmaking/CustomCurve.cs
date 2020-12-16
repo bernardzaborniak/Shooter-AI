@@ -65,10 +65,13 @@ public class CustomCurve
     [SerializeField] float logit_B = 0.075f;
 
 
+    public Vector2[] curveVisualisationPositions;
 
 
 
 
+
+    
 
 
 
@@ -198,67 +201,51 @@ public class CustomCurve
 
     }
 
-    public void GetkeyframesForVisualisation(int keyFramesCount)
+    public void UpdateCurveVisualisation()
     {
-       /* int textureWidth = texture.width;
-        int textureHeight = texture.height;
+        int keyFramesCount = 56;
 
-        int grid10XResolution = texture.width / 10;
-        int grid10YResolution = texture.height / 10;
-        Color grid10Color = new Color(0.9f, 0.9f, 0.9f);
-        int grid2XResolution = texture.width / 2;
-        int grid2YResolution = texture.height / 2;
-        Color grid2Color = new Color(0.75f, 0.75f, 0.75f);
+        curveVisualisationPositions = new Vector2[keyFramesCount];
+        //Debug.Log("Draw keys 1 -------------------------------------------------------------------");
 
-
-        for (int x = 0; x < textureWidth; x++)
+        for (int k = 0; k < keyFramesCount; k++)
         {
-            for (int y = 0; y < textureHeight; y++)
-            {
-                if (x % grid10XResolution == 0 || y % grid10YResolution == 0)
-                {
-                    texture.SetPixel(x, y, grid10Color);
-                }
-                else if (x % grid2XResolution == 0 || x % grid2XResolution == 1 || y % grid2YResolution == 0 || y % grid2YResolution == 1)
-                {
-                    texture.SetPixel(x, y, grid2Color);
-                }
-                else
-                {
-                    texture.SetPixel(x, y, Color.white);
-                }
-            }
+            float XPos = k *1f / keyFramesCount;
+            //Debug.Log("xPos: " + (k * 1f / keyFramesCount));
+            float yPos = 0;
 
-            int yPos = 0;
-            //here color the current output pixel black
+            
             if (curveType == CurveType.Linear)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+               // yPos = Mathf.Clamp((int)(GetRemappedValueLinear(x / (keyFramesCount * 1f)) * keyFramesCount), 0, keyFramesCount - 1);
+                yPos = Mathf.Clamp(GetRemappedValueLinear(XPos), 0, 1);
             }
             else if (curveType == CurveType.Quadratic)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+                //yPos = Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (keyFramesCount * 1f)) * keyFramesCount), 0, keyFramesCount - 1);
+                yPos = Mathf.Clamp(GetRemappedValueQuadratic(XPos), 0, 1);
             }
             else if (curveType == CurveType.Logistic)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueLogistic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+                //yPos = Mathf.Clamp((int)(GetRemappedValueLogistic(x / (keyFramesCount * 1f)) * keyFramesCount), 0, keyFramesCount - 1);
+                yPos = Mathf.Clamp(GetRemappedValueLogistic(XPos), 0, 1);
             }
             else if (curveType == CurveType.Logit)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueLogit(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
-
+                //yPos = Mathf.Clamp((int)(GetRemappedValueLogit(x / (keyFramesCount * 1f)) * keyFramesCount), 0, keyFramesCount - 1);
+                yPos = Mathf.Clamp(GetRemappedValueLogit(XPos), 0, 1);
             }
             else if (curveType == CurveType.Binary)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueBinary(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+                //yPos = Mathf.Clamp((int)(GetRemappedValueBinary(x / (keyFramesCount * 1f)) * keyFramesCount), 0, keyFramesCount - 1);
+                yPos = Mathf.Clamp(GetRemappedValueBinary(XPos), 0, 1);
             }
 
-            texture.SetPixel(x, yPos, Color.black);
+            curveVisualisationPositions[k] = new Vector2(XPos,yPos);
+            //Debug.Log("keyPos 1: " + curveVisualisationPositions[k]);
 
+            //curveVisualisationPositions[x] = new Vector2(x * 1f / keyFramesCount, yPos * 1f/ keyFramesCount); //convert the ints to floats 
         }
-
-        texture.Apply(); */
-
     }
 
 }

@@ -17,13 +17,13 @@ MonoBehaviour:
   considerationInputParams:
     considerationInputType: 0
   considerationCurve:
-    curveType: 0
+    curveType: 2
     bi_threshold: 0.5
     bi_inverse: 0
-    lin_Slope: 1
-    lin_Shift: 0
-    q_Slope: 1
-    q_Exponent: 2
+    lin_Slope: 0.64
+    lin_Shift: 0.21
+    q_Slope: 1.07
+    q_Exponent: 2.74
     q_VertShift: 0
     q_HorizShift: 0
     logistic_Slope: 0.15
@@ -32,5 +32,62 @@ MonoBehaviour:
     logistic_YScalar: 1
     logit_A: 0.035
     logit_B: 0.075
+    curveVisualisationPositions:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    - {x: 4, y: 0}
+    - {x: 5, y: 0}
+    - {x: 6, y: 0}
+    - {x: 7, y: 0}
+    - {x: 8, y: 0}
+    - {x: 9, y: 0}
+    - {x: 10, y: 0}
+    - {x: 11, y: 0}
+    - {x: 12, y: 0}
+    - {x: 13, y: 1}
+    - {x: 14, y: 1}
+    - {x: 15, y: 1}
+    - {x: 16, y: 1}
+    - {x: 17, y: 2}
+    - {x: 18, y: 2}
+    - {x: 19, y: 3}
+    - {x: 20, y: 3}
+    - {x: 21, y: 4}
+    - {x: 22, y: 4}
+    - {x: 23, y: 5}
+    - {x: 24, y: 5}
+    - {x: 25, y: 6}
+    - {x: 26, y: 7}
+    - {x: 27, y: 8}
+    - {x: 28, y: 8}
+    - {x: 29, y: 9}
+    - {x: 30, y: 10}
+    - {x: 31, y: 11}
+    - {x: 32, y: 12}
+    - {x: 33, y: 14}
+    - {x: 34, y: 15}
+    - {x: 35, y: 16}
+    - {x: 36, y: 17}
+    - {x: 37, y: 19}
+    - {x: 38, y: 20}
+    - {x: 39, y: 22}
+    - {x: 40, y: 23}
+    - {x: 41, y: 25}
+    - {x: 42, y: 27}
+    - {x: 43, y: 29}
+    - {x: 44, y: 30}
+    - {x: 45, y: 32}
+    - {x: 46, y: 34}
+    - {x: 47, y: 37}
+    - {x: 48, y: 39}
+    - {x: 49, y: 41}
+    - {x: 50, y: 43}
+    - {x: 51, y: 46}
+    - {x: 52, y: 48}
+    - {x: 53, y: 51}
+    - {x: 54, y: 54}
+    - {x: 55, y: 55}
   horizontalVisualisationTextureResolution: 250
   verticalVisualisationTextureResolution: 250
