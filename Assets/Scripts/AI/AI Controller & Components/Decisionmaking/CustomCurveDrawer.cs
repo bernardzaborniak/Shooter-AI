@@ -12,7 +12,7 @@ public class CustomCurveDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
-        Rect r = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        Rect verticalGroup = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         //int indent = EditorGUI.indentLevel;
         //EditorGUI.indentLevel = 1;
 
@@ -137,35 +137,38 @@ public class CustomCurveDrawer : PropertyDrawer
 
             keys[i] = new Keyframe(prop.vector2Value.x, prop.vector2Value.y, inTangent.y/inTangent.x, outTangent.y / outTangent.x);
         }
-        
+
         //Vector2[] keyPositions = curveVisualisationPositionsProp.
         //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
 
         //Disabling & Enabling GUI Elements as a workaround to make the curve read only
+
+        //int indent = EditorGUI.indentLevel;
+        //EditorGUI.indentLevel = 1;
 
         // Saving previous GUI enabled value
         var previousGUIState = GUI.enabled;
         // Disabling edit for property
         GUI.enabled = false;
         // Drawing Property
+       
         EditorGUILayout.CurveField(new AnimationCurve(keys), curveColor, new Rect(0,0,1,1), GUILayout.Height(Screen.width *0.9f), GUILayout.Width(Screen.width * 0.9f));
+        //Rect curveRect = new Rect(verticalGroup.x, GUILayoutUtility.GetLastRect().y + 10, Screen.width * 0.9f, Screen.width * 0.9f);
+        //EditorGUI.CurveField(curveRect, new AnimationCurve(keys), curveColor, new Rect(0,0,1,1));
         // Setting old GUI enabled value
         GUI.enabled = previousGUIState;
 
-        // TODO draw grid & numbers here
+        // ---------------- draw grid & numbers here --------------------
         Rect gridRect = GUILayoutUtility.GetLastRect();
-        //EditorGUI.DrawRect(gridRect, new Color(1f, 0, 0, 0.5f));
+        
         Color thickLinesColor = new Color(0, 0, 0, 0.3f);
         float thickLinesThickness = 1.3f;
         Color thinLinesColor = new Color(0, 0, 0, 0.1f);
         float thinLinesThickness = 1f;
 
-
         //Draw thick middle lines
-        //vertical
-        EditorGUI.DrawRect(new Rect(gridRect.x + gridRect.width / 2, gridRect.y +1, thickLinesThickness, gridRect.height-1), thickLinesColor);
-        //horizontal
-        EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + gridRect.height/2, gridRect.width, thickLinesThickness), thickLinesColor); 
+        EditorGUI.DrawRect(new Rect(gridRect.x + gridRect.width / 2, gridRect.y +1, thickLinesThickness, gridRect.height-1), thickLinesColor);         //vertical
+        EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + gridRect.height/2, gridRect.width, thickLinesThickness), thickLinesColor);          //horizontal
 
         //10 thin vertical lines
         for (int i = 0; i < 10; i++)
@@ -179,6 +182,43 @@ public class CustomCurveDrawer : PropertyDrawer
             EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + (gridRect.height / 10)*i, gridRect.width, thinLinesThickness), thinLinesColor);
 
         }
+
+       
+        // Draw Input & Output Text
+
+        GUIStyle axiesStyle = new GUIStyle(EditorStyles.label);
+        axiesStyle.normal.textColor = Color.white;
+        axiesStyle.fontSize = 15;
+
+
+        //Draw Output Axies
+        Rect outputRect = new Rect(gridRect.position.x, gridRect.position.y + gridRect.height/2 + 20, 50, 30);
+
+        EditorGUIUtility.RotateAroundPivot(-90f, outputRect.position);
+
+        EditorGUI.LabelField(outputRect, "Output", axiesStyle);
+
+        EditorGUIUtility.RotateAroundPivot(90f, outputRect.position);
+
+        //Draw Input Axies
+        Rect inputRect = new Rect(gridRect.position.x + gridRect.width / 2 - 20, gridRect.position.y + gridRect.height - 30, 50, 30);
+        EditorGUI.LabelField(inputRect, "Input", axiesStyle);
+
+
+        //Draw 0s and 1s
+
+        axiesStyle.fontSize = 17;
+
+        Rect zeroRect = new Rect(gridRect.position.x + 8, gridRect.position.y + gridRect.height - 30, 50, 30);
+        EditorGUI.LabelField(zeroRect, "0", axiesStyle);
+
+        Rect oneRect1 = new Rect(gridRect.position.x + 8, gridRect.position.y, 50, 30);
+        EditorGUI.LabelField(oneRect1, "1", axiesStyle);
+
+
+        Rect oneRect2 = new Rect(gridRect.position.x + gridRect.width - 20, gridRect.position.y + gridRect.height - 30, 50, 30);
+        EditorGUI.LabelField(oneRect2, "1", axiesStyle);
+
 
 
 
