@@ -181,12 +181,12 @@ public class Consideration : ScriptableObject
     //Respnonse Cirve parameters & Type
 
     // Input parameters ( min, max, tags, etc..)
-    [Space(20)]
+    //[Space(20)]
     public CustomCurve considerationCurve;
 
-    [Header("Curve Visualisation")]
+    /*[Header("Curve Visualisation")]
     public int horizontalVisualisationTextureResolution = 250;
-    public int verticalVisualisationTextureResolution = 250;
+    public int verticalVisualisationTextureResolution = 250;*/
 
     private void OnValidate()
     {

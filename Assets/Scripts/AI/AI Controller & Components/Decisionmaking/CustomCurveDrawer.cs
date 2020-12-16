@@ -6,17 +6,29 @@ using UnityEditor;
 [CustomPropertyDrawer(typeof(CustomCurve))]
 public class CustomCurveDrawer : PropertyDrawer
 {
+    Color curveColor = new Color(0f, 0f, 1f);
+
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
-        int indent = EditorGUI.indentLevel;
-        EditorGUI.indentLevel = 1;
+        Rect r = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        //int indent = EditorGUI.indentLevel;
+        //EditorGUI.indentLevel = 1;
+
+        //EditorGUILayout.
+        //EditorGUILayout.LabelField("Curve", EditorStyles.boldLabel, GUILayout.Width(Screen.width * 0.9f));
+        //EditorGUILayout.Lab
+
+        //EditorGUILayout.(GUILayoutUtility.GetLastRect(), new Color(1f, 0, 0, 0.5f));
+
 
         #region Curve Params
 
         SerializedProperty curveTypeProp = property.FindPropertyRelative("curveType");
 
-        EditorGUILayout.LabelField("Curve Params", EditorStyles.boldLabel);
+
+        EditorGUILayout.LabelField("Curve Options", EditorStyles.boldLabel);
 
         EditorGUILayout.PropertyField(curveTypeProp);
         
@@ -80,8 +92,8 @@ public class CustomCurveDrawer : PropertyDrawer
 
         #region Curve Visualisation
 
-        EditorGUILayout.Space(5);
-        EditorGUILayout.LabelField("Curve Visualisation", EditorStyles.boldLabel);
+        EditorGUILayout.Space(10);
+        //EditorGUILayout.LabelField("Curve Visualisation", EditorStyles.boldLabel);
 
         //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
 
@@ -129,23 +141,47 @@ public class CustomCurveDrawer : PropertyDrawer
         //Vector2[] keyPositions = curveVisualisationPositionsProp.
         //Keyframe[] keys = new Keyframe[] { new Keyframe(0, 0, 0, 0), new Keyframe(0.5f, 0.5f, 0, 0), new Keyframe(0.6f, 0.7f, 0, 0), new Keyframe(0.7f, 0.9f, 0, 0) };
 
-        //TODO reenable the readonly elements here
+        //Disabling & Enabling GUI Elements as a workaround to make the curve read only
 
         // Saving previous GUI enabled value
-        //var previousGUIState = GUI.enabled;
+        var previousGUIState = GUI.enabled;
         // Disabling edit for property
-        //GUI.enabled = false;
+        GUI.enabled = false;
         // Drawing Property
-        EditorGUILayout.CurveField(new AnimationCurve(keys),Color.blue,new Rect(0,0,1,1), GUILayout.Height(400), GUILayout.Width(400));
-
+        EditorGUILayout.CurveField(new AnimationCurve(keys), curveColor, new Rect(0,0,1,1), GUILayout.Height(Screen.width *0.9f), GUILayout.Width(Screen.width * 0.9f));
         // Setting old GUI enabled value
-        //GUI.enabled = previousGUIState;
+        GUI.enabled = previousGUIState;
+
+        // TODO draw grid & numbers here
+        Rect gridRect = GUILayoutUtility.GetLastRect();
+        //EditorGUI.DrawRect(gridRect, new Color(1f, 0, 0, 0.5f));
+        Color thickLinesColor = new Color(0, 0, 0, 0.5f);
+        Color thinLinesColor = new Color(0, 0, 0, 0.3f);
+
+        //Draw thick middle lines
+        EditorGUI.DrawRect(new Rect(gridRect.x + gridRect.width / 2, gridRect.y +1, 2, gridRect.height-1), thickLinesColor);
+        EditorGUI.DrawRect(new Rect(gridRect.x, gridRect.y + gridRect.height/2, gridRect.width, 2), thickLinesColor);
+
+        //10 thin horizontal lines
+        for (int i = 0; i < 10; i++)
+        {
+
+        }
+
+        //10 thin vertical lines
+        for (int i = 0; i < 10; i++)
+        {
+
+        }
+
+
+
 
         #endregion
 
+        EditorGUILayout.EndVertical();
 
-
-        EditorGUI.indentLevel = indent;
+        //EditorGUI.indentLevel = indent;
 
         //EditorGUI.indentLevel = 0;
 
