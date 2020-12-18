@@ -114,6 +114,11 @@ public class Consideration : ScriptableObject
         }*/
     }
 
+    public void SetUpConsideration(AIController aiController)
+    {
+
+    }
+
 
 
 }
