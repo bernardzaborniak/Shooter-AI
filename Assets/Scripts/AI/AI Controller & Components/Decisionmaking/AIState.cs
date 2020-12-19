@@ -18,7 +18,7 @@ public abstract class AIState
 
     public abstract void OnStateExit();
 
-    public abstract void OnStateUpdate();
+    public abstract void UpdateState();
 
 
 }
@@ -58,5 +58,5 @@ public class AIst_HumSol_MovingToZeroPoint: AIState_HumanoidSoldier
 
     public override void OnStateExit() { }
 
-    public override void OnStateUpdate() { }
+    public override void UpdateState() { }
 }

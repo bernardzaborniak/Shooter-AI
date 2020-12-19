@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
+/*
 [System.Serializable]
 public class ConsiderationInputParams
 {
@@ -51,12 +51,12 @@ public class ConsiderationInputParamsUIE : PropertyDrawer
 
         EditorGUI.EndProperty();
     }
-}
+}*/
 
 
 
 
-[CreateAssetMenu(menuName = "AI/Consideration", fileName = "AI Decision Consideration")]
+//[CreateAssetMenu(menuName = "AI/Consideration", fileName = "AI Decision Consideration")]
 public class Consideration : ScriptableObject
 {
     public string considerationName;
@@ -76,47 +76,31 @@ public class Consideration : ScriptableObject
 
     //each of this is predefined -> put them in a dropdown list
 
-   
+   /* public enum ConsiderationInputType
+    {
+       // Float,
+       // Int,
+       // Bool
+    }
 
-    
-   
-    //ConsiderationInputType lastConsiderationInputType; //saved for doing editor changes
+    public ConsiderationInputType considerationInputType;*/
 
-    //public ConsiderationInput considerationInputClass;
-    public ConsiderationInputParams considerationInputParams;
-
-
-   
-
-    // Input
-
-    //Respnonse Cirve parameters & Type
-
-    // Input parameters ( min, max, tags, etc..)
-    //[Space(20)]
     public CustomCurve considerationCurve;
 
-    /*[Header("Curve Visualisation")]
-    public int horizontalVisualisationTextureResolution = 250;
-    public int verticalVisualisationTextureResolution = 250;*/
 
     private void OnValidate()
     {
         considerationCurve.UpdateCurveVisualisationKeyframes();
-        //Debug.Log("on valuidate enum changed");
-        /*if(considerationInputType == ConsiderationInputType.Float)
-        {
-            considerationInputClass = new ConsiderationInput();
-        }
-        else
-        {
-            considerationInputClass = new ConsiderationInputInt();
-        }*/
     }
 
-    public void SetUpConsideration(AIController aiController)
+   /* public virtual void SetUpConsideration(AIController aiController)
     {
 
+    }*/
+
+    public virtual float GetConsiderationRating(AIController aiController)
+    {
+        return 0;
     }
 
 

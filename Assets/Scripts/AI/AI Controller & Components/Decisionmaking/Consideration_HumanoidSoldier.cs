@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "AI/Consideration", fileName = "Humanoid Soldier Consideration")]
 public class Consideration_HumanoidSoldier : Consideration
 {
-    // Start is called before the first frame update
-    void Start()
+    public ConsiderationInput_HumanoidSoldier considerationInput;
+    AIController aiController;
+
+    public override void SetUpConsideration(AIController aiController)
     {
-        
+        this.aiController = aiController;
+
+        //Set Up Input
+
+        considerationInput.SetUpInput(aiController);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override float GetConsiderationRating()
     {
-        
+
     }
 }

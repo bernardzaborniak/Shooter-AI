@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class AIController_HumanoidSoldier : AIController
 {
+    public AIC_HumanSensing humanSensing;
+    public AIC_AimingController aimingController;
+
     // Start is called before the first frame update
-    void Start()
+    public override void SetUpComponent(GameEntity entity)
     {
-        
+        base.SetUpComponent(entity);
+
+        humanSensing.SetUpComponent(myEntity);
+        aimingController.SetUpComponent(myEntity);
     }
 
     // Update is called once per frame
-    void Update()
+    public override void UpdateComponent()
     {
-        
+        humanSensing.UpdateComponent();
+        aimingController.UpdateComponent();
     }
 }

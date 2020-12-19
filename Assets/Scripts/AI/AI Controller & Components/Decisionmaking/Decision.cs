@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Decision : MonoBehaviour
+public class Decision : ScriptableObject
 {
     //every decision has a list of considerations based on which to decide
     [SerializeField] Consideration[] considerations;
@@ -12,7 +12,7 @@ public class Decision : MonoBehaviour
 
     public AIStateEnum correspondingAIState;
 
-    AIController aiController;
+    //AIController aiController;
     //AIState state;
     //several decisions can have the same state?
     /*public AIState GetCorrespondingState()
@@ -20,25 +20,35 @@ public class Decision : MonoBehaviour
         return state;
     }*/
 
-    public void SetUpDecision(AIController aiController)
+   /* public void SetUpDecision(AIController aiController)
     {
         this.aiController = aiController;
 
-        for (int i = 0; i < considerations.Length; i++)
+        /*for (int i = 0; i < considerations.Length; i++)
         {
             considerations[i].SetUpConsideration(aiController);
         }
-    }
+    }*/
 
-    public AIState OnDecisionWasSelected()
+    /*public AIState OnDecisionWasSelected(AIController aiController)
     {
         AIState aIState = new AIst_HumSol_MovingToZeroPoint();
         aIState.SetUpState(aiController);
         return aIState;
-    }
+    }*/
 
-    public float RateDecision()
+    public float GetDecisionRating(AIController aiController)
     {
+        float score = 1;
+
+        for (int i = 0; i < considerations.Length; i++)
+        {
+            score *= considerations[i].GetConsiderationRating(aiController);
+        }
+
+        //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
+        score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+
         return 0;
     }
 
