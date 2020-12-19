@@ -8,7 +8,7 @@ public class AIController : EntityComponent
     //public AIComponent[] aIComponents;
 
     public DecisionMaker[] decisionLayers;
-
+    [Space(10)]
     public float decisionInterval;
     float nextDecisionTime;
 

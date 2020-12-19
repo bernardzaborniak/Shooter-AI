@@ -6,11 +6,18 @@ using UnityEngine;
 // Fills the SensingInfo which is used by the AI 
 public class AIC_HumanSensing : AIComponent
 {
+    //some values are recieved by other scripts
+    [Header("Scripts to Get Values From")]
+    [Tooltip("Reference for cecking things like ammo ")]
+    public EC_HumanoidCharacterController characterController;
+    [Tooltip("Reference for cecking health ")]
+    public EC_Health health;
+    //the sensing info is filled by the sensingcomponenty using the Physics System
     public AI_SensingInfo currentSensingInfo = new AI_SensingInfo();
 
     [Header("Physics Search Values")]
-    Collider[] collidersInRadius;
     public float sensingRadius;
+    Collider[] collidersInRadius;
     public LayerMask sensingLayerMask;
     public LayerMask postSensingLayerMask;
     [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
@@ -26,6 +33,12 @@ public class AIC_HumanSensing : AIComponent
     #region Variables cached to optimise garbage collection
 
     int myTeamID;
+
+    #endregion
+
+    #region Variables only cached if called repeatedly in one frame
+
+    float myHealthRatio;
 
     #endregion
 
@@ -143,5 +156,10 @@ public class AIC_HumanSensing : AIComponent
             UnityEngine.Profiling.Profiler.EndSample();
 
         }
+    }
+
+    public float GetRemainingHealthToMaxHalthRatio()
+    {
+        return health.GetRemainingHealthToMaxHalthRatio();
     }
 }

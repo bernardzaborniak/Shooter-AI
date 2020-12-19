@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-[CustomEditor(typeof(Consideration))]
+[CustomEditor(typeof(Consideration), true)]
 public class ConsiderationEditor : Editor
 {
     Texture2D curveVisualisationTexture;

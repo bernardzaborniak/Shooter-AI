@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Consideration", fileName = "Humanoid Soldier Consideration")]
+[CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Consideration", fileName = "new Consideration_Humanoid")]
 public class Consideration_HumanoidSoldier : Consideration
 {
     public ConsiderationInput_HumanoidSoldier considerationInput;
-    AIController aiController;
+    float input;
 
-    public override void SetUpConsideration(AIController aiController)
+    //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
+    public float min;
+    public float max;
+
+
+    //TODO do an editor with hides and shows parameters depending on the considerationInput assigned
+
+    public override float GetConsiderationRating(AIController aiController)
     {
-        this.aiController = aiController;
+        //Get Input, already normalized by ConsideraionInput
+        input = considerationInput.GetConsiderationInput((AIController_HumanoidSoldier)aiController, this);
 
-        //Set Up Input
+        //TODo Refactor, dont save input into another variable, write it directly into the return statement
 
-        considerationInput.SetUpInput(aiController);
-    }
-
-    public override float GetConsiderationRating()
-    {
-
+        //Modify input by curve, curve also normalizes automaticly
+        return considerationCurve.GetRemappedValue(input);
     }
 }

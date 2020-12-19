@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
 public class Decision : ScriptableObject
 {
     //every decision has a list of considerations based on which to decide

@@ -6,6 +6,8 @@ public class AIController_HumanoidSoldier : AIController
 {
     public AIC_HumanSensing humanSensing;
     public AIC_AimingController aimingController;
+    public EC_HumanoidCharacterController characterController;
+
 
     // Start is called before the first frame update
     public override void SetUpComponent(GameEntity entity)

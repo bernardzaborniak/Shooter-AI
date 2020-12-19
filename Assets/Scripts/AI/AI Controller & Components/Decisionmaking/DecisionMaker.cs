@@ -10,17 +10,13 @@ public class DecisionWrapper
     public float weigt;
 }
 
+[System.Serializable]
 // Holds an array of all possible decisions, rates them and decides which to execute.
 // Holds an internal statemachine concerning current states executing
-public class DecisionMaker : MonoBehaviour
+public class DecisionMaker 
 {
-    public DecisionWrapper[] decisions;
-    Decision currentDecision;
-    AIState currentState;
-
-    AIController aiController;
-
-
+    public string name = "new Layer";
+  
     public enum DecisionMethod
     {
         BestRated,
@@ -28,7 +24,16 @@ public class DecisionMaker : MonoBehaviour
     }
 
     public DecisionMethod decisionMethod;
-    float[] decisionRatings; 
+    public float[] decisionRatings; //make it private later
+
+    public DecisionWrapper[] decisions;
+
+    Decision currentDecision;
+    AIState currentState;
+    AIController aiController;
+
+    //[Header("Debug")]
+    //public float decisionRatingsDebug;
 
 
     public void SetUpDecisionLayer(AIController aiController)

@@ -151,5 +151,11 @@ public class EC_Health : EntityComponent
         }
     }
 
-    
+    public float GetRemainingHealthToMaxHalthRatio()
+    {
+        return currentHealth / maxHealth;
+    }
+
+
+
 }
