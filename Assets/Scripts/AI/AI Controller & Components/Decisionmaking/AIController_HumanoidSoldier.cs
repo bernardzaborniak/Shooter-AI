@@ -12,6 +12,7 @@ public class AIController_HumanoidSoldier : AIController
     // Start is called before the first frame update
     public override void SetUpComponent(GameEntity entity)
     {
+        
         base.SetUpComponent(entity);
 
         humanSensing.SetUpComponent(myEntity);
@@ -21,7 +22,10 @@ public class AIController_HumanoidSoldier : AIController
     // Update is called once per frame
     public override void UpdateComponent()
     {
-        humanSensing.UpdateComponent();
-        aimingController.UpdateComponent();
+        base.UpdateComponent();
+
+        // ---- this will happen later if the new AI Controller fully replaces the old ----
+        //humanSensing.UpdateComponent();
+        //aimingController.UpdateComponent();
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fde500afa6d49c84e97c47a765f663b5, type: 3}
-  m_Name: TestDistanceToEnemy
+  m_Name: C_DistanceToEnemy
   m_EditorClassIdentifier: 
   considerationName: 
   description: 
@@ -89,4 +89,4 @@ MonoBehaviour:
     - {x: 1, y: 0}
   considerationInput: {fileID: 11400000, guid: 6d94c6711557e2a4aa199770780acea3, type: 2}
   min: 0
-  max: 15
+  max: 1600

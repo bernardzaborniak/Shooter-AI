@@ -880,10 +880,13 @@ MonoBehaviour:
   decisionLayers:
   - name: Base Test Layer
     decisionMethod: 0
+    decisionRatings: []
     decisions:
+    - decision: {fileID: 11400000, guid: 99fa407628cdaa041b6694c6c2f953cf, type: 2}
+      weigt: 1
     - decision: {fileID: 11400000, guid: eea6aaa047bf99d4b856f5e7c444788d, type: 2}
-      weigt: 0
-  decisionInterval: 1
+      weigt: 1
+  decisionInterval: 0.3
   humanSensing: {fileID: 7864116541130220572}
   aimingController: {fileID: 3586266366417383842}
   characterController: {fileID: 8032510007199776535}
@@ -2836,6 +2839,7 @@ MonoBehaviour:
   - {fileID: 8032510007199776535}
   - {fileID: 3435694260906315833}
   - {fileID: 6567086041650918770}
+  - {fileID: 5535747409815593379}
   destroyOnDie: 1
   onDieEvent:
     m_PersistentCalls:

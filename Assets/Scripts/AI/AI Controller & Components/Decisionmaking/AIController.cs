@@ -17,6 +17,8 @@ public class AIController : EntityComponent
         //entityAttachedTo = entity;
         base.SetUpComponent(entity);
 
+
+
         nextDecisionTime = Time.time + Random.Range(0, nextDecisionTime);
 
         for (int i = 0; i < decisionLayers.Length; i++)
@@ -31,6 +33,8 @@ public class AIController : EntityComponent
         // Decide every x seconds
         if(Time.time> nextDecisionTime)
         {
+            Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
+
             nextDecisionTime = Time.time + decisionInterval;
 
             for (int i = 0; i < decisionLayers.Length; i++)

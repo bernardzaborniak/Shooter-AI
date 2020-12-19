@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Test Decision
+  m_Script: {fileID: 11500000, guid: ec0f4abe1aa67e9429099cdbb13de8f0, type: 3}
+  m_Name: I_DistanceToClosestEnemy
   m_EditorClassIdentifier: 
-  considerations:
-  - {fileID: 11400000, guid: fd6d14595cea2b446aa7d6035116f0fe, type: 2}
-  - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
-  correspondingAIState: 0

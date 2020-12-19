@@ -38,6 +38,7 @@ public class DecisionMaker
 
     public void SetUpDecisionLayer(AIController aiController)
     {
+
         this.aiController = aiController;
 
        /* for (int i = 0; i < decisions.Length; i++)
@@ -51,6 +52,7 @@ public class DecisionMaker
 
     public void Decide() //Decide();
     {
+        Debug.Log("Decide ");
         //scores all decisions, select the best one, and create new state if this decision is different than the previous one
         float currentRating;
         int bestRatedDecision = int.MaxValue;
@@ -58,7 +60,9 @@ public class DecisionMaker
 
         for (int i = 0; i < decisions.Length; i++)
         {
+            Debug.Log("-----------------  Decide decition number: " + i);
             currentRating = decisions[i].decision.GetDecisionRating(aiController) * decisions[i].weigt;
+            Debug.Log("current Rating: " + currentRating);
             decisionRatings[i] = currentRating;
             
             if(currentRating > bestRatingSoFar)
@@ -68,8 +72,10 @@ public class DecisionMaker
             }
         }
 
-        StartExecutingDecision(decisions[bestRatedDecision].decision);
-
+        if(bestRatedDecision != int.MaxValue)
+        {
+            StartExecutingDecision(decisions[bestRatedDecision].decision);
+        }
 
     }
 
@@ -113,7 +119,10 @@ public class DecisionMaker
     public void UpdateCurrentState()
     {
         //updates current state
-        currentState.UpdateState();
+        if (currentState != null)
+        {
+            currentState.UpdateState();
+        }
     }
 
     
