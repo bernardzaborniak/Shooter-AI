@@ -2,74 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
-public class Decision : ScriptableObject
+namespace BenitosAI
 {
-    //every decision has a list of considerations based on which to decide
-    [SerializeField] Consideration[] considerations;
-    //how to solve one decision that has to seperate into several ones - if there are more enemies to go to - we need this decision to seperate into x decisions. where x is the number of enemies
 
-    //also has its own codestate initialised on start and passed to the decision layer, if decision was selected
-
-    public AIStateEnum correspondingAIState;
-
-    //AIController aiController;
-    //AIState state;
-    //several decisions can have the same state?
-    /*public AIState GetCorrespondingState()
+    [CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
+    public class Decision : ScriptableObject
     {
-        return state;
-    }*/
+        //every decision has a list of considerations based on which to decide
+        [SerializeField] Consideration[] considerations;
+        //how to solve one decision that has to seperate into several ones - if there are more enemies to go to - we need this decision to seperate into x decisions. where x is the number of enemies
 
-   /* public void SetUpDecision(AIController aiController)
-    {
-        this.aiController = aiController;
+        //also has its own codestate initialised on start and passed to the decision layer, if decision was selected
 
-        /*for (int i = 0; i < considerations.Length; i++)
+        public AIStateEnum correspondingAIState;
+
+        //AIController aiController;
+        //AIState state;
+        //several decisions can have the same state?
+        /*public AIState GetCorrespondingState()
         {
-            considerations[i].SetUpConsideration(aiController);
-        }
-    }*/
+            return state;
+        }*/
 
-    /*public AIState OnDecisionWasSelected(AIController aiController)
-    {
-        AIState aIState = new AIst_HumSol_MovingToZeroPoint();
-        aIState.SetUpState(aiController);
-        return aIState;
-    }*/
+        /* public void SetUpDecision(AIController aiController)
+         {
+             this.aiController = aiController;
 
-    public float GetDecisionRating(AIController aiController)
-    {
-        float score = 1;
+             /*for (int i = 0; i < considerations.Length; i++)
+             {
+                 considerations[i].SetUpConsideration(aiController);
+             }
+         }*/
 
-        for (int i = 0; i < considerations.Length; i++)
+        /*public AIState OnDecisionWasSelected(AIController aiController)
         {
-            score *= considerations[i].GetConsiderationRating(aiController);
+            AIState aIState = new AIst_HumSol_MovingToZeroPoint();
+            aIState.SetUpState(aiController);
+            return aIState;
+        }*/
+
+        public float GetDecisionRating(AIController aiController)
+        {
+            float score = 1;
+
+            for (int i = 0; i < considerations.Length; i++)
+            {
+                score *= considerations[i].GetConsiderationRating(aiController);
+            }
+
+            Debug.Log("decision score before adding makeup value: " + score);
+
+            //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
+
+            score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+
+            Debug.Log("decision score after adding makeup value: " + score);
+
+            return score;
         }
 
-        Debug.Log("decision score before adding makeup value: " + score);
 
-        //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
-        
-        score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+        /*void Start()
+        {
+            //instantiate the corresponding state
+           // if(correspondingAIState == AIStateEnum.TestState)
+            //{
+             //   state = new AITestState();
+           // }
+        }
 
-        Debug.Log("decision score after adding makeup value: " + score);
+        void Update()
+        {
 
-        return score;
+        }*/
     }
 
-
-    /*void Start()
-    {
-        //instantiate the corresponding state
-       // if(correspondingAIState == AIStateEnum.TestState)
-        //{
-         //   state = new AITestState();
-       // }
-    }
-
-    void Update()
-    {
-        
-    }*/
 }

@@ -2,61 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AIStateEnum
+namespace BenitosAI
 {
-    TestState
-}
 
-
-
-public abstract class AIState 
-{
-    //public abstract void SetUpState(AIController aiController);
-    public abstract void SetUpState(AIController aiController);
-
-    public abstract void OnStateEnter();
-
-    public abstract void OnStateExit();
-
-    public abstract void UpdateState();
-
-
-}
-
-public abstract class AIState_HumanoidSoldier: AIState
-{
-    protected AIController_HumanoidSoldier aiController;
-
-    public override void SetUpState(AIController aiController)
+    public enum AIStateEnum
     {
-        this.aiController = (AIController_HumanoidSoldier)aiController;
+        TestState
     }
 
-    //public override void OnStateEnter()
-    //{
-
-    //}
 
 
-    //public override abstract void OnStateExit();
-
-
-    //public override abstract void OnStateUpdate();
-
-}
-
-public class AIst_HumSol_MovingToZeroPoint: AIState_HumanoidSoldier
-{
-   // AIController aiController;
-
-    /*public override void SetUpState(AIController aiController) 
+    public abstract class AIState
     {
-        this.aiController = aiController;
-    }*/
+        //public abstract void SetUpState(AIController aiController);
+        public abstract void SetUpState(AIController aiController);
 
-    public override void OnStateEnter() { }
+        public abstract void OnStateEnter();
 
-    public override void OnStateExit() { }
+        public abstract void OnStateExit();
 
-    public override void UpdateState() { }
+        public abstract void UpdateState();
+
+
+    }
+
+    public abstract class AIState_HumanoidSoldier : AIState
+    {
+        protected AIController_HumanoidSoldier aiController;
+
+        public override void SetUpState(AIController aiController)
+        {
+            this.aiController = (AIController_HumanoidSoldier)aiController;
+        }
+
+        //public override void OnStateEnter()
+        //{
+
+        //}
+
+
+        //public override abstract void OnStateExit();
+
+
+        //public override abstract void OnStateUpdate();
+
+    }
+
+    public class AIst_HumSol_MovingToZeroPoint : AIState_HumanoidSoldier
+    {
+        // AIController aiController;
+
+        /*public override void SetUpState(AIController aiController) 
+        {
+            this.aiController = aiController;
+        }*/
+
+        public override void OnStateEnter() { }
+
+        public override void OnStateExit() { }
+
+        public override void UpdateState() { }
+    }
+
 }

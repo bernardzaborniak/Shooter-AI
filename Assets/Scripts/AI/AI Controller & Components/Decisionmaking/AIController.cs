@@ -2,52 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIController : EntityComponent
+namespace BenitosAI //maybe instead having the ai controller be in benitos namespace, just use decision context classes?
 {
-   // protected GameEntity entityAttachedTo;
-    //public AIComponent[] aIComponents;
 
-    public DecisionMaker[] decisionLayers;
-    [Space(10)]
-    public float decisionInterval;
-    float nextDecisionTime;
-
-    public override void SetUpComponent(GameEntity entity)
+    public class AIController : EntityComponent
     {
-        //entityAttachedTo = entity;
-        base.SetUpComponent(entity);
+        // protected GameEntity entityAttachedTo;
+        //public AIComponent[] aIComponents;
 
+        public DecisionMaker[] decisionLayers;
+        [Space(10)]
+        public float decisionInterval;
+        float nextDecisionTime;
 
-
-        nextDecisionTime = Time.time + Random.Range(0, nextDecisionTime);
-
-        for (int i = 0; i < decisionLayers.Length; i++)
+        public override void SetUpComponent(GameEntity entity)
         {
-            decisionLayers[i].SetUpDecisionLayer(this);
-        }
-        
-    }
+            //entityAttachedTo = entity;
+            base.SetUpComponent(entity);
 
-    public override void UpdateComponent()
-    {
-        // Decide every x seconds
-        if(Time.time> nextDecisionTime)
-        {
-            Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
 
-            nextDecisionTime = Time.time + decisionInterval;
+
+            nextDecisionTime = Time.time + Random.Range(0, nextDecisionTime);
 
             for (int i = 0; i < decisionLayers.Length; i++)
             {
-                decisionLayers[i].Decide();
+                decisionLayers[i].SetUpDecisionLayer(this);
             }
+
         }
 
-        // Update Current States
-        for (int i = 0; i < decisionLayers.Length; i++)
+        public override void UpdateComponent()
         {
-            decisionLayers[i].UpdateCurrentState();
-        }
+            // Decide every x seconds
+            if (Time.time > nextDecisionTime)
+            {
+                Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
 
+                nextDecisionTime = Time.time + decisionInterval;
+
+                for (int i = 0; i < decisionLayers.Length; i++)
+                {
+                    decisionLayers[i].Decide();
+                }
+            }
+
+            // Update Current States
+            for (int i = 0; i < decisionLayers.Length; i++)
+            {
+                decisionLayers[i].UpdateCurrentState();
+            }
+
+        }
     }
+
 }

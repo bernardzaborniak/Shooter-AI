@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/My Health Ratio", fileName = "My Health Ratio")]
-public class CI_HS_MyHealthRatio : ConsiderationInput
+namespace BenitosAI
 {
-    public override float GetConsiderationInput(AIController aiController, Consideration consideration)
+
+    [CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/My Health Ratio", fileName = "My Health Ratio")]
+    public class CI_HS_MyHealthRatio : ConsiderationInput
     {
-        return ((AIController_HumanoidSoldier)aiController).humanSensing.GetRemainingHealthToMaxHalthRatio();
+        public override float GetConsiderationInput(AIController aiController, Consideration consideration)
+        {
+            return ((AIController_HumanoidSoldier)aiController).humanSensing.GetRemainingHealthToMaxHalthRatio();
+        }
+
     }
 
 }
