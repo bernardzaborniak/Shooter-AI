@@ -11,11 +11,14 @@ public class CustomCurveDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        GUIStyle labelStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 12, fontStyle = FontStyle.Bold };
+
 
         Rect verticalGroup = EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
         // ------ Header & Type ------
-        EditorGUILayout.LabelField("Curve Options", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Curve Options", labelStyle);
+        EditorGUILayout.Space(5);
 
         SerializedProperty curveTypeProp = property.FindPropertyRelative("curveType");
         EditorGUILayout.PropertyField(curveTypeProp);
