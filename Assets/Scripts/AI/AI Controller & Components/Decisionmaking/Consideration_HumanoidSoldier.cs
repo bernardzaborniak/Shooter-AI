@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 [CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Consideration", fileName = "new Consideration_Humanoid")]
 public class Consideration_HumanoidSoldier : Consideration
 {
@@ -40,3 +41,4 @@ public class Consideration_HumanoidSoldier : Consideration
         return considerationCurve.GetRemappedValue(input);
     }
 }
+*/

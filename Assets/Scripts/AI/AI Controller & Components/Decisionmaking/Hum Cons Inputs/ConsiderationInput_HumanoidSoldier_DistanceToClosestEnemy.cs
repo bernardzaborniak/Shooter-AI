@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Input/DistanceToClosestEnemy", fileName = "DistanceToClosestEnemy")]
-public class ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy : ConsiderationInput_HumanoidSoldier
+public class ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy : ConsiderationInput
 {
-    public override float GetConsiderationInput(AIController_HumanoidSoldier aiController, Consideration_HumanoidSoldier consideration)
-    {
+    AIController_HumanoidSoldier aiControllerHuman;
 
-        if (aiController.humanSensing.currentSensingInfo.nearestEnemyInfo != null)
+    public override float GetConsiderationInput(AIController aiController, Consideration consideration)
+    {
+        aiControllerHuman = (AIController_HumanoidSoldier)aiController;
+
+        if (aiControllerHuman.humanSensing.currentSensingInfo.nearestEnemyInfo != null)
         {
             //normalize
-            float input = Utility.Remap(aiController.humanSensing.currentSensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
+            float input = Utility.Remap(aiControllerHuman.humanSensing.currentSensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
             //remap Squared Distance
             //float input = 0
 

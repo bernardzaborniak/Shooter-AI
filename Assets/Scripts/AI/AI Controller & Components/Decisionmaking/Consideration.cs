@@ -88,14 +88,19 @@ public class Consideration : ScriptableObject
 
     //each of this is predefined -> put them in a dropdown list
 
-    /* public enum ConsiderationInputType
-     {
-        // Float,
-        // Int,
-        // Bool
-     }
+    //public ConsiderationInput_HumanoidSoldier considerationInput;
+    public ConsiderationInput considerationInput;
+    float input;
 
-     public ConsiderationInputType considerationInputType;*/
+    //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
+    public float min;
+    [HideInInspector]
+    public float minSquared;
+
+    public float max;
+    [HideInInspector]
+    public float maxSquared;
+
 
     public CustomCurve considerationCurve;
 
@@ -106,6 +111,12 @@ public class Consideration : ScriptableObject
 
         considerationCurve.UpdateCurveVisualisationKeyframes();
         UpdateExampleValues();
+    }
+
+    private void Awake()
+    {
+        minSquared = min * min;
+        maxSquared = max * max;
     }
 
     public void UpdateExampleValues()
@@ -119,9 +130,23 @@ public class Consideration : ScriptableObject
 
      }*/
 
-    public virtual float GetConsiderationRating(AIController aiController)
+   
+
+    //TODO do an editor with hides and shows parameters depending on the considerationInput assigned
+
+    public float GetConsiderationRating(AIController aiController)
     {
-        return 0;
+        //Get Input, already normalized by ConsideraionInput
+        input = considerationInput.GetConsiderationInput((AIController_HumanoidSoldier)aiController, this);
+
+        Debug.Log("Consideration: Ijnput: " + input);
+
+        //TODo Refactor, dont save input into another variable, write it directly into the return statement
+
+        Debug.Log("Consideration: Remapped Curve: " + considerationCurve.GetRemappedValue(input));
+
+        //Modify input by curve, curve also normalizes automaticly
+        return considerationCurve.GetRemappedValue(input);
     }
 
 

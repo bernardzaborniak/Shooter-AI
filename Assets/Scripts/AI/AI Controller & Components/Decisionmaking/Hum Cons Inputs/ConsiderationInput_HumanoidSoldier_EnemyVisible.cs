@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Input/Enemy Visible", fileName = "Enemy Visible")]
-public class ConsiderationInput_HumanoidSoldier_EnemyVisible : ConsiderationInput_HumanoidSoldier
+public class ConsiderationInput_HumanoidSoldier_EnemyVisible : ConsiderationInput
 {
-    public override float GetConsiderationInput(AIController_HumanoidSoldier aiController, Consideration_HumanoidSoldier consideration)
+
+    public override float GetConsiderationInput(AIController aiController, Consideration consideration)
     {
-        if (aiController.humanSensing.currentSensingInfo.enemiesInSensingRadius.Count > 0)
+        if (((AIController_HumanoidSoldier)aiController).humanSensing.currentSensingInfo.enemiesInSensingRadius.Count > 0)
         {
             return 1;
         }

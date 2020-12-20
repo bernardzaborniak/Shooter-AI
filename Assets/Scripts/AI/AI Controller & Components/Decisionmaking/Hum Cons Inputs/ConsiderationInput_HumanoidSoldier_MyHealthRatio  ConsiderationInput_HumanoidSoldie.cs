@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Input/My Health Ratio", fileName = "My Health Ratio")]
-public class ConsiderationInput_HumanoidSoldier_MyHealthRatio : ConsiderationInput_HumanoidSoldier
+public class ConsiderationInput_HumanoidSoldier_MyHealthRatio : ConsiderationInput
 {
-    public override float GetConsiderationInput(AIController_HumanoidSoldier aiController, Consideration_HumanoidSoldier consideration)
+    public override float GetConsiderationInput(AIController aiController, Consideration consideration)
     {
-        return aiController.humanSensing.GetRemainingHealthToMaxHalthRatio();
+        return ((AIController_HumanoidSoldier)aiController).humanSensing.GetRemainingHealthToMaxHalthRatio();
     }
 
 }
