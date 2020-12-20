@@ -11,7 +11,9 @@ public class ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy : Conside
         if (aiController.humanSensing.currentSensingInfo.nearestEnemyInfo != null)
         {
             //normalize
-            float input = Utility.Remap(aiController.humanSensing.currentSensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.min, consideration.max, 0, 1);
+            float input = Utility.Remap(aiController.humanSensing.currentSensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
+            //remap Squared Distance
+            //float input = 0
 
             return Mathf.Clamp(input, 0, 1);
         }

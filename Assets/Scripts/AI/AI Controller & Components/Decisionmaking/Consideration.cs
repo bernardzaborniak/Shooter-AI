@@ -56,12 +56,24 @@ public class ConsiderationInputParamsUIE : PropertyDrawer
 
 
 
+
 //[CreateAssetMenu(menuName = "AI/Consideration", fileName = "AI Decision Consideration")]
 public class Consideration : ScriptableObject
 {
-    public string considerationName;
-    [TextArea]
+    //public string considerationName;
+    //[TextArea]
     public string description;
+
+    // Example Values to make setting up the curves easier for more complex relationships like squared distances
+    public float exampleInput1;
+    public float exampleInput2;
+    public float exampleInput3;
+    public float exampleInput4;
+
+    public float exampleOutput1;
+    public float exampleOutput2;
+    public float exampleOutput3;
+    public float exampleOutput4;
 
     //Inputs needed:
 
@@ -76,27 +88,36 @@ public class Consideration : ScriptableObject
 
     //each of this is predefined -> put them in a dropdown list
 
-   /* public enum ConsiderationInputType
-    {
-       // Float,
-       // Int,
-       // Bool
-    }
+    /* public enum ConsiderationInputType
+     {
+        // Float,
+        // Int,
+        // Bool
+     }
 
-    public ConsiderationInputType considerationInputType;*/
+     public ConsiderationInputType considerationInputType;*/
 
     public CustomCurve considerationCurve;
 
 
     private void OnValidate()
     {
+        //considerationName = name;
+
         considerationCurve.UpdateCurveVisualisationKeyframes();
+        UpdateExampleValues();
     }
 
-   /* public virtual void SetUpConsideration(AIController aiController)
+    public void UpdateExampleValues()
     {
+        //have 4 example values in 2 rows, upper row is non normalized input
+        //lower row is what comes out of the curve after initial normalization etc...
+    }
 
-    }*/
+    /* public virtual void SetUpConsideration(AIController aiController)
+     {
+
+     }*/
 
     public virtual float GetConsiderationRating(AIController aiController)
     {

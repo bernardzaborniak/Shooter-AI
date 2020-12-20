@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde500afa6d49c84e97c47a765f663b5, type: 3}
   m_Name: C_DistanceToEnemy
   m_EditorClassIdentifier: 
-  considerationName: 
   description: 
+  exampleInput1: 0
+  exampleInput2: 0
+  exampleInput3: 0
+  exampleInput4: 0
+  exampleOutput1: 0
+  exampleOutput2: 0
+  exampleOutput3: 0
+  exampleOutput4: 0
   considerationCurve:
     curveType: 2
     bi_threshold: 0.5
@@ -89,4 +96,6 @@ MonoBehaviour:
     - {x: 1, y: 0}
   considerationInput: {fileID: 11400000, guid: 6d94c6711557e2a4aa199770780acea3, type: 2}
   min: 0
-  max: 1600
+  minSquared: 0
+  max: 40
+  maxSquared: 1600

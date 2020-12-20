@@ -10,6 +10,9 @@ public class ConsiderationEditor : Editor
     Texture2D curveVisualisationTexture;
     Consideration targetConsideration;
 
+    bool foldoutExampleValues = false;
+
+
     private void Awake()
     {
        // SetUp();
@@ -25,7 +28,50 @@ public class ConsiderationEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector(); //this methiod draws the deault editor, we can add more custom editors later
+        serializedObject.Update();
+
+        //DrawDefaultInspector(); //this methiod draws the deault editor, we can add more custom editors later
+
+        #region Curve Example Values
+
+       // SerializedProperty nameProp = serializedObject.FindProperty("considerationName");
+        SerializedProperty nameProp = serializedObject.FindProperty("m_Name");
+        SerializedProperty descriptionProp = serializedObject.FindProperty("description");
+
+        GUIStyle labelStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = 14, fontStyle = FontStyle.Bold };
+        // ----- Disabling & Enabling GUI Elements as a workaround to make the Field read only -----
+        //var previousGUIState = GUI.enabled;
+        //GUI.enabled = false;
+        EditorGUILayout.LabelField(targetConsideration.name, labelStyle);
+        EditorGUILayout.Space(10);
+        //GUI.enabled = previousGUIState;
+
+        EditorGUILayout.LabelField("Description");
+        descriptionProp.stringValue = EditorGUILayout.TextArea(descriptionProp.stringValue, GUILayout.Height(100));
+        //EditorGUILayout.PropertyField(descriptionProp, new GUIContent(""), GUILayout.Width(Screen.width),GUILayout.Height(100));
+
+
+        EditorGUILayout.Space(5);
+        foldoutExampleValues = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutExampleValues, "Show Example Curve Values", EditorStyles.foldout);
+
+        if (foldoutExampleValues)
+        {
+            SerializedProperty exampleInput1Prop = serializedObject.FindProperty("exampleInput1");
+            SerializedProperty exampleInput2Prop = serializedObject.FindProperty("exampleInput2");
+            SerializedProperty exampleInput3Prop = serializedObject.FindProperty("exampleInput3");
+            SerializedProperty exampleInput4Prop = serializedObject.FindProperty("exampleInput4");
+
+            //EditorGUILayout.Begin
+            //EditorGUILayout.PropertyField(exampleInput1Prop, GUILayout.Width(20));
+            EditorGUILayout.PropertyField(exampleInput1Prop);
+            EditorGUILayout.PropertyField(exampleInput2Prop);
+            EditorGUILayout.PropertyField(exampleInput3Prop);
+            EditorGUILayout.PropertyField(exampleInput4Prop);
+        }
+
+        #endregion
+
+        serializedObject.ApplyModifiedProperties();
 
         /*
 

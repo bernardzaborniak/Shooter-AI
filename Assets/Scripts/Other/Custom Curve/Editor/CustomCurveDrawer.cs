@@ -8,6 +8,7 @@ public class CustomCurveDrawer : PropertyDrawer
 {
     Color curveColor = new Color(0f, 0f, 1f);
 
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
 
@@ -185,6 +186,8 @@ public class CustomCurveDrawer : PropertyDrawer
         EditorGUI.LabelField(oneRect2, "1", axiesStyle);
 
         #endregion
+
+       
 
         EditorGUILayout.EndVertical();
 

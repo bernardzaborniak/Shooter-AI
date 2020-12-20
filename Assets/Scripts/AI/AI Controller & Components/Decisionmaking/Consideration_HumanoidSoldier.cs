@@ -10,8 +10,18 @@ public class Consideration_HumanoidSoldier : Consideration
 
     //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
     public float min;
-    public float max;
+    [HideInInspector]
+    public float minSquared;
 
+    public float max;
+    [HideInInspector]
+    public float maxSquared;
+
+    private void Awake()
+    {
+        minSquared = min * min;
+        maxSquared = max * max;
+    }
 
     //TODO do an editor with hides and shows parameters depending on the considerationInput assigned
 
