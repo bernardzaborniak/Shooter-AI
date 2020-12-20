@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 
-[CustomEditor(typeof(Consideration), true)]
+[CustomEditor(typeof(Consideration))]
 public class ConsiderationEditor : Editor
 {
     Texture2D curveVisualisationTexture;
@@ -56,20 +56,54 @@ public class ConsiderationEditor : Editor
 
         if (foldoutExampleValues)
         {
+            EditorGUILayout.Space(5);
+
+            EditorGUILayout.LabelField("Example Inputs (not normalized)");
+
+           
             SerializedProperty exampleInput1Prop = serializedObject.FindProperty("exampleInput1");
             SerializedProperty exampleInput2Prop = serializedObject.FindProperty("exampleInput2");
             SerializedProperty exampleInput3Prop = serializedObject.FindProperty("exampleInput3");
             SerializedProperty exampleInput4Prop = serializedObject.FindProperty("exampleInput4");
 
-            //EditorGUILayout.Begin
+            EditorGUILayout.BeginHorizontal();
             //EditorGUILayout.PropertyField(exampleInput1Prop, GUILayout.Width(20));
-            EditorGUILayout.PropertyField(exampleInput1Prop);
-            EditorGUILayout.PropertyField(exampleInput2Prop);
-            EditorGUILayout.PropertyField(exampleInput3Prop);
-            EditorGUILayout.PropertyField(exampleInput4Prop);
+            exampleInput1Prop.floatValue = EditorGUILayout.FloatField(exampleInput1Prop.floatValue);
+            exampleInput2Prop.floatValue = EditorGUILayout.FloatField(exampleInput2Prop.floatValue);
+            exampleInput3Prop.floatValue = EditorGUILayout.FloatField(exampleInput3Prop.floatValue);
+            exampleInput4Prop.floatValue = EditorGUILayout.FloatField(exampleInput4Prop.floatValue);
+            EditorGUILayout.EndHorizontal();
+
+
+            EditorGUILayout.LabelField("Example Outputs");
+
+            SerializedProperty exampleOutput1Prop = serializedObject.FindProperty("exampleOutput1");
+            SerializedProperty exampleOutput2Prop = serializedObject.FindProperty("exampleOutput2");
+            SerializedProperty exampleOutput3Prop = serializedObject.FindProperty("exampleOutput3");
+            SerializedProperty exampleOutput4Prop = serializedObject.FindProperty("exampleOutput4");
+
+            //set the values
+            exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput1Prop.floatValue);
+            exampleOutput2Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput2Prop.floatValue);
+            exampleOutput3Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput3Prop.floatValue);
+            exampleOutput4Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput4Prop.floatValue);
+
+
+            EditorGUILayout.BeginHorizontal();
+            exampleOutput1Prop.floatValue = EditorGUILayout.FloatField(exampleOutput1Prop.floatValue);
+            exampleOutput2Prop.floatValue = EditorGUILayout.FloatField(exampleOutput2Prop.floatValue);
+            exampleOutput3Prop.floatValue = EditorGUILayout.FloatField(exampleOutput3Prop.floatValue);
+            exampleOutput4Prop.floatValue = EditorGUILayout.FloatField(exampleOutput4Prop.floatValue);
+            EditorGUILayout.EndHorizontal();
+
+
         }
 
         #endregion
+
+        SerializedProperty curveProp = serializedObject.FindProperty("considerationCurve");
+        EditorGUILayout.PropertyField(curveProp);
+
 
         serializedObject.ApplyModifiedProperties();
 
