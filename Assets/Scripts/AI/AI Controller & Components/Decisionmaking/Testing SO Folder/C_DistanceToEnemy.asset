@@ -9,18 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde500afa6d49c84e97c47a765f663b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
   m_Name: C_DistanceToEnemy
   m_EditorClassIdentifier: 
   description: 
-  exampleInput1: 0
-  exampleInput2: 0
-  exampleInput3: 0
+  exampleInput1: 0.5
+  exampleInput2: 1
+  exampleInput3: 0.2
   exampleInput4: 0
-  exampleOutput1: 0
+  exampleOutput1: 0.8207556
   exampleOutput2: 0
-  exampleOutput3: 0
-  exampleOutput4: 0
+  exampleOutput3: 0.98152626
+  exampleOutput4: 1
+  considerationInput: {fileID: 11400000, guid: 6d94c6711557e2a4aa199770780acea3, type: 2}
+  min: 0
+  minSquared: 0
+  max: 40
+  maxSquared: 1600
   considerationCurve:
     curveType: 2
     bi_threshold: 0.5
@@ -94,8 +99,3 @@ MonoBehaviour:
     - {x: 0.96363634, y: 0.08776933}
     - {x: 0.9818182, y: 0.044485986}
     - {x: 1, y: 0}
-  considerationInput: {fileID: 11400000, guid: 6d94c6711557e2a4aa199770780acea3, type: 2}
-  min: 0
-  minSquared: 0
-  max: 40
-  maxSquared: 1600

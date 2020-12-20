@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Input/Enemy Visible", fileName = "Enemy Visible")]
-public class ConsiderationInput_HumanoidSoldier_EnemyVisible : ConsiderationInput
+[CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/Enemy Visible", fileName = "Enemy Visible")]
+public class CI_HS_EnemyVisible : ConsiderationInput
 {
 
     public override float GetConsiderationInput(AIController aiController, Consideration consideration)

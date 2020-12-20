@@ -30,11 +30,8 @@ public class ConsiderationEditor : Editor
     {
         serializedObject.Update();
 
-        //DrawDefaultInspector(); //this methiod draws the deault editor, we can add more custom editors later
-
-        #region Curve Example Values
-
-       // SerializedProperty nameProp = serializedObject.FindProperty("considerationName");
+        #region header & Description
+        // SerializedProperty nameProp = serializedObject.FindProperty("considerationName");
         SerializedProperty nameProp = serializedObject.FindProperty("m_Name");
         SerializedProperty descriptionProp = serializedObject.FindProperty("description");
 
@@ -50,6 +47,27 @@ public class ConsiderationEditor : Editor
         descriptionProp.stringValue = EditorGUILayout.TextArea(descriptionProp.stringValue, GUILayout.Height(100));
         //EditorGUILayout.PropertyField(descriptionProp, new GUIContent(""), GUILayout.Width(Screen.width),GUILayout.Height(100));
 
+        #endregion
+
+
+        #region Input
+
+        //TODO draw input params depending on the selected input paramter enum type?
+
+        EditorGUILayout.Space(10);
+        SerializedProperty considerationInputProp = serializedObject.FindProperty("considerationInput");
+        EditorGUILayout.PropertyField(considerationInputProp);
+
+        #endregion
+
+        #region Curve
+
+        SerializedProperty curveProp = serializedObject.FindProperty("considerationCurve");
+        EditorGUILayout.PropertyField(curveProp);
+
+        #endregion
+
+        #region Curve Example Values
 
         EditorGUILayout.Space(5);
         foldoutExampleValues = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutExampleValues, "Show Example Curve Values", EditorStyles.foldout);
@@ -101,8 +119,7 @@ public class ConsiderationEditor : Editor
 
         #endregion
 
-        SerializedProperty curveProp = serializedObject.FindProperty("considerationCurve");
-        EditorGUILayout.PropertyField(curveProp);
+       
 
 
         serializedObject.ApplyModifiedProperties();

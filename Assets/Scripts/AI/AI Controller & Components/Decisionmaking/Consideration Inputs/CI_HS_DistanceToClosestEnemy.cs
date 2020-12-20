@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Consideration/Humanoid/Input/DistanceToClosestEnemy", fileName = "DistanceToClosestEnemy")]
-public class ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy : ConsiderationInput
+[CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/Distance To Closest Enemy", fileName = "DistanceToClosestEnemy")]
+public class CI_HS_DistanceToClosestEnemy : ConsiderationInput
 {
     AIController_HumanoidSoldier aiControllerHuman;
 

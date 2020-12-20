@@ -9,11 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fde500afa6d49c84e97c47a765f663b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
   m_Name: C_TestEnemyVisible
   m_EditorClassIdentifier: 
-  considerationName: 
   description: 
+  exampleInput1: 0
+  exampleInput2: 0
+  exampleInput3: 0
+  exampleInput4: 0
+  exampleOutput1: 0
+  exampleOutput2: 0
+  exampleOutput3: 0
+  exampleOutput4: 0
+  considerationInput: {fileID: 11400000, guid: c2610a6b26aae12449498a745cf0a543, type: 2}
+  min: 0
+  minSquared: 0
+  max: 0
+  maxSquared: 0
   considerationCurve:
     curveType: 0
     bi_threshold: 0.5
@@ -87,6 +99,3 @@ MonoBehaviour:
     - {x: 0.96363634, y: 1}
     - {x: 0.9818182, y: 1}
     - {x: 1, y: 1}
-  considerationInput: {fileID: 11400000, guid: c2610a6b26aae12449498a745cf0a543, type: 2}
-  min: 0
-  max: 0
