@@ -44,7 +44,7 @@ public class SoldierSpawner : MonoBehaviour
         GameObject soldier = Instantiate(team1Soldier, currentSpawn.position, currentSpawn.rotation);
 
         //set the target
-        AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<AIControllerOld>();
+        BenitosAI.AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<BenitosAI.AIControllerOld>();
        // aiController.targetPosition = team1TargetPosition;
         aiController.SetFinalTargetPosition(team1TargetPosition.position);
 
@@ -57,7 +57,7 @@ public class SoldierSpawner : MonoBehaviour
         GameObject soldier = Instantiate(team2Soldier, currentSpawn.position, currentSpawn.rotation);
 
         //set the target
-        AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<AIControllerOld>();
+        BenitosAI.AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<BenitosAI.AIControllerOld>();
         //aiController.targetPosition = team2TargetPosition;
         aiController.SetFinalTargetPosition(team2TargetPosition.position);
     }

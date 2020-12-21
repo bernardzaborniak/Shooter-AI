@@ -12,10 +12,10 @@ namespace BenitosAI
         public AIController aiController; //who s asking?
 
         // Optional
-        public AI_SI_EntityVisibilityInfo targetObject; //Who is the target of my action
-        public AI_SI_TacticalPointVisibilityInfo targetTacticalPoint; //Who is the target of my action
+        public SensedEntityInfo targetObject; //Who is the target of my action
+        public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
     
-        public void SetUpContect(Decision decision, AIController aiController, AI_SI_EntityVisibilityInfo targetObject, AI_SI_TacticalPointVisibilityInfo targetTacticalPoint)
+        public void SetUpContect(Decision decision, AIController aiController, SensedEntityInfo targetObject, SensedTacticalPointInfo targetTacticalPoint)
         {
             this.decision = decision;
             this.aiController = aiController;

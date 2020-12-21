@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIComponent : MonoBehaviour
+namespace BenitosAI
 {
-    protected GameEntity myEntity;
-
-    public virtual void SetUpComponent(GameEntity entity)
+    public class AIComponent : MonoBehaviour
     {
-        myEntity = entity;
+        protected GameEntity myEntity;
+
+        public virtual void SetUpComponent(GameEntity entity)
+        {
+            myEntity = entity;
+        }
+
+        public virtual void UpdateComponent()
+        {
+
+        }
     }
 
-    public virtual void UpdateComponent()
-    {
-
-    }
 }
