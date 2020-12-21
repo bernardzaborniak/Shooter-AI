@@ -10,9 +10,9 @@ namespace BenitosAI
     {
         AIController_HumanoidSoldier aiControllerHuman;
 
-        public override float GetConsiderationInput(AIController aiController, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            aiControllerHuman = (AIController_HumanoidSoldier)aiController;
+            aiControllerHuman = (AIController_HumanoidSoldier)decisionContext.aiController;
 
             if (aiControllerHuman.humanSensing.currentSensingInfo.nearestEnemyInfo != null)
             {

@@ -63,7 +63,9 @@ namespace BenitosAI
             for (int i = 0; i < decisions.Length; i++)
             {
                 Debug.Log("-----------------  Decide decition number: " + i);
-                currentRating = decisions[i].decision.GetDecisionRating(aiController) * decisions[i].weigt;
+                DecisionContext context = new DecisionContext();
+                context.SetUpContect(decisions[i].decision, aiController, null, null);
+                currentRating = decisions[i].decision.GetDecisionRating(context) * decisions[i].weigt;
                 Debug.Log("current Rating: " + currentRating);
                 decisionRatings[i] = currentRating;
 

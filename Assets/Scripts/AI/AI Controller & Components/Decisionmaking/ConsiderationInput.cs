@@ -19,7 +19,7 @@ namespace BenitosAI
 
         public InputParamsType inputParamsType;
 
-        public virtual float GetConsiderationInput(AIController aiController, Consideration consideration)
+        public virtual float GetConsiderationInput(DecisionContext context, Consideration consideration)
         {
             return 0;
         }

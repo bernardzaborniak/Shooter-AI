@@ -41,13 +41,13 @@ namespace BenitosAI
             return aIState;
         }*/
 
-        public float GetDecisionRating(AIController aiController)
+        public float GetDecisionRating(DecisionContext context)
         {
             float score = 1;
 
             for (int i = 0; i < considerations.Length; i++)
             {
-                score *= considerations[i].GetConsiderationRating(aiController);
+                score *= considerations[i].GetConsiderationRating(context);
             }
 
             Debug.Log("decision score before adding makeup value: " + score);

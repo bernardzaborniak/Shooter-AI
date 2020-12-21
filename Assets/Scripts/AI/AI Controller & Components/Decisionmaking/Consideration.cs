@@ -64,10 +64,10 @@ namespace BenitosAI
             maxSquared = max * max;
         }
 
-        public float GetConsiderationRating(AIController aiController)
+        public float GetConsiderationRating(DecisionContext context)
         {
             //Get Input, already normalized by ConsideraionInput
-            input = considerationInput.GetConsiderationInput((AIController_HumanoidSoldier)aiController, this);
+            input = considerationInput.GetConsiderationInput(context, this);
 
             Debug.Log("Consideration: Ijnput: " + input);
 
