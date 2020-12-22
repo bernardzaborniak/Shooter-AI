@@ -10,7 +10,7 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            if (((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.sensingInfo.enemyInfos.Count > 0)
+            if (((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.sensingInfo.enemiesInfo.Length > 0)
             {
                 return 1;
             }

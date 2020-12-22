@@ -27,21 +27,26 @@ namespace BenitosAI
         public SensedEntityInfo nearestEnemyInfo;
         float nearestEnemySquaredDistance;
         Queue<SensedEntityInfo> enemiesInfosPool;
-        public Dictionary<int,SensedEntityInfo> enemyInfos;// = new HashSet<SensedEntityInfo>();
+        Dictionary<int,SensedEntityInfo> infosAddedThisFrame = new Dictionary<int, SensedEntityInfo>();
+        Dictionary<int,SensedEntityInfo> enemyInfosAddedPreviousFrame = new Dictionary<int, SensedEntityInfo>();
+        public SensedEntityInfo[] enemiesInfo = new SensedEntityInfo[0];
+
+        /*public Dictionary<int,SensedEntityInfo> enemyInfos;// = new HashSet<SensedEntityInfo>();
 
         HashSet<int> enemyEntitiesToRemoveBecauseTheyDied = new HashSet<int>();
         HashSet<SensingInfoToAdd> enemyInfosToAddThisFrame = new HashSet<SensingInfoToAdd>();
         HashSet<int> enemyEntitiesNotUpdatedThisFrame = new HashSet<int>();
-        //SensedEntityInfo[] sensedEnemiesSorted;
+        //SensedEntityInfo[] sensedEnemiesSorted;*/
 
 
         //Friendlies
-        Queue<SensedEntityInfo> friendlyInfosPool;
-        public Dictionary<int,SensedEntityInfo> friendlyInfos;// = new HashSet<SensedEntityInfo>();
+        Queue<SensedEntityInfo> friiendliesInfoPool;
+        public SensedEntityInfo[] friendliesInfo = new SensedEntityInfo[0];
+        /*public Dictionary<int,SensedEntityInfo> friendlyInfos;// = new HashSet<SensedEntityInfo>();
 
         HashSet<int> friendlyEntitiesToRemoveBecauseTheyDied = new HashSet<int>();
         HashSet<SensingInfoToAdd> friendlyInfosToAddThisFrame = new HashSet<SensingInfoToAdd>();
-        HashSet<int> friendlyEntitiesNotUpdatedThisFrame = new HashSet<int>();
+        HashSet<int> friendlyEntitiesNotUpdatedThisFrame = new HashSet<int>();*/
 
         //SensedEntityInfo[] sensedFriendliesSorted;
 
@@ -49,10 +54,14 @@ namespace BenitosAI
 
         //Tactical Points
         Queue<SensedTacticalPointInfo> tPointsCoverInfosPool;// = new HashSet<SensedTacticalPointInfo>();
-        public Dictionary<int,SensedTacticalPointInfo> tPointsCoverInfos;// = new HashSet<SensedTacticalPointInfo>();
+        public SensedTacticalPointInfo[] tPointsCoverInfo = new SensedTacticalPointInfo[0];
+
+        //public Dictionary<int,SensedTacticalPointInfo> tPointsCoverInfos;// = new HashSet<SensedTacticalPointInfo>();
 
         Queue<SensedTacticalPointInfo> tPointsOpenFieldInfosPool;// = new HashSet<SensedTacticalPointInfo>();
-        public Dictionary<int, SensedTacticalPointInfo> tPointsOpenFieldInfos;// = new HashSet<SensedTacticalPointInfo>();
+        public SensedTacticalPointInfo[] tPointsOpenFieldInfo = new SensedTacticalPointInfo[0];
+
+        //public Dictionary<int, SensedTacticalPointInfo> tPointsOpenFieldInfos;// = new HashSet<SensedTacticalPointInfo>();
 
 
         //Infomation Freshness
@@ -64,16 +73,16 @@ namespace BenitosAI
         {
             // Initialise Collections
             enemiesInfosPool = new Queue<SensedEntityInfo>();
-            enemyInfos = new Dictionary<int, SensedEntityInfo>();
+            //enemyInfos = new Dictionary<int, SensedEntityInfo>();
 
-            friendlyInfosPool = new Queue<SensedEntityInfo>();
-            friendlyInfos = new Dictionary<int, SensedEntityInfo>();
+            friiendliesInfoPool = new Queue<SensedEntityInfo>();
+            //friendlyInfos = new Dictionary<int, SensedEntityInfo>();
 
             tPointsCoverInfosPool = new Queue<SensedTacticalPointInfo>();
-            tPointsCoverInfos = new Dictionary<int, SensedTacticalPointInfo>();
+            //tPointsCoverInfos = new Dictionary<int, SensedTacticalPointInfo>();
 
             tPointsOpenFieldInfosPool = new Queue<SensedTacticalPointInfo>();
-            tPointsOpenFieldInfos = new Dictionary<int, SensedTacticalPointInfo>();
+            //tPointsOpenFieldInfos = new Dictionary<int, SensedTacticalPointInfo>();
 
             // Fill the Pools
             for (int i = 0; i < enemiesPoolSize; i++)
@@ -82,7 +91,7 @@ namespace BenitosAI
             }
             for (int i = 0; i < firendliesPoolSize; i++)
             {
-                friendlyInfosPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
+                friiendliesInfoPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
             for (int i = 0; i < tPCoverPoolSize; i++)
             {
@@ -95,7 +104,7 @@ namespace BenitosAI
 
         }   
 
-        void DetermineNearestEnemy()
+        /*void DetermineNearestEnemy()
         {
             nearestEnemySquaredDistance = Mathf.Infinity;
             nearestEnemyInfo = null;
@@ -108,11 +117,9 @@ namespace BenitosAI
                     nearestEnemyInfo = info;
                 }
             }
+        }*/
 
-
-        }
-
-        public void UpdateSensingInfo(HashSet<SensingInfoToAdd> enemyInfoToAdd, HashSet<SensingInfoToAdd> friendlyInfoToAdd)
+       /* public void UpdateSensingInfo(HashSet<SensingInfoToAdd> enemyInfoToAdd, HashSet<SensingInfoToAdd> friendlyInfoToAdd)
         {
             //they are being filled together with the death check
             enemyEntitiesNotUpdatedThisFrame.Clear();
@@ -185,27 +192,49 @@ namespace BenitosAI
             }
 
             //if there is not enough room in the pool, make more room
+            int neededRoomForNewEnemyInfos = 
 
-
-
-
-
-
-        }
+        }*/
 
         public void OnSensedEnemyEntity(EntityVisibilityInfo enemyEntityVisInfo, float squaredDistance)
         {
-            AddSensedEntity(enemyEntityVisInfo, squaredDistance, enemiesInfosPool, enemyInfos, enemyInfosToAddThisFrame);   
-            
-            if(squaredDistance < nearestEnemySquaredDistance)
+            int key = enemyEntityVisInfo.entityAssignedTo.GetInstanceID();
+            SensedEntityInfo sensedEntityInfo;
+
+
+            if (enemyInfosAddedPreviousFrame.ContainsKey(key))
             {
-                nearestEnemyInfo = enemyInfos[enemyEntityVisInfo.entityAssignedTo.GetInstanceID()];
+                // Update newer information
+                sensedEntityInfo = enemyInfosAddedPreviousFrame[key];
+                enemyInfosAddedPreviousFrame.Remove(key);
+                infosAddedThisFrame.Add(key, sensedEntityInfo);
+            }
+            else if(enemiesInfosPool.Count > 0)
+            {
+                //take from pool if possible
+                sensedEntityInfo = enemiesInfosPool.Dequeue();
+                infosAddedThisFrame.Add(key, sensedEntityInfo);
+            }
+            else
+            {
+                //if none of the above is possible, take a random one from the old ones
+                int keyToOverride = 0;// = enemyInfosAddedPreviousFrame.Keys.GetEnumerator.
+                foreach(int previousKey in enemyInfosAddedPreviousFrame.Keys)
+                {
+                    keyToOverride = previousKey;
+                    break;
+                }
+
+                sensedEntityInfo = enemyInfosAddedPreviousFrame[keyToOverride];
+                enemyInfosAddedPreviousFrame.Remove(keyToOverride);
+                infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
+
             }
         }
 
         public void OnSensedFriendlyEntity(EntityVisibilityInfo friendlyEntityVisInfo, float squaredDistance)
         {
-            AddSensedEntity(friendlyEntityVisInfo, squaredDistance, friendlyInfosPool, friendlyInfos, friendlyInfosToAddThisFrame);
+            //AddSensedEntity(friendlyEntityVisInfo, squaredDistance, friendlyInfosPool, friendlyInfos, friendlyInfosToAddThisFrame);
         }
 
         void AddSensedEntity(EntityVisibilityInfo entityVisInfo, float squaredDistance, Queue<SensedEntityInfo> infoPool, Dictionary<int, SensedEntityInfo> usedInfos, HashSet<SensingInfoToAdd> infosToAdd)
@@ -310,8 +339,57 @@ namespace BenitosAI
             }
         }
 
-        //this update thould be called every frame to simulate forgetting?
         public void UpdateSensingInfoAfterAddingNewInfo()
+        {
+            HashSet<int> deadOnesToRemoveIDs = new HashSet<int>();
+
+            //cheack for dead ones
+            foreach (SensedEntityInfo item in enemyInfosAddedPreviousFrame.Values)
+            {
+                if(!item.IsAlive())
+                {
+                    deadOnesToRemoveIDs.Add(item.infoID);
+                }
+            }
+            foreach (int itemID in deadOnesToRemoveIDs)
+            {
+                enemyInfosAddedPreviousFrame.Remove(itemID);
+            }
+
+
+            //Fill the array,
+            enemiesInfo = new SensedEntityInfo[enemyInfosAddedPreviousFrame.Count + infosAddedThisFrame.Count];
+
+            enemyInfosAddedPreviousFrame.Values.CopyTo(enemiesInfo, 0);
+            infosAddedThisFrame.Values.CopyTo(enemiesInfo, enemyInfosAddedPreviousFrame.Count);
+
+            //set the nearest just like that for now
+
+            if (enemiesInfo.Length > 0)
+            {
+                nearestEnemyInfo = enemiesInfo[0];
+
+            }
+            else
+            {
+                nearestEnemyInfo = null;
+            }
+
+            // Clear up current, fill the previous
+            foreach (SensedEntityInfo item in infosAddedThisFrame.Values)
+            {
+                Debug.Log("item: " + item);
+                Debug.Log("item.entity.GetInstanceID(): " + item.entity.GetInstanceID());
+                enemyInfosAddedPreviousFrame.Add(item.entity.GetInstanceID(), item);
+            }
+            infosAddedThisFrame.Clear();
+
+
+            //Sort it (optionally) 
+        }
+
+        //this update thould be called every frame to simulate forgetting?
+       /* public void UpdateSensingInfoAfterAddingNewInfoOld()
         {
             //to exapnd later - here forgetting and corrupting memories would be simulated
 
@@ -385,7 +463,7 @@ namespace BenitosAI
             //use list instead of array?
             //enemyEntitiesNotUpdatedThisFrame
 
-            enemyEntitiesToRemoveBecauseTheyDied.Clear();
+            /*enemyEntitiesToRemoveBecauseTheyDied.Clear();
             friendlyEntitiesToRemoveBecauseTheyDied.Clear();
 
             enemyInfosToAddThisFrame.Clear();
@@ -413,7 +491,7 @@ namespace BenitosAI
            
 
             //TODO 1 after deleting unused , sort everything by information freshness and while sorting, also determine nearest enemy?
-        }
+        //}
 
 
     }

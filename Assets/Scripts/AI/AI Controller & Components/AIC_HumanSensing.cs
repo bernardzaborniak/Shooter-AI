@@ -94,8 +94,8 @@ namespace BenitosAI
                 // fill collections
                 Collider[] collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingRadius, collidersInRadius, sensingLayerMask); //use non alloc to prevent garbage
-                HashSet<SensingInfoToAdd> enemyInfoToAdd = new HashSet<SensingInfoToAdd>();
-                HashSet<SensingInfoToAdd> friendlyInfoToAdd = new HashSet<SensingInfoToAdd>();
+               // HashSet<SensingInfoToAdd> enemyInfoToAdd = new HashSet<SensingInfoToAdd>();
+                //HashSet<SensingInfoToAdd> friendlyInfoToAdd = new HashSet<SensingInfoToAdd>();
                 //SensingInfoToAdd[] enemyInfoToAdd = new SensingInfoToAdd[colliderArraySize];
                 //SensingInfoToAdd[] friendlyInfoToAdd = new SensingInfoToAdd[colliderArraySize];
 
@@ -118,15 +118,15 @@ namespace BenitosAI
                             {
                                 if(visInfo.entityAssignedTo.teamID != myTeamID)
                                 {
-                                    //sensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
                                     //enemyInfoToAdd[i] = new SensingInfoToAdd(visInfo, currentDistanceSqr);
-                                    enemyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
+                                    //enemyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
                                 }
                                 else
                                 {
-                                    //sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
                                     //friendlyInfoToAdd[i] = new SensingInfoToAdd(visInfo, currentDistanceSqr);
-                                    friendlyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
+                                    //friendlyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
 
 
                                 }
@@ -135,7 +135,8 @@ namespace BenitosAI
                     }
                 }
 
-                sensingInfo.UpdateSensingInfo(enemyInfoToAdd, friendlyInfoToAdd);
+                //sensingInfo.UpdateSensingInfo(enemyInfoToAdd, friendlyInfoToAdd);
+                sensingInfo.UpdateSensingInfoAfterAddingNewInfo();
 
                 //sensingInfo.UpdateInfo()
 

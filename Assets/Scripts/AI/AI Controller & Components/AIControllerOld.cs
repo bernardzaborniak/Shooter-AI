@@ -138,9 +138,10 @@ namespace BenitosAI
 
             //cover
             //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
-           
+
             //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
-            Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos.Values;
+            //Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos;
+            SensedTacticalPointInfo[] possiblePosts = sensing.sensingInfo.tPointsCoverInfo;
 
 
             #endregion
@@ -175,7 +176,7 @@ namespace BenitosAI
                     //discard if the direction isnt good enough, find the closest one of the remaining
                     //HashSet<Tuple<Post, float>> postsDiscardedBecauseOfDirection;
 
-                    if (possiblePosts.Count > 0)
+                    if (possiblePosts.Length > 0)
                     {
                         TacticalPoint closestTacticalPoint = null;
                         float closestDistance = Mathf.Infinity;

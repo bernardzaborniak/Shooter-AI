@@ -9,6 +9,7 @@ namespace BenitosAI
     {
         #region Fields
 
+        public int infoID;
         public GameEntity entity;
         public EntityVisibilityInfo visInfo;
         public int entityTeamID;
@@ -47,6 +48,7 @@ namespace BenitosAI
             frameCountWhenLastSeen = Time.frameCount;
 
             entity = visInfo.entityAssignedTo;
+            infoID = entity.GetInstanceID();
             lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;
 
@@ -146,7 +148,6 @@ namespace BenitosAI
         {
             return p1.timeWhenLastSeen.CompareTo(p2.timeWhenLastSeen);
         }
-
     }
 
 }
