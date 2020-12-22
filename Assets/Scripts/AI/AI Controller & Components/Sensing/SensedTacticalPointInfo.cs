@@ -15,7 +15,12 @@ namespace BenitosAI
         public float timeWhenLastSeen;
         public int frameCountWhenLastSeen;
 
-        public SensedTacticalPointInfo(TacticalPointVisibilityInfo visInfo)
+        public SensedTacticalPointInfo()
+        {
+           
+        }
+
+        public void SetUpInfo(TacticalPointVisibilityInfo visInfo)
         {
             this.visInfo = visInfo;
             point = visInfo.tacticalPointAssignedTo;

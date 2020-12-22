@@ -16,9 +16,11 @@ namespace BenitosAI
         [Tooltip("Reference for cecking health ")]
         public EC_Health health;
         //the sensing info is filled by the sensingcomponenty using the Physics System
-        public SensingInfo currentSensingInfo = new SensingInfo();
+        public SensingInfo currentSensingInfo;
 
         [Header("Physics Search Values")]
+        [Tooltip("Assign this to the collider of the unit, which is sensing, so it does not sense itself as a friendly")]
+        public Collider myEntityCollider;
         public float sensingRadius;
         Collider[] collidersInRadius;
         public LayerMask sensingLayerMask;
@@ -53,6 +55,7 @@ namespace BenitosAI
 
             // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
             myTeamID = myEntity.teamID; // cached for optimisation.
+            currentSensingInfo = new SensingInfo();
 
 
         }
@@ -69,14 +72,16 @@ namespace BenitosAI
                 currentSensingInfo.lastTimeInfoWasUpdated = Time.time;
                 currentSensingInfo.lastFrameCountInfoWasUpdated = Time.frameCount;
 
+                Vector3 myPosition = transform.position;
+
+
                 #region Scan for other Soldiers
 
                 // variables 
-                currentSensingInfo.enemiesInSensingRadius.Clear();
-                currentSensingInfo.friendliesInSensingRadius.Clear();
+                //currentSensingInfo.enemiesInSensingRadius.Clear();
+                //currentSensingInfo.friendliesInSensingRadius.Clear();
                 float smallestDistanceSqr = Mathf.Infinity;
-                Vector3 myPosition = transform.position;
-                currentSensingInfo.nearestEnemyInfo = null;
+                //currentSensingInfo.nearestEnemyInfo = null;
 
                 // fill collections
                 collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
@@ -87,28 +92,58 @@ namespace BenitosAI
                 {
                     if (collidersInRadius[i] != null)
                     {
-                        SensedEntityInfo entityVisInfo = new SensedEntityInfo(collidersInRadius[i].GetComponent<EntityVisibilityInfo>());   //to optimise garbage collection i could pool this opjects thus limiting the total number of visible enemies at once - which seems like a good idea
-                        float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
-                        entityVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
-
-                        if (entityVisInfo.entityTeamID != myTeamID)
+                        if(collidersInRadius[i] != myEntityCollider)
                         {
-                            currentSensingInfo.enemiesInSensingRadius.Add(entityVisInfo);
+                            //here calculation would happen if the entity is even visible
+                            bool visible = true;
+                            EntityVisibilityInfo visInfo = collidersInRadius[i].GetComponent<EntityVisibilityInfo>();
+                            float currentDistanceSqr = (myPosition - visInfo.GetEntityPosition()).sqrMagnitude;
 
-                            if (currentDistanceSqr < smallestDistanceSqr)
+                            //based on distance & other factors calculate visibility 
+                            //after this or before the field of view would be taken into account of the calculation, based on the visibilityInfoPosiiton
+
+                            if (visible)
+                            {
+                                if(visInfo.entityAssignedTo.teamID != myTeamID)
+                                {
+                                    currentSensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
+                                }
+                                else
+                                {
+                                    currentSensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
+                                }
+                            }
+                        }
+                        //SensedEntityInfo entityVisInfo = new SensedEntityInfo(collidersInRadius[i].GetComponent<EntityVisibilityInfo>());   //to optimise garbage collection i could pool this opjects thus limiting the total number of visible enemies at once - which seems like a good idea
+
+
+                        //int teamID = collidersInRadius[i].GetComponent<EntityVisibilityInfo>().entityAssignedTo.teamID;
+                        //the distance should be based on visibility info
+                        //float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
+                        //entityVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
+
+                     
+                       
+
+                        /*if (teamID != myTeamID)
+                        {
+                            //currentSensingInfo.enemiesInSensingRadius.Add(entityVisInfo);
+                            currentSensingInfo.OnSensedEnemyEntity(collidersInRadius[i].GetComponent<EntityVisibilityInfo>().entityAssignedTo);
+
+                            /*if (currentDistanceSqr < smallestDistanceSqr)
                             {
                                 smallestDistanceSqr = currentDistanceSqr;
 
                                 currentSensingInfo.nearestEnemyInfo = entityVisInfo;
-                            }
-                        }
+                            }*/
+                        /*}
                         else
                         {
                             if (entityVisInfo.entity != myEntity)
                             {
                                 currentSensingInfo.friendliesInSensingRadius.Add(entityVisInfo);
                             }
-                        }
+                        }*/
                     }
                 }
 
@@ -120,7 +155,7 @@ namespace BenitosAI
                 currentSensingInfo.tPointsCoverInSensingRadius.Clear();
                 currentSensingInfo.tPointsOpenFieldInSensingRadius.Clear();
                 smallestDistanceSqr = Mathf.Infinity;
-                myPosition = transform.position;
+                //myPosition = transform.position;
 
                 // fill collections
                 collidersInRadius = new Collider[30]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc

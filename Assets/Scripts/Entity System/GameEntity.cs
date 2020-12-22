@@ -22,12 +22,12 @@ public class GameEntity : MonoBehaviour
 
     public bool isDead = false; //to prevent calling onDie more than once
 
-    [Header("For Aiming of Enemies")]
+   /* [Header("For Aiming of Enemies")]
     [Tooltip("collection of positions to aim at")]
     public Transform aimPosition;
     [Tooltip("collection of critical positions to aim at - like the head or some weakpoints")]
     public Transform criticalAimPosition;
-    public float width;
+    public float width;*/
 
     #region Handling Entity Components
 
@@ -65,7 +65,7 @@ public class GameEntity : MonoBehaviour
 
     #endregion
 
-    public Vector3 GetAimPosition()
+  /*  public Vector3 GetAimPosition()
     {
         return aimPosition.position;
     }
@@ -74,7 +74,7 @@ public class GameEntity : MonoBehaviour
     {
         return criticalAimPosition.position;
     }
-
+  */
 
 
     public virtual void OnTakeDamage(ref DamageInfo damageInfo)

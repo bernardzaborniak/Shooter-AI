@@ -12,6 +12,13 @@ public class EntityVisibilityInfo : MonoBehaviour
     IMoveable moveable;
     bool hasMovement;
 
+    [Header("For Aiming of Enemies")]
+    [Tooltip("collection of positions to aim at")]
+    public Transform aimPosition;
+    [Tooltip("collection of critical positions to aim at - like the head or some weakpoints")]
+    public Transform criticalAimPosition;
+    public float width;
+
     void Start()
     { 
         if (objectWithIMoveableScriptAttached)
@@ -25,12 +32,34 @@ public class EntityVisibilityInfo : MonoBehaviour
         }
     }
 
+    public void IsVisible()
+    {
+        //here some calculations must occur if this object will be visible
+    }
+
+    //Gets the posiiton based on visibility skill - Expand later
+    public Vector3 GetEntityPosition()
+    {
+        return entityAssignedTo.transform.position;
+    }
+
+    public Vector3 GetAimPosition()
+    {
+        return aimPosition.position;
+    }
+
+    public Vector3 GetCriticalAimPosition()
+    {
+        return criticalAimPosition.position;
+    }
+
+
     public bool HasMovement()
     {
         return hasMovement;
     }
 
-    public Vector3  GetCurrentVelocity()
+    public Vector3 GetCurrentVelocity()
     {
         return moveable.GetCurrentVelocity();
     }
@@ -40,10 +69,10 @@ public class EntityVisibilityInfo : MonoBehaviour
         return moveable.GetCurrentAngularVelocity();
     }
 
-    /*public int GetTeamID()
+    public int GetTeamID()
     {
         return entityAssignedTo.teamID;
-    }*/
+    }
 
 
 }

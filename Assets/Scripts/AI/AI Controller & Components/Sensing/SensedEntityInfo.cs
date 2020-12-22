@@ -33,15 +33,24 @@ namespace BenitosAI
 
         #endregion
 
-        public SensedEntityInfo(EntityVisibilityInfo visInfo)
+        //Later on we need a reference to the skills here if we want to call get CriticalAim pos and similar from the visibility Info
+
+        public SensedEntityInfo()
+        {
+            
+        }
+
+        public void SetUpInfo(EntityVisibilityInfo visInfo, float squaredDistance)
         {
             this.visInfo = visInfo;
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;
 
             entity = visInfo.entityAssignedTo;
-            lastSeenEntityPosition = entity.transform.position;
+            lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;
+
+            lastSquaredDistanceMeasured = squaredDistance;
 
             //Set Movement Speeds
             if (visInfo.HasMovement())
@@ -56,8 +65,8 @@ namespace BenitosAI
             }
 
             //Set Aim Positions
-            lastSeenAimPosition = entity.GetAimPosition();
-            lastSeenCriticalAimPosition = entity.GetCriticalAimPosition();
+            lastSeenAimPosition = visInfo.GetAimPosition();
+            lastSeenCriticalAimPosition = visInfo.GetCriticalAimPosition();
         }
 
         public bool IsAlive()
@@ -67,11 +76,11 @@ namespace BenitosAI
 
         public Vector3 GetAimPosition()
         {
-            if (entity != null)
+            if (entity != null) //If Alive
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return entity.GetAimPosition();
+                    return visInfo.GetAimPosition();
                 }
             }
 
@@ -85,7 +94,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return entity.GetCriticalAimPosition();
+                    return visInfo.GetCriticalAimPosition();
                 }
             }
 
@@ -126,7 +135,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return entity.transform.position;
+                    return visInfo.transform.position;
                 }
             }
 
