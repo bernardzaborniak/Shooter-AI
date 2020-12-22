@@ -140,7 +140,7 @@ namespace BenitosAI
             //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
            
             //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
-            Dictionary<TacticalPoint,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos.Values;
+            Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos.Values;
 
 
             #endregion

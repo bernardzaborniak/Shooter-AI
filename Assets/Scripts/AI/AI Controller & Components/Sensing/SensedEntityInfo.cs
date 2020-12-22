@@ -142,6 +142,11 @@ namespace BenitosAI
             return lastSeenEntityPosition;
         }
 
+        static int SortByTime(SensedEntityInfo p1, SensedEntityInfo p2)
+        {
+            return p1.timeWhenLastSeen.CompareTo(p2.timeWhenLastSeen);
+        }
+
     }
 
 }

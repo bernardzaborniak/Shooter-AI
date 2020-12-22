@@ -224,7 +224,7 @@ namespace BenitosAI
                 sensingEnemiesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.enemyInfos.Count);
 
                 // Update Friendlies Panel --------------------------------
-                foreach (SensedEntityInfo friendly in sensingInfo.friendliesInfos.Values)
+                foreach (SensedEntityInfo friendly in sensingInfo.friendlyInfos.Values)
                 {
                     if (friendly.IsAlive())
                     {
@@ -233,7 +233,7 @@ namespace BenitosAI
                     }
 
                 }
-                sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.friendliesInfos.Count);
+                sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.friendlyInfos.Count);
 
                 // Update TPoints Cover Panel --------------------------------
                 foreach (SensedTacticalPointInfo tPoint in sensingInfo.tPointsCoverInfos.Values)
