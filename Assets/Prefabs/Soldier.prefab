@@ -1020,6 +1020,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 8032510007199776535}
   health: {fileID: 3435694260906315833}
+  myEntityCollider: {fileID: 8562225995320379315}
   sensingRadius: 25
   sensingLayerMask:
     serializedVersion: 2
@@ -1029,6 +1030,10 @@ MonoBehaviour:
     m_Bits: 33554432
   colliderArraySize: 30
   optimiser: {fileID: 4214416404046456006}
+  enemiesPoolSize: 15
+  friendliesPoolSize: 10
+  tPointsCoverPoolSize: 15
+  tPointsOpenFieldPoolSize: 20
 --- !u!114 &3586266366417383842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2857,9 +2862,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   isDead: 0
-  aimPosition: {fileID: 1832169487545923482}
-  criticalAimPosition: {fileID: 1936154419766259478}
-  width: 0
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2940,6 +2942,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityAssignedTo: {fileID: 7366031314207611043}
   objectWithIMoveableScriptAttached: {fileID: 5955954684543961578}
+  aimPosition: {fileID: 1832169487545923482}
+  criticalAimPosition: {fileID: 1936154419766259478}
+  width: 0
 --- !u!1 &7366031315089746458
 GameObject:
   m_ObjectHideFlags: 0

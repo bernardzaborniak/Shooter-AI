@@ -98,7 +98,7 @@ namespace BenitosAI
 
             #region Set needed Variables
 
-            SensedEntityInfo nearestEnemyInfo = sensing.currentSensingInfo.nearestEnemyInfo;
+            SensedEntityInfo nearestEnemyInfo = sensing.sensingInfo.nearestEnemyInfo;
 
             Vector3 directionToNearestEnemy = Vector3.zero;
             float distanceToNearestEnemy = 0;
@@ -138,7 +138,9 @@ namespace BenitosAI
 
             //cover
             //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
-            HashSet<SensedTacticalPointInfo> possiblePosts = sensing.currentSensingInfo.tPointsCoverInSensingRadius;
+           
+            //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
+            Dictionary<TacticalPoint,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos.Values;
 
 
             #endregion
@@ -183,15 +185,15 @@ namespace BenitosAI
                         foreach (SensedTacticalPointInfo postInfo in possiblePosts)
                         {
                             //check angle
-                            Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.point.GetPostPosition();
-                            float angle = Vector3.Angle(directionFromCoverToEnemy, postInfo.point.transform.forward); //using forward for now - this should be reworked to work based on current rating
+                            Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.tacticalPoint.GetPostPosition();
+                            float angle = Vector3.Angle(directionFromCoverToEnemy, postInfo.tacticalPoint.transform.forward); //using forward for now - this should be reworked to work based on current rating
 
                             if (angle < 80)
                             {
                                 if (postInfo.lastSquaredDistanceMeasured < closestDistance)
                                 {
                                     closestDistance = postInfo.lastSquaredDistanceMeasured;
-                                    closestTacticalPoint = postInfo.point;
+                                    closestTacticalPoint = postInfo.tacticalPoint;
                                 }
                             }
                         }

@@ -6,4 +6,8 @@ public class TacticalPointVisibilityInfo : MonoBehaviour
 {
     public TacticalPoint tacticalPointAssignedTo;
 
+    public Vector3 GetPointPosition()
+    {
+        return tacticalPointAssignedTo.transform.position;
+    }
 }

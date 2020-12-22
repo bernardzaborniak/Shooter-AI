@@ -7,7 +7,7 @@ namespace BenitosAI
     // SensingInfo Component saves information about tactical points it has seen in this container.
     public class SensedTacticalPointInfo
     {
-        public TacticalPoint point;
+        public TacticalPoint tacticalPoint;
         public TacticalPointVisibilityInfo visInfo;
 
         public float lastSquaredDistanceMeasured;
@@ -20,10 +20,12 @@ namespace BenitosAI
            
         }
 
-        public void SetUpInfo(TacticalPointVisibilityInfo visInfo)
+        public void SetUpInfo(TacticalPointVisibilityInfo visInfo, float squaredDistance)
         {
             this.visInfo = visInfo;
-            point = visInfo.tacticalPointAssignedTo;
+            tacticalPoint = visInfo.tacticalPointAssignedTo;
+
+            lastSquaredDistanceMeasured = squaredDistance;
 
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;

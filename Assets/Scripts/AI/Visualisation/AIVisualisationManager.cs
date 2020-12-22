@@ -119,7 +119,7 @@ namespace BenitosAI
                         if (hit.transform.gameObject.GetComponent<GameEntity>())
                         {
                             currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
-                            selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().currentSensingInfo; //not the nicest way to get this sensing component;
+                            selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().sensingInfo; //not the nicest way to get this sensing component;
                             lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
                         }
                         else

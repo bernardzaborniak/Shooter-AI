@@ -16,7 +16,7 @@ namespace BenitosAI
         [Tooltip("Reference for cecking health ")]
         public EC_Health health;
         //the sensing info is filled by the sensingcomponenty using the Physics System
-        public SensingInfo currentSensingInfo;
+        public SensingInfo sensingInfo;
 
         [Header("Physics Search Values")]
         [Tooltip("Assign this to the collider of the unit, which is sensing, so it does not sense itself as a friendly")]
@@ -33,6 +33,12 @@ namespace BenitosAI
 
         [Header("Optimisation")]
         public SensingOptimiser optimiser;
+
+        //sensing info caps
+        [SerializeField] int enemiesPoolSize;
+        [SerializeField] int friendliesPoolSize;
+        [SerializeField] int tPointsCoverPoolSize;
+        [SerializeField] int tPointsOpenFieldPoolSize;
 
         int myTeamID;
 
@@ -55,7 +61,7 @@ namespace BenitosAI
 
             // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
             myTeamID = myEntity.teamID; // cached for optimisation.
-            currentSensingInfo = new SensingInfo();
+            sensingInfo = new SensingInfo(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);
 
 
         }
@@ -63,14 +69,15 @@ namespace BenitosAI
         public override void UpdateComponent()
         {
             //if (Time.time > nextSensingTime)
-            if (optimiser.ShouldSensingBeUpdated() && Time.time - currentSensingInfo.lastTimeInfoWasUpdated > 0) //only update if more than 0,0 seconds have passed, don't update when time is stopped inside the game
+            if (optimiser.ShouldSensingBeUpdated() && Time.time - sensingInfo.lastTimeInfoWasUpdated > 0) //only update if more than 0,0 seconds have passed, don't update when time is stopped inside the game
             {
                 UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
                 optimiser.OnSensingWasUpdated();
+                sensingInfo.UpdateSensingInfo();
 
-                currentSensingInfo.lastTimeInfoWasUpdated = Time.time;
-                currentSensingInfo.lastFrameCountInfoWasUpdated = Time.frameCount;
+                sensingInfo.lastTimeInfoWasUpdated = Time.time;
+                sensingInfo.lastFrameCountInfoWasUpdated = Time.frameCount;
 
                 Vector3 myPosition = transform.position;
 
@@ -80,7 +87,7 @@ namespace BenitosAI
                 // variables 
                 //currentSensingInfo.enemiesInSensingRadius.Clear();
                 //currentSensingInfo.friendliesInSensingRadius.Clear();
-                float smallestDistanceSqr = Mathf.Infinity;
+                //float smallestDistanceSqr = Mathf.Infinity;
                 //currentSensingInfo.nearestEnemyInfo = null;
 
                 // fill collections
@@ -106,11 +113,11 @@ namespace BenitosAI
                             {
                                 if(visInfo.entityAssignedTo.teamID != myTeamID)
                                 {
-                                    currentSensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
                                 }
                                 else
                                 {
-                                    currentSensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
                                 }
                             }
                         }
@@ -152,13 +159,13 @@ namespace BenitosAI
                 #region Scan for Tactical Points
 
                 // variables 
-                currentSensingInfo.tPointsCoverInSensingRadius.Clear();
-                currentSensingInfo.tPointsOpenFieldInSensingRadius.Clear();
-                smallestDistanceSqr = Mathf.Infinity;
+                //sensingInfo.tPointsCoverInSensingRadius.Clear();
+                //sensingInfo.tPointsOpenFieldInSensingRadius.Clear();
+                //smallestDistanceSqr = Mathf.Infinity;
                 //myPosition = transform.position;
 
                 // fill collections
-                collidersInRadius = new Collider[30]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
+                collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingRadius, collidersInRadius, postSensingLayerMask);
                 //collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, postSensingLayerMask);
 
@@ -166,27 +173,55 @@ namespace BenitosAI
                 {
                     if (collidersInRadius[i] != null)
                     {
-                        TacticalPoint currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
+                        //here calculation would happen if the entity is even visible
+                        bool visible = true;
+                        TacticalPointVisibilityInfo visInfo = collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>();
 
-                        if (!currentTPoint.IsPointFull())
+                        if (visible)
                         {
-                            SensedTacticalPointInfo tPointVisInfo = new SensedTacticalPointInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
+                            if (!visInfo.tacticalPointAssignedTo.IsPointFull())
+                            {
+                                float currentDistanceSqr = (myPosition - visInfo.GetPointPosition()).sqrMagnitude;
+
+                                if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
+                                {
+                                    sensingInfo.OnSensedTPCover(visInfo, currentDistanceSqr);
+                                }
+                                else if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.OpenFieldPoint)
+                                {
+                                    sensingInfo.OnSensedTPOpenField(visInfo, currentDistanceSqr);
+                                }
+                                else
+                                {
+                                    Debug.Log("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
+                                }
+                            }
+                        }
+                      
+                       
+
+
+                        //TacticalPoint currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
+
+                        /*if (!currentTPoint.IsPointFull())
+                        {
+                            //SensedTacticalPointInfo tPointVisInfo = new SensedTacticalPointInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
                             float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
                             tPointVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
                             if (tPointVisInfo.point.tacticalPointType == TacticalPointType.CoverPoint)
                             {
-                                currentSensingInfo.tPointsCoverInSensingRadius.Add(tPointVisInfo);
+                                sensingInfo.tPointsCoverInSensingRadius.Add(tPointVisInfo);
                             }
                             else if (tPointVisInfo.point.tacticalPointType == TacticalPointType.OpenFieldPoint)
                             {
-                                currentSensingInfo.tPointsOpenFieldInSensingRadius.Add(tPointVisInfo);
+                                sensingInfo.tPointsOpenFieldInSensingRadius.Add(tPointVisInfo);
                             }
                             else
                             {
                                 Debug.Log("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
                             }
 
-                        }
+                        }*/
                     }
                 }
 

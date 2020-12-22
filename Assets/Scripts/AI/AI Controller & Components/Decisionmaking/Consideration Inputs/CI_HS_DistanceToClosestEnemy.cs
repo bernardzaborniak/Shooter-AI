@@ -14,10 +14,10 @@ namespace BenitosAI
         {
             aiControllerHuman = (AIController_HumanoidSoldier)decisionContext.aiController;
 
-            if (aiControllerHuman.humanSensing.currentSensingInfo.nearestEnemyInfo != null)
+            if (aiControllerHuman.humanSensing.sensingInfo.nearestEnemyInfo != null)
             {
                 //normalize
-                float input = Utility.Remap(aiControllerHuman.humanSensing.currentSensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
+                float input = Utility.Remap(aiControllerHuman.humanSensing.sensingInfo.nearestEnemyInfo.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
                 //remap Squared Distance
                 //float input = 0
 
