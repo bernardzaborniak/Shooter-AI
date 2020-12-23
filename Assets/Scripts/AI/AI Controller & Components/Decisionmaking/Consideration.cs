@@ -69,11 +69,11 @@ namespace BenitosAI
             //Get Input, already normalized by ConsideraionInput
             input = considerationInput.GetConsiderationInput(context, this);
 
-            Debug.Log("Consideration: Ijnput: " + input);
+            //Debug.Log("Consideration: Ijnput: " + input);
 
             //TODo Refactor, dont save input into another variable, write it directly into the return statement
 
-            Debug.Log("Consideration: Remapped Curve: " + considerationCurve.GetRemappedValue(input));
+            //Debug.Log("Consideration: Remapped Curve: " + considerationCurve.GetRemappedValue(input));
 
             //Modify input by curve, curve also normalizes automaticly
             return considerationCurve.GetRemappedValue(input);

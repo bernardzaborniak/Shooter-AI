@@ -82,29 +82,22 @@ namespace BenitosAI
 
                 Vector3 myPosition = transform.position;
 
+                Debug.Log("sensing Update starts: " + GetHashCode() + " -----------------------------------------");
 
                 #region Scan for other Soldiers
 
-                // variables 
-                //currentSensingInfo.enemiesInSensingRadius.Clear();
-                //currentSensingInfo.friendliesInSensingRadius.Clear();
-                //float smallestDistanceSqr = Mathf.Infinity;
-                //currentSensingInfo.nearestEnemyInfo = null;
+
 
                 // fill collections
                 Collider[] collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingRadius, collidersInRadius, sensingLayerMask); //use non alloc to prevent garbage
-               // HashSet<SensingInfoToAdd> enemyInfoToAdd = new HashSet<SensingInfoToAdd>();
-                //HashSet<SensingInfoToAdd> friendlyInfoToAdd = new HashSet<SensingInfoToAdd>();
-                //SensingInfoToAdd[] enemyInfoToAdd = new SensingInfoToAdd[colliderArraySize];
-                //SensingInfoToAdd[] friendlyInfoToAdd = new SensingInfoToAdd[colliderArraySize];
 
 
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
                     if (collidersInRadius[i] != null)
                     {
-                        if(collidersInRadius[i] != myEntityCollider)
+                        if (collidersInRadius[i] != myEntityCollider)
                         {
                             //here calculation would happen if the entity is even visible
                             bool visible = true;
@@ -116,44 +109,28 @@ namespace BenitosAI
 
                             if (visible)
                             {
-                                if(visInfo.entityAssignedTo.teamID != myTeamID)
+                                if (visInfo.entityAssignedTo.teamID != myTeamID)
                                 {
                                     sensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
-                                    //enemyInfoToAdd[i] = new SensingInfoToAdd(visInfo, currentDistanceSqr);
-                                    //enemyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
                                 }
                                 else
                                 {
                                     sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
-                                    //friendlyInfoToAdd[i] = new SensingInfoToAdd(visInfo, currentDistanceSqr);
-                                    //friendlyInfoToAdd.Add(new SensingInfoToAdd(visInfo, currentDistanceSqr));
-
-
                                 }
                             }
                         }
                     }
                 }
 
-                //sensingInfo.UpdateSensingInfo(enemyInfoToAdd, friendlyInfoToAdd);
-                sensingInfo.UpdateSensingInfoAfterAddingNewInfo();
-
-                //sensingInfo.UpdateInfo()
 
                 #endregion
 
-                /*#region Scan for Tactical Points
-
-                // variables 
-                //sensingInfo.tPointsCoverInSensingRadius.Clear();
-                //sensingInfo.tPointsOpenFieldInSensingRadius.Clear();
-                //smallestDistanceSqr = Mathf.Infinity;
-                //myPosition = transform.position;
+                #region Scan for Tactical Points
 
                 // fill collections
-                Collider[]  collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
+                collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingRadius, collidersInRadius, postSensingLayerMask);
-                //collidersInRadius = Physics.OverlapSphere(transform.position, sensingRadius, postSensingLayerMask);
+
 
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
@@ -162,13 +139,12 @@ namespace BenitosAI
                         //here calculation would happen if the entity is even visible
                         bool visible = true;
                         TacticalPointVisibilityInfo visInfo = collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>();
+                        float currentDistanceSqr = (myPosition - visInfo.GetPointPosition()).sqrMagnitude;
 
                         if (visible)
                         {
                             if (!visInfo.tacticalPointAssignedTo.IsPointFull())
                             {
-                                float currentDistanceSqr = (myPosition - visInfo.GetPointPosition()).sqrMagnitude;
-
                                 if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
                                 {
                                     sensingInfo.OnSensedTPCover(visInfo, currentDistanceSqr);
@@ -183,37 +159,12 @@ namespace BenitosAI
                                 }
                             }
                         }
-                      
-                       
+                    }
+                }
 
+                #endregion
 
-                        //TacticalPoint currentTPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
-
-                        /*if (!currentTPoint.IsPointFull())
-                        {
-                            //SensedTacticalPointInfo tPointVisInfo = new SensedTacticalPointInfo(collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>());
-                            float currentDistanceSqr = (myPosition - collidersInRadius[i].transform.position).sqrMagnitude;
-                            tPointVisInfo.lastSquaredDistanceMeasured = currentDistanceSqr;
-                            if (tPointVisInfo.point.tacticalPointType == TacticalPointType.CoverPoint)
-                            {
-                                sensingInfo.tPointsCoverInSensingRadius.Add(tPointVisInfo);
-                            }
-                            else if (tPointVisInfo.point.tacticalPointType == TacticalPointType.OpenFieldPoint)
-                            {
-                                sensingInfo.tPointsOpenFieldInSensingRadius.Add(tPointVisInfo);
-                            }
-                            else
-                            {
-                                Debug.Log("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
-                            }
-
-                        }*/
-                /*  }
-              }
-
-              #endregion*/
-
-               // sensingInfo.UpdateSensingInfoAfterAddingNewInfo();
+                sensingInfo.UpdateSensingInfoAfterAddingNewInfo();
 
 
                 UnityEngine.Profiling.Profiler.EndSample();

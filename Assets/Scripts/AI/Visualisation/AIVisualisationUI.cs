@@ -259,21 +259,28 @@ namespace BenitosAI
                 {
                     Destroy(sensingEnemiesPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                sensingEnemiesPanel.UpdateNumberOfItemsInsidePanel(0);
 
                 for (int i = 0; i < sensingFriendliesPanel.panelToExpand.childCount; i++)
                 {
                     Destroy(sensingFriendliesPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(0);
+
 
                 for (int i = 0; i < sensingTPointsCoverPanel.panelToExpand.childCount; i++)
                 {
                     Destroy(sensingTPointsCoverPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(0);
+
 
                 for (int i = 0; i < sensingTPointsOpenFieldPanel.panelToExpand.childCount; i++)
                 {
                     Destroy(sensingTPointsOpenFieldPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(0);
+
             }
         }
 

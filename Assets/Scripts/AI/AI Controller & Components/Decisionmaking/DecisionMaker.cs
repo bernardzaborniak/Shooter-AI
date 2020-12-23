@@ -54,7 +54,7 @@ namespace BenitosAI
 
         public void Decide() //Decide();
         {
-            Debug.Log("Decide ");
+            //Debug.Log("Decide ");
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
             float currentRating;
             int bestRatedDecision = int.MaxValue;
@@ -62,11 +62,11 @@ namespace BenitosAI
 
             for (int i = 0; i < decisions.Length; i++)
             {
-                Debug.Log("-----------------  Decide decition number: " + i);
+                //Debug.Log("-----------------  Decide decition number: " + i);
                 DecisionContext context = new DecisionContext();
                 context.SetUpContect(decisions[i].decision, aiController, null, null);
                 currentRating = decisions[i].decision.GetDecisionRating(context) * decisions[i].weigt;
-                Debug.Log("current Rating: " + currentRating);
+               // Debug.Log("current Rating: " + currentRating);
                 decisionRatings[i] = currentRating;
 
                 if (currentRating > bestRatingSoFar)

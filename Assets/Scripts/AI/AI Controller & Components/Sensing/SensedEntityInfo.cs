@@ -9,7 +9,7 @@ namespace BenitosAI
     {
         #region Fields
 
-        public int infoID;
+        int hashCode; // used by sensig info to store in dictionary
         public GameEntity entity;
         public EntityVisibilityInfo visInfo;
         public int entityTeamID;
@@ -34,6 +34,7 @@ namespace BenitosAI
 
         #endregion
 
+
         //Later on we need a reference to the skills here if we want to call get CriticalAim pos and similar from the visibility Info
 
         public SensedEntityInfo()
@@ -48,7 +49,7 @@ namespace BenitosAI
             frameCountWhenLastSeen = Time.frameCount;
 
             entity = visInfo.entityAssignedTo;
-            infoID = entity.GetInstanceID();
+            hashCode = entity.GetHashCode();
             lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;
 
@@ -144,9 +145,14 @@ namespace BenitosAI
             return lastSeenEntityPosition;
         }
 
-        static int SortByTime(SensedEntityInfo p1, SensedEntityInfo p2)
+        /*static int SortByTime(SensedEntityInfo p1, SensedEntityInfo p2)
         {
             return p1.timeWhenLastSeen.CompareTo(p2.timeWhenLastSeen);
+        }*/
+
+        public override int GetHashCode()
+        {
+            return hashCode;
         }
     }
 

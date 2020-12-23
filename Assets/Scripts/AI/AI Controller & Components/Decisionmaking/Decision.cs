@@ -50,13 +50,13 @@ namespace BenitosAI
                 score *= considerations[i].GetConsiderationRating(context);
             }
 
-            Debug.Log("decision score before adding makeup value: " + score);
+            //Debug.Log("decision score before adding makeup value: " + score);
 
             //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
 
             score += score * ((1 - score) * (1 - (1 / considerations.Length)));
 
-            Debug.Log("decision score after adding makeup value: " + score);
+           // Debug.Log("decision score after adding makeup value: " + score);
 
             return score;
         }

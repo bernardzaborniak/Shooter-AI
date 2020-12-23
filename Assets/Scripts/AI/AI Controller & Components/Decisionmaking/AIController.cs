@@ -36,7 +36,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
             // Decide every x seconds
             if (Time.time > nextDecisionTime)
             {
-                Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
+                //Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
 
                 nextDecisionTime = Time.time + decisionInterval;
 
