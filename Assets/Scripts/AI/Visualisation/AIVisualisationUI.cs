@@ -213,7 +213,7 @@ namespace BenitosAI
                 AI_VIS_UI_SensingItem topicPanel;
 
                 // Update Enemies Panel --------------------------------
-                foreach (SensedEntityInfo enemy in sensingInfo.enemiesInfo)
+                foreach (SensedEntityInfo enemy in sensingInfo.enemyInfos)
                 {
                     if (enemy.IsAlive())
                     {
@@ -221,10 +221,10 @@ namespace BenitosAI
                         topicPanel.SetUp((enemy.entity.name + enemy.entity.GetHashCode()), enemy.lastSquaredDistanceMeasured, enemy.timeWhenLastSeen, enemy.frameCountWhenLastSeen, enemy.entity.transform, manager);
                     }
                 }
-                sensingEnemiesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.enemiesInfo.Length);
+                sensingEnemiesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.enemyInfos.Length);
 
                 // Update Friendlies Panel --------------------------------
-                foreach (SensedEntityInfo friendly in sensingInfo.friendliesInfo)
+                foreach (SensedEntityInfo friendly in sensingInfo.friendlyInfos)
                 {
                     if (friendly.IsAlive())
                     {
@@ -233,23 +233,23 @@ namespace BenitosAI
                     }
 
                 }
-                sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.friendliesInfo.Length);
+                sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.friendlyInfos.Length);
 
                 // Update TPoints Cover Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in sensingInfo.tPointsCoverInfo)
+                foreach (SensedTacticalPointInfo tPoint in sensingInfo.tPointCoverInfos)
                 {
                     topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                     topicPanel.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
-                sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointsCoverInfo.Length);
+                sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointCoverInfos.Length);
 
                 // Update TPoints OpenField Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in sensingInfo.tPointsOpenFieldInfo)
+                foreach (SensedTacticalPointInfo tPoint in sensingInfo.tPointOpenFieldInfos)
                 {
                     topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                     topicPanel.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastSquaredDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
-                sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointsCoverInfo.Length);
+                sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(sensingInfo.tPointCoverInfos.Length);
             }
             else
             {
