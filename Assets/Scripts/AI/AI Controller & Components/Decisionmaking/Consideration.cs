@@ -79,9 +79,6 @@ namespace BenitosAI
             //Modify input by curve, curve also normalizes automaticly
             return considerationCurve.GetRemappedValue(input);
         }
-
-
-
     }
 
 }

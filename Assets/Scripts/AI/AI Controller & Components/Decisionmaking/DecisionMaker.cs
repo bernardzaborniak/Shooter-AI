@@ -26,72 +26,23 @@ namespace BenitosAI
         }
 
         public DecisionMethod decisionMethod;
-        public float[] decisionRatings; //make it private later
 
         public DecisionWrapper[] decisions;
 
-        DecisionContext currentDecisionContext;
+        DecisionContext currentDecidedDecisionContext;
         AIState currentState;
         AIController aiController;
 
-        //[Header("Debug")]
-        //public float decisionRatingsDebug;
-       // public DecisionContext[] currentDecisionContexesDebug;
-       // public float[] currentDecisionContexesRatings;
-
-
-      
-        // Decision Context Pool
-        //Queue<DecisionContext> decisionContextPool = new Queue<DecisionContext>();
-
         public List<DecisionContext> currentDecisionContexes = new List<DecisionContext>();
+
 
         public void SetUpDecisionLayer(AIController aiController)
         {
-
             this.aiController = aiController;
-
-            /* for (int i = 0; i < decisions.Length; i++)
-             {
-                 decisions[i].decision.SetUpDecision(aiController);
-             }*/
-
-            decisionRatings = new float[decisions.Length];
-
-            // Decide the pool length;
-            /*int decisionContextPoolLength = 0;
-            Decision.DecisionContextTargetType targetType;
-
-            for (int i = 0; i < decisions.Length; i++)
-            {
-                targetType = decisions[i].decision.decisionContextTargetType;
-
-                if (targetType == Decision.DecisionContextTargetType.Self)
-                {
-                    decisionContextPoolLength += 1;
-                }
-                else if(targetType == Decision.DecisionContextTargetType.Entity)
-                {
-                    decisionContextPoolLength += maxEntityTargetsPerDecision;
-                }
-                else if (targetType == Decision.DecisionContextTargetType.TacticalPoint)
-                {
-                    decisionContextPoolLength += maxTacticalPointTargetsPerDecision;
-                }
-            }
-
-            for (int i = 0; i < decisionContextPoolLength; i++)
-            {
-                decisionContextPool.Enqueue(new DecisionContext());
-            }*/
-
         }
 
         public void Decide() //Decide();
         {
-            //1 set up the contextes, rate them
-
-            //2 decide which one to execute based on rating
             currentDecisionContexes.Clear();
 
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
@@ -122,56 +73,26 @@ namespace BenitosAI
             {
                 StartExecutingDecision(bestRatedDecisionContext);
             }
-
-
-
-            //Debug:
-            //currentDecisionContexesDebug = new DecisionContext[currentDecisionContexes.Count];
-            //currentDecisionContexesRatings = new float[currentDecisionContexes.Count];
-
-            /*for (int i = 0; i < currentDecisionContexes.Count; i++)
-            {
-                currentDecisionContexesRatings[i] = currentDecisionContexes[i].rating;
-            }*/
-
-
         }
 
-        //public void StartExecutingDecision(Decision decision)
         public void StartExecutingDecision(DecisionContext decisionContext)
         {
-            if (decisionContext != currentDecisionContext)
+            if (decisionContext != currentDecidedDecisionContext)
             {
-                currentDecisionContext = decisionContext;
+                currentDecidedDecisionContext = decisionContext;
 
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
                 }
 
-                if (currentDecisionContext.decision.correspondingAIState == AIStateEnum.TestState)
+                if (currentDecidedDecisionContext.decision.correspondingAIState == AIStateEnum.TestState)
                 {
                     currentState = new AIst_HumSol_MovingToZeroPoint();
                     currentState.OnStateEnter();
                 }
             }
-
-
-
-
         }
-
-        //also called when adding decisions dynamically 
-        /*  void AddDecision(Decision decision)
-          {
-              //transform the array into a list? or leave this dynamicall adding out for now? - yeah leave it out for now
-              decision.SetUpDecision(aiController);
-          }*/
-
-        /* void UpdateDecision()
-         {
-             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
-         }*/
 
         //before rating & decising the decisions have to be set up according to current sensing, if there are more targets for one decision, the decision has to be seperated into several ones
 

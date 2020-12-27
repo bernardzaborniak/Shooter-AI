@@ -119,11 +119,12 @@ namespace BenitosAI
                 SerializedProperty exampleOutput5Prop = serializedObject.FindProperty("exampleOutput5");
 
                 //set the values
-                exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput1Prop.floatValue);
-                exampleOutput2Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput2Prop.floatValue);
-                exampleOutput3Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput3Prop.floatValue);
-                exampleOutput4Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput4Prop.floatValue);
-                exampleOutput5Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput5Prop.floatValue);
+                //exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput1Prop.floatValue);
+                exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput1Prop.floatValue, targetConsideration.minSquared, targetConsideration.maxSquared, 0, 1));
+                exampleOutput2Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput2Prop.floatValue, targetConsideration.minSquared, targetConsideration.maxSquared, 0, 1));
+                exampleOutput3Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput3Prop.floatValue, targetConsideration.minSquared, targetConsideration.maxSquared, 0, 1));
+                exampleOutput4Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput4Prop.floatValue, targetConsideration.minSquared, targetConsideration.maxSquared, 0, 1));
+                exampleOutput5Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput5Prop.floatValue, targetConsideration.minSquared, targetConsideration.maxSquared, 0, 1));
 
 
                 // Readonly Outputs

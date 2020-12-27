@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    [System.Serializable]//For debug purposes
     // SensingInfo Component saves information about other entities it has seen in this container.
     public class SensedEntityInfo
     {
