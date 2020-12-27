@@ -13,6 +13,10 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
+            float input = Utility.Remap(decisionContext.targetEntity.lastSquaredDistanceMeasured, consideration.minSquared, consideration.maxSquared, 0, 1);
+            return Mathf.Clamp(input, 0, 1);
+
+            /*
             sensingInfo = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.sensingInfo;
             //aiControllerHuman = (AIController_HumanoidSoldier)decisionContext.aiController;
 
@@ -30,7 +34,7 @@ namespace BenitosAI
             else
             {
                 return Mathf.Infinity;
-            }
+            }*/
 
         }
     }

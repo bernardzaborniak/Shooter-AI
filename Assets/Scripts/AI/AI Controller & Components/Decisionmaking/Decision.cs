@@ -17,60 +17,6 @@ namespace BenitosAI
 
         public AIStateEnum correspondingAIState;
 
-        //AIController aiController;
-        //AIState state;
-        //several decisions can have the same state?
-        /*public AIState GetCorrespondingState()
-        {
-            return state;
-        }*/
-
-        /* public void SetUpDecision(AIController aiController)
-         {
-             this.aiController = aiController;
-
-             /*for (int i = 0; i < considerations.Length; i++)
-             {
-                 considerations[i].SetUpConsideration(aiController);
-             }
-         }*/
-
-        /*public AIState OnDecisionWasSelected(AIController aiController)
-        {
-            AIState aIState = new AIst_HumSol_MovingToZeroPoint();
-            aIState.SetUpState(aiController);
-            return aIState;
-        }*/
-
-      
-
-       // [Header("Optimisation")]
-       // public int maxEntityTargetsPerDecision = 5;
-        //public int maxTacticalPointTargetsPerDecision = 10;
-
-        //Queue<DecisionContext> decisionContextesPool = new Queue<DecisionContext>();
-
-        /*private void Awake()
-        {
-            int poolSize = 0;
-            if(decisionContextTargetType == DecisionContextTargetType.Self)
-            {
-                poolSize = 1;
-            }
-            else if(decisionContextTargetType == DecisionContextTargetType.Entity)
-            {
-                poolSize = maxEntityTargetsPerDecision;
-            }
-            else if (decisionContextTargetType == DecisionContextTargetType.TacticalPoint)
-            {
-                poolSize = maxTacticalPointTargetsPerDecision;
-            }
-
-            for (int i = 0; i < poolSize; i++)
-            {
-                decisionContextesPool.Enqueue(new DecisionContext());
-            }
-        }*/
 
         public float GetDecisionRating(DecisionContext context)
         {
@@ -94,39 +40,26 @@ namespace BenitosAI
 
         public DecisionContext[] GetDecisionRating(AIController aiController)
         {
-            return decisionContextCreator.GetDecisionContexes(this, aiController);
-            //1 set up the contextes
+            // Create contexes according to number of targets
+            DecisionContext[] contexes = decisionContextCreator.GetDecisionContexes(this, aiController);
 
-            /* if (decisionContextTargetType == DecisionContextTargetType.Self)
-             {
-                 //no targets
-             }
-             else if (decisionContextTargetType == DecisionContextTargetType.Entity)
-             {
-                 HashSet<SensedEntityInfo> targetEntities = new HashSet<SensedEntityInfo>();
-             }
-             else if (decisionContextTargetType == DecisionContextTargetType.TacticalPoint)
-             {
-                 poolSize = maxTacticalPointTargetsPerDecision;
-             }
+            // Score each context
+            for (int i = 0; i < contexes.Length; i++)
+            {
+                float score = 1;
 
-             return decisionContextes;*/
+                for (int j = 0; j < considerations.Length; j++)
+                {
+                    score *= considerations[i].GetConsiderationRating(contexes[i]);
+                }
+
+                //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
+                score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+            }
+
+
+            return contexes;
         }
-
-
-        /*void Start()
-        {
-            //instantiate the corresponding state
-           // if(correspondingAIState == AIStateEnum.TestState)
-            //{
-             //   state = new AITestState();
-           // }
-        }
-
-        void Update()
-        {
-
-        }*/
     }
 
 }

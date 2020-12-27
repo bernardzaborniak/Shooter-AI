@@ -58,7 +58,8 @@ namespace BenitosAI
             considerationCurve.UpdateCurveVisualisationKeyframes();
         }
 
-        private void Awake()
+        //private void Awake()
+        private void OnEnable()
         {
             minSquared = min * min;
             maxSquared = max * max;

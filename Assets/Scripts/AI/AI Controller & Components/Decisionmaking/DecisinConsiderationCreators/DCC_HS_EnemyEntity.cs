@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    [CreateAssetMenu(menuName = "AI/Decision Context Creator/HumanoidSolder_EnemyEntity", fileName = "HS_EnemyEntity")]
     public class DCC_HS_EnemyEntity : DecisionContextCreator
     {
         public int maxEntityTargetsPerDecision = 5;
 
         Queue<DecisionContext> contexesPool = new Queue<DecisionContext>();
         DecisionContext[] contexesToReturn;
-        private void Awake()
+        private void OnEnable()
         {
             for (int i = 0; i < maxEntityTargetsPerDecision; i++)
             {

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace BenitosAI
 {
+    [CreateAssetMenu(menuName = "AI/Decision Context Creator/Self", fileName = "Self")]
     public class DCC_Self : DecisionContextCreator
     {
         DecisionContext[] myselfContext;
-        private void Awake()
+        private void OnEnable()
         {
             myselfContext = new DecisionContext[1];
             myselfContext[0] = new DecisionContext();

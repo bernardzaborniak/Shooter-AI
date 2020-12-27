@@ -30,18 +30,21 @@ namespace BenitosAI
 
         public DecisionWrapper[] decisions;
 
-        Decision currentDecision;
+        DecisionContext currentDecisionContext;
         AIState currentState;
         AIController aiController;
 
         //[Header("Debug")]
         //public float decisionRatingsDebug;
+       // public DecisionContext[] currentDecisionContexesDebug;
+       // public float[] currentDecisionContexesRatings;
+
 
       
         // Decision Context Pool
         //Queue<DecisionContext> decisionContextPool = new Queue<DecisionContext>();
 
-        HashSet<DecisionContext> currentDecisionContexes = new HashSet<DecisionContext>();
+        public List<DecisionContext> currentDecisionContexes = new List<DecisionContext>();
 
         public void SetUpDecisionLayer(AIController aiController)
         {
@@ -89,49 +92,64 @@ namespace BenitosAI
             //1 set up the contextes, rate them
 
             //2 decide which one to execute based on rating
+            currentDecisionContexes.Clear();
 
-
-            //Debug.Log("Decide ");
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
-            float currentRating;
-            int bestRatedDecision = int.MaxValue;
+            float currentRating = 0;
             float bestRatingSoFar = 0;
+            DecisionContext bestRatedDecisionContext = null;
 
             for (int i = 0; i < decisions.Length; i++)
             {
-                //Debug.Log("-----------------  Decide decition number: " + i);
-                DecisionContext context = new DecisionContext();
-                context.SetUpContext(decisions[i].decision, aiController, null, null);
-                currentRating = decisions[i].decision.GetDecisionRating(context) * decisions[i].weigt;
-               // Debug.Log("current Rating: " + currentRating);
-                decisionRatings[i] = currentRating;
-
-                if (currentRating > bestRatingSoFar)
+                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetDecisionRating(aiController);
+                for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
-                    bestRatingSoFar = currentRating;
-                    bestRatedDecision = i;
+                    //add weight
+                    decisionContexesToAdd[j].rating *= decisions[i].weigt;
+                    //add contexes to all current contexes
+                    currentDecisionContexes.Add(decisionContexesToAdd[j]);
+
+                    currentRating = decisionContexesToAdd[j].rating;
+                    if (currentRating > bestRatingSoFar)
+                    {
+                        bestRatingSoFar = currentRating;
+                        bestRatedDecisionContext = decisionContexesToAdd[j];
+                    }
                 }
             }
 
-            if (bestRatedDecision != int.MaxValue)
+            if(bestRatedDecisionContext != null)
             {
-                StartExecutingDecision(decisions[bestRatedDecision].decision);
+                StartExecutingDecision(bestRatedDecisionContext);
             }
+
+
+
+            //Debug:
+            //currentDecisionContexesDebug = new DecisionContext[currentDecisionContexes.Count];
+            //currentDecisionContexesRatings = new float[currentDecisionContexes.Count];
+
+            /*for (int i = 0; i < currentDecisionContexes.Count; i++)
+            {
+                currentDecisionContexesRatings[i] = currentDecisionContexes[i].rating;
+            }*/
+
 
         }
 
-        public void StartExecutingDecision(Decision decision)
+        //public void StartExecutingDecision(Decision decision)
+        public void StartExecutingDecision(DecisionContext decisionContext)
         {
-            if (decision != currentDecision)
+            if (decisionContext != currentDecisionContext)
             {
-                currentDecision = decision;
+                currentDecisionContext = decisionContext;
 
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
                 }
 
-                if (currentDecision.correspondingAIState == AIStateEnum.TestState)
+                if (currentDecisionContext.decision.correspondingAIState == AIStateEnum.TestState)
                 {
                     currentState = new AIst_HumSol_MovingToZeroPoint();
                     currentState.OnStateEnter();
