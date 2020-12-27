@@ -128,7 +128,8 @@ namespace BenitosAI
                 infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
 
                 sensedEntityInfo.SetUpInfo(entityVisInfo, squaredDistance);
-            }  //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
+            }
+            //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
 
         }
 

@@ -15,7 +15,7 @@ namespace BenitosAI
         public SensedEntityInfo targetObject; //Who is the target of my action
         public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
     
-        public void SetUpContect(Decision decision, AIController aiController, SensedEntityInfo targetObject, SensedTacticalPointInfo targetTacticalPoint)
+        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetObject, SensedTacticalPointInfo targetTacticalPoint)
         {
             this.decision = decision;
             this.aiController = aiController;

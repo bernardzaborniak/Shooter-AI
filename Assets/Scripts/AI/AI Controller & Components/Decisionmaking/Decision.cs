@@ -8,6 +8,7 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
     public class Decision : ScriptableObject
     {
+        [SerializeField] DecisionContextCreator decisionContextCreator;
         //every decision has a list of considerations based on which to decide
         [SerializeField] Consideration[] considerations;
         //how to solve one decision that has to seperate into several ones - if there are more enemies to go to - we need this decision to seperate into x decisions. where x is the number of enemies
@@ -41,6 +42,36 @@ namespace BenitosAI
             return aIState;
         }*/
 
+      
+
+       // [Header("Optimisation")]
+       // public int maxEntityTargetsPerDecision = 5;
+        //public int maxTacticalPointTargetsPerDecision = 10;
+
+        //Queue<DecisionContext> decisionContextesPool = new Queue<DecisionContext>();
+
+        /*private void Awake()
+        {
+            int poolSize = 0;
+            if(decisionContextTargetType == DecisionContextTargetType.Self)
+            {
+                poolSize = 1;
+            }
+            else if(decisionContextTargetType == DecisionContextTargetType.Entity)
+            {
+                poolSize = maxEntityTargetsPerDecision;
+            }
+            else if (decisionContextTargetType == DecisionContextTargetType.TacticalPoint)
+            {
+                poolSize = maxTacticalPointTargetsPerDecision;
+            }
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                decisionContextesPool.Enqueue(new DecisionContext());
+            }
+        }*/
+
         public float GetDecisionRating(DecisionContext context)
         {
             float score = 1;
@@ -59,6 +90,27 @@ namespace BenitosAI
            // Debug.Log("decision score after adding makeup value: " + score);
 
             return score;
+        }
+
+        public DecisionContext[] GetDecisionRating(AIController aiController)
+        {
+            return decisionContextCreator.GetDecisionContexes(this, aiController);
+            //1 set up the contextes
+
+            /* if (decisionContextTargetType == DecisionContextTargetType.Self)
+             {
+                 //no targets
+             }
+             else if (decisionContextTargetType == DecisionContextTargetType.Entity)
+             {
+                 HashSet<SensedEntityInfo> targetEntities = new HashSet<SensedEntityInfo>();
+             }
+             else if (decisionContextTargetType == DecisionContextTargetType.TacticalPoint)
+             {
+                 poolSize = maxTacticalPointTargetsPerDecision;
+             }
+
+             return decisionContextes;*/
         }
 
 

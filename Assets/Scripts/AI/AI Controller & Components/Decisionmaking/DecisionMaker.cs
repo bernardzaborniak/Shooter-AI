@@ -37,6 +37,11 @@ namespace BenitosAI
         //[Header("Debug")]
         //public float decisionRatingsDebug;
 
+      
+        // Decision Context Pool
+        //Queue<DecisionContext> decisionContextPool = new Queue<DecisionContext>();
+
+        HashSet<DecisionContext> currentDecisionContexes = new HashSet<DecisionContext>();
 
         public void SetUpDecisionLayer(AIController aiController)
         {
@@ -50,10 +55,42 @@ namespace BenitosAI
 
             decisionRatings = new float[decisions.Length];
 
+            // Decide the pool length;
+            /*int decisionContextPoolLength = 0;
+            Decision.DecisionContextTargetType targetType;
+
+            for (int i = 0; i < decisions.Length; i++)
+            {
+                targetType = decisions[i].decision.decisionContextTargetType;
+
+                if (targetType == Decision.DecisionContextTargetType.Self)
+                {
+                    decisionContextPoolLength += 1;
+                }
+                else if(targetType == Decision.DecisionContextTargetType.Entity)
+                {
+                    decisionContextPoolLength += maxEntityTargetsPerDecision;
+                }
+                else if (targetType == Decision.DecisionContextTargetType.TacticalPoint)
+                {
+                    decisionContextPoolLength += maxTacticalPointTargetsPerDecision;
+                }
+            }
+
+            for (int i = 0; i < decisionContextPoolLength; i++)
+            {
+                decisionContextPool.Enqueue(new DecisionContext());
+            }*/
+
         }
 
         public void Decide() //Decide();
         {
+            //1 set up the contextes, rate them
+
+            //2 decide which one to execute based on rating
+
+
             //Debug.Log("Decide ");
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
             float currentRating;
@@ -64,7 +101,7 @@ namespace BenitosAI
             {
                 //Debug.Log("-----------------  Decide decition number: " + i);
                 DecisionContext context = new DecisionContext();
-                context.SetUpContect(decisions[i].decision, aiController, null, null);
+                context.SetUpContext(decisions[i].decision, aiController, null, null);
                 currentRating = decisions[i].decision.GetDecisionRating(context) * decisions[i].weigt;
                // Debug.Log("current Rating: " + currentRating);
                 decisionRatings[i] = currentRating;

@@ -82,11 +82,7 @@ namespace BenitosAI
 
                 Vector3 myPosition = transform.position;
 
-                Debug.Log("sensing Update starts: " + GetHashCode() + " -----------------------------------------");
-
                 #region Scan for other Soldiers
-
-
 
                 // fill collections
                 Collider[] collidersInRadius = new Collider[colliderArraySize]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
@@ -155,7 +151,7 @@ namespace BenitosAI
                                 }
                                 else
                                 {
-                                    Debug.Log("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
+                                    Debug.LogError("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
                                 }
                             }
                         }
