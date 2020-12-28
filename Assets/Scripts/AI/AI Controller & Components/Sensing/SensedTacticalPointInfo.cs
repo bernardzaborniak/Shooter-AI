@@ -11,7 +11,7 @@ namespace BenitosAI
         public TacticalPoint tacticalPoint;
         public TacticalPointVisibilityInfo visInfo;
 
-        public float lastSquaredDistanceMeasured;
+        public float lastDistanceMeasured;
 
         public float timeWhenLastSeen;
         public int frameCountWhenLastSeen;
@@ -26,7 +26,7 @@ namespace BenitosAI
             this.visInfo = visInfo;
             tacticalPoint = visInfo.tacticalPointAssignedTo;
             hashCode = tacticalPoint.GetHashCode();
-            lastSquaredDistanceMeasured = squaredDistance;
+            lastDistanceMeasured = squaredDistance;
 
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;

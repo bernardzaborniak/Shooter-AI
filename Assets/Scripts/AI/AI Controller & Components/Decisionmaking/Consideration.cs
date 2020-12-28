@@ -42,13 +42,7 @@ namespace BenitosAI
 
         //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
         public float min;
-        [HideInInspector]
-        public float minSquared;
-
         public float max;
-        [HideInInspector]
-        public float maxSquared;
-
 
         public CustomCurve considerationCurve;
 
@@ -58,11 +52,9 @@ namespace BenitosAI
             considerationCurve.UpdateCurveVisualisationKeyframes();
         }
 
-        //private void Awake()
         private void OnEnable()
         {
-            minSquared = min * min;
-            maxSquared = max * max;
+
         }
 
         public float GetConsiderationRating(DecisionContext context)

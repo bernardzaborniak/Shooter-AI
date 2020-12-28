@@ -20,16 +20,16 @@ namespace BenitosAI
         public DecisionContext[] GetDecisionRating(AIController aiController)
         {
             // Create contexes according to number of targets
-            DecisionContext[] contexes = decisionContextCreator.GetDecisionContexes(this, aiController);
+            DecisionContext[] contexts = decisionContextCreator.GetDecisionContexes(this, aiController);
 
             // Score each context
-            for (int i = 0; i < contexes.Length; i++)
+            for (int i = 0; i < contexts.Length; i++)
             {
                 float score = 1;
 
                 for (int c = 0; c < considerations.Length; c++)
                 {
-                    score *= considerations[c].GetConsiderationRating(contexes[i]);
+                    score *= considerations[c].GetConsiderationRating(contexts[i]);
                 }
 
                 //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
@@ -37,7 +37,7 @@ namespace BenitosAI
             }
 
 
-            return contexes;
+            return contexts;
         }
     }
 

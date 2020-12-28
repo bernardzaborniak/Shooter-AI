@@ -9,13 +9,13 @@ namespace BenitosAI
     {
         public int maxEntityTargetsPerDecision = 5;
 
-        Queue<DecisionContext> contexesPool = new Queue<DecisionContext>();
-        DecisionContext[] contexesToReturn;
+        Queue<DecisionContext> contextsPool = new Queue<DecisionContext>();
+        DecisionContext[] contextsToReturn;
         private void OnEnable()
         {
             for (int i = 0; i < maxEntityTargetsPerDecision; i++)
             {
-                contexesPool.Enqueue(new DecisionContext());
+                contextsPool.Enqueue(new DecisionContext());
             }   
         }
 
@@ -28,23 +28,23 @@ namespace BenitosAI
             {
                 enemyEntitiesCount = maxEntityTargetsPerDecision;
             }
-            contexesToReturn = new DecisionContext[enemyEntitiesCount];
+            contextsToReturn = new DecisionContext[enemyEntitiesCount];
 
             for (int i = 0; i < enemyEntitiesCount; i++)
             {
-                contexesToReturn[i] = contexesPool.Dequeue();
-                contexesToReturn[i].SetUpContext(decision, aiController, sensingInfo.enemyInfos[i], null);
+                contextsToReturn[i] = contextsPool.Dequeue();
+                contextsToReturn[i].SetUpContext(decision, aiController, sensingInfo.enemyInfos[i], null);
             }
 
             //return them back to the pool
             for (int i = 0; i < enemyEntitiesCount; i++)
             {
-                contexesPool.Enqueue(contexesToReturn[i]);
+                contextsPool.Enqueue(contextsToReturn[i]);
             }
             
 
 
-            return contexesToReturn;
+            return contextsToReturn;
         }
     }
 }

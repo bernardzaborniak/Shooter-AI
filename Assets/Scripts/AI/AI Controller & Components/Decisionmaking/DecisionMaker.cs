@@ -33,7 +33,7 @@ namespace BenitosAI
         AIState currentState;
         AIController aiController;
 
-        public List<DecisionContext> currentDecisionContexes = new List<DecisionContext>();
+        public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
 
 
         public void SetUpDecisionLayer(AIController aiController)
@@ -43,7 +43,7 @@ namespace BenitosAI
 
         public void Decide() //Decide();
         {
-            currentDecisionContexes.Clear();
+            currentDecisionContexts.Clear();
 
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
             float currentRating = 0;
@@ -58,7 +58,7 @@ namespace BenitosAI
                     //add weight
                     decisionContexesToAdd[j].rating *= decisions[i].weigt;
                     //add contexes to all current contexes
-                    currentDecisionContexes.Add(decisionContexesToAdd[j]);
+                    currentDecisionContexts.Add(decisionContexesToAdd[j]);
 
                     currentRating = decisionContexesToAdd[j].rating;
                     if (currentRating > bestRatingSoFar)

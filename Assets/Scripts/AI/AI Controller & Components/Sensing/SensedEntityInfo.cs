@@ -16,7 +16,7 @@ namespace BenitosAI
         public int entityTeamID;
 
         Vector3 lastSeenEntityPosition;
-        public float lastSquaredDistanceMeasured;
+        public float lastDistanceMeasured;
 
         //Movement
         public bool hasMovement;
@@ -54,7 +54,7 @@ namespace BenitosAI
             lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;
 
-            lastSquaredDistanceMeasured = squaredDistance;
+            lastDistanceMeasured = squaredDistance;
 
             //Set Movement Speeds
             if (visInfo.HasMovement())

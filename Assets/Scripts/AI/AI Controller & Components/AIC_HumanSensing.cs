@@ -98,7 +98,7 @@ namespace BenitosAI
                             //here calculation would happen if the entity is even visible
                             bool visible = true;
                             EntityVisibilityInfo visInfo = collidersInRadius[i].GetComponent<EntityVisibilityInfo>();
-                            float currentDistanceSqr = (myPosition - visInfo.GetEntityPosition()).sqrMagnitude;
+                            float currentDistance = Vector3.Distance(myPosition, visInfo.GetEntityPosition());
 
                             //based on distance & other factors calculate visibility 
                             //after this or before the field of view would be taken into account of the calculation, based on the visibilityInfoPosiiton
@@ -107,11 +107,11 @@ namespace BenitosAI
                             {
                                 if (visInfo.entityAssignedTo.teamID != myTeamID)
                                 {
-                                    sensingInfo.OnSensedEnemyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedEnemyEntity(visInfo, currentDistance);
                                 }
                                 else
                                 {
-                                    sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedFriendlyEntity(visInfo, currentDistance);
                                 }
                             }
                         }
@@ -135,7 +135,7 @@ namespace BenitosAI
                         //here calculation would happen if the entity is even visible
                         bool visible = true;
                         TacticalPointVisibilityInfo visInfo = collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>();
-                        float currentDistanceSqr = (myPosition - visInfo.GetPointPosition()).sqrMagnitude;
+                        float currentDistance = Vector3.Distance(myPosition, visInfo.GetPointPosition());
 
                         if (visible)
                         {
@@ -143,11 +143,11 @@ namespace BenitosAI
                             {
                                 if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
                                 {
-                                    sensingInfo.OnSensedTPCover(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedTPCover(visInfo, currentDistance);
                                 }
                                 else if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.OpenFieldPoint)
                                 {
-                                    sensingInfo.OnSensedTPOpenField(visInfo, currentDistanceSqr);
+                                    sensingInfo.OnSensedTPOpenField(visInfo, currentDistance);
                                 }
                                 else
                                 {

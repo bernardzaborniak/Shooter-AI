@@ -191,9 +191,9 @@ namespace BenitosAI
 
                             if (angle < 80)
                             {
-                                if (postInfo.lastSquaredDistanceMeasured < closestDistance)
+                                if (postInfo.lastDistanceMeasured < closestDistance)
                                 {
-                                    closestDistance = postInfo.lastSquaredDistanceMeasured;
+                                    closestDistance = postInfo.lastDistanceMeasured;
                                     closestTacticalPoint = postInfo.tacticalPoint;
                                 }
                             }
