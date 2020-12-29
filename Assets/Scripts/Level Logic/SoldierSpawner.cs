@@ -19,7 +19,6 @@ public class SoldierSpawner : MonoBehaviour
     public float spawnIntervalMax;
     float nextTeam1SpawnTime;
     float nextTeam2SpawnTime;
-
    
 
     void Update()

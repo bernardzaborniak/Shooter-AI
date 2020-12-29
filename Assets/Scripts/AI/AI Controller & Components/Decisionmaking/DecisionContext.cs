@@ -19,17 +19,30 @@ namespace BenitosAI
         public SensedEntityInfo targetEntity; //Who is the target of my action
         public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
     
-        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetObject, SensedTacticalPointInfo targetTacticalPoint)
+        public DecisionContext()
+        {
+
+        }
+
+        public DecisionContext(DecisionContext objectToCopyValuesFrom)
+        {
+            SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.targetEntity, objectToCopyValuesFrom.targetTacticalPoint);
+            rating = objectToCopyValuesFrom.rating;
+        }
+
+        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetEntity, SensedTacticalPointInfo targetTacticalPoint)
         {
             this.decision = decision;
             this.aiController = aiController;
-            this.targetEntity = targetObject;
+            this.targetEntity = targetEntity;
             this.targetTacticalPoint = targetTacticalPoint;
         }
 
         // this could be more elegantly solved by making the hashcode dependant on this variables? - but then i would have problems weh saving this objects in a hashSet? or overide the == operator?
         public bool ContextIsTheSameAs(DecisionContext otherContext)
         {
+            if (otherContext == null) return false;
+
             if(decision == otherContext.decision)
             {
                 if(targetEntity == otherContext.targetEntity)

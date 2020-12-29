@@ -9,7 +9,7 @@ namespace BenitosAI
     {
         public Decision decision;
         [Min(0)]
-        public float weigt;
+        public float weigt = 1f;
     }
 
     [System.Serializable]
@@ -53,12 +53,16 @@ namespace BenitosAI
         DecisionContext currentDecidedDecisionContext;
         AIState currentState;
         AIController aiController;
-
+       
+        [Space(5)]
         public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
+        [Space(5)]
         public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
+        [Space(5)]
+        public DecisionContextVisualiser lastSelectedDecisionContext;
 
 
-        public void SetUpDecisionLayer(AIController aiController)
+public void SetUpDecisionLayer(AIController aiController)
         {
             this.aiController = aiController;
         }
@@ -71,13 +75,13 @@ namespace BenitosAI
             float currentRating = 0;
             float bestRatingSoFar = 0;
             DecisionContext bestRatedDecisionContext = null;
-            Debug.Log("Decide------------------------------------------------------------------------------ ");
+            Debug.Log("Decide========================================================================- ");
 
             for (int i = 0; i < decisions.Length; i++)
             {
                 Debug.Log("Current Decision: " + decisions[i].decision.name + "--------------------]");
-                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContext(aiController);
-                Debug.Log("decision ocntext size in decision mker: " + decisionContexesToAdd.Length);
+                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController);
+                //Debug.Log("decision ocntext size in decision mker: " + decisionContexesToAdd.Length);
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
                     //add weight
@@ -87,14 +91,21 @@ namespace BenitosAI
                     currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
 
                     currentRating = decisionContexesToAdd[j].rating;
+                    Debug.Log("current Decision Context: " + decisionContexesToAdd[j].decision + " rating: " + currentRating);
                     if (currentRating > bestRatingSoFar)
                     {
+                        Debug.Log("rating was higher than best rating so far, which was: " + bestRatingSoFar);
+
                         bestRatingSoFar = currentRating;
-                        bestRatedDecisionContext = decisionContexesToAdd[j];
+                        //bestRatedDecisionContext = decisionContexesToAdd[j];
+                        //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
+                        bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);
+                        Debug.Log("-> set new - best rated Decision context: " + bestRatedDecisionContext.decision);
                     }
                 }
                 Debug.Log("Current Decision END: " + decisions[i].decision.name + "--------------------]");
             }
+            Debug.Log("best rated Decision context: " + bestRatedDecisionContext.decision);
 
             if(bestRatedDecisionContext != null)
             {
@@ -102,6 +113,7 @@ namespace BenitosAI
             }
 
             currentDecisionContexts.Clear();
+            Debug.Log("Decide END========================================================================- ");
 
         }
 
@@ -116,6 +128,7 @@ namespace BenitosAI
             if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
             {
                 currentDecidedDecisionContext = decisionContext;
+                lastSelectedDecisionContext = new DecisionContextVisualiser(currentDecidedDecisionContext);
 
                 if (currentState != null)
                 {
