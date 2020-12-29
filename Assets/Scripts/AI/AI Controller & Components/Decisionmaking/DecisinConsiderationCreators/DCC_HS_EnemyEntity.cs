@@ -24,11 +24,14 @@ namespace BenitosAI
             SensingInfo sensingInfo = ((AIController_HumanoidSoldier)aiController).humanSensing.sensingInfo;
 
             int enemyEntitiesCount = sensingInfo.enemyInfos.Length;
+            Debug.Log("enemy entities count: " + sensingInfo.enemyInfos.Length);
             if (enemyEntitiesCount > maxEntityTargetsPerDecision)
             {
                 enemyEntitiesCount = maxEntityTargetsPerDecision;
             }
             contextsToReturn = new DecisionContext[enemyEntitiesCount];
+            Debug.Log("enemy entities count Array Size: " + enemyEntitiesCount);
+
 
             for (int i = 0; i < enemyEntitiesCount; i++)
             {

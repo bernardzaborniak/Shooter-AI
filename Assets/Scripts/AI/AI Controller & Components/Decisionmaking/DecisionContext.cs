@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace BenitosAI
 {
     // Package of Information concerning a decision
-    [System.Serializable] //Only for Debug purposes
+   // [System.Serializable] //Only for Debug purposes
     public class DecisionContext
     {
         public float rating;
@@ -24,6 +25,23 @@ namespace BenitosAI
             this.aiController = aiController;
             this.targetEntity = targetObject;
             this.targetTacticalPoint = targetTacticalPoint;
+        }
+
+        // this could be more elegantly solved by making the hashcode dependant on this variables? - but then i would have problems weh saving this objects in a hashSet? or overide the == operator?
+        public bool ContextIsTheSameAs(DecisionContext otherContext)
+        {
+            if(decision == otherContext.decision)
+            {
+                if(targetEntity == otherContext.targetEntity)
+                {
+                    if(targetTacticalPoint == otherContext.targetTacticalPoint)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
