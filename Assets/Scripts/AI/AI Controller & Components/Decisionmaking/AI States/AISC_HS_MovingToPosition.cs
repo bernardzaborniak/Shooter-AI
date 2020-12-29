@@ -45,6 +45,10 @@ namespace BenitosAI
         public override void UpdateState() 
         {
             //Debug.Log("updating state: ");
+            if (!charController.IsMoving())
+            {
+                charController.MoveTo(targetPosition, true);
+            }
         }
     }
 }
