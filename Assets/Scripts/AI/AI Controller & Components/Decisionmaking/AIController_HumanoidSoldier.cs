@@ -6,9 +6,12 @@ namespace BenitosAI
 {
     public class AIController_HumanoidSoldier : AIController
     {
+        [Header("Charackter to Control")]
+        public EC_HumanoidCharacterController characterController;
+
+        [Header("AI Components")]
         public AIC_HumanSensing humanSensing;
         public AIC_AimingController aimingController;
-        public EC_HumanoidCharacterController characterController;
 
 
         // Start is called before the first frame update
@@ -26,9 +29,9 @@ namespace BenitosAI
         {
             base.UpdateComponent();
 
-            // ---- this will happen later if the new AI Controller fully replaces the old ----
-            //humanSensing.UpdateComponent();
-            //aimingController.UpdateComponent();
+            //Update Components
+            humanSensing.UpdateComponent();
+            aimingController.UpdateComponent();
         }
     }
 

@@ -33,6 +33,12 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
         public override void UpdateComponent()
         {
+            // Update Current States
+            for (int i = 0; i < decisionLayers.Length; i++)
+            {
+                decisionLayers[i].UpdateCurrentState();
+            }
+
             // Decide every x seconds
             if (Time.time > nextDecisionTime)
             {
@@ -46,11 +52,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
                 }
             }
 
-            // Update Current States
-            for (int i = 0; i < decisionLayers.Length; i++)
-            {
-                decisionLayers[i].UpdateCurrentState();
-            }
+           
 
         }
     }
