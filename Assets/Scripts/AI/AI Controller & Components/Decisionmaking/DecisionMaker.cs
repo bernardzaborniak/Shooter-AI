@@ -5,14 +5,6 @@ using UnityEngine;
 namespace BenitosAI
 {
     [System.Serializable]
-    public class DecisionWrapper
-    {
-        public Decision decision;
-        [Min(0)]
-        public float weigt = 1f;
-    }
-
-    [System.Serializable]
     public class DecisionContextVisualiser        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
     {
         public float rating;
@@ -62,7 +54,7 @@ namespace BenitosAI
         public DecisionContextVisualiser lastSelectedDecisionContext;
 
 
-public void SetUpDecisionLayer(AIController aiController)
+        public void SetUpDecisionLayer(AIController aiController)
         {
             this.aiController = aiController;
         }
