@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/HS Moving To Position", fileName = "MovingToPosition")]
+    [CreateAssetMenu(menuName = "AI/States/Moving To Position", fileName = "MovingToPosition")]
     public class SC_HS_MovingToPosition : AIStateCreator
     {
         public Vector3 targetPosition;

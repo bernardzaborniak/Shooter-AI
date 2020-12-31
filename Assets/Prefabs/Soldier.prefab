@@ -885,14 +885,11 @@ MonoBehaviour:
   - name: Positioning Layer
     decisionMethod: 0
     decisions:
+    - name: 'Stay at Range To Enemy Standing '
+      decision: {fileID: 11400000, guid: 1bf1c543497bf8b40a82ae28a4e28ebf, type: 2}
+      weigt: 2
     - name: 'Run To Middle '
       decision: {fileID: 11400000, guid: 6fcd3f9116695334c94ca9b170dec177, type: 2}
-      weigt: 1
-    - name: 'Advance To Position '
-      decision: {fileID: 11400000, guid: b0fcdcc68dafcfd4ea943444d7246419, type: 2}
-      weigt: 1
-    - name: 'Retreat To Position '
-      decision: {fileID: 11400000, guid: 723fa6cae2878584a9e9d45a0c94ae71, type: 2}
       weigt: 1
     - name: 'Idle Standing '
       decision: {fileID: 11400000, guid: 0999bd14b366c0e4c81517012d380617, type: 2}
@@ -2872,7 +2869,7 @@ MonoBehaviour:
   components:
   - {fileID: 8032510007199776535}
   - {fileID: 3435694260906315833}
-  - {fileID: 6567086041650918770}
+  - {fileID: 5535747409815593379}
   destroyOnDie: 1
   onDieEvent:
     m_PersistentCalls:

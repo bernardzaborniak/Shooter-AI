@@ -12,6 +12,7 @@ namespace BenitosAI
         {
             None,
             Range,
+            RangeAndDesiredFloatValue,
             Direction //usefull for things like prioritise targets in front of me
                       //Buff Status
                       //Assigned Tag

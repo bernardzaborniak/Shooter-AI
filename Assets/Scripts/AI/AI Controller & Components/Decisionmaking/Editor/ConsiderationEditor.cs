@@ -68,6 +68,17 @@ namespace BenitosAI
                 EditorGUILayout.PropertyField(considerationInputPropMin);
                 EditorGUILayout.PropertyField(considerationInputPropMax);
             }
+            else if(type == ConsiderationInput.InputParamsType.RangeAndDesiredFloatValue)
+            {
+                SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
+                SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
+
+                EditorGUILayout.PropertyField(considerationInputPropMin);
+                EditorGUILayout.PropertyField(considerationInputPropMax);
+
+                SerializedProperty considerationInputPropDesFloatVal = serializedObject.FindProperty("desiredFloatValue");
+                EditorGUILayout.PropertyField(considerationInputPropDesFloatVal);
+            }
             EditorGUILayout.Space(10);
 
             EditorGUILayout.EndVertical();

@@ -43,6 +43,8 @@ namespace BenitosAI
         //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
         public float min;
         public float max;
+        // for desired range
+        public float desiredFloatValue;
 
         public CustomCurve considerationCurve;
 

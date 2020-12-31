@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
   m_Name: Idle Standing
   m_EditorClassIdentifier: 
-  decisionContextCreator: {fileID: 0}
+  decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
   correspondingAiStateCreator: {fileID: 0}
-  considerations: []
+  considerations:
+  - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
+  - {fileID: 11400000, guid: a35c121aa0e82824b9e6018a89048847, type: 2}

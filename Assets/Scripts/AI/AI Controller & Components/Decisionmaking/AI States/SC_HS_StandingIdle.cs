@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    [CreateAssetMenu(menuName = "AI/States/Standing Idle", fileName = "Standing Idle")]
     public class SC_HS_StandingIdle : AIStateCreator
     {
         public override AIState CreateState(AIController aiController, DecisionContext context)
@@ -30,8 +31,8 @@ namespace BenitosAI
         public override void OnStateEnter()
         {
             //charController.MoveTo(targetPosition, true);
-            charController.StopAimingSpine();
-            charController.StopAimingWeapon();
+            //charController.StopAimingSpine();
+            //charController.StopAimingWeapon();
         }
 
         public override void OnStateExit()
