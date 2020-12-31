@@ -64,8 +64,6 @@ namespace BenitosAI
             // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
             myTeamID = myEntity.teamID; // cached for optimisation.
             sensingInfo = new SensingInfo(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);
-
-
         }
 
         public override void UpdateComponent()
@@ -160,7 +158,7 @@ namespace BenitosAI
 
                 #endregion
 
-                sensingInfo.UpdateSensingInfoAfterAddingNewInfo();
+                sensingInfo.UpdateSensingInfoAfterAddingNewInfo(transform.position);
 
 
                 UnityEngine.Profiling.Profiler.EndSample();

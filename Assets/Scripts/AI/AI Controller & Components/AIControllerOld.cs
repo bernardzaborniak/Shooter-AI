@@ -98,7 +98,11 @@ namespace BenitosAI
 
             #region Set needed Variables
 
-            SensedEntityInfo nearestEnemyInfo = sensing.sensingInfo.nearestEnemyInfo;
+            SensedEntityInfo nearestEnemyInfo = null;
+            try
+            {
+                nearestEnemyInfo = sensing.sensingInfo.enemyInfos[0];
+            }catch(Exception e) { }
 
             Vector3 directionToNearestEnemy = Vector3.zero;
             float distanceToNearestEnemy = 0;

@@ -22,7 +22,8 @@ namespace BenitosAI
         public void SetUp(string sensedThingName, float sensedThingDistance, float timeLastSensed, int frameCountLastSensed, Transform referencedObjectTransform, AIVisualisationManager managerReference)
         {
             tmp_sensedThingName.text = sensedThingName;
-            tmp_sensedThingDistance.text = Mathf.Sqrt(sensedThingDistance).ToString("F1");
+            //tmp_sensedThingDistance.text = Mathf.Sqrt(sensedThingDistance).ToString("F1");
+            tmp_sensedThingDistance.text = sensedThingDistance.ToString("F1");
             this.timeLastSensed = timeLastSensed;
             this.frameCountLastSensed = frameCountLastSensed;
 

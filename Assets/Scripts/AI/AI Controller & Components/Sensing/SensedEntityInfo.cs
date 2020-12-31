@@ -43,7 +43,7 @@ namespace BenitosAI
             
         }
 
-        public void SetUpInfo(EntityVisibilityInfo visInfo, float squaredDistance)
+        public void SetUpInfo(EntityVisibilityInfo visInfo, float distance)
         {
             this.visInfo = visInfo;
             timeWhenLastSeen = Time.time;
@@ -54,7 +54,7 @@ namespace BenitosAI
             lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;
 
-            lastDistanceMeasured = squaredDistance;
+            lastDistanceMeasured = distance;
 
             //Set Movement Speeds
             if (visInfo.HasMovement())

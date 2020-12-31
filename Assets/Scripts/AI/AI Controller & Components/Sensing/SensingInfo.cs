@@ -5,17 +5,17 @@ using System;
 
 namespace BenitosAI
 {
-    public struct SensingInfoToAdd
+   /* public struct SensingInfoToAdd
     {
         public EntityVisibilityInfo visInfo;
-        public float squaredDistance;
+        public float distance;
 
-        public SensingInfoToAdd(EntityVisibilityInfo visInfo, float squaredDistance)
+        public SensingInfoToAdd(EntityVisibilityInfo visInfo, float distance)
         {
             this.visInfo = visInfo;
-            this.squaredDistance = squaredDistance;
+            this.distance = distance;
         }
-    }
+    }*/
 
 
     // Custom Object used for saving and transfering sensing information, needs Expanding with adding some kind of memory
@@ -23,8 +23,8 @@ namespace BenitosAI
     {
 
         //Enemies
-        public SensedEntityInfo nearestEnemyInfo;
-        float nearestEnemySquaredDistance;
+        //public SensedEntityInfo nearestEnemyInfo; //nearest enemy is just the first one in the array
+       //float nearestEnemySquaredDistance;
 
         Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> enemyInfosAddedThisFrame = new Dictionary<int, SensedEntityInfo>();
@@ -78,17 +78,17 @@ namespace BenitosAI
 
         #region Adding Entities
 
-        public void OnSensedEnemyEntity(EntityVisibilityInfo enemyEntityVisInfo, float squaredDistance)
+        public void OnSensedEnemyEntity(EntityVisibilityInfo enemyEntityVisInfo, float distance)
         {
-            OnSensedEntity(enemyEntityVisInfo, squaredDistance, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
+            OnSensedEntity(enemyEntityVisInfo, distance, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
         }
 
-        public void OnSensedFriendlyEntity(EntityVisibilityInfo friendlyEntityVisInfo, float squaredDistance)
+        public void OnSensedFriendlyEntity(EntityVisibilityInfo friendlyEntityVisInfo, float distance)
         {
-            OnSensedEntity(friendlyEntityVisInfo, squaredDistance, ref enemyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
+            OnSensedEntity(friendlyEntityVisInfo, distance, ref enemyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
         }
 
-        void OnSensedEntity(EntityVisibilityInfo entityVisInfo, float squaredDistance, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
+        void OnSensedEntity(EntityVisibilityInfo entityVisInfo, float distance, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
         {
             int key = entityVisInfo.entityAssignedTo.GetHashCode();
 
@@ -101,7 +101,7 @@ namespace BenitosAI
                 infosAddedPreviousFrames.Remove(key);
                 infosAddedThisFrame.Add(key, sensedEntityInfo);
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, squaredDistance);
+                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
             }
             // Else Get An info Object from the pool
             else if (infosPool.Count > 0)
@@ -109,7 +109,7 @@ namespace BenitosAI
                 sensedEntityInfo = infosPool.Dequeue();
                 infosAddedThisFrame.Add(key, sensedEntityInfo);
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, squaredDistance);
+                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
 
             }
             //If pool is empty, overwrite and older info
@@ -127,7 +127,7 @@ namespace BenitosAI
                 infosAddedPreviousFrames.Remove(keyToOverride);
                 infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, squaredDistance);
+                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
             }
             //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
 
@@ -137,17 +137,17 @@ namespace BenitosAI
 
         #region Add Tactical Points
 
-        public void OnSensedTPCover(TacticalPointVisibilityInfo tPointCoverVisInfo, float squaredDistance)
+        public void OnSensedTPCover(TacticalPointVisibilityInfo tPointCoverVisInfo, float distance)
         {
-            OnSensedTPoint(tPointCoverVisInfo, squaredDistance, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
+            OnSensedTPoint(tPointCoverVisInfo, distance, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
         }
 
-        public void OnSensedTPOpenField(TacticalPointVisibilityInfo tPointOpenFieldVisInfo, float squaredDistance)
+        public void OnSensedTPOpenField(TacticalPointVisibilityInfo tPointOpenFieldVisInfo, float distance)
         {
-            OnSensedTPoint(tPointOpenFieldVisInfo, squaredDistance, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
+            OnSensedTPoint(tPointOpenFieldVisInfo, distance, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
         }
 
-        void OnSensedTPoint(TacticalPointVisibilityInfo tPointVisInfo, float squaredDistance, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
+        void OnSensedTPoint(TacticalPointVisibilityInfo tPointVisInfo, float distance, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
         {
             int key = tPointVisInfo.tacticalPointAssignedTo.GetHashCode();
 
@@ -159,7 +159,7 @@ namespace BenitosAI
                 infosAddedPreviousFrames.Remove(key);
                 infosAddedThisFrame.Add(key, sensedTPointInfo);
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, squaredDistance);
+                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
 
             }
             // Else Get An info Object from the pool
@@ -168,7 +168,7 @@ namespace BenitosAI
                 sensedTPointInfo = infosPool.Dequeue();
                 infosAddedThisFrame.Add(key, sensedTPointInfo);
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, squaredDistance);
+                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
 
             }
             //If pool is empty, overwrite and older info
@@ -186,7 +186,7 @@ namespace BenitosAI
                 infosAddedPreviousFrames.Remove(keyToOverride);
                 infosAddedThisFrame.Add(keyToOverride, sensedTPointInfo);
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, squaredDistance);
+                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
 
             }  //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
 
@@ -197,16 +197,16 @@ namespace BenitosAI
 
         #region Updating Info after adding
 
-        public void UpdateSensingInfoAfterAddingNewInfo()
+        public void UpdateSensingInfoAfterAddingNewInfo(Vector3 currentPosition)
         {
             UpdateEntities(ref enemyInfos, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
             UpdateEntities(ref friendlyInfos, ref friendlyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
 
-            UpdateTPoints(ref tPointCoverInfos, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
-            UpdateTPoints(ref tPointOpenFieldInfos, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
+            UpdateTPoints(currentPosition, ref tPointCoverInfos, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
+            UpdateTPoints(currentPosition, ref tPointOpenFieldInfos, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
 
             //set the nearest just like that for now
-            if (enemyInfos.Length > 0)
+            /*if (enemyInfos.Length > 0)
             {
                 nearestEnemyInfo = enemyInfos[0];
 
@@ -214,7 +214,7 @@ namespace BenitosAI
             else
             {
                 nearestEnemyInfo = null;
-            }
+            }*/
         }
 
         void UpdateEntities(ref SensedEntityInfo[] infoArray, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
@@ -252,10 +252,12 @@ namespace BenitosAI
 
             infosAddedThisFrame.Clear();
 
-            //Sort the array by time when updated (optionally) 
+            //Sort the array by time when updated (optionally)  or sort the array by distances - have different sorted arrays? one sorted by time, one by distance?
+            Array.Sort(infoArray, 
+            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
         }
 
-        void UpdateTPoints(ref SensedTacticalPointInfo[] infoArray, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
+        void UpdateTPoints(Vector3 currentPosition, ref SensedTacticalPointInfo[] infoArray, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
         {
             //TODO 
             HashSet<int> invalidOnesToRemoveIDs = new HashSet<int>();
@@ -281,6 +283,12 @@ namespace BenitosAI
             infosAddedThisFrame.Values.CopyTo(infoArray, 0);
             infosAddedPreviousFrames.Values.CopyTo(infoArray, infosAddedThisFrame.Count);
 
+            //before sorting per distance we update the distance of all points which are old information, the units can still aproximately remember how far away this position was
+            foreach (SensedTacticalPointInfo item in infosAddedPreviousFrames.Values)
+            {
+                item.lastDistanceMeasured =  Vector3.Distance(currentPosition, item.visInfo.GetPointPosition());
+            }
+
 
             // Clear up current, fill the previous
             foreach (SensedTacticalPointInfo item in infosAddedThisFrame.Values)
@@ -290,7 +298,10 @@ namespace BenitosAI
 
             infosAddedThisFrame.Clear();
 
-            //Sort the array by time when updated (optionally) 
+
+            //Sort the array by distance
+            Array.Sort(infoArray,
+           delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
         }
 
         #endregion
