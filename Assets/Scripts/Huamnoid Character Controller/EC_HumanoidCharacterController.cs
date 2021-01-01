@@ -91,9 +91,50 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public ActiveCharacterPreventionModifier[] activePrevMods;
 
+    #region Orders
+
+    // orders keep informaiton of desired behaviour, even if modifiers prevent this behaviour
+    class AimingControllerOrder
+    {
+        public bool active; // is the order active?
+
+        public enum AimAtTargetingMethod
+        {
+            Direction,
+            Position,
+            Transform
+        }
+
+        public AimAtTargetingMethod orderTargetingMethod;
+
+        public Vector3 desiredAimDirection;
+        public Vector3 desiredAimPosition;
+        public Transform desiredAimTransform;
+
+        public AimingControllerOrder()
+        {
+            active = false;
+        }
+
+
+    }
+
+    AimingControllerOrder lookAtOrder;
+    AimingControllerOrder aimSpineOrder;
+    AimingControllerOrder aimWeaponOrder;
+
+
+    #endregion
+
+
 
     public override void SetUpComponent(GameEntity entity)
     {
+        //Aim Orders
+        lookAtOrder = new AimingControllerOrder();
+        aimSpineOrder = new AimingControllerOrder();
+        aimWeaponOrder = new AimingControllerOrder();
+
         base.SetUpComponent(entity);
 
         //1. Set Up components
@@ -103,10 +144,13 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
 
         SetUpCharacter();
-
     }
     public override void UpdateComponent()
     {
+        // Debug.Log("look at active: " + lookAtOrder.active);
+        // Debug.Log("aim spine active: " + aimSpineOrder.active);
+        // Debug.Log("aim weapon active: " + aimWeaponOrder.active);
+
         #region Keyboard Input for Development
         if (controllByPlayer)
         {
@@ -361,23 +405,24 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         //Debug.Log("move to ----------------");
         //if (!AreModifiersPreventing())
-        if (DoModifersAllowMovement())
-        {
-            if (sprint)
-            {
-                if (!DoesCurrentStanceAllowSprinting())
-                {
-                    sprint = false;
-                }
-                else
-                {
-                    StopAimingSpine();
-                    StopAimingWeapon();
-                }
-            }
 
-            movementController.MoveTo(destination, sprint);
+        //if (DoModifersAllowMovement())
+        //{
+        if (sprint)
+        {
+            if (!DoesCurrentStanceAllowSprinting())
+            {
+                sprint = false;
+            }
+            else
+            {
+                StopAimingSpine();
+                StopAimingWeapon();
+            }
         }
+
+        movementController.MoveTo(destination, sprint);
+        //}
     }
 
     public void StopMoving()
@@ -411,32 +456,55 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void LookAtTransform(Transform target)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowLookAt())
+        // Set order
+        lookAtOrder.active = true;
+        lookAtOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Transform;
+        lookAtOrder.desiredAimTransform = target;
+
+        // If modifiers arent preventing, start executing Order
+        if (DoModifiersAllowLookAt())
         {
-            aimingController.LookAtTransform(target);
+            //aimingController.LookAtTransform(target);
+            aimingController.LookAtTransform(lookAtOrder.desiredAimTransform);
         }
     }
 
     public void LookAtPosition(Vector3 position)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowLookAt())
+        // Set order
+        lookAtOrder.active = true;
+        lookAtOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Position;
+        lookAtOrder.desiredAimPosition = position;
+
+        // If modifiers arent preventing, start executing Order
+        if (DoModifiersAllowLookAt())
         {
-            aimingController.LookAtPosition(position);
+            aimingController.LookAtPosition(lookAtOrder.desiredAimPosition);
         }
     }
 
     public void LookInDirection(Vector3 direction)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowLookAt())
+        // Set order
+        lookAtOrder.active = true;
+        lookAtOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Direction;
+        lookAtOrder.desiredAimDirection = direction;
+
+        // If modifiers arent preventing, start executing Order
+        if (DoModifiersAllowLookAt())
         {
-            aimingController.LookInDirection(direction);
+            aimingController.LookInDirection(lookAtOrder.desiredAimDirection);
         }
     }
 
     public void StopLookAt()
+    {
+        lookAtOrder.active = false;
+
+        aimingController.StopLookAt();
+    }
+
+    void StopLookAtByModifier()
     {
         aimingController.StopLookAt();
     }
@@ -455,34 +523,34 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region Aim Spine Orders
     public void AimSpineAtTransform(Transform target)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowAimingSpine())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
-            {
-                aimingController.AimSpineAtTransform(target);
+            // Set order
+            aimSpineOrder.active = true;
+            aimSpineOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Transform;
+            aimSpineOrder.desiredAimTransform = target;
 
-                /*if (movementController.IsSprintingAccordingToOrder())
-                {
-                    movementController.SetSprint(false);
-                }*/
+            // If modifiers arent preventing, start executing Order
+            if (DoModifersAllowAimingSpine())
+            {
+                aimingController.AimSpineAtTransform(aimSpineOrder.desiredAimTransform);
             }
         }
     }
 
     public void AimSpineAtPosition(Vector3 position)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowAimingSpine())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
-            {
-                aimingController.AimSpineAtPosition(position);
+            // Set order
+            aimSpineOrder.active = true;
+            aimSpineOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Position;
+            aimSpineOrder.desiredAimPosition = position;
 
-               /* if (movementController.IsSprintingAccordingToOrder())
-                {
-                    movementController.SetSprint(false);
-                }*/
+            // If modifiers arent preventing, start executing Order
+            if (DoModifersAllowAimingSpine())
+            {
+                aimingController.AimSpineAtPosition(aimSpineOrder.desiredAimPosition);
             }
         }
 
@@ -490,23 +558,29 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimSpineInDirection(Vector3 direction)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifersAllowAimingSpine())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
-            {
-                aimingController.AimSpineInDirection(direction);
+            // Set order
+            aimSpineOrder.active = true;
+            aimSpineOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Direction;
+            aimSpineOrder.desiredAimDirection = direction;
 
-               /* if (movementController.IsSprintingAccordingToOrder())
-                {
-                    movementController.SetSprint(false);
-                }*/
+            // If modifiers arent preventing, start executing Order
+            if (DoModifersAllowAimingSpine())
+            {
+                aimingController.AimSpineInDirection(aimSpineOrder.desiredAimDirection);
             }
         }
 
     }
 
     public void StopAimingSpine()
+    {
+        aimSpineOrder.active = false;
+
+        aimingController.StopAimSpineAtTarget();
+    }
+    void StopAimingSpineByModifier()
     {
         aimingController.StopAimSpineAtTarget();
     }
@@ -531,19 +605,19 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponAtTransform(Transform target)
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifiersAllowAimingWeapon())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
+            if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
             {
-                if (interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon())
-                {
-                    aimingController.AimWeaponAtTransform(target);
+                // Set order
+                aimWeaponOrder.active = true;
+                aimWeaponOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Transform;
+                aimWeaponOrder.desiredAimTransform = target;
 
-                    //if (isSprinting)
-                    //{
-                        //movementController.SetSprint(false);
-                    //}
+                // If modifiers arent preventing, start executing Order
+                if (DoModifiersAllowAimingWeapon())
+                {
+                    aimingController.AimWeaponAtTransform(aimWeaponOrder.desiredAimTransform);
                 }
             }
         }
@@ -551,19 +625,19 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponAtPosition(Vector3 position)
     {
-        // if (!AreModifiersPreventing())
-        if (DoModifiersAllowAimingWeapon())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
+            if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
             {
-                if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
-                {
-                    aimingController.AimWeaponAtPosition(position);
+                // Set order
+                aimWeaponOrder.active = true;
+                aimWeaponOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Position;
+                aimWeaponOrder.desiredAimPosition = position;
 
-                    //if (isSprinting)
-                    //{
-                        //movementController.SetSprint(false);
-                    //}
+                // If modifiers arent preventing, start executing Order
+                if (DoModifiersAllowAimingWeapon())
+                {
+                    aimingController.AimWeaponAtPosition(aimWeaponOrder.desiredAimPosition);
                 }
             }
         }
@@ -571,25 +645,34 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AimWeaponInDirection(Vector3 direction)
     {
-        //if (!AreModifiersPreventing())
-        if(DoModifiersAllowAimingWeapon())
+        if (DoesCurrentStanceAllowAiming())
         {
-            if (DoesCurrentStanceAllowAiming())
+            if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
             {
-                if (DoesCurrentItemInteractionStanceAllowAimingWeapon())
-                {
-                    aimingController.AimWeaponInDirection(direction);
+                // Set order
+                aimWeaponOrder.active = true;
+                aimWeaponOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Direction;
+                aimWeaponOrder.desiredAimPosition = direction;
 
-                    /*if (isSprinting)
-                    {*/
-                        //movementController.SetSprint(false);
-                    //}
+                // If modifiers arent preventing, start executing Order
+                if (DoModifiersAllowAimingWeapon())
+                {
+
+                    aimingController.AimWeaponInDirection(aimWeaponOrder.desiredAimPosition);
+
                 }
             }
         }
     }
 
     public void StopAimingWeapon()
+    {
+        aimWeaponOrder.active = false;
+
+        aimingController.StopAimingWeaponAtTarget();
+    }
+
+    void StopAimingWeaponByModifier()
     {
         aimingController.StopAimingWeaponAtTarget();
     }
@@ -841,17 +924,17 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
                 {
-                     OnRemoveStunModifier(); //only execute when the last stun is removed
+                    OnRemoveStunModifier(); //only execute when the last stun is removed
                 }
                 else if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.JumpingToTraverseOffMeshLink)
                 {
-                     OnRemoveTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
+                    OnRemoveTraversingOffMeshLinkPreventionModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
                 }
-            }    
+            }
         }
     }
 
-  
+
 
     void UpdateModifiers()
     {
@@ -925,34 +1008,30 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
-    public bool DoModifersAllowMovement()
+    public bool DoModifiersAllowMovement()
     {
-        bool allows = true;
         foreach (ActiveCharacterPreventionModifier prevMod in activeCharacterPreventionModifiers)
         {
             if (prevMod.characterPreventionType != ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
             {
-                allows = false;
-                return allows;
+                return false;
             }
         }
 
-        return allows;
+        return true;
     }
 
-    public bool DoModifersAllowLookAt()
+    public bool DoModifiersAllowLookAt()
     {
-        bool allows = true;
         foreach (ActiveCharacterPreventionModifier prevMod in activeCharacterPreventionModifiers)
         {
             if (prevMod.characterPreventionType != ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
             {
-                allows = false;
-                return allows;
+                return false;
             }
         }
 
-        return allows;
+        return true;
     }
 
     public bool DoModifersAllowAimingSpine()
@@ -991,7 +1070,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             //Debug.Log("modifiers allow aiming");
             return true;
-            
+
         }
         else
         {
@@ -1022,8 +1101,8 @@ public class EC_HumanoidCharacterController : EntityComponent
         // StopAimAt();
         AbortChangingSelectedItem();
         AbortThrowingGrenade();
-        StopAimingSpine();
-        StopAimingWeapon();
+        StopAimingSpineByModifier();
+        StopAimingWeaponByModifier();
 
         Debug.Log("On Add Stun");
     }
@@ -1032,6 +1111,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         Debug.Log("On Remove Stun");
         RemoveModifier(staggerMovementSpeedModifier.CreateAndActivateNewModifier());
+
+        ReactivateAimingOrdersAfterRemovingModifier();
+
 
     }
 
@@ -1042,18 +1124,87 @@ public class EC_HumanoidCharacterController : EntityComponent
         AbortChangingSelectedItem();
         //AbortThrowingGrenade();
 
-        StopAimingSpine();
-        StopAimingWeapon();
+        StopAimingSpineByModifier();
+        StopAimingWeaponByModifier();
 
         //handsIKController.DisableIKs();
         handsIKController.OnStartTraversingOffMeshLink();
-
 
     }
 
     void OnRemoveTraversingOffMeshLinkPreventionModifier()
     {
         handsIKController.OnStopTraversingOffMeshLink();
+
+        ReactivateAimingOrdersAfterRemovingModifier();
+    }
+
+    void ReactivateAimingOrdersAfterRemovingModifier()
+    {
+        Debug.Log("Reactivate aiming after removing");
+        if (lookAtOrder.active)
+        {
+            Debug.Log("Reactivate aiming 1.1");
+
+            if (DoModifiersAllowLookAt())
+            {
+                Debug.Log("Reactivate aiming 1.2");
+
+                if (lookAtOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Transform)
+                {
+                    aimingController.LookAtTransform(lookAtOrder.desiredAimTransform);
+                }
+                else if (lookAtOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Position)
+                {
+                    aimingController.LookAtPosition(lookAtOrder.desiredAimPosition);
+                }
+                else if (lookAtOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Direction)
+                {
+                    aimingController.LookInDirection(lookAtOrder.desiredAimDirection);
+                }
+            }
+        }
+
+        if (aimSpineOrder.active)
+        {
+            if (DoModifiersAllowLookAt())
+            {
+                if (aimSpineOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Transform)
+                {
+                    aimingController.AimSpineAtTransform(aimSpineOrder.desiredAimTransform);
+                }
+                else if (aimSpineOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Position)
+                {
+                    aimingController.AimSpineAtPosition(aimSpineOrder.desiredAimPosition);
+                }
+                else if (aimSpineOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Direction)
+                {
+                    aimingController.AimSpineInDirection(aimSpineOrder.desiredAimDirection);
+                }
+            }
+        }
+
+        if (aimWeaponOrder.active)
+        {
+            if (DoModifiersAllowLookAt())
+            {
+
+                if (aimWeaponOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Transform)
+                {
+                    aimingController.AimWeaponAtTransform(aimWeaponOrder.desiredAimTransform);
+                }
+                else if (aimWeaponOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Position)
+                {
+                    aimingController.AimWeaponAtPosition(aimWeaponOrder.desiredAimPosition);
+                }
+                else if (aimWeaponOrder.orderTargetingMethod == AimingControllerOrder.AimAtTargetingMethod.Direction)
+                {
+                    aimingController.AimWeaponInDirection(aimWeaponOrder.desiredAimDirection);
+                }
+            }
+        }
+
+
 
     }
 

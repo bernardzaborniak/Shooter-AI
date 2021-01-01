@@ -439,37 +439,37 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
 
     public void MoveTo(Vector3 destination)
     {
-        if(movementState == MovementState.Default)
-        {
+       // if(movementState == MovementState.Default)
+        //{
             Debug.Log("move 3");
             currentMovementOrder.SetCurrentOrder(destination, false);
-        }
+        //}
        
     }
 
     public void MoveTo(Vector3 destination, bool sprint)
     {
-        if (movementState == MovementState.Default)
-        {
+        //if (movementState == MovementState.Default)
+        //{
             currentMovementOrder.SetCurrentOrder(destination, sprint);
-        }
+        //}
     }
 
     public void SetSprint(bool sprint)
     {
-        if (movementState == MovementState.Default)
-        {
+        //if (movementState == MovementState.Default)
+        //{
             currentMovementOrder.sprint = sprint;
-        }
+        //}
     }
 
     public void AbortMoving()
     {
-        if (movementState == MovementState.Default)
-        {
+        //if (movementState == MovementState.Default)
+        //{
             agent.ResetPath();
             currentMovementOrder.OnAbort();
-        }
+        //}
     }
 
     public void PauseMoving()
