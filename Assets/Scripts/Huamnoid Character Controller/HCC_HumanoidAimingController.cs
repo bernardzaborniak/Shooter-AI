@@ -529,9 +529,7 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 
             aimingWeapon = false;
             desiredWeaponAimingConstraintWeight = 0;
-        }
-
-        
+        }  
     }
 
     #endregion
