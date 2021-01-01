@@ -129,12 +129,12 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     }
 
-    class ChangeWeaponOrder
+    class ChangeWeaponOrder: Order
     {
-        public int targetWeapon;
+        public int targetItemID;
     }
 
-    class ReloadWeaponOrder
+    class ReloadWeaponOrder: Order
     {
 
     }
@@ -298,6 +298,8 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     void UpdateOrders()
     {
+        #region Update Aiming Orders ([ordered termination] - they can only be terminated by a stopping order)
+
         if (lookAtOrder.executionStatus == Order.ExecutionStatus.WaitingForExecution)
         {
             if (DoModifiersAllowLookAt())
@@ -364,6 +366,63 @@ public class EC_HumanoidCharacterController : EntityComponent
                 }
             }
         }
+
+        #endregion
+
+        #region Update Item Interaction Orders ([automatic termination] - they trminate automatically if requirements have been met)
+
+        // -------------------------- Change Weapon ------------------------
+        if(changeWeaponOrder.executionStatus == Order.ExecutionStatus.WaitingForExecution)
+        {
+            if (DoModifiersAllowItemInteraction())
+            {
+                //stop aiming weapon if itemChangeInitiated
+                if (interactionController.ChangeItemInHand(changeWeaponOrder.targetItemID))
+                {
+                    if (IsAimingWeapon())
+                    {
+                        StopAimingWeapon();
+                    }
+
+                    reloadWeaponOrder.executionStatus = Order.ExecutionStatus.BeingExecuted;
+                }
+            }
+        }
+        else if(changeWeaponOrder.executionStatus == Order.ExecutionStatus.BeingExecuted)
+        {
+            //if change is finished, terminate order
+            if(GetCurrentlySelectedItem() == GetItemInInventory(changeWeaponOrder.targetItemID))
+            {
+                interactionController.AbortChangingItemInHand();
+                changeWeaponOrder.executionStatus = Order.ExecutionStatus.NoOrder;
+            }
+        }
+
+        // -------------------------- Reload Weapon ------------------------
+        if(reloadWeaponOrder.executionStatus == Order.ExecutionStatus.WaitingForExecution)
+        {
+            if (DoModifiersAllowItemInteraction())
+            {
+                if (IsAimingWeapon())
+                {
+                    StopAimingWeapon();
+                }
+                interactionController.StartReloadingWeapon();
+                reloadWeaponOrder.executionStatus = Order.ExecutionStatus.BeingExecuted;
+            }
+        }
+        else if(reloadWeaponOrder.executionStatus == Order.ExecutionStatus.BeingExecuted)
+        {
+            if(GetAmmoRemainingInMagazineRatio() == 1f)
+            {
+                interactionController.AbortReloadingWeapon();
+                reloadWeaponOrder.executionStatus = Order.ExecutionStatus.NoOrder;
+            }
+        }
+
+
+
+        #endregion
     }
 
     #region Changing Character Stances Orders
@@ -505,11 +564,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             {
                 sprint = false;
             }
-            else
-            {
-                StopAimingSpine();
-                StopAimingWeapon();
-            }
+            //else
+            //{
+                //StopAimingSpine();
+                //StopAimingWeapon();
+            //}
         }
 
         movementController.MoveTo(destination, sprint);
@@ -730,23 +789,24 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region Item Interation Orders
     public void ChangeSelectedItem(int inventoryID)
     {
-        if (DoModifiersAllowItemInteraction())
-        {
-            //stop aiming weapon if itemChangeInitiated
-            if (interactionController.ChangeItemInHand(inventoryID))
-            {
-                if (IsAimingWeapon())
-                {
-                    StopAimingWeapon();
-                }
-            }
-
-        }
+        changeWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
+        changeWeaponOrder.targetItemID = inventoryID;     
     }
 
     public void AbortChangingSelectedItem()
     {
         interactionController.AbortChangingItemInHand();
+        changeWeaponOrder.executionStatus = Order.ExecutionStatus.NoOrder;
+    }
+
+    void BlockChangingSelectedItemByModifier()
+    {
+        interactionController.AbortChangingItemInHand();
+
+        if(changeWeaponOrder.executionStatus == Order.ExecutionStatus.BeingExecuted)
+        {
+            changeWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
+        }
     }
 
     #endregion
@@ -784,20 +844,23 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void StartReloadingWeapon()
     {
-        //if (!AreModifiersPreventing())
-        if (DoModifiersAllowItemInteraction())
-        {
-            if (IsAimingWeapon())
-            {
-                StopAimingWeapon();
-            }
-            interactionController.StartReloadingWeapon();
-        }
+        reloadWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;   
     }
 
     public void AbortReloadingWeapon()
     {
         interactionController.AbortReloadingWeapon();
+        reloadWeaponOrder.executionStatus = Order.ExecutionStatus.NoOrder;
+    }
+
+    void BlockReloadingWeaponByModifier()
+    {
+        interactionController.AbortReloadingWeapon();
+
+        if(reloadWeaponOrder.executionStatus == Order.ExecutionStatus.BeingExecuted)
+        {
+            reloadWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
+        }
     }
 
 
@@ -822,6 +885,12 @@ public class EC_HumanoidCharacterController : EntityComponent
     public int GetAmmoRemainingInMagazine()
     {
         return interactionController.GetAmmoRemainingInMagazine();
+    }
+
+    public float GetAmmoRemainingInMagazineRatio()
+    {
+        //return ration between 0 and 1
+        return interactionController.GetAmmoRemainingInMagazineRatio();
     }
 
     #endregion
@@ -898,7 +967,11 @@ public class EC_HumanoidCharacterController : EntityComponent
 
             activeCharacterPreventionModifiers.Add(preventionMod);
 
-            if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
+            if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
+            {
+                OnAddSprintingModifier();
+            }
+            else if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
             {
                 OnAddStunModifier(); //only execute this when the stun starts, stun cant stack, mor stun modifiers can only increase the stun duration
             }
@@ -952,7 +1025,11 @@ public class EC_HumanoidCharacterController : EntityComponent
 
             if (activeCharacterPreventionModifiers.Remove(preventionMod))
             {
-                if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
+                if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
+                {
+                    OnRemoveSprintingModifier();
+                }
+                else if (preventionMod.characterPreventionType == ActiveCharacterPreventionModifier.CharacterPreventionType.Stunned)
                 {
                     OnRemoveStunModifier(); //only execute when the last stun is removed
                 }
@@ -1066,70 +1143,47 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public bool DoModifersAllowAimingSpine()
     {
-        /*bool allows = true;
-        foreach (ActiveCharacterPreventionModifier prevMod in activeCharacterPreventionModifiers)
-        {
-            if (prevMod.characterPreventionType != ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
-            {
-                allows = false;
-                return allows;
-            }
-        }
-
-        return allows;*/
         if (activeCharacterPreventionModifiers.Count == 0)
         {
-            //Debug.Log("modifiers allow aiming");
             return true;
-
         }
         else
         {
-            //Debug.Log("modifiers dont allow aiming");
             return false;
         }
     }
 
     public bool DoModifiersAllowAimingWeapon()
     {
-        //Rework this - will always result in false?
-        //bool allows = DoModifersAllowMovement();
-        //bool allows = true;
-
         if (activeCharacterPreventionModifiers.Count == 0)
         {
-            //Debug.Log("modifiers allow aiming");
             return true;
 
         }
         else
         {
-            //Debug.Log("modifiers dont allow aiming");
             return false;
         }
+    }
 
-        /*foreach (ActiveCharacterPreventionModifier prevMod in activeCharacterPreventionModifiers)
-        {
-            if (prevMod.characterPreventionType != ActiveCharacterPreventionModifier.CharacterPreventionType.Sprinting)
-            {
-                allows = false;
-                return allows;
-            }
-        }*/
+    void OnAddSprintingModifier()
+    {
+        BlockAimingSpineByModifier();
+        BlockAimingWeaponByModifier();
+    }
 
-
-        //return allows;
-
-
+    void OnRemoveSprintingModifier()
+    {
 
     }
 
-
     void OnAddStunModifier()
     {
-        AbortReloadingWeapon();
+        //AbortReloadingWeapon();
+        BlockReloadingWeaponByModifier();
         // StopAimAt();
-        AbortChangingSelectedItem();
+        //AbortChangingSelectedItem();
+        BlockChangingSelectedItemByModifier();
         AbortThrowingGrenade();
         BlockAimingSpineByModifier();
         BlockAimingWeaponByModifier();
@@ -1143,11 +1197,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         RemoveModifier(staggerMovementSpeedModifier.CreateAndActivateNewModifier());
     }
 
+
     void OnAddTraversingOffMeshLinkPreventionModifier()
     {
-        AbortReloadingWeapon();
+        //AbortReloadingWeapon();
+        BlockReloadingWeaponByModifier();
         //StopAimAt();
-        AbortChangingSelectedItem();
+        //AbortChangingSelectedItem();
+        BlockChangingSelectedItemByModifier();
         //AbortThrowingGrenade();
 
         BlockAimingSpineByModifier();
