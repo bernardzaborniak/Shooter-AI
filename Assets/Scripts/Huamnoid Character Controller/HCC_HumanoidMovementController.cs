@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMoveable
 {
@@ -467,8 +468,12 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
     {
         //if (movementState == MovementState.Default)
         //{
+        //try //use try, cause sometimes this could be called wrongly before ai system placed the agent on the navmesh.
+        //{
             agent.ResetPath();
-            currentMovementOrder.OnAbort();
+        //}catch(Exception e) { }
+
+        currentMovementOrder.OnAbort();
         //}
     }
 

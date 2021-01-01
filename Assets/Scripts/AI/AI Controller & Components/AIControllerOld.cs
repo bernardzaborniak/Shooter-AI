@@ -157,7 +157,7 @@ namespace BenitosAI
                 {
                     if (nearestEnemyInfoLastFrame != null)
                     {
-                        characterController.StopMoving();
+                        if(characterController.IsMoving()) characterController.StopMoving();
                     }
 
                     //Go At The Desired Distance
@@ -227,7 +227,7 @@ namespace BenitosAI
                     {
                         targetTacticalPoint = null;
                         positioningState = PositioningState.OpenField;
-                        characterController.StopMoving();
+                        if(characterController.IsMoving())  characterController.StopMoving();
                     }
                     else
                     {
@@ -494,7 +494,7 @@ namespace BenitosAI
 
                     if (characterController.IsCrouched())
                     {
-                        characterController.StopMoving();
+                        if (characterController.IsMoving()) characterController.StopMoving();
                     }
 
 

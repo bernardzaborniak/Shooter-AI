@@ -748,7 +748,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         {
             aimWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
             aimWeaponOrder.orderTargetingMethod = AimingControllerOrder.AimAtTargetingMethod.Direction;
-            aimWeaponOrder.desiredAimPosition = direction;
+            aimWeaponOrder.desiredAimDirection = direction;
         }
     }
 
