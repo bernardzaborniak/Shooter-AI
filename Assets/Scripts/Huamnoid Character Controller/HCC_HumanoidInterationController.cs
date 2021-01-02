@@ -468,9 +468,10 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     {
         if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
         {
+            // can be caused by stagger or flinch
             if (pinRemovedFromGrenade)
             {
-                //can only be caused by stagger or flinch or something?
+                // an armed grenade will be dropped
                 itemInteractionState = ItemInteractionState.Idle;
                 (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), Random.Range(-3, 3));  //is this the proper way
                 inventory[currentSelectedItemID] = null; //Remove grenade from inventory
@@ -478,6 +479,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             }
             else
             {
+                // an unarmed grenade will not be dropped
                 itemInteractionState = ItemInteractionState.Idle;
                 animationController.AbortThrowingGrenade();
             }

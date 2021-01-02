@@ -85,7 +85,7 @@ namespace BenitosAI
 
         public void OnSensedFriendlyEntity(EntityVisibilityInfo friendlyEntityVisInfo, float distance)
         {
-            OnSensedEntity(friendlyEntityVisInfo, distance, ref enemyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
+            OnSensedEntity(friendlyEntityVisInfo, distance, ref friendlyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
         }
 
         void OnSensedEntity(EntityVisibilityInfo entityVisInfo, float distance, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
@@ -99,18 +99,20 @@ namespace BenitosAI
             {
                 sensedEntityInfo = infosAddedPreviousFrames[key];
                 infosAddedPreviousFrames.Remove(key);
-                infosAddedThisFrame.Add(key, sensedEntityInfo);
 
                 sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
+
+                infosAddedThisFrame.Add(key, sensedEntityInfo);
+
             }
             // Else Get An info Object from the pool
             else if (infosPool.Count > 0)
             {
                 sensedEntityInfo = infosPool.Dequeue();
-                infosAddedThisFrame.Add(key, sensedEntityInfo);
 
                 sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
 
+                infosAddedThisFrame.Add(key, sensedEntityInfo);
             }
             //If pool is empty, overwrite and older info
             else if (infosAddedPreviousFrames.Count > 0)
@@ -125,9 +127,11 @@ namespace BenitosAI
 
                 sensedEntityInfo = infosAddedPreviousFrames[keyToOverride];
                 infosAddedPreviousFrames.Remove(keyToOverride);
-                infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
 
                 sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
+
+                infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
+
             }
             //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
 
@@ -157,18 +161,19 @@ namespace BenitosAI
             {
                 sensedTPointInfo = infosAddedPreviousFrames[key];
                 infosAddedPreviousFrames.Remove(key);
-                infosAddedThisFrame.Add(key, sensedTPointInfo);
 
                 sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
 
+                infosAddedThisFrame.Add(key, sensedTPointInfo);
             }
             // Else Get An info Object from the pool
             else if (infosPool.Count > 0)
             {
                 sensedTPointInfo = infosPool.Dequeue();
-                infosAddedThisFrame.Add(key, sensedTPointInfo);
 
                 sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
+
+                infosAddedThisFrame.Add(key, sensedTPointInfo);
 
             }
             //If pool is empty, overwrite and older info
@@ -184,10 +189,10 @@ namespace BenitosAI
 
                 sensedTPointInfo = infosAddedPreviousFrames[keyToOverride];
                 infosAddedPreviousFrames.Remove(keyToOverride);
-                infosAddedThisFrame.Add(keyToOverride, sensedTPointInfo);
 
                 sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
 
+                infosAddedThisFrame.Add(keyToOverride, sensedTPointInfo);
             }  //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing
 
 
@@ -243,6 +248,9 @@ namespace BenitosAI
             infosAddedThisFrame.Values.CopyTo(infoArray, 0);
             infosAddedPreviousFrames.Values.CopyTo(infoArray, infosAddedThisFrame.Count);
 
+            //Debug.Log("---------");
+            //Debug.Log("sensing update: infoArray: " + infoArray.Length + " infosPool: " + infosPool.Count);
+            //Debug.Log("infosAddedThisFrame: " + infosAddedThisFrame.Count + " infosAddedPreviousFrame: " + infosAddedPreviousFrames.Count);
 
             // Clear up current, fill the previous
             foreach (SensedEntityInfo item in infosAddedThisFrame.Values)
@@ -255,6 +263,7 @@ namespace BenitosAI
             //Sort the array by time when updated (optionally)  or sort the array by distances - have different sorted arrays? one sorted by time, one by distance?
             Array.Sort(infoArray, 
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
         }
 
         void UpdateTPoints(Vector3 currentPosition, ref SensedTacticalPointInfo[] infoArray, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
@@ -282,6 +291,10 @@ namespace BenitosAI
 
             infosAddedThisFrame.Values.CopyTo(infoArray, 0);
             infosAddedPreviousFrames.Values.CopyTo(infoArray, infosAddedThisFrame.Count);
+
+            //Debug.Log("---------");
+            //Debug.Log("sensing update: infoArray: " + infoArray.Length + " infosPool: " + infosPool.Count);
+            //Debug.Log("infosAddedThisFrame: " + infosAddedThisFrame.Count + " infosAddedPreviousFrame: " + infosAddedPreviousFrames.Count);
 
             //before sorting per distance we update the distance of all points which are old information, the units can still aproximately remember how far away this position was
             foreach (SensedTacticalPointInfo item in infosAddedPreviousFrames.Values)

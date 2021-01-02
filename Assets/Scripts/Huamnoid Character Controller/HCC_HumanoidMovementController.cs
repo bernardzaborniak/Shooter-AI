@@ -470,7 +470,10 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         //{
         //try //use try, cause sometimes this could be called wrongly before ai system placed the agent on the navmesh.
         //{
+        if (agent.isOnNavMesh)
+        {
             agent.ResetPath();
+        }
         //}catch(Exception e) { }
 
         currentMovementOrder.OnAbort();
@@ -507,7 +510,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         //only rotate on y axis
         direction.y = 0;
         currentRotation = agent.transform.rotation;
-
+        if(float.IsNaN(direction.x)) Debug.Log("rotate towards: direction: " + direction);
         averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
         if (targetRotation != Quaternion.LookRotation(direction))
         {
