@@ -828,6 +828,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         return interactionController.DoesCurrentItemInteractionStanceAllowAimingWeapon();
     }
 
+    public bool DoesCurrentItemInteractionStanceAllowAimingSpine()
+    {
+        return interactionController.DoesCurrentItemInteractionStanceAllowAimingSpine();
+    }
+
     #endregion
 
 

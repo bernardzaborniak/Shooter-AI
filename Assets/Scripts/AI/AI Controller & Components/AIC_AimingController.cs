@@ -89,6 +89,14 @@ namespace BenitosAI
                     launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
                 }
 
+                // If the target is too far awy, and it is impossible for the projectile to reach it
+                // -> use the angle of 45 degrees as a substitute, it is the furthest it can go
+                if (float.IsNaN(launchAngle))
+                {
+                    Debug.Log("launch angle was NAN");
+                    launchAngle = 45;
+                }
+
                 aimDirection = Quaternion.AngleAxis(-launchAngle, transform.right) * directionToTargetNoY;
 
             }

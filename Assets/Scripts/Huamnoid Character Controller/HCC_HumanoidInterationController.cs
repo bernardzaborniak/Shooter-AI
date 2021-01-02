@@ -416,6 +416,9 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
                 //this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
                 //this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
 
+                Debug.Log("start throwing grenade");
+
+
                 itemInteractionState = ItemInteractionState.ThrowingGrenade;
                 throwingGrenadeEndTime = Time.time + (inventory[currentSelectedItemID] as Grenade).throwingTime;
 
@@ -440,6 +443,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     void FinishThrowingGrenade()
     {
         itemInteractionState = ItemInteractionState.Idle;
+        Debug.Log("finished throwing grenade: direction: " + currentGrenadeThrowDirection + " velocity: " + currentGrenadeThrowVelocity);
         (inventory[currentSelectedItemID] as Grenade).Throw(currentGrenadeThrowDirection, currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
@@ -478,6 +482,12 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     public bool DoesCurrentItemInteractionStanceAllowAimingWeapon()
     {
         return itemInteractionState == ItemInteractionState.Idle;
+    }
+
+    public bool DoesCurrentItemInteractionStanceAllowAimingSpine()
+    {
+        //for now it is always allowed
+        return true;
     }
 
 }
