@@ -46,7 +46,7 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 
     //For Calculating the desired Direction in Different ways
     bool aimingSpine;
-    Vector3 directionFromAimingReferencePointToSpineTarget;
+    Vector3 spineDirectionToTarget;
     Vector3 spinePositionOfTarget;
     Transform spineTransformOfTarget;
 
@@ -222,22 +222,22 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 
             if (currentSpineTargetingMethod == AimAtTargetingMethod.Direction)
             {
-                directionFromAimingReferencePointToSpineTarget = directionFromAimingReferencePointToSpineTarget;
+                spineDirectionToTarget = spineDirectionToTarget;
             }
             else if (currentSpineTargetingMethod == AimAtTargetingMethod.Position)
             {
-                directionFromAimingReferencePointToSpineTarget = spinePositionOfTarget - aimingReferencePointOnBody.position;
+                spineDirectionToTarget = spinePositionOfTarget - aimingReferencePointOnBody.position;
             }
             else if (currentSpineTargetingMethod == AimAtTargetingMethod.Transform)
             {
-                directionFromAimingReferencePointToSpineTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
+                spineDirectionToTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
             }
 
             // -------------   Rotate Horizontally ----------------
-            movementController.SetDesiredForward(directionFromAimingReferencePointToSpineTarget);
+            movementController.SetDesiredForward(spineDirectionToTarget);
 
             // -------------   Calculate V3 desiredLocalSpineDirection & current -----------------
-            desiredLocalSpineDirection = new Vector3(0, directionFromAimingReferencePointToSpineTarget.y, new Vector2(directionFromAimingReferencePointToSpineTarget.x, directionFromAimingReferencePointToSpineTarget.z).magnitude);
+            desiredLocalSpineDirection = new Vector3(0, spineDirectionToTarget.y, new Vector2(spineDirectionToTarget.x, spineDirectionToTarget.z).magnitude);
             desiredSpineDirection = transform.TransformDirection(desiredLocalSpineDirection);
             currentLocalSpineDirection = new Vector3(desiredLocalSpineDirection.x, currentLocalSpineDirection.y, desiredLocalSpineDirection.z); //clap the currentDirection so it only goes up and down, not to the sides, also //adjust the length of current Direction so it has the same length as desired, only then vector slerp in RotateTowards() wil give correct results
         }
@@ -379,6 +379,7 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
     {
         aimingSpine = true;
         currentSpineTargetingMethod = AimAtTargetingMethod.Direction;
+        spineDirectionToTarget = direction;
         //movementController.manualRotation = true;
         movementController.SetManualRotation(true);
     }

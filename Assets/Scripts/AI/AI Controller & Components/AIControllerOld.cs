@@ -63,6 +63,8 @@ namespace BenitosAI
         float switchingBetweenCoverHidingAndShootingIntervalMax = 4;
         float nextChangeCoverStanceTime;
 
+        Vector3 grenadeAimSpineDirectionLastFrame;
+
 
 
         //void Start()
@@ -95,7 +97,7 @@ namespace BenitosAI
 
 
             #region AI State update
-
+            /*
             #region Set needed Variables
 
             SensedEntityInfo nearestEnemyInfo = null;
@@ -130,15 +132,6 @@ namespace BenitosAI
             {
                 enemyVelocity = nearestEnemyInfo.GetCurrentVelocity();
             }
-            /*if (nearestEnemyInfo != null)
-            {
-                //VisibilityInfo //TODO
-                IMoveable movement = nearestEnemyInfo.GetComponent<IMoveable>();
-                if (movement != null)
-                {
-                    enemyMovementSpeed = movement.GetCurrentVelocity();
-                }
-            }*/
 
             //cover
             //HashSet<Tuple<TacticalPoint,float>> possiblePosts = sensing.postsInSensingRadius;
@@ -503,13 +496,6 @@ namespace BenitosAI
 
                         Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
 
-                        // enemyMovementSpeed = Vector3.zero;
-                        /*IMoveable movement = nearestEnemyInfo.GetComponent<IMoveable>();
-
-                        if (movement != null)
-                        {
-                            enemyVelocity = movement.GetCurrentVelocity();
-                        }*/
 
                         float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);//we add 2just to fix some errors - needs refactoring later
 
@@ -569,15 +555,21 @@ namespace BenitosAI
 
             //usually shoot smg, if there is no ammo left in smg, theres a 50 % chance that we change to pistol instead of reloading, the same in pistol to smg
             //shot weapon
-
+            */
             #endregion
 
 
-            /*GameEntity nearestEnemy = sensing.nearestEnemy;
+            SensedEntityInfo nearestEnemy = null;
             float distanceToNearestEnemy = 0;
-            if (nearestEnemy)
+
+            try
             {
-                distanceToNearestEnemy = (nearestEnemy.transform.position - transform.position).magnitude;
+                nearestEnemy =  sensing.sensingInfo.enemyInfos[0];
+            }catch(Exception e) { }
+
+            if (nearestEnemy != null)
+            {
+                distanceToNearestEnemy = Vector3.Distance(nearestEnemy.GetEntityPosition(), transform.position);
             }
 
             characterController.ChangeCharacterStanceToCombatStance();
@@ -586,38 +578,57 @@ namespace BenitosAI
             {
                 characterController.ChangeSelectedItem(3);
 
-                if (nearestEnemy)
+                if (nearestEnemy != null)
                 {
                     if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3))
                     {
                         Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
 
-                        Vector3 enemyMovementSpeed = Vector3.zero;
-                        IMoveable movement = nearestEnemy.GetComponent<IMoveable>();
-
-                        if (movement != null)
-                        {
-                            enemyMovementSpeed = movement.GetCurrentVelocity();
-                        }
+                        Vector3 enemyMovementSpeed = nearestEnemy.GetCurrentVelocity();
+                       
 
                         float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);//we add 2just to fix some errors - needs refactoring later
+                        Debug.Log("throwing velocity: " + grenadeThrowingVelocity + " -------------------------------------------------------------------");
+                        Debug.Log("at distance: " + distanceToNearestEnemy);
+                        //TODo1 how is the velocity determined - could there be an error?
 
+                        //Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetEntityPosition(), Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
+                        Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.GetEntityPosition(), enemyMovementSpeed, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
+                        Debug.Log("aim spine direction: " + aimSpineDirection);
+                        //if(check aim direction for nan)
 
-                        Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemy.transform.position, Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
+                        //if angle is nan - just return the angle of 45 rotated by height diffeence of target and ground - this is the maximum that can be reached
+                        //-> return this inside the launch angle calculation function
+                        
+                        //TODO 2 build some exeption here so it never returns nan
                         //Vector3 grenadeThrowingDirection = aimingController.AddAimErrorAndHandShakeToAimDirection(aimSpineDirection);
-                        Vector3 grenadeThrowingDirection = aimSpineDirection;
+                       // Vector3 grenadeThrowingDirection = aimSpineDirection;
 
                         characterController.AimSpineInDirection(aimSpineDirection);
 
-                        if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
+                        //if (characterController.GetCurrentSpineAimingErrorAngle() < 5)
+                        if (!characterController.IsThrowingGrenade())
                         {
-                            characterController.ThrowGrenade(grenadeThrowingVelocity, grenadeThrowingDirection);
+                            if (characterController.GetCurrentSpineAimingErrorAngle() < 30)
+                            {
+                                characterController.StartThrowingGrenade();//(grenadeThrowingVelocity, grenadeThrowingDirection);
+                            }
+                        }
+                        else
+                        {
+                            characterController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimSpineDirection);
                         }
 
+                        grenadeAimSpineDirectionLastFrame = aimSpineDirection;
                     }
                 }
 
-            }*/
+
+            }
+            else
+            {
+                characterController.StopAimingSpine();
+            }
 
 
             UnityEngine.Profiling.Profiler.EndSample();

@@ -246,7 +246,7 @@ public class EC_HumanoidCharacterController : EntityComponent
             }
             if (Input.GetKeyDown(KeyCode.G))
             {
-                ThrowGrenade(5f, transform.forward);
+                //StartThrowingGrenade(5f, transform.forward);
             }
 
 
@@ -384,7 +384,7 @@ public class EC_HumanoidCharacterController : EntityComponent
                         StopAimingWeapon();
                     }
 
-                    reloadWeaponOrder.executionStatus = Order.ExecutionStatus.BeingExecuted;
+                    changeWeaponOrder.executionStatus = Order.ExecutionStatus.BeingExecuted;
                 }
             }
         }
@@ -864,18 +864,23 @@ public class EC_HumanoidCharacterController : EntityComponent
     }
 
 
-    public void ThrowGrenade(float throwVelocity, Vector3 throwDirection)
+    public void StartThrowingGrenade()//float throwVelocity, Vector3 throwDirection)
     {
         // if (!AreModifiersPreventing())
         if (DoModifiersAllowItemInteraction())
         {
-            interactionController.ThrowGrenade(throwVelocity, throwDirection);
+            interactionController.StartThrowingGrenade();//throwVelocity, throwDirection);
         }
+    }
+
+    public void UpdateVelocityWhileThrowingGrenade(float currentGrenadeThrowVelocity, Vector3 currentGrenadeThrowDirection)
+    {
+        interactionController.UpdateVelocityWhileThrowingGrenade(currentGrenadeThrowVelocity, currentGrenadeThrowDirection);
     }
 
     public void AbortThrowingGrenade()
     {
-        interactionController.AbortThrowingGrenade();
+        interactionController.AbortThrowingGrenadeAfterTriggeringFuze();
     }
 
     #endregion
@@ -891,6 +896,11 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         //return ration between 0 and 1
         return interactionController.GetAmmoRemainingInMagazineRatio();
+    }
+
+    public bool IsThrowingGrenade()
+    {
+        return interactionController.IsThrowingGrenade();
     }
 
     #endregion

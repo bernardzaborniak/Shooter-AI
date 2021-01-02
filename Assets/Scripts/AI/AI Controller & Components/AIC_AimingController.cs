@@ -6,7 +6,7 @@ namespace BenitosAI
 {
     public class AIC_AimingController : AIComponent
     {
-        #region fields
+        #region Fields
 
         [Header("For Calculating Direction")]
         [Tooltip("Reference for aiming, propably spine 3")]
@@ -82,7 +82,6 @@ namespace BenitosAI
 
                 if (currentTargetVelocity != Vector3.zero)
                 {
-
                     float projectileTimeOfFlight = Utility.CalculateTimeOfFlightOfProjectileLaunchedAtAnAngle(projectileLaunchVelocity, launchAngle, aimingReference.position, target);
 
                     directionToTarget = (target + currentTargetVelocity * projectileTimeOfFlight) - aimingReference.position;

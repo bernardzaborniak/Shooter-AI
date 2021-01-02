@@ -509,7 +509,8 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         currentRotation = agent.transform.rotation;
 
         averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
-
+        Debug.Log("mov rotate towards direction: " + direction);
+        Debug.Log("mov rotate towards direction - Quaternion of this: " + Quaternion.LookRotation(direction));
         if (targetRotation != Quaternion.LookRotation(direction))
         {
             targetRotation = Quaternion.LookRotation(direction);

@@ -65,6 +65,8 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     Vector3 currentGrenadeThrowDirection;
     //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
+    [Tooltip("the grenade is thrown in the spine direction")]
+    public Transform spineAimTransform;
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -405,14 +407,14 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
     #region Other Item Commands
 
-    public void ThrowGrenade(float currentGrenadeThrowVelocity, Vector3 currentGrenadeThrowDirection)
+    public void StartThrowingGrenade()//float currentGrenadeThrowVelocity, Vector3 currentGrenadeThrowDirection)
     {
         if(itemInteractionState == ItemInteractionState.Idle)
         {
             if (inventory[currentSelectedItemID] is Grenade)
             {
-                this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
-                this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
+                //this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
+                //this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
 
                 itemInteractionState = ItemInteractionState.ThrowingGrenade;
                 throwingGrenadeEndTime = Time.time + (inventory[currentSelectedItemID] as Grenade).throwingTime;
@@ -421,6 +423,19 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             }
         }
     }
+
+    public void UpdateVelocityWhileThrowingGrenade(float currentGrenadeThrowVelocity, Vector3 currentGrenadeThrowDirection) 
+    {
+        //althrough the throw direction is the spine, the grenade is thrown slightly correcter by having this eact direction
+        if (itemInteractionState == ItemInteractionState.ThrowingGrenade)
+        {
+            this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
+            this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
+            //throw direction is just spine direction
+        }
+    }
+
+
 
     void FinishThrowingGrenade()
     {
@@ -431,7 +446,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
     }
 
-    public void AbortThrowingGrenade()
+    public void AbortThrowingGrenadeAfterTriggeringFuze()
     {
         if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
         {
@@ -441,6 +456,11 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             inventory[currentSelectedItemID] = null; //Remove grenade from inventory
             animationController.AbortThrowingGrenade();
         }
+    }
+
+    public bool IsThrowingGrenade()
+    {
+        return itemInteractionState == ItemInteractionState.ThrowingGrenade;
     }
 
     public Item GetCurrentSelectedItem()
