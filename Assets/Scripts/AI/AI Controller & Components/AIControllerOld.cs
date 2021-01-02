@@ -99,7 +99,7 @@ namespace BenitosAI
             #region AI State update
             
             #region Set needed Variables
-
+            
             SensedEntityInfo nearestEnemyInfo = null;
             try
             {
@@ -494,28 +494,6 @@ namespace BenitosAI
                     if (characterController.GetCurrentlySelectedItem() == characterController.GetItemInInventory(3) && characterController.DoesCurrentItemInteractionStanceAllowAimingSpine())
                     {
 
-                        /* Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
-
-
-                         float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);//we add 2just to fix some errors - needs refactoring later
-
-
-                         Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.GetEntityPosition(), Vector3.zero, true, grenadeThrowingVelocity, false); //dont use enemyMovementVelocityWithgrenade as it will lead to errors and suicidal AI :)
-
-                         if (float.IsNaN(aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.GetEntityPosition(), Vector3.zero, true, grenadeThrowingVelocity, false).y))
-                         {
-                             Debug.Log("NAN: " + transform.parent.gameObject.name + " Throwing Grenade");
-                             Debug.Log("-> velöpcoty: " + grenadeThrowingVelocity);
-                         }
-                         //Vector3 grenadeThrowingDirection = aimingController.AddAimErrorAndHandShakeToAimDirection(aimSpineDirection);
-                         Vector3 grenadeThrowingDirection = aimSpineDirection;
-
-                         characterController.AimSpineInDirection(aimSpineDirection);
-
-                         if (characterController.GetCurrentSpineAimingErrorAngle() < 3)
-                         {
-                             characterController.ThrowGrenade(grenadeThrowingVelocity, grenadeThrowingDirection);
-                         }*/
 
                         Grenade equippedGrenade = characterController.GetCurrentlySelectedItem() as Grenade;
 
@@ -540,7 +518,7 @@ namespace BenitosAI
                         }
                         else
                         {
-                            Debug.Log("update grenade velocity before throwing: " + "vel: " + grenadeThrowingVelocity + " dir: " + aimSpineDirection);
+                            //Debug.Log("update grenade velocity before throwing: " + "vel: " + grenadeThrowingVelocity + " dir: " + aimSpineDirection);
                             characterController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimSpineDirection);
                         }
 

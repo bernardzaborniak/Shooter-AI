@@ -885,7 +885,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     public void AbortThrowingGrenade()
     {
-        interactionController.AbortThrowingGrenadeAfterTriggeringFuze();
+        interactionController.AbortThrowingGrenade();
     }
 
     #endregion

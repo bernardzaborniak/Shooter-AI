@@ -40,12 +40,16 @@ public class Grenade : Item
 
     public void Throw(Vector3 direction, float throwVelocity)
     {
-        armed = true;
         transform.SetParent(null);
         rigidbody.isKinematic = false;
 
         rigidbody.velocity = direction.normalized * throwVelocity;
         rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+
+    public void ArmGrenade()
+    {
+        armed = true;
 
         if (grenadeType == GrenadeType.TimeDelay)
         {
