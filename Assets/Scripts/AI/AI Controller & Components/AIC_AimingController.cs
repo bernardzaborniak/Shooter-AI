@@ -56,11 +56,11 @@ namespace BenitosAI
         {
             Vector3 aimDirection = Vector3.zero;
 
+
             if (!launchProjectileInArc)
             {
                 if (currentTargetVelocity != Vector3.zero)
                 {
-
                     Vector3 directionToTarget = target - aimingReference.position;
                     float projectileTimeOfFlight = directionToTarget.magnitude / projectileLaunchVelocity;
                     aimDirection = (target + currentTargetVelocity * projectileTimeOfFlight) - aimingReference.position;
@@ -69,7 +69,6 @@ namespace BenitosAI
                 {
                     aimDirection = target - aimingReference.position;
                 }
-
             }
             else
             {
@@ -77,8 +76,19 @@ namespace BenitosAI
                 Vector3 directionToTargetNoY = new Vector3(directionToTarget.x, 0, directionToTarget.z);
 
                 //TODO Check if setting vector is faster than creating new one
-
                 float launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
+
+                #region Fix launchAngle NAN 1
+                // If the target is too far awy, and it is impossible for the projectile to reach it
+                // -> use the angle of 45 degrees as a substitute, it is the furthest it can go
+                //fixing it here makes sure that time of flight is calcualted corretly too
+                if (float.IsNaN(launchAngle))
+                {
+                    //Debug.Log("launch angle was NAN 1 -> reset to 45");
+
+                    launchAngle = 45;
+                }
+                #endregion
 
                 if (currentTargetVelocity != Vector3.zero)
                 {
@@ -89,26 +99,31 @@ namespace BenitosAI
                     launchAngle = Utility.CalculateProjectileLaunchAngle(projectileLaunchVelocity, directionToTargetNoY.magnitude, directionToTarget.y, directShot);
                 }
 
+                #region Fix launchAngle NAN 2
                 // If the target is too far awy, and it is impossible for the projectile to reach it
                 // -> use the angle of 45 degrees as a substitute, it is the furthest it can go
                 if (float.IsNaN(launchAngle))
                 {
-                    Debug.Log("launch angle was NAN");
+                    //Debug.Log("launch angle was NAN 2 -> reset to 45");
                     launchAngle = 45;
                 }
+                #endregion
 
                 aimDirection = Quaternion.AngleAxis(-launchAngle, transform.right) * directionToTargetNoY;
-
             }
+
+
 
             if (addAimErrorAndhandShakeToDirection)
             {
-                return AddAimErrorAndHandShakeToAimDirection(aimDirection);
+                aimDirection = AddAimErrorAndHandShakeToAimDirection(aimDirection);
+                //return AddAimErrorAndHandShakeToAimDirection(aimDirection);
             }
-            else
-            {
-                return aimDirection;
-            }
+
+           
+
+            return aimDirection;
+            
 
         }
 

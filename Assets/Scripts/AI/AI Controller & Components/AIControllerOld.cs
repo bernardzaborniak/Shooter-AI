@@ -501,12 +501,15 @@ namespace BenitosAI
                         float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, distanceToNearestEnemy);
                                                                                                                                                   
 
-                        Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.GetEntityPosition(), enemyVelocity, true, grenadeThrowingVelocity, false); 
+                        Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(nearestEnemyInfo.GetEntityPosition(), enemyVelocity, true, grenadeThrowingVelocity, false);
 
                         //if angle is nan - just return the angle of 45 rotated by height diffeence of target and ground - this is the maximum that can be reached
                         //-> return this inside the launch angle calculation function
 
-
+                        if (float.IsNaN(aimSpineDirection.x))
+                        {
+                            Debug.Log("old ai controller aimSpineDirection is nan: " + aimSpineDirection);
+                        }
                         characterController.AimSpineInDirection(aimSpineDirection);
 
                         if (!characterController.IsThrowingGrenade())

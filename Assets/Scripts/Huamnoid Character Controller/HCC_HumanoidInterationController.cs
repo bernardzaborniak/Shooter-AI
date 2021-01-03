@@ -70,6 +70,8 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     Vector3 currentGrenadeThrowDirection;
     //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
+    [Tooltip("makes sure the grenade isnt somehow thrown too far away")]
+    public float maxGrenadeThrowVelocity;
 
 
     public override void SetUpComponent(GameEntity entity)
@@ -366,7 +368,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             
             return (inventory[currentSelectedItemID] as Gun).GetBulletsInMagazineLeft();
         }
-        Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
+        //Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
         return 0;
 
     }
@@ -377,7 +379,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         {
             return (inventory[currentSelectedItemID] as Gun).GetBulletsInMagazineLeftRatio();
         }
-        Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
+        //Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
         return 0;
 
     }
@@ -446,6 +448,10 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         //althrough the throw direction is the spine, the grenade is thrown slightly correcter by having this eact direction
         if (itemInteractionState == ItemInteractionState.ThrowingGrenade)
         {
+            if(currentGrenadeThrowVelocity > maxGrenadeThrowVelocity)
+            {
+                currentGrenadeThrowVelocity = maxGrenadeThrowVelocity;
+            }
             this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
             this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
             //throw direction is just spine direction

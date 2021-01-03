@@ -230,7 +230,11 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
             }
             else if (currentSpineTargetingMethod == AimAtTargetingMethod.Transform)
             {
-                spineDirectionToTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
+                if (spineTransformOfTarget)
+                {
+                    spineDirectionToTarget = spineTransformOfTarget.position - aimingReferencePointOnBody.position;
+                }
+                //else the old spine direction to target is used, its still saved
             }
 
             // -------------   Rotate Horizontally ----------------
@@ -252,6 +256,11 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
         currentSpineDirection = transform.TransformDirection(currentLocalSpineDirection);
 
         //----------     Set the target Transform position for the constraint Controller ----------  
+        if (float.IsNaN(currentSpineDirection.x))
+        {
+            Debug.Log("settin spineConstraintLocalTarget.pos, currentSpineDirection: " + currentSpineDirection + " currentSpineTargetingMethod: " + currentSpineTargetingMethod + " spineTransformOfTarget: " + spineTransformOfTarget + " spineDirectionToTarget: " + spineDirectionToTarget);
+
+        }
         spineConstraintLocalTarget.position = aimingReferencePointOnBody.position + currentSpineDirection;
 
         #endregion
@@ -344,7 +353,10 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
             else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Transform)
             {
                 //pointToAimSpineAt = spineTransformToAimAt.position;
-                weaponDirectionToTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;
+                if (weaponTransformOfTarget)
+                {
+                    weaponDirectionToTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;
+                }
             }
 
             desiredWeaponDirection = Vector3.RotateTowards(currentSpineDirection, weaponDirectionToTarget, maxWeaponRotDifference * Mathf.Deg2Rad, 100);

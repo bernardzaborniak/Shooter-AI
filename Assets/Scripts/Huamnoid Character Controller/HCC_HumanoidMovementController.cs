@@ -303,6 +303,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 else
                 {
                     rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
+
                     RotateTowards(offMeshLinkTraversalDirectionNoY);
                 }
 
@@ -363,10 +364,10 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 {
                     if (agent.desiredVelocity != Vector3.zero)
                     {
-                        desiredForward = agent.desiredVelocity;
+                        desiredForward = agent.desiredVelocity;   
+                        //could the nan come from here?
                     }
                 }
-
 
                 RotateTowards(desiredForward);
             }
@@ -422,7 +423,10 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                     newPosition = Vector3.Lerp(currentLinkStartPosition, currentLinkEndPosition, currentTraversalNormalizedTime);
                 }
 
-                offMeshLinkTraversalVelocity = (newPosition - agent.transform.position)/Time.deltaTime;
+                if(Time.deltaTime > 0)
+                {
+                    offMeshLinkTraversalVelocity = (newPosition - agent.transform.position) / Time.deltaTime;
+                }
                 RotateTowards(offMeshLinkTraversalDirection);
                 agent.transform.position = newPosition;
             }
@@ -510,7 +514,6 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         //only rotate on y axis
         direction.y = 0;
         currentRotation = agent.transform.rotation;
-        if(float.IsNaN(direction.x)) Debug.Log("rotate towards: direction: " + direction);
         averageAngularVelocity = Mathf.Lerp(stationaryTurnSpeed, runningTurnSpeed, (agent.velocity.magnitude / sprintingSpeed));  //lerp the turn speed - so turning is faster on lower movement velocities
         if (targetRotation != Quaternion.LookRotation(direction))
         {
@@ -799,8 +802,6 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         if(movementState == MovementState.Default)
         {
             return agent.velocity;
-            
-
         }
         else if(movementState == MovementState.TraversingOffMeshLink)
         {
