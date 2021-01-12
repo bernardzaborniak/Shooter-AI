@@ -58,27 +58,40 @@ namespace BenitosAI
             EditorGUILayout.Space(5);
 
             // Params 
-            ConsiderationInput.InputParamsType type = targetConsideration.considerationInput.inputParamsType;
 
-            if (type == ConsiderationInput.InputParamsType.Range)
+            ConsiderationInput.InputParamsType type;
+            if (targetConsideration.considerationInput)
             {
-                SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
-                SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
+                type = targetConsideration.considerationInput.inputParamsType;
 
-                EditorGUILayout.PropertyField(considerationInputPropMin);
-                EditorGUILayout.PropertyField(considerationInputPropMax);
+                if (type == ConsiderationInput.InputParamsType.Range)
+                {
+                    SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
+                    SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
+
+                    EditorGUILayout.PropertyField(considerationInputPropMin);
+                    EditorGUILayout.PropertyField(considerationInputPropMax);
+                }
+                else if (type == ConsiderationInput.InputParamsType.RangeAndDesiredFloatValue)
+                {
+                    SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
+                    SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
+
+                    EditorGUILayout.PropertyField(considerationInputPropMin);
+                    EditorGUILayout.PropertyField(considerationInputPropMax);
+
+                    SerializedProperty considerationInputPropDesFloatVal = serializedObject.FindProperty("desiredFloatValue");
+                    EditorGUILayout.PropertyField(considerationInputPropDesFloatVal);
+                }
+                else if(type == ConsiderationInput.InputParamsType.WeaponID)
+                {
+                    SerializedProperty weaponIDProp = serializedObject.FindProperty("weaponID");
+                    EditorGUILayout.PropertyField(weaponIDProp);
+                }
             }
-            else if(type == ConsiderationInput.InputParamsType.RangeAndDesiredFloatValue)
-            {
-                SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
-                SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
+            
 
-                EditorGUILayout.PropertyField(considerationInputPropMin);
-                EditorGUILayout.PropertyField(considerationInputPropMax);
-
-                SerializedProperty considerationInputPropDesFloatVal = serializedObject.FindProperty("desiredFloatValue");
-                EditorGUILayout.PropertyField(considerationInputPropDesFloatVal);
-            }
+           
             EditorGUILayout.Space(10);
 
             EditorGUILayout.EndVertical();

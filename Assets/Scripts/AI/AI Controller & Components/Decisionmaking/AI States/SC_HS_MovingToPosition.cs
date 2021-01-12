@@ -9,6 +9,7 @@ namespace BenitosAI
     {
         public Vector3 targetPosition;
 
+
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
             St_HS_MovingToPosition state = new St_HS_MovingToPosition();
@@ -45,10 +46,10 @@ namespace BenitosAI
         public override void UpdateState() 
         {
             //Debug.Log("updating state: ");
-            if (!charController.IsMoving())
+           /* if (!charController.IsMoving())
             {
                 charController.MoveTo(targetPosition, true);
-            }
+            }*/
         }
     }
 }

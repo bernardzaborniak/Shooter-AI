@@ -885,15 +885,40 @@ MonoBehaviour:
   - name: Positioning Layer
     decisionMethod: 0
     decisions:
-    - name: 'Stay at Range To Enemy Standing '
-      decision: {fileID: 11400000, guid: 1bf1c543497bf8b40a82ae28a4e28ebf, type: 2}
-      weigt: 2
     - name: 'Run To Middle '
       decision: {fileID: 11400000, guid: 6fcd3f9116695334c94ca9b170dec177, type: 2}
       weigt: 1
-    - name: 'Idle Standing '
-      decision: {fileID: 11400000, guid: 0999bd14b366c0e4c81517012d380617, type: 2}
+    - name: 'Walk To Desired Weapon Range Combat Stance Standing '
+      decision: {fileID: 11400000, guid: 517b72124801270408cd9eb1554e72c2, type: 2}
       weigt: 1
+    - name: 'Hold Position Combat Stance '
+      decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
+      weigt: 1
+    currentDecisionContextsVisualisation: []
+    lastSelectedDecisionContext:
+      rating: 0
+      decision: {fileID: 0}
+      aiController: {fileID: 0}
+      targetEntity:
+        entity: {fileID: 0}
+        visInfo: {fileID: 0}
+        entityTeamID: 0
+        lastDistanceMeasured: 0
+        hasMovement: 0
+        timeWhenLastSeen: 0
+        frameCountWhenLastSeen: 0
+  - name: Item Interaction layer
+    decisionMethod: 0
+    decisions:
+    - name: 'Hold Weapon In Hand Idle '
+      decision: {fileID: 11400000, guid: 2bf66bd181e107e40ba609ae243fefe5, type: 2}
+      weigt: 1
+    - name: 'Reload Weapon '
+      decision: {fileID: 11400000, guid: 32e7c59ccba1bd846aed7abc828de916, type: 2}
+      weigt: 1
+    - name: 'Shoot Weapon At Enemy '
+      decision: {fileID: 11400000, guid: d7eebe65d50f3e840a97304fab5e4b39, type: 2}
+      weigt: 2
     currentDecisionContextsVisualisation: []
     lastSelectedDecisionContext:
       rating: 0
@@ -2871,7 +2896,7 @@ MonoBehaviour:
   components:
   - {fileID: 8032510007199776535}
   - {fileID: 3435694260906315833}
-  - {fileID: 6567086041650918770}
+  - {fileID: 5535747409815593379}
   destroyOnDie: 1
   onDieEvent:
     m_PersistentCalls:

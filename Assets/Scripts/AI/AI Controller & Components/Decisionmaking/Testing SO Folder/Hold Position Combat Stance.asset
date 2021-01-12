@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
+  m_Name: Hold Position Combat Stance
+  m_EditorClassIdentifier: 
+  decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
+  considerations:
+  - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
+  - {fileID: 11400000, guid: a35c121aa0e82824b9e6018a89048847, type: 2}

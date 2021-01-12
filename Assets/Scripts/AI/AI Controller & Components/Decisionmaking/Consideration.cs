@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-
+    [CreateAssetMenu(menuName = "AI/Consideration/Consideration", fileName = "new Consideration")]
     public class Consideration : ScriptableObject
     {
 
@@ -45,6 +45,8 @@ namespace BenitosAI
         public float max;
         // for desired range
         public float desiredFloatValue;
+        //for CI_HS_AmmoInWeapon
+        public int weaponID;
 
         public CustomCurve considerationCurve;
 
