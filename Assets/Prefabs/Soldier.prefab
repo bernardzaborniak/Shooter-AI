@@ -894,6 +894,9 @@ MonoBehaviour:
     - name: 'Hold Position Combat Stance '
       decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
       weigt: 1
+    - name: 'Hold Position Idle '
+      decision: {fileID: 11400000, guid: 735aedd5fb062d84786683278269ea7b, type: 2}
+      weigt: 1
     currentDecisionContextsVisualisation: []
     lastSelectedDecisionContext:
       rating: 0

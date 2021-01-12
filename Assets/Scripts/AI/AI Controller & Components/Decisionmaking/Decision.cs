@@ -39,12 +39,12 @@ namespace BenitosAI
 
                 for (int c = 0; c < considerations.Length; c++)
                 {
-                    Debug.Log("new consideration being rated -----------------------------------" + considerations[c].name);
+                    //Debug.Log("new consideration being rated -----------------------------------" + considerations[c].name);
 
 
                     //Debug.Log("score: " + score + " *= " + considerations[c].GetConsiderationRating(contexts[i]));
                     score *= considerations[c].GetConsiderationRating(contexts[i]);
-                    Debug.Log("score: " + score);
+                    //Debug.Log("score: " + score);
 
                 }
 

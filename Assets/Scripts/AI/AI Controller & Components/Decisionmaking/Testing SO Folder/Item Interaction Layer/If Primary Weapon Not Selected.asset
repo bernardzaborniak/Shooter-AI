@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: When Ammo Low
+  m_Name: If Primary Weapon Not Selected
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
@@ -23,20 +23,20 @@ MonoBehaviour:
   exampleOutput3: 0
   exampleOutput4: 0
   exampleOutput5: 0
-  considerationInput: {fileID: 11400000, guid: c1e91b9ed6f3d92419624b4ebc686bc3, type: 2}
+  considerationInput: {fileID: 11400000, guid: 005340a9f1e152e4a8b6d556033e247d, type: 2}
   min: 0
   max: 0
   desiredFloatValue: 0
   weaponID: 1
   considerationCurve:
-    curveType: 2
+    curveType: 0
     bi_threshold: 0.5
-    bi_inverse: 0
+    bi_inverse: 1
     lin_Slope: 1
     lin_Shift: 0
-    q_Slope: -1.22
-    q_Exponent: 0.14
-    q_VertShift: 1
+    q_Slope: 1
+    q_Exponent: 2
+    q_VertShift: 0
     q_HorizShift: 0
     logistic_Slope: 0.15
     logistic_XShift: 0
@@ -46,33 +46,33 @@ MonoBehaviour:
     logit_B: 0.075
     curveVisualisationPositions:
     - {x: 0, y: 1}
-    - {x: 0.018181818, y: 0.30384}
-    - {x: 0.036363635, y: 0.23289776}
-    - {x: 0.054545455, y: 0.18809348}
-    - {x: 0.07272727, y: 0.15472612}
-    - {x: 0.09090909, y: 0.12790282}
-    - {x: 0.10909091, y: 0.10535605}
-    - {x: 0.12727273, y: 0.08583878}
-    - {x: 0.14545454, y: 0.06858833}
-    - {x: 0.16363636, y: 0.053102374}
-    - {x: 0.18181819, y: 0.03903172}
-    - {x: 0.2, y: 0.026123174}
-    - {x: 0.21818182, y: 0.014187222}
-    - {x: 0.23636363, y: 0.003078144}
-    - {x: 0.25454545, y: 0}
-    - {x: 0.27272728, y: 0}
-    - {x: 0.29090908, y: 0}
-    - {x: 0.3090909, y: 0}
-    - {x: 0.3272727, y: 0}
-    - {x: 0.34545454, y: 0}
-    - {x: 0.36363637, y: 0}
-    - {x: 0.38181818, y: 0}
-    - {x: 0.4, y: 0}
-    - {x: 0.4181818, y: 0}
-    - {x: 0.43636364, y: 0}
-    - {x: 0.45454547, y: 0}
-    - {x: 0.47272727, y: 0}
-    - {x: 0.4909091, y: 0}
+    - {x: 0.018181818, y: 1}
+    - {x: 0.036363635, y: 1}
+    - {x: 0.054545455, y: 1}
+    - {x: 0.07272727, y: 1}
+    - {x: 0.09090909, y: 1}
+    - {x: 0.10909091, y: 1}
+    - {x: 0.12727273, y: 1}
+    - {x: 0.14545454, y: 1}
+    - {x: 0.16363636, y: 1}
+    - {x: 0.18181819, y: 1}
+    - {x: 0.2, y: 1}
+    - {x: 0.21818182, y: 1}
+    - {x: 0.23636363, y: 1}
+    - {x: 0.25454545, y: 1}
+    - {x: 0.27272728, y: 1}
+    - {x: 0.29090908, y: 1}
+    - {x: 0.3090909, y: 1}
+    - {x: 0.3272727, y: 1}
+    - {x: 0.34545454, y: 1}
+    - {x: 0.36363637, y: 1}
+    - {x: 0.38181818, y: 1}
+    - {x: 0.4, y: 1}
+    - {x: 0.4181818, y: 1}
+    - {x: 0.43636364, y: 1}
+    - {x: 0.45454547, y: 1}
+    - {x: 0.47272727, y: 1}
+    - {x: 0.4909091, y: 1}
     - {x: 0.5090909, y: 0}
     - {x: 0.5272727, y: 0}
     - {x: 0.54545456, y: 0}

@@ -134,7 +134,7 @@ public class Gun : Item, IItemWithIKHandPositions
 
     public float GetBulletsInMagazineLeftRatio()
     {
-        return bulletsInMagazine/magazineSize;
+        return 1f * bulletsInMagazine/magazineSize;
     }
 
     public bool AreBulletsLeftInMagazine()

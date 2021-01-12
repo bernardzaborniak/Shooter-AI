@@ -10,7 +10,7 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            return ((AIController_HumanoidSoldier)decisionContext.aiController).characterController.GetAmmoRemainingInMagazineRatio();          
+            return ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.GetAmmoRemainingInMagazineRatio(consideration.weaponID);          
         }
     }
 }

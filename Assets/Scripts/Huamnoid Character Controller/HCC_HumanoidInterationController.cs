@@ -384,6 +384,21 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
     }
 
+    public float GetAmmoRemainingInMagazineRatio(int weaponID)
+    {
+        if (inventory[weaponID])
+        {
+            if (inventory[weaponID] is Gun)
+            {
+                return (inventory[weaponID] as Gun).GetBulletsInMagazineLeftRatio();
+            }
+        }
+        
+        //Debug.Log("!inventory[currentSelectedItemID] is Gun + interaction");
+        return 0;
+
+    }
+
     public void AbortReloadingWeapon()
     {
         if (itemInteractionState == ItemInteractionState.ReloadingWeapon)

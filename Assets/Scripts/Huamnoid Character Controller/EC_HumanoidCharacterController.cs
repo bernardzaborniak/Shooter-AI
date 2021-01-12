@@ -789,8 +789,11 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region Item Interation Orders
     public void ChangeSelectedItem(int inventoryID)
     {
-        changeWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
-        changeWeaponOrder.targetItemID = inventoryID;     
+        if(changeWeaponOrder.targetItemID != inventoryID)
+        {
+            changeWeaponOrder.executionStatus = Order.ExecutionStatus.WaitingForExecution;
+            changeWeaponOrder.targetItemID = inventoryID;
+        }            
     }
 
     public void AbortChangingSelectedItem()
@@ -816,6 +819,11 @@ public class EC_HumanoidCharacterController : EntityComponent
     public Item GetCurrentlySelectedItem()
     {
         return interactionController.GetCurrentSelectedItem();
+    }
+
+    public int GetCurrentSelectedItemID()
+    {
+        return interactionController.currentSelectedItemID;
     }
 
     public Item GetItemInInventory(int inventoryPosition)
@@ -901,6 +909,12 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         //return ration between 0 and 1
         return interactionController.GetAmmoRemainingInMagazineRatio();
+    }
+
+    public float GetAmmoRemainingInMagazineRatio(int weaponID)
+    {
+        //return ration between 0 and 1
+        return interactionController.GetAmmoRemainingInMagazineRatio(weaponID);
     }
 
     public bool IsThrowingGrenade()

@@ -170,6 +170,11 @@ namespace BenitosAI
         {
             return health.GetRemainingHealthToMaxHalthRatio();
         }
+
+        public float GetAmmoRemainingInMagazineRatio(int weaponID)
+        {
+            return characterController.GetAmmoRemainingInMagazineRatio(weaponID);
+        }
     }
 
 }
