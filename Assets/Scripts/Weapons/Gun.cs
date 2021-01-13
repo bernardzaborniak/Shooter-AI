@@ -25,6 +25,7 @@ public class Gun : Item, IItemWithIKHandPositions
     public float damage;
     public float projectileLaunchVelocity;
     public float bloom;
+    [Min(1)]
     public int magazineSize;
     int bulletsInMagazine;
     [Tooltip("How long is this weapon being reloaded in seconds?")]
@@ -134,6 +135,7 @@ public class Gun : Item, IItemWithIKHandPositions
 
     public float GetBulletsInMagazineLeftRatio()
     {
+        Debug.Log("bullets in mag ration: " + 1f * bulletsInMagazine / magazineSize);
         return 1f * bulletsInMagazine/magazineSize;
     }
 

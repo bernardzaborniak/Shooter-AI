@@ -60,6 +60,12 @@ namespace BenitosAI
 
             return contexts;
         }
+
+        //THis method is used for visualisation
+        public Consideration[] GetConsiderations()
+        {
+            return considerations;
+        }
     }
 
 }

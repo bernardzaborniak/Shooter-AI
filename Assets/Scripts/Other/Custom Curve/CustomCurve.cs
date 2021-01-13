@@ -17,7 +17,7 @@ public class CustomCurve
     {
         Binary,
         Linear,
-        Quadratic,
+        Exponential,
         Logistic, //like a smoothdamp
         Logit //as your moving away from the centerpoint you get more and more extreme reactions
     }
@@ -31,10 +31,10 @@ public class CustomCurve
     [SerializeField] float lin_Slope = 1;
     [SerializeField] float lin_Shift;
 
-    [SerializeField] float q_Slope = 1;
-    [SerializeField] float q_Exponent = 2;
-    [SerializeField] float q_VertShift;
-    [SerializeField] float q_HorizShift;
+    [SerializeField] float ex_Slope = 1;
+    [SerializeField] float ex_Exponent = 2;
+    [SerializeField] float ex_VertShift;
+    [SerializeField] float ex_HorizShift;
 
     [SerializeField] float logistic_Slope = 0.15f;
     [SerializeField] float logistic_XShift;
@@ -57,9 +57,9 @@ public class CustomCurve
         {
             return Mathf.Clamp(GetRemappedValueLinear(input), 0, 1);
         }
-        else if (curveType == CurveType.Quadratic)
+        else if (curveType == CurveType.Exponential)
         {
-            return Mathf.Clamp(GetRemappedValueQuadratic(input), 0, 1);
+            return Mathf.Clamp(GetRemappedValueExponential(input), 0, 1);
         }
         else if (curveType == CurveType.Logistic)
         {
@@ -92,50 +92,55 @@ public class CustomCurve
 
     }
 
-    float GetRemappedValueQuadratic(float input)
+    float GetRemappedValueExponential(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-        return Mathf.Clamp
-            (
-                q_Slope * Mathf.Pow(input- q_HorizShift, q_Exponent) + q_VertShift,
-                0,
-                1
-            );
+        /* return Mathf.Clamp
+             (
+                 ex_Slope * Mathf.Pow(input- ex_HorizShift, ex_Exponent) + ex_VertShift,
+                 0,
+                 1
+             );*/   
+        return ex_Slope * Mathf.Pow(input - ex_HorizShift, ex_Exponent) + ex_VertShift;
     }
 
     float GetRemappedValueLinear(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-        return Mathf.Clamp
-            (
-                lin_Slope * input  + lin_Shift, 
-                0, 
-                1
-            );
+        /* return Mathf.Clamp
+             (
+                 lin_Slope * input  + lin_Shift, 
+                 0, 
+                 1
+             );*/
+        return lin_Slope * input + lin_Shift;
     }
 
     float GetRemappedValueLogistic(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
-  
-        return Mathf.Clamp
+
+        /*return Mathf.Clamp
             (
                 (logistic_YScalar / (1 + Mathf.Pow(Mathf.Epsilon, -logistic_Slope * (input - (logistic_XShift + 0.5f))))) + logistic_YShift,
                 0, 
                 1
-            );
+            );*/
+
+        return (logistic_YScalar / (1 + Mathf.Pow(Mathf.Epsilon, -logistic_Slope * (input - (logistic_XShift + 0.5f))))) + logistic_YShift;
     }
 
     float GetRemappedValueLogit(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
 
-        return Mathf.Clamp
-            (
-                (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B,
-                0, 
-                1
-            );
+        /* return Mathf.Clamp
+             (
+                 (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B,
+                 0, 
+                 1
+             );*/
+        return (Mathf.Log(input / (1 - input), Mathf.Epsilon) + logit_A) / logit_B;
     }
 
     #endregion
@@ -196,9 +201,9 @@ public class CustomCurve
             {
                 yPos = Mathf.Clamp((int)(GetRemappedValueLinear(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
             }
-            else if (curveType == CurveType.Quadratic)
+            else if (curveType == CurveType.Exponential)
             {
-                yPos = Mathf.Clamp((int)(GetRemappedValueQuadratic(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
+                yPos = Mathf.Clamp((int)(GetRemappedValueExponential(x / (textureWidth * 1f)) * textureHeight), 0, textureHeight - 1);
             }
             else if (curveType == CurveType.Logistic)
             {

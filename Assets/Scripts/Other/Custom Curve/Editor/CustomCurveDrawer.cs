@@ -50,15 +50,15 @@ public class CustomCurveDrawer : PropertyDrawer
         }
         else if (curveType == 2)
         {
-            SerializedProperty q_Slope = property.FindPropertyRelative("q_Slope");
-            SerializedProperty q_Exponent = property.FindPropertyRelative("q_Exponent");
-            SerializedProperty q_VertShift = property.FindPropertyRelative("q_VertShift");
-            SerializedProperty q_HorizShift = property.FindPropertyRelative("q_HorizShift");
+            SerializedProperty ex_Slope = property.FindPropertyRelative("ex_Slope");
+            SerializedProperty ex_Exponent = property.FindPropertyRelative("ex_Exponent");
+            SerializedProperty ex_VertShift = property.FindPropertyRelative("ex_VertShift");
+            SerializedProperty ex_HorizShift = property.FindPropertyRelative("ex_HorizShift");
 
-            EditorGUILayout.PropertyField(q_Slope);
-            EditorGUILayout.PropertyField(q_Exponent);
-            EditorGUILayout.PropertyField(q_VertShift);
-            EditorGUILayout.PropertyField(q_HorizShift);
+            EditorGUILayout.PropertyField(ex_Slope);
+            EditorGUILayout.PropertyField(ex_Exponent);
+            EditorGUILayout.PropertyField(ex_VertShift);
+            EditorGUILayout.PropertyField(ex_HorizShift);
         }
         else if (curveType == 3)
         {

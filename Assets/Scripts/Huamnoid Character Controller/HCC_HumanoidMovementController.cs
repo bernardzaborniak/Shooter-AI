@@ -478,7 +478,9 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         {
             agent.ResetPath();
         }
+        agent.isStopped = true;
         //}catch(Exception e) { }
+        //currentMovementOrder.sprint = false;
 
         currentMovementOrder.OnAbort();
         //}

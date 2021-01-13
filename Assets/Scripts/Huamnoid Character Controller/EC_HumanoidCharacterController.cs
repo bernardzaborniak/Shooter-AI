@@ -575,6 +575,7 @@ public class EC_HumanoidCharacterController : EntityComponent
         //}
     }
 
+
     public void StopMoving()
     {
         movementController.AbortMoving();

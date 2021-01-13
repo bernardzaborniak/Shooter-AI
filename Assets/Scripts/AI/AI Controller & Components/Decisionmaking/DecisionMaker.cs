@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    
+
     [System.Serializable]
     public class DecisionContextVisualiser        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
     {
@@ -15,6 +17,23 @@ namespace BenitosAI
         public SensedEntityInfo targetEntity; //Who is the target of my action
         public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
 
+        [System.Serializable]
+        public class ConsiderationVisualiser
+        {
+            [SerializeField] string considerationName;
+            [SerializeField] float input;
+            [SerializeField] float rating;
+
+            public ConsiderationVisualiser(string considerationName, float input, float rating)
+            {
+                this.considerationName = considerationName;
+                this.input = input;
+                this.rating = rating;
+            }
+        }
+
+        [SerializeField] ConsiderationVisualiser[] considerationVisualisers;
+
         public DecisionContextVisualiser(DecisionContext context)
         {
             this.decision = context.decision;
@@ -22,6 +41,15 @@ namespace BenitosAI
             this.targetEntity = context.targetEntity;
             this.targetTacticalPoint = context.targetTacticalPoint;
             rating = context.rating;
+
+            Consideration[] considerations;
+            considerations = context.decision.GetConsiderations();
+            considerationVisualisers = new ConsiderationVisualiser[considerations.Length];
+
+            for (int i = 0; i < considerationVisualisers.Length; i++)
+            {
+                considerationVisualisers[i] = new ConsiderationVisualiser(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
+            }
         }
     }
 

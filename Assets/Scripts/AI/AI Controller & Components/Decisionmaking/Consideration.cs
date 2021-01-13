@@ -75,6 +75,12 @@ namespace BenitosAI
             //Modify input by curve, curve also normalizes automaticly
             return considerationCurve.GetRemappedValue(input);
         }
+
+        //Only for Visualisations
+        public float GetConsiderationInput(DecisionContext context)
+        {
+            return considerationInput.GetConsiderationInput(context, this);
+        }
     }
 
 }
