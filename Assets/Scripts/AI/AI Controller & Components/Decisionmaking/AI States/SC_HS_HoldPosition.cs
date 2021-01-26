@@ -17,12 +17,7 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            //St_HS_HoldPosition state = new St_HS_HoldPosition();
             St_HS_HoldPosition state = new St_HS_HoldPosition(aiController, context, stance);
-            //state.SetUpState(aiController, context);
-            //state.stance = stance;
-
-
             return state;
         }
     }
@@ -34,7 +29,6 @@ namespace BenitosAI
 
         SC_HS_HoldPosition.Stance stance;
 
-        //public override void SetUpState(AIController aiController, DecisionContext context)
         public St_HS_HoldPosition(AIController aiController, DecisionContext context, SC_HS_HoldPosition.Stance stance)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;

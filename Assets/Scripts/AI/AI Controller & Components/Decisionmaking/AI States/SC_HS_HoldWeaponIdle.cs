@@ -12,9 +12,6 @@ namespace BenitosAI
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
             St_HS_HoldWeaponIdle state = new St_HS_HoldWeaponIdle(aiController, context, weaponID);
-            //state.SetUpState(aiController, context);
-            //state.weaponID = weaponID;
-
             return state;
         }
     }
@@ -26,7 +23,6 @@ namespace BenitosAI
 
         int weaponID;
 
-       // public override void SetUpState(AIController aiController, DecisionContext context)
         public St_HS_HoldWeaponIdle(AIController aiController, DecisionContext context, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;

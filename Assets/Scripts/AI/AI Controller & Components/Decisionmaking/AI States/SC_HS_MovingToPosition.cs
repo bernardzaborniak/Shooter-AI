@@ -9,26 +9,19 @@ namespace BenitosAI
     {
         public Vector3 targetPosition;
 
-
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            // St_HS_MovingToPosition state = new St_HS_MovingToPosition();
             St_HS_MovingToPosition state = new St_HS_MovingToPosition(aiController, context, targetPosition);
-            //state.SetUpState(aiController, context);
-
-            //state.targetPosition = targetPosition;
-
             return state;
         }
     }
 
-    public class St_HS_MovingToPosition : AIState //AIState_HumanoidSoldier
+    public class St_HS_MovingToPosition : AIState
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
         Vector3 targetPosition;
 
-        //public override void SetUpState(AIController aiController, DecisionContext context)
         public St_HS_MovingToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;

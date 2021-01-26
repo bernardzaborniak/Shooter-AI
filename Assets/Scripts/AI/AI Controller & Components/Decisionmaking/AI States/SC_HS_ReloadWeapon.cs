@@ -12,24 +12,19 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            //St_HS_ReloadWeapon state = new St_HS_ReloadWeapon();
             St_HS_ReloadWeapon state = new St_HS_ReloadWeapon(aiController, context, weaponID);
-            //state.SetUpState(aiController, context);
-
             return state;
         }
     }
 
-    public class St_HS_ReloadWeapon : AIState //AIState_HumanoidSoldier
+    public class St_HS_ReloadWeapon : AIState 
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-       // public Vector3 targetPosition;
 
         EntityActionTag[] actionTags;
 
 
-       // public override void SetUpState(AIController aiController, DecisionContext context)
         public St_HS_ReloadWeapon(AIController aiController, DecisionContext context, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
@@ -51,14 +46,11 @@ namespace BenitosAI
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
         {
-            Debug.Log("reload weapon state GetTagsToAdd: " + actionTags[0].type);
             return actionTags;
         }
 
         public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
         {
-            Debug.Log("reload weapon state GetTagsToRemove");
-
             return actionTags;
         }
 

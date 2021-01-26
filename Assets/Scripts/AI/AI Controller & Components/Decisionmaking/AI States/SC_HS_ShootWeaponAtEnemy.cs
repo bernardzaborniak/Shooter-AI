@@ -14,10 +14,6 @@ namespace BenitosAI
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
             St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntity, weaponID);
-            //state.SetUpState(aiController, context, context.targetEntity, weaponID);
-            //state.target = context.targetEntity;
-            //state.weaponID = weaponID;
-
             return state;
         }
     }
@@ -31,8 +27,7 @@ namespace BenitosAI
 
         EntityActionTag[] actionTags;
 
-        //remove set up state completely - have a constructor instead?
-        //public override void SetUpState(AIController aiController, DecisionContext context)
+
         public St_HS_ShootWeaponAtEnemy(AIController aiController, DecisionContext context, SensedEntityInfo target, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
@@ -58,15 +53,11 @@ namespace BenitosAI
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
         {
-            Debug.Log("shoot weapon state GetTagsToAdd");
-
             return actionTags;
         }
 
         public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
         {
-            Debug.Log("shoot weapon state GetTagsToRemove");
-
             return actionTags;
         }
 

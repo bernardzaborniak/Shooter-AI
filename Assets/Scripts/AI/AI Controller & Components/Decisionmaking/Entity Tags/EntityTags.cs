@@ -21,7 +21,6 @@ namespace BenitosAI
             {
                 for (int i = 0; i < tagsToAdd.Length; i++)
                 {
-                    Debug.Log("added tag: " + tagsToAdd[i].type);
                     actionTags.Add(tagsToAdd[i]);
                 }
             }
@@ -37,7 +36,6 @@ namespace BenitosAI
             {
                 for (int i = 0; i < tagsToRemove.Length; i++)
                 {
-                    Debug.Log("removed tag: " + tagsToRemove[i].type);
                     actionTags.Remove(tagsToRemove[i]);
                 }
             }

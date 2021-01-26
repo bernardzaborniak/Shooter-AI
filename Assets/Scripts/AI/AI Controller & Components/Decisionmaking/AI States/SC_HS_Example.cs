@@ -11,17 +11,14 @@ namespace BenitosAI
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
             St_HS_Example state = new St_HS_Example(aiController, context);
-            //state.SetUpState(aiController, context);
-
             return state;
         }
     }
 
-    public class St_HS_Example : AIState //AIState_HumanoidSoldier
+    public class St_HS_Example : AIState
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-       // Vector3 targetPosition;
 
         public St_HS_Example(AIController aiController, DecisionContext context)
         {
