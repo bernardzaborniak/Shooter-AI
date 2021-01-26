@@ -10,8 +10,8 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_Example state = new St_HS_Example();
-            state.SetUpState(aiController, context);
+            St_HS_Example state = new St_HS_Example(aiController, context);
+            //state.SetUpState(aiController, context);
 
             return state;
         }
@@ -21,12 +21,12 @@ namespace BenitosAI
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-        public Vector3 targetPosition;
+       // Vector3 targetPosition;
 
-        public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_Example(AIController aiController, DecisionContext context)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
-            charController = this.aiController.characterController;
+            this.charController = this.aiController.characterController;
         }
 
         public override void OnStateEnter()
@@ -37,6 +37,16 @@ namespace BenitosAI
         public override void OnStateExit()
         {
 
+        }
+
+        public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
+        {
+            return null;
+        }
+
+        public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
+        {
+            return null;
         }
 
         public override void UpdateState()

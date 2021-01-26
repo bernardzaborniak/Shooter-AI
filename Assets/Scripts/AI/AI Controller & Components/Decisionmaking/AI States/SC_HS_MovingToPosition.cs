@@ -12,10 +12,11 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_MovingToPosition state = new St_HS_MovingToPosition();
-            state.SetUpState(aiController, context);
+            // St_HS_MovingToPosition state = new St_HS_MovingToPosition();
+            St_HS_MovingToPosition state = new St_HS_MovingToPosition(aiController, context, targetPosition);
+            //state.SetUpState(aiController, context);
 
-            state.targetPosition = targetPosition;
+            //state.targetPosition = targetPosition;
 
             return state;
         }
@@ -25,12 +26,14 @@ namespace BenitosAI
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-        public Vector3 targetPosition;
+        Vector3 targetPosition;
 
-        public override void SetUpState(AIController aiController, DecisionContext context)
+        //public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_MovingToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
-            charController = this.aiController.characterController;
+            this.charController = this.aiController.characterController;
+            this.targetPosition = targetPosition;
         }
 
         public override void OnStateEnter() 
@@ -41,6 +44,16 @@ namespace BenitosAI
         public override void OnStateExit()
         {
             charController.StopMoving();
+        }
+
+        public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
+        {
+            return null;
+        }
+
+        public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
+        {
+            return null;
         }
 
         public override void UpdateState() 

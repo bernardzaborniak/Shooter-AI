@@ -432,6 +432,11 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         }
     }
 
+    public bool IsReloadingWeapon()
+    {
+        return itemInteractionState == ItemInteractionState.ReloadingWeapon;
+    }
+
     #endregion
 
     #region Other Item Commands

@@ -13,10 +13,10 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy();
-            state.SetUpState(aiController, context);
-            state.target = context.targetEntity;
-            state.weaponID = weaponID;
+            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntity, weaponID);
+            //state.SetUpState(aiController, context, context.targetEntity, weaponID);
+            //state.target = context.targetEntity;
+            //state.weaponID = weaponID;
 
             return state;
         }
@@ -26,13 +26,23 @@ namespace BenitosAI
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-        public SensedEntityInfo target;
-        public int weaponID;
+        SensedEntityInfo target;
+        int weaponID;
 
-        public override void SetUpState(AIController aiController, DecisionContext context)
+        EntityActionTag[] actionTags;
+
+        //remove set up state completely - have a constructor instead?
+        //public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_ShootWeaponAtEnemy(AIController aiController, DecisionContext context, SensedEntityInfo target, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
-            charController = this.aiController.characterController;
+            this.charController = this.aiController.characterController;
+            this.target = target;
+            this.weaponID = weaponID;
+
+            actionTags = new EntityActionTag[1];
+            actionTags[0] = new EntityActionTag(EntityActionTagType.ShootingAtTarget);
+            actionTags[0].shootAtTarget = target.entity;
         }
 
         public override void OnStateEnter()
@@ -44,6 +54,20 @@ namespace BenitosAI
         {
             charController.StopAimingSpine();
             charController.StopAimingWeapon();
+        }
+
+        public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
+        {
+            Debug.Log("shoot weapon state GetTagsToAdd");
+
+            return actionTags;
+        }
+
+        public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
+        {
+            Debug.Log("shoot weapon state GetTagsToRemove");
+
+            return actionTags;
         }
 
         public override void UpdateState()

@@ -9,7 +9,7 @@ namespace BenitosAI
     {
         int hashCode; // used by sensig info to store in dictionary
         public TacticalPoint tacticalPoint;
-        public TacticalPointVisibilityInfo visInfo;
+        public TacticalPointSensingInterface visInfo;
 
         public float lastDistanceMeasured;
 
@@ -21,7 +21,7 @@ namespace BenitosAI
            
         }
 
-        public void SetUpInfo(TacticalPointVisibilityInfo visInfo, float squaredDistance)
+        public void SetUpInfo(TacticalPointSensingInterface visInfo, float squaredDistance)
         {
             this.visInfo = visInfo;
             tacticalPoint = visInfo.tacticalPointAssignedTo;

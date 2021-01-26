@@ -21,11 +21,11 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_MoveToWeaponRange state = new St_HS_MoveToWeaponRange();
-            state.SetUpState(aiController, context);
-            state.desiredRange = desiredRange;
-            state.sprint = sprint;
-            state.stance = stance;
+            St_HS_MoveToWeaponRange state = new St_HS_MoveToWeaponRange(aiController, context, desiredRange, sprint, stance);
+            //state.SetUpState(aiController, context);
+            //state.desiredRange = desiredRange;
+            //state.sprint = sprint;
+            //state.stance = stance;
 
 
             return state;
@@ -38,22 +38,27 @@ namespace BenitosAI
         EC_HumanoidCharacterController charController;
 
         SensedEntityInfo targetEntityInfo;
-        public float desiredRange;
-        public bool sprint;
-        public SC_HS_MoveToWeaponRange.Stance stance;
+        float desiredRange;
+        bool sprint;
+        SC_HS_MoveToWeaponRange.Stance stance;
 
         float nextIssueMoveOrderTime;
         float issueMoveOrderMinInterval = 0.1f;
         float issueMoveOrderMaxInterval = 0.9f;
 
-        public override void SetUpState(AIController aiController, DecisionContext context)
+        //public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_MoveToWeaponRange(AIController aiController, DecisionContext context, float desiredRange, bool sprint, SC_HS_MoveToWeaponRange.Stance stance)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
-            charController = this.aiController.characterController;
+            this.charController = this.aiController.characterController;
+            this.desiredRange = desiredRange;
+            this.sprint = sprint;
+            this.stance = stance;
 
             targetEntityInfo = context.targetEntity;
 
             nextIssueMoveOrderTime = 0;
+
         }
 
         public override void OnStateEnter()
@@ -78,6 +83,17 @@ namespace BenitosAI
 
         public override void OnStateExit()
         {
+
+        }
+
+        public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
+        {
+            return null;
+        }
+
+        public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
+        {
+            return null;
         }
 
         public override void UpdateState()

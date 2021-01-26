@@ -26,16 +26,18 @@ MonoBehaviour:
   considerationInput: {fileID: 11400000, guid: c2610a6b26aae12449498a745cf0a543, type: 2}
   min: 0
   max: 0
+  desiredFloatValue: 0
+  weaponID: 0
   considerationCurve:
     curveType: 0
     bi_threshold: 0.5
     bi_inverse: 0
     lin_Slope: 1
     lin_Shift: 0
-    q_Slope: 1
-    q_Exponent: 2
-    q_VertShift: 0
-    q_HorizShift: 0
+    ex_Slope: 1
+    ex_Exponent: 2
+    ex_VertShift: 0
+    ex_HorizShift: 0
     logistic_Slope: 0.15
     logistic_XShift: 0
     logistic_YShift: 0

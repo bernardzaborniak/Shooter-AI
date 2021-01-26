@@ -11,9 +11,9 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_HoldWeaponIdle state = new St_HS_HoldWeaponIdle();
-            state.SetUpState(aiController, context);
-            state.weaponID = weaponID;
+            St_HS_HoldWeaponIdle state = new St_HS_HoldWeaponIdle(aiController, context, weaponID);
+            //state.SetUpState(aiController, context);
+            //state.weaponID = weaponID;
 
             return state;
         }
@@ -24,12 +24,14 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
 
-        public int weaponID;
+        int weaponID;
 
-        public override void SetUpState(AIController aiController, DecisionContext context)
+       // public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_HoldWeaponIdle(AIController aiController, DecisionContext context, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
-            charController = this.aiController.characterController;
+            this.charController = this.aiController.characterController;
+            this.weaponID = weaponID;
         }
 
         public override void OnStateEnter()
@@ -43,6 +45,17 @@ namespace BenitosAI
 
         public override void OnStateExit()
         {
+
+        }
+
+        public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
+        {
+            return null;
+        }
+
+        public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
+        {
+            return null;
         }
 
         public override void UpdateState()

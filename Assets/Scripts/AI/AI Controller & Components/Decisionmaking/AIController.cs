@@ -9,7 +9,8 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
     {
         // protected GameEntity entityAttachedTo;
         //public AIComponent[] aIComponents;
-
+        [Tooltip("the current action tags are being set by the states which are currently executed")]
+        public EntityTags entityTags;
         public DecisionMaker[] decisionLayers;
         [Space(10)]
         public float decisionInterval;

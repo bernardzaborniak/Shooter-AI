@@ -29,6 +29,15 @@ public class GameEntity : MonoBehaviour
     public Transform criticalAimPosition;
     public float width;*/
 
+  //  [System.Serializable]
+   /* public class EntityTags
+    {
+        HashSet
+    }*/
+
+   
+
+
     #region Handling Entity Components
 
     private void Start()

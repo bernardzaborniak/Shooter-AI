@@ -95,7 +95,7 @@ namespace BenitosAI
                         {
                             //here calculation would happen if the entity is even visible
                             bool visible = true;
-                            EntityVisibilityInfo visInfo = collidersInRadius[i].GetComponent<EntityVisibilityInfo>();
+                            EntitySensingInterface visInfo = collidersInRadius[i].GetComponent<EntitySensingInterface>();
                             float currentDistance = Vector3.Distance(myPosition, visInfo.GetEntityPosition());
 
                             //based on distance & other factors calculate visibility 
@@ -132,7 +132,7 @@ namespace BenitosAI
                     {
                         //here calculation would happen if the entity is even visible
                         bool visible = true;
-                        TacticalPointVisibilityInfo visInfo = collidersInRadius[i].GetComponent<TacticalPointVisibilityInfo>();
+                        TacticalPointSensingInterface visInfo = collidersInRadius[i].GetComponent<TacticalPointSensingInterface>();
                         float currentDistance = Vector3.Distance(myPosition, visInfo.GetPointPosition());
 
                         if (visible)

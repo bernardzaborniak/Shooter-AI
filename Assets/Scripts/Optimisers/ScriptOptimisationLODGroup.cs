@@ -33,6 +33,7 @@ public class ScriptOptimisationLODGroup
 
     #endregion
 
+
     public void SetUpLODGroup()
     {
         updateGroupsAmount = updateCycleFrameInterval;

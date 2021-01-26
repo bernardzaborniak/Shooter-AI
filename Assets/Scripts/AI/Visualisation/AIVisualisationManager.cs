@@ -89,7 +89,10 @@ namespace BenitosAI
             tacticalPointVisualisersInUse = new HashSet<TacticalPointVisualiser>();
             tacticalPointsBeingCurrentlyVisualised = new HashSet<TacticalPoint>();
 
-            selectedSoldierVisualiser.SetActive(false);
+            if (selectedSoldierVisualiser)
+            {
+                selectedSoldierVisualiser.SetActive(false);
+            }
 
             for (int i = 0; i < tacticalPointVisualisers.Length; i++)
             {

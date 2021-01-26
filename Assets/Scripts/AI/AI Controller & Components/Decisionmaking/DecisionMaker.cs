@@ -70,13 +70,14 @@ namespace BenitosAI
 
         public DecisionWrapper[] decisions;
 
+       
         DecisionContext currentDecidedDecisionContext;
         AIState currentState;
         AIController aiController;
        
         [Space(5)]
         public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
-        [Space(5)]
+        [Space(10)]
         public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
         [Space(5)]
         public DecisionContextVisualiser lastSelectedDecisionContext;
@@ -153,10 +154,12 @@ namespace BenitosAI
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
+                    aiController.entityTags.RemoveEntityActionTags(currentState.GetActionTagsToRemoveOnStateExit());
                 }
 
                 currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
                 currentState.OnStateEnter();
+                aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
 
                 /*if (currentDecidedDecisionContext.decision.correspondingAIState == AIStateEnum.TestState)
                 {

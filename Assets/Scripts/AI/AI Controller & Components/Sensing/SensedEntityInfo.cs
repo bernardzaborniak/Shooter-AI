@@ -12,7 +12,7 @@ namespace BenitosAI
 
         int hashCode; // used by sensig info to store in dictionary
         public GameEntity entity;
-        public EntityVisibilityInfo visInfo;
+        public EntitySensingInterface visInfo;
         public int entityTeamID;
 
         Vector3 lastSeenEntityPosition;
@@ -43,7 +43,7 @@ namespace BenitosAI
             
         }
 
-        public void SetUpInfo(EntityVisibilityInfo visInfo, float distance)
+        public void SetUpInfo(EntitySensingInterface visInfo, float distance)
         {
             this.visInfo = visInfo;
             timeWhenLastSeen = Time.time;

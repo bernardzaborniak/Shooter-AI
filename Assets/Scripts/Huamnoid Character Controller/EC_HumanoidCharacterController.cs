@@ -877,6 +877,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
+    public bool IsReloadingWeapon()
+    {
+        return interactionController.IsReloadingWeapon();
+    }
+
 
     public void StartThrowingGrenade()//float throwVelocity, Vector3 throwDirection)
     {

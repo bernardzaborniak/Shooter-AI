@@ -11,11 +11,15 @@ namespace BenitosAI
 
     public abstract class AIState
     {
-        public abstract void SetUpState(AIController aiController, DecisionContext context);
+        //public abstract void SetUpState(AIController aiController, DecisionContext context);
 
         public abstract void OnStateEnter();
 
         public abstract void OnStateExit();
+
+        public abstract EntityActionTag[] GetActionTagsToAddOnStateEnter();
+
+        public abstract EntityActionTag[] GetActionTagsToRemoveOnStateExit();
 
         public abstract void UpdateState();
 

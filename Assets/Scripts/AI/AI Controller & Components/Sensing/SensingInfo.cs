@@ -78,19 +78,21 @@ namespace BenitosAI
 
         #region Adding Entities
 
-        public void OnSensedEnemyEntity(EntityVisibilityInfo enemyEntityVisInfo, float distance)
+        public void OnSensedEnemyEntity(EntitySensingInterface enemyEntitySensInterface, float distance)
         {
-            OnSensedEntity(enemyEntityVisInfo, distance, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
+            OnSensedEntity(enemyEntitySensInterface, distance, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
         }
 
-        public void OnSensedFriendlyEntity(EntityVisibilityInfo friendlyEntityVisInfo, float distance)
+        public void OnSensedFriendlyEntity(EntitySensingInterface friendlyEntitySensInterface, float distance)
         {
-            OnSensedEntity(friendlyEntityVisInfo, distance, ref friendlyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
+            OnSensedEntity(friendlyEntitySensInterface, distance, ref friendlyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
         }
 
-        void OnSensedEntity(EntityVisibilityInfo entityVisInfo, float distance, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
+        void OnSensedEntity(EntitySensingInterface entitySensInterface, float distance, ref Queue<SensedEntityInfo> infosPool, ref Dictionary<int, SensedEntityInfo> infosAddedThisFrame, ref Dictionary<int, SensedEntityInfo> infosAddedPreviousFrames)
         {
-            int key = entityVisInfo.entityAssignedTo.GetHashCode();
+            //entitySensInterface.GetActionsBeingExecuted(); //added to read states
+
+            int key = entitySensInterface.entityAssignedTo.GetHashCode();
 
             SensedEntityInfo sensedEntityInfo;
 
@@ -100,7 +102,7 @@ namespace BenitosAI
                 sensedEntityInfo = infosAddedPreviousFrames[key];
                 infosAddedPreviousFrames.Remove(key);
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
+                sensedEntityInfo.SetUpInfo(entitySensInterface, distance);
 
                 infosAddedThisFrame.Add(key, sensedEntityInfo);
 
@@ -110,7 +112,7 @@ namespace BenitosAI
             {
                 sensedEntityInfo = infosPool.Dequeue();
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
+                sensedEntityInfo.SetUpInfo(entitySensInterface, distance);
 
                 infosAddedThisFrame.Add(key, sensedEntityInfo);
             }
@@ -128,7 +130,7 @@ namespace BenitosAI
                 sensedEntityInfo = infosAddedPreviousFrames[keyToOverride];
                 infosAddedPreviousFrames.Remove(keyToOverride);
 
-                sensedEntityInfo.SetUpInfo(entityVisInfo, distance);
+                sensedEntityInfo.SetUpInfo(entitySensInterface, distance);
 
                 infosAddedThisFrame.Add(keyToOverride, sensedEntityInfo);
 
@@ -141,19 +143,19 @@ namespace BenitosAI
 
         #region Add Tactical Points
 
-        public void OnSensedTPCover(TacticalPointVisibilityInfo tPointCoverVisInfo, float distance)
+        public void OnSensedTPCover(TacticalPointSensingInterface tPointCoverSensInterface, float distance)
         {
-            OnSensedTPoint(tPointCoverVisInfo, distance, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
+            OnSensedTPoint(tPointCoverSensInterface, distance, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
         }
 
-        public void OnSensedTPOpenField(TacticalPointVisibilityInfo tPointOpenFieldVisInfo, float distance)
+        public void OnSensedTPOpenField(TacticalPointSensingInterface tPointOpenFieldSensInterface, float distance)
         {
-            OnSensedTPoint(tPointOpenFieldVisInfo, distance, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
+            OnSensedTPoint(tPointOpenFieldSensInterface, distance, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
         }
 
-        void OnSensedTPoint(TacticalPointVisibilityInfo tPointVisInfo, float distance, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
+        void OnSensedTPoint(TacticalPointSensingInterface tPointSensInterface, float distance, ref Queue<SensedTacticalPointInfo> infosPool, ref Dictionary<int, SensedTacticalPointInfo> infosAddedThisFrame, ref Dictionary<int, SensedTacticalPointInfo> infosAddedPreviousFrames)
         {
-            int key = tPointVisInfo.tacticalPointAssignedTo.GetHashCode();
+            int key = tPointSensInterface.tacticalPointAssignedTo.GetHashCode();
 
             SensedTacticalPointInfo sensedTPointInfo;
             // Update older information with new one
@@ -162,7 +164,7 @@ namespace BenitosAI
                 sensedTPointInfo = infosAddedPreviousFrames[key];
                 infosAddedPreviousFrames.Remove(key);
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
+                sensedTPointInfo.SetUpInfo(tPointSensInterface, distance);
 
                 infosAddedThisFrame.Add(key, sensedTPointInfo);
             }
@@ -171,7 +173,7 @@ namespace BenitosAI
             {
                 sensedTPointInfo = infosPool.Dequeue();
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
+                sensedTPointInfo.SetUpInfo(tPointSensInterface, distance);
 
                 infosAddedThisFrame.Add(key, sensedTPointInfo);
 
@@ -190,7 +192,7 @@ namespace BenitosAI
                 sensedTPointInfo = infosAddedPreviousFrames[keyToOverride];
                 infosAddedPreviousFrames.Remove(keyToOverride);
 
-                sensedTPointInfo.SetUpInfo(tPointVisInfo, distance);
+                sensedTPointInfo.SetUpInfo(tPointSensInterface, distance);
 
                 infosAddedThisFrame.Add(keyToOverride, sensedTPointInfo);
             }  //else: it can happen that there are more infos added this frame than the pool size, thoose extra infos are just ignored, maybe also adjust the collider pool SIze inside sensing

@@ -135,7 +135,7 @@ public class Gun : Item, IItemWithIKHandPositions
 
     public float GetBulletsInMagazineLeftRatio()
     {
-        Debug.Log("bullets in mag ration: " + 1f * bulletsInMagazine / magazineSize);
+        //Debug.Log("bullets in mag ration: " + 1f * bulletsInMagazine / magazineSize);
         return 1f * bulletsInMagazine/magazineSize;
     }
 

@@ -29,6 +29,7 @@ public class ScriptOptimisationManager : MonoBehaviour
 
     #endregion
 
+
     // Although this class looks like a singleton, it is never used, only classes deriving from this class are used.
     // Only declare classes which derive from this script as singleton.
 
