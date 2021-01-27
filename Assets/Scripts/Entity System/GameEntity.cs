@@ -22,20 +22,23 @@ public class GameEntity : MonoBehaviour
 
     public bool isDead = false; //to prevent calling onDie more than once
 
-   /* [Header("For Aiming of Enemies")]
-    [Tooltip("collection of positions to aim at")]
-    public Transform aimPosition;
-    [Tooltip("collection of critical positions to aim at - like the head or some weakpoints")]
-    public Transform criticalAimPosition;
-    public float width;*/
+    [Header("Tags")]
+    public BenitosAI.EntityTags entityTags;
 
-  //  [System.Serializable]
-   /* public class EntityTags
-    {
-        HashSet
-    }*/
+    /* [Header("For Aiming of Enemies")]
+     [Tooltip("collection of positions to aim at")]
+     public Transform aimPosition;
+     [Tooltip("collection of critical positions to aim at - like the head or some weakpoints")]
+     public Transform criticalAimPosition;
+     public float width;*/
 
-   
+    //  [System.Serializable]
+    /* public class EntityTags
+     {
+         HashSet
+     }*/
+
+
 
 
     #region Handling Entity Components

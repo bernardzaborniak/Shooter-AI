@@ -12,6 +12,7 @@ namespace BenitosAI
 
         int hashCode; // used by sensig info to store in dictionary
         public GameEntity entity;
+        public EntityTags entityTags;
         public EntitySensingInterface visInfo;
         public int entityTeamID;
 
@@ -50,6 +51,7 @@ namespace BenitosAI
             frameCountWhenLastSeen = Time.frameCount;
 
             entity = visInfo.entityAssignedTo;
+            entityTags = entity.entityTags;
             hashCode = entity.GetHashCode();
             lastSeenEntityPosition = visInfo.GetEntityPosition();
             entityTeamID = entity.teamID;

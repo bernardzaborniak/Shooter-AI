@@ -9,6 +9,8 @@ namespace BenitosAI
     [System.Serializable]
     public class DecisionContextVisualiser        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
     {
+        [HideInInspector]
+        public string name;
         public float rating;
 
         public Decision decision; //what are we trying to do?
@@ -36,6 +38,7 @@ namespace BenitosAI
 
         public DecisionContextVisualiser(DecisionContext context)
         {
+            this.name = context.decision.name;
             this.decision = context.decision;
             this.aiController = context.aiController;
             this.targetEntity = context.targetEntity;

@@ -6,7 +6,7 @@ namespace BenitosAI
 {
     [CreateAssetMenu(menuName = "AI/Decision Context Creator/HumanoidSolder_TacticalPointCover", fileName = "HS_TacticalPointCover")]
 
-    public class DCC_HS_TacticalPointCover : DecisionContextCreator
+    public class DCC_HS_TPointCover : DecisionContextCreator
     {
         public int maxTacticalPointTargetsPerDecision = 10;
 

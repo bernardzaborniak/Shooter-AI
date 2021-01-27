@@ -26,6 +26,11 @@ public class Hitbox : MonoBehaviour, IDamageable<DamageInfo>
         return myEntity.teamID;
     }
 
+    public GameEntity GetEntity()
+    {
+        return myEntity;
+    }
+
    /* private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))

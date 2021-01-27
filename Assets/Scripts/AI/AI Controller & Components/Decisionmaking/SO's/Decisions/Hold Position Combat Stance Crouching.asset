@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Hold Position Combat Stance
+  m_Name: Hold Position Combat Stance Crouching
   m_EditorClassIdentifier: 
   decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
-  correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: e1c2b9d54f8291744869c82f03ae0a6b, type: 2}
   considerations:
   - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
   - {fileID: 11400000, guid: a35c121aa0e82824b9e6018a89048847, type: 2}
+  - {fileID: 11400000, guid: d3fcf7ed5536a184ea5c50856efd709e, type: 2}

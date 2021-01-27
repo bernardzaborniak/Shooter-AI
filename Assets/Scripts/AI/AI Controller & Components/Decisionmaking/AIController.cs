@@ -52,10 +52,12 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
                     decisionLayers[i].Decide();
                 }
             }
-
-           
-
         }
+
+       /* public GameEntity GetEntity()
+        {
+            return myEntity;
+        }*/
     }
 
 }

@@ -892,19 +892,24 @@ MonoBehaviour:
     - name: 'Walk To Desired Weapon Range Combat Stance Standing '
       decision: {fileID: 11400000, guid: 517b72124801270408cd9eb1554e72c2, type: 2}
       weigt: 1
-    - name: 'Hold Position Combat Stance '
+    - name: 'Hold Position Combat Stance Standing '
       decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
       weigt: 1
     - name: 'Hold Position Idle '
       decision: {fileID: 11400000, guid: 735aedd5fb062d84786683278269ea7b, type: 2}
       weigt: 1
+    - name: 'Hold Position Combat Stance Crouching '
+      decision: {fileID: 11400000, guid: e9771dd66d5df2141834a708f5c15f4c, type: 2}
+      weigt: 1
     currentDecisionContextsVisualisation: []
     lastSelectedDecisionContext:
+      name: 
       rating: 0
       decision: {fileID: 0}
       aiController: {fileID: 0}
       targetEntity:
         entity: {fileID: 0}
+        entityTags: {fileID: 0}
         visInfo: {fileID: 0}
         entityTeamID: 0
         lastDistanceMeasured: 0
@@ -926,11 +931,13 @@ MonoBehaviour:
       weigt: 2
     currentDecisionContextsVisualisation: []
     lastSelectedDecisionContext:
+      name: 
       rating: 0
       decision: {fileID: 0}
       aiController: {fileID: 0}
       targetEntity:
         entity: {fileID: 0}
+        entityTags: {fileID: 0}
         visInfo: {fileID: 0}
         entityTeamID: 0
         lastDistanceMeasured: 0
@@ -1081,6 +1088,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 33554432
   colliderArraySize: 30
+  headTransform: {fileID: 1936154419766259478}
   optimiser: {fileID: 4214416404046456006}
   enemiesPoolSize: 15
   friendliesPoolSize: 10
@@ -2921,6 +2929,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   isDead: 0
+  entityTags: {fileID: 6599549110616915}
 --- !u!114 &3435694260906315833
 MonoBehaviour:
   m_ObjectHideFlags: 0

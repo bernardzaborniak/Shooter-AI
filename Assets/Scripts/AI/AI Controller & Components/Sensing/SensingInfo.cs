@@ -21,10 +21,10 @@ namespace BenitosAI
     // Custom Object used for saving and transfering sensing information, needs Expanding with adding some kind of memory
     public class SensingInfo
     {
-
+        public SensedTacticalPointInfo currentlyUsedTPoint;
         //Enemies
         //public SensedEntityInfo nearestEnemyInfo; //nearest enemy is just the first one in the array
-       //float nearestEnemySquaredDistance;
+        //float nearestEnemySquaredDistance;
 
         Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> enemyInfosAddedThisFrame = new Dictionary<int, SensedEntityInfo>();

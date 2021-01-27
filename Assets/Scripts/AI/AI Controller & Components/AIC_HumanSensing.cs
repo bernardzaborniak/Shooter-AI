@@ -28,6 +28,9 @@ namespace BenitosAI
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         public int colliderArraySize = 30;
 
+        [Header("For Line of Sight")]
+        public Transform headTransform;
+
 
         //public float sensingInterval = 0.5f;
         //float nextSensingTime;
@@ -174,6 +177,16 @@ namespace BenitosAI
         public float GetAmmoRemainingInMagazineRatio(int weaponID)
         {
             return characterController.GetAmmoRemainingInMagazineRatio(weaponID);
+        }
+
+        public GameEntity GetMyEntity()
+        {
+            return myEntity;
+        }
+
+        public EntityTags GetMyTags()
+        {
+            return myEntity.entityTags;
         }
     }
 

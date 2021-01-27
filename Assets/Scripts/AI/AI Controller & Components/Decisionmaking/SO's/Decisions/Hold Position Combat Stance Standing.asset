@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Shoot Weapon At Enemy
+  m_Name: Hold Position Combat Stance Standing
   m_EditorClassIdentifier: 
   decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
-  correspondingAiStateCreator: {fileID: 11400000, guid: 82dfbb72ebc1cb440b5e375b1dc6859c, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
   considerations:
   - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
-  - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}
-  - {fileID: 11400000, guid: fd6d14595cea2b446aa7d6035116f0fe, type: 2}
+  - {fileID: 11400000, guid: a35c121aa0e82824b9e6018a89048847, type: 2}
+  - {fileID: 11400000, guid: c81ac5eac7cd3f842a01ed4d34034f15, type: 2}

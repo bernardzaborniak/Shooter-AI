@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-
-
-
     public class EntityTags : MonoBehaviour
     {
         //[Header("Tagging System")]
