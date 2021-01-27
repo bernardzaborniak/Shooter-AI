@@ -29,7 +29,21 @@ public class PointCoverRating
 
     
 
-    public float DetermineQualityOfCover(Vector3 directionFromPositionToThreat, bool crouching)
+    public float DetermineQualityOfDefensiveCover(Vector3 directionTowardsThreat, float distanceToThreat, bool crouching)
+    {
+        //if(crouching)
+
+        //first determin which index of ratin to use, global transform.forward points towards index 0 -forward points wowards index 4 - indexes go around like a clock .
+
+        //cut the y direction
+        directionTowardsThreat.y = 0;
+
+
+
+        return 1;
+    }
+
+    public float DetermineQualityOfAggressiveCover(Vector3 threatPosition, float distanceToThreat, bool crouching)
     {
         return 1;
     }

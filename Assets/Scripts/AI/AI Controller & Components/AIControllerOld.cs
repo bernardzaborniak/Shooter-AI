@@ -183,7 +183,7 @@ namespace BenitosAI
                         foreach (SensedTacticalPointInfo postInfo in possiblePosts)
                         {
                             //check angle
-                            Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.tacticalPoint.GetPostPosition();
+                            Vector3 directionFromCoverToEnemy = nearestEnemyInfo.GetEntityPosition() - postInfo.tacticalPoint.GetPointPosition();
                             float angle = Vector3.Angle(directionFromCoverToEnemy, postInfo.tacticalPoint.transform.forward); //using forward for now - this should be reworked to work based on current rating
 
                             if (angle < 80)
@@ -200,8 +200,8 @@ namespace BenitosAI
                         {
                             positioningState = PositioningState.MovingIntoCover;
                             targetTacticalPoint = closestTacticalPoint;
-                            characterController.MoveTo(targetTacticalPoint.GetPostPosition());
-                            targetPositionVisualised.position = targetTacticalPoint.GetPostPosition();
+                            characterController.MoveTo(targetTacticalPoint.GetPointPosition());
+                            targetPositionVisualised.position = targetTacticalPoint.GetPointPosition();
                         }
                     }
                 }
@@ -234,8 +234,8 @@ namespace BenitosAI
                         }
                         if (!characterController.IsMoving())
                         {
-                            characterController.MoveTo(targetTacticalPoint.GetPostPosition());
-                            targetPositionVisualised.position = targetTacticalPoint.GetPostPosition();
+                            characterController.MoveTo(targetTacticalPoint.GetPointPosition());
+                            targetPositionVisualised.position = targetTacticalPoint.GetPointPosition();
                         }
                     }
 
@@ -284,7 +284,7 @@ namespace BenitosAI
                     {
                         positioningState = PositioningState.InCoverHiding;
                         nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
-                        characterController.MoveTo(targetTacticalPoint.GetPostPosition());
+                        characterController.MoveTo(targetTacticalPoint.GetPointPosition());
                     }
                     else
                     {

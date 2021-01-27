@@ -31,6 +31,9 @@ namespace BenitosAI
         [Header("For Line of Sight")]
         public Transform headTransform;
 
+        TacticalPoint currentlyUsedTPoint;
+
+
 
         //public float sensingInterval = 0.5f;
         //float nextSensingTime;
@@ -187,6 +190,16 @@ namespace BenitosAI
         public EntityTags GetMyTags()
         {
             return myEntity.entityTags;
+        }
+
+        public void SetCurrentlyUsedTacticalPoint(TacticalPoint usedPoint)
+        {
+            currentlyUsedTPoint = usedPoint;
+        }
+
+        public TacticalPoint GetCurrentlyUsedTacticalPoint()
+        {
+            return currentlyUsedTPoint;
         }
     }
 

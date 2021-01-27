@@ -296,7 +296,7 @@ public class TacticalPoint : MonoBehaviour
 
     #region Used By Game Loop
 
-    public Vector3 GetPostPosition()
+    public Vector3 GetPointPosition()
     {
         return transform.position;
     }
