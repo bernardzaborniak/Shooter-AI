@@ -14,91 +14,91 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointRatingValues:
   - standingDistanceRating:
-    - Infinity
-    - 6.9546647
-    - Infinity
-    - 6.9546666
-    - Infinity
-    - 6.9546666
-    - Infinity
-    - 6.9546647
+    - 7.494328
+    - 9.523603
+    - 6.954666
+    - 6.954666
+    - 6.954666
+    - 6.9546657
+    - 6.9546657
+    - 6.0161715
     standingQualityRating:
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
+    - 0.9981768
+    - 0.7781815
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.8870051
     crouchedDistanceRating:
-    - 3.0909624
-    - 3.0909622
-    - 3.0909624
+    - 5.8880076
+    - 7.8677297
+    - 3.0909626
     - 3.0909626
     - 3.0909631
     - 3.0909626
     - 3.0909626
-    - 3.0909622
+    - 4.140319
     crouchedQualityRating:
+    - 0.99717003
+    - 0.7763417
     - 0.335394
     - 0.335394
     - 0.335394
     - 0.335394
     - 0.335394
-    - 0.335394
-    - 0.335394
-    - 0.335394
+    - 0.99903226
   - standingDistanceRating:
-    - Infinity
-    - 6.9546647
-    - Infinity
-    - 6.9546666
-    - Infinity
-    - 6.9546666
-    - Infinity
-    - 6.9546647
+    - 7.494328
+    - 9.523603
+    - 6.954666
+    - 6.954666
+    - 6.954666
+    - 6.9546657
+    - 6.9546657
+    - 6.0161715
     standingQualityRating:
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
-    - 0
-    - 0.11729303
+    - 0.9981768
+    - 0.7781815
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.33796978
+    - 0.8870051
     crouchedDistanceRating:
-    - 3.0909624
-    - 3.0909622
-    - 3.0909624
+    - 5.8880076
+    - 7.8677297
+    - 3.0909626
     - 3.0909626
     - 3.0909631
     - 3.0909626
     - 3.0909626
-    - 3.0909622
+    - 4.140319
     crouchedQualityRating:
+    - 0.99717003
+    - 0.7763417
     - 0.335394
     - 0.335394
     - 0.335394
     - 0.335394
     - 0.335394
-    - 0.335394
-    - 0.335394
-    - 0.335394
+    - 0.99903226
   raycastUsedValues:
   - raycastsUsedForGeneratingRating:
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -25.000004, y: 26.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: -1, y: 1.8352761, z: 3.7320502}
+      distance: 3.9999995
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000004, y: 27.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: -2.3472352, y: 4.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 48.2963, y: 26.68191, z: 83.65163}
-      distance: Infinity
+      end: {x: 5.0575895, y: 3.510354, z: 8.76}
+      distance: 10.472002
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.2963, y: 27.68191, z: 83.65163}
-      distance: Infinity
+      end: {x: 5.0575895, y: 4.510354, z: 8.76}
+      distance: 10.472002
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 93.30128, y: 26.681906, z: 24.99999}
       distance: Infinity
@@ -130,23 +130,23 @@ MonoBehaviour:
       end: {x: -93.30128, y: 27.681906, z: -25.000021}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -83.65163, y: 26.68191, z: 48.29631}
-      distance: Infinity
+      end: {x: -5.2134705, y: 2.413054, z: 3.01}
+      distance: 6.2323604
     - start: {x: 0, y: 1.8, z: 0}
       end: {x: -83.65163, y: 27.68191, z: 48.29631}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: 26.681906, z: 96.59258}
-      distance: Infinity
+      end: {x: 0, y: 3.1472352, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: 27.681906, z: 96.59258}
-      distance: Infinity
+      end: {x: 0, y: 4.147235, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 68.30128, y: 26.681906, z: 68.30127}
-      distance: Infinity
+      end: {x: 8.760001, y: 4.119492, z: 8.76}
+      distance: 12.825531
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 68.30128, y: 27.681906, z: 68.30127}
-      distance: Infinity
+      end: {x: 8.760001, y: 5.119492, z: 8.76}
+      distance: 12.825531
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 96.59258, y: 26.681904, z: 0.00000055879354}
       distance: Infinity
@@ -178,17 +178,17 @@ MonoBehaviour:
       end: {x: -96.59258, y: 27.681904, z: 0.00000055879354}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -68.301254, y: 26.681906, z: 68.30129}
-      distance: Infinity
+      end: {x: -3.0099986, y: 1.9406013, z: 3.01}
+      distance: 4.4069448
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -68.301254, y: 27.681906, z: 68.30129}
-      distance: Infinity
+      end: {x: -8.759995, y: 5.1194906, z: 8.76}
+      distance: 12.825527
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 25.000004, y: 26.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: 2.3472352, y: 3.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.000004, y: 27.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: 2.3472352, y: 4.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 83.65164, y: 26.68191, z: 48.29628}
       distance: Infinity
@@ -226,23 +226,23 @@ MonoBehaviour:
       end: {x: -93.30128, y: 27.681906, z: 24.99999}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -48.29627, y: 26.68191, z: 83.65164}
-      distance: Infinity
+      end: {x: -1.737823, y: 1.7312973, z: 3.01}
+      distance: 3.5982556
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29627, y: 27.68191, z: 83.65164}
-      distance: Infinity
+      end: {x: -5.0575852, y: 4.5103536, z: 8.76}
+      distance: 10.472
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -25.881907, y: 0.8, z: 96.59258}
-      distance: Infinity
+      end: {x: -1, y: 0.8, z: 3.7320502}
+      distance: 3.8637028
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.881907, y: 1.8, z: 96.59258}
-      distance: Infinity
+      end: {x: -1, y: 1.8, z: 3.7320502}
+      distance: 3.8637028
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 50.000008, y: 0.8, z: 86.60254}
-      distance: Infinity
+      end: {x: 5.057589, y: 0.8, z: 8.76}
+      distance: 10.115177
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 50.000008, y: 1.8, z: 86.60254}
-      distance: Infinity
+      end: {x: 5.057589, y: 1.8, z: 8.76}
+      distance: 10.115177
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 96.59259, y: 0.8, z: 25.881905}
       distance: Infinity
@@ -274,23 +274,23 @@ MonoBehaviour:
       end: {x: -96.59259, y: 1.8, z: -25.881922}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -86.60253, y: 0.8, z: 50.000023}
-      distance: Infinity
+      end: {x: -5.21347, y: 0.8, z: 3.01}
+      distance: 6.0199976
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -86.60253, y: 1.8, z: 50.000023}
-      distance: Infinity
+      end: {x: -5.21347, y: 1.8, z: 3.01}
+      distance: 6.0199976
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: 0.8, z: 100}
-      distance: Infinity
+      end: {x: 0, y: 0.8, z: 8.76}
+      distance: 8.76
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: 1.8, z: 100}
-      distance: Infinity
+      end: {x: 0, y: 1.8, z: 8.76}
+      distance: 8.76
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 70.710686, y: 0.8, z: 70.71067}
-      distance: Infinity
+      end: {x: 8.760002, y: 0.8, z: 8.76}
+      distance: 12.388513
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 70.710686, y: 1.8, z: 70.71067}
-      distance: Infinity
+      end: {x: 8.760002, y: 1.8, z: 8.76}
+      distance: 12.388513
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 99.99999, y: 0.8, z: 0.0000059604645}
       distance: Infinity
@@ -322,17 +322,17 @@ MonoBehaviour:
       end: {x: -99.99999, y: 1.8, z: 0.0000059604645}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -70.71066, y: 0.8, z: 70.7107}
-      distance: Infinity
+      end: {x: -3.0099983, y: 0.8, z: 3.01}
+      distance: 4.2567816
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -70.71066, y: 1.8, z: 70.7107}
-      distance: Infinity
+      end: {x: -0.77685505, y: 1.8, z: 0.77685547}
+      distance: 1.0986392
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 25.881907, y: 0.8, z: 96.59258}
-      distance: Infinity
+      end: {x: 2.3472352, y: 0.8, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.881907, y: 1.8, z: 96.59258}
-      distance: Infinity
+      end: {x: 2.3472352, y: 1.8, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 86.602554, y: 0.8, z: 49.99999}
       distance: Infinity
@@ -370,169 +370,169 @@ MonoBehaviour:
       end: {x: -96.59259, y: 1.8, z: 25.881905}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -49.999977, y: 0.8, z: 86.602554}
-      distance: Infinity
+      end: {x: -1.737823, y: 0.8, z: 3.01}
+      distance: 3.475648
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -49.999977, y: 1.8, z: 86.602554}
-      distance: Infinity
+      end: {x: -1.737823, y: 1.8, z: 3.01}
+      distance: 3.475648
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.7727407, y: -6.40356e-17, z: 2.8839068}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000004, y: -24.081907, z: 93.30127}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 1.4928206, y: -5.741275e-17, z: 2.5856402}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.2963, y: -24.081911, z: 83.65163}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.8839073, y: -1.715828e-17, z: 0.77274024}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 93.30128, y: -24.081907, z: 24.99999}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.5856404, y: 3.3147284e-17, z: -1.492821}
-      distance: 3.090963
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 83.65164, y: -24.081907, z: -48.296307}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0.7727405, y: 6.4035625e-17, z: -2.8839083}
-      distance: 3.0909634
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 24.999994, y: -24.081907, z: -93.3013}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -1.4928206, y: 5.741276e-17, z: -2.585641}
-      distance: 3.0909631
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29631, y: -24.081911, z: -83.65164}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.8839076, y: 1.7158303e-17, z: -0.77274126}
-      distance: 3.090963
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -93.30128, y: -24.081907, z: -25.000021}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.5856402, y: -3.3147275e-17, z: 1.4928205}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -83.65163, y: -24.081911, z: 48.29631}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: -6.6294536e-17, z: 2.9856403}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: -24.081907, z: 96.59258}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.1111667, y: -4.6877305e-17, z: 2.1111662}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 4.750125, y: -1.05473945e-16, z: 4.750124}
-      distance: 6.9546647
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.9856408, y: -3.8351767e-25, z: 0.0000000172721}
+      end: {x: -0.7727406, y: -1.6008901e-17, z: 2.8839073}
       distance: 3.0909626
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 96.59258, y: -24.081905, z: 0.00000055879354}
-      distance: Infinity
+      end: {x: -1, y: 0.7647238, z: 3.7320502}
+      distance: 3.9999995
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.111167, y: 4.687733e-17, z: -2.1111672}
-      distance: 3.0909631
+      end: {x: 1.49282, y: -1.4353185e-17, z: 2.5856397}
+      distance: 3.0909617
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 4.7501254, y: 1.05473985e-16, z: -4.750126}
-      distance: 6.9546666
+      end: {x: 3.3588452, y: -3.2294666e-17, z: 5.8176894}
+      distance: 6.954664
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.00000044610348, y: 6.629454e-17, z: -2.9856408}
-      distance: 3.0909626
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -0.000008444392, y: -24.081907, z: -96.59259}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.1111672, y: 4.6877325e-17, z: -2.111167}
-      distance: 3.0909631
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -4.750126, y: 1.0547397e-16, z: -4.7501254}
-      distance: 6.9546666
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.9856408, y: -3.8351767e-25, z: 0.0000000172721}
-      distance: 3.0909626
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -96.59258, y: -24.081905, z: 0.00000055879354}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.1111662, y: -4.6877325e-17, z: 2.111167}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -4.750123, y: -1.0547399e-16, z: 4.750126}
-      distance: 6.9546647
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0.7727408, y: -6.40356e-17, z: 2.8839068}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.000004, y: -24.081907, z: 93.30127}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.5856404, y: -3.314725e-17, z: 1.4928194}
+      end: {x: 2.8839068, y: -4.2895684e-18, z: 0.77273995}
       distance: 3.090962
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 83.65164, y: -24.081911, z: 48.29628}
-      distance: Infinity
+      end: {x: 6.4887905, y: -9.651531e-18, z: 1.7386652}
+      distance: 6.9546647
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.8839073, y: 1.7158303e-17, z: -0.77274126}
-      distance: 3.0909626
+      end: {x: 2.585641, y: 8.286817e-18, z: -1.4928203}
+      distance: 3.090963
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 93.30128, y: -24.081907, z: -25.000021}
-      distance: Infinity
+      end: {x: 5.817692, y: 1.864534e-17, z: -3.3588457}
+      distance: 6.954666
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 1.49282, y: 5.7412753e-17, z: -2.5856407}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.296295, y: -24.081911, z: -83.65164}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.77274096, y: 6.403562e-17, z: -2.8839078}
+      end: {x: 0.7727408, y: 1.6008905e-17, z: -2.8839078}
       distance: 3.0909631
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000011, y: -24.081907, z: -93.3013}
-      distance: Infinity
+      end: {x: 1.7386656, y: 3.6020033e-17, z: -6.4887924}
+      distance: 6.9546666
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.5856407, y: 3.3147258e-17, z: -1.4928198}
+      end: {x: -1.4928207, y: 1.4353188e-17, z: -2.5856407}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -3.358846, y: 3.2294673e-17, z: -5.8176913}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.8839076, y: 4.289576e-18, z: -0.77274126}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.488791, y: 9.651543e-18, z: -1.7386675}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.5856402, y: -8.286818e-18, z: 1.4928204}
       distance: 3.0909624
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -83.65165, y: -24.081911, z: -48.29628}
-      distance: Infinity
+      end: {x: -5.2134705, y: 0.18694603, z: 3.01}
+      distance: 6.2323604
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.8839073, y: -1.715828e-17, z: 0.7727403}
+      end: {x: 3.9790393e-13, y: 0.11168001, z: 2.568845}
+      distance: 2.6594641
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 0, y: -3.729068e-17, z: 6.717691}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.111167, y: -1.1719329e-17, z: 2.1111665}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 4.7501245, y: -2.6368486e-17, z: 4.750124}
+      distance: 6.9546647
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.9856408, y: -9.58794e-26, z: 0.000000017272097}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 6.7176924, y: -2.1572863e-25, z: 0.00000003886222}
+      distance: 6.9546666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.1111672, y: 1.1719328e-17, z: -2.1111665}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 4.750126, y: 2.6368493e-17, z: -4.7501254}
+      distance: 6.9546666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 0.00000023841856, y: 1.6573634e-17, z: -2.9856405}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -0.00000095367426, y: 3.7290675e-17, z: -6.717691}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.111167, y: 1.171933e-17, z: -2.1111667}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -4.7501254, y: 2.6368493e-17, z: -4.750125}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.9856405, y: -9.587941e-26, z: 0.000000017272098}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.717691, y: -2.1572866e-25, z: 0.000000038862222}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.1111662, y: -1.1719333e-17, z: 2.1111674}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -3.0099986, y: 0.65939856, z: 3.01}
+      distance: 4.4069448
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 0.77274054, y: -1.60089e-17, z: 2.883907}
       distance: 3.0909624
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -93.30128, y: -24.081907, z: 24.99999}
-      distance: Infinity
+      end: {x: 1.7386668, y: -3.6020023e-17, z: 6.4887905}
+      distance: 6.9546647
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -1.4928191, y: -5.7412753e-17, z: 2.5856404}
+      end: {x: 2.58564, y: -8.286812e-18, z: 1.4928193}
+      distance: 3.0909617
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 5.81769, y: -1.864533e-17, z: 3.358844}
+      distance: 6.9546638
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.8839076, y: 4.2895754e-18, z: -0.7727412}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 6.488792, y: 9.651541e-18, z: -1.738667}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 1.4928205, y: 1.4353187e-17, z: -2.5856404}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 3.3588452, y: 3.2294673e-17, z: -5.817691}
+      distance: 6.954665
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -0.7727409, y: 1.6008905e-17, z: -2.8839078}
+      distance: 3.0909631
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -1.7386669, y: 3.6020033e-17, z: -6.488793}
+      distance: 6.954667
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.585641, y: 8.286815e-18, z: -1.4928199}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -5.817691, y: 1.8645333e-17, z: -3.3588445}
+      distance: 6.9546647
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.883907, y: -4.2895717e-18, z: 0.77274054}
+      distance: 3.0909624
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.488791, y: -9.651532e-18, z: 1.7386653}
+      distance: 6.954665
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -1.4928198, y: -1.4353188e-17, z: 2.5856402}
       distance: 3.090962
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29627, y: -24.081911, z: 83.65164}
-      distance: Infinity
+      end: {x: -1.737823, y: 0.86870265, z: 3.01}
+      distance: 3.5982556
     currentNumberOfRaycastsPerDirection: 9
   - raycastsUsedForGeneratingRating:
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -25.000004, y: 26.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: -1, y: 1.8352761, z: 3.7320502}
+      distance: 3.9999995
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000004, y: 27.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: -2.3472352, y: 4.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 48.2963, y: 26.68191, z: 83.65163}
-      distance: Infinity
+      end: {x: 5.0575895, y: 3.510354, z: 8.76}
+      distance: 10.472002
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.2963, y: 27.68191, z: 83.65163}
-      distance: Infinity
+      end: {x: 5.0575895, y: 4.510354, z: 8.76}
+      distance: 10.472002
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 93.30128, y: 26.681906, z: 24.99999}
       distance: Infinity
@@ -564,23 +564,23 @@ MonoBehaviour:
       end: {x: -93.30128, y: 27.681906, z: -25.000021}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -83.65163, y: 26.68191, z: 48.29631}
-      distance: Infinity
+      end: {x: -5.2134705, y: 2.413054, z: 3.01}
+      distance: 6.2323604
     - start: {x: 0, y: 1.8, z: 0}
       end: {x: -83.65163, y: 27.68191, z: 48.29631}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: 26.681906, z: 96.59258}
-      distance: Infinity
+      end: {x: 0, y: 3.1472352, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: 27.681906, z: 96.59258}
-      distance: Infinity
+      end: {x: 0, y: 4.147235, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 68.30128, y: 26.681906, z: 68.30127}
-      distance: Infinity
+      end: {x: 8.760001, y: 4.119492, z: 8.76}
+      distance: 12.825531
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 68.30128, y: 27.681906, z: 68.30127}
-      distance: Infinity
+      end: {x: 8.760001, y: 5.119492, z: 8.76}
+      distance: 12.825531
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 96.59258, y: 26.681904, z: 0.00000055879354}
       distance: Infinity
@@ -612,17 +612,17 @@ MonoBehaviour:
       end: {x: -96.59258, y: 27.681904, z: 0.00000055879354}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -68.301254, y: 26.681906, z: 68.30129}
-      distance: Infinity
+      end: {x: -3.0099986, y: 1.9406013, z: 3.01}
+      distance: 4.4069448
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -68.301254, y: 27.681906, z: 68.30129}
-      distance: Infinity
+      end: {x: -8.759995, y: 5.1194906, z: 8.76}
+      distance: 12.825527
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 25.000004, y: 26.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: 2.3472352, y: 3.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.000004, y: 27.681906, z: 93.30127}
-      distance: Infinity
+      end: {x: 2.3472352, y: 4.2300367, z: 8.76}
+      distance: 9.38894
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 83.65164, y: 26.68191, z: 48.29628}
       distance: Infinity
@@ -660,23 +660,23 @@ MonoBehaviour:
       end: {x: -93.30128, y: 27.681906, z: 24.99999}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -48.29627, y: 26.68191, z: 83.65164}
-      distance: Infinity
+      end: {x: -1.737823, y: 1.7312973, z: 3.01}
+      distance: 3.5982556
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29627, y: 27.68191, z: 83.65164}
-      distance: Infinity
+      end: {x: -5.0575852, y: 4.5103536, z: 8.76}
+      distance: 10.472
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -25.881907, y: 0.8, z: 96.59258}
-      distance: Infinity
+      end: {x: -1, y: 0.8, z: 3.7320502}
+      distance: 3.8637028
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.881907, y: 1.8, z: 96.59258}
-      distance: Infinity
+      end: {x: -1, y: 1.8, z: 3.7320502}
+      distance: 3.8637028
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 50.000008, y: 0.8, z: 86.60254}
-      distance: Infinity
+      end: {x: 5.057589, y: 0.8, z: 8.76}
+      distance: 10.115177
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 50.000008, y: 1.8, z: 86.60254}
-      distance: Infinity
+      end: {x: 5.057589, y: 1.8, z: 8.76}
+      distance: 10.115177
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 96.59259, y: 0.8, z: 25.881905}
       distance: Infinity
@@ -708,23 +708,23 @@ MonoBehaviour:
       end: {x: -96.59259, y: 1.8, z: -25.881922}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -86.60253, y: 0.8, z: 50.000023}
-      distance: Infinity
+      end: {x: -5.21347, y: 0.8, z: 3.01}
+      distance: 6.0199976
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -86.60253, y: 1.8, z: 50.000023}
-      distance: Infinity
+      end: {x: -5.21347, y: 1.8, z: 3.01}
+      distance: 6.0199976
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: 0.8, z: 100}
-      distance: Infinity
+      end: {x: 0, y: 0.8, z: 8.76}
+      distance: 8.76
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: 1.8, z: 100}
-      distance: Infinity
+      end: {x: 0, y: 1.8, z: 8.76}
+      distance: 8.76
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 70.710686, y: 0.8, z: 70.71067}
-      distance: Infinity
+      end: {x: 8.760002, y: 0.8, z: 8.76}
+      distance: 12.388513
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 70.710686, y: 1.8, z: 70.71067}
-      distance: Infinity
+      end: {x: 8.760002, y: 1.8, z: 8.76}
+      distance: 12.388513
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 99.99999, y: 0.8, z: 0.0000059604645}
       distance: Infinity
@@ -756,17 +756,17 @@ MonoBehaviour:
       end: {x: -99.99999, y: 1.8, z: 0.0000059604645}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -70.71066, y: 0.8, z: 70.7107}
-      distance: Infinity
+      end: {x: -3.0099983, y: 0.8, z: 3.01}
+      distance: 4.2567816
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -70.71066, y: 1.8, z: 70.7107}
-      distance: Infinity
+      end: {x: -0.77685505, y: 1.8, z: 0.77685547}
+      distance: 1.0986392
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 25.881907, y: 0.8, z: 96.59258}
-      distance: Infinity
+      end: {x: 2.3472352, y: 0.8, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.881907, y: 1.8, z: 96.59258}
-      distance: Infinity
+      end: {x: 2.3472352, y: 1.8, z: 8.76}
+      distance: 9.069019
     - start: {x: 0, y: 0.8, z: 0}
       end: {x: 86.602554, y: 0.8, z: 49.99999}
       distance: Infinity
@@ -804,153 +804,153 @@ MonoBehaviour:
       end: {x: -96.59259, y: 1.8, z: 25.881905}
       distance: Infinity
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -49.999977, y: 0.8, z: 86.602554}
-      distance: Infinity
+      end: {x: -1.737823, y: 0.8, z: 3.01}
+      distance: 3.475648
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -49.999977, y: 1.8, z: 86.602554}
-      distance: Infinity
+      end: {x: -1.737823, y: 1.8, z: 3.01}
+      distance: 3.475648
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.7727407, y: -6.40356e-17, z: 2.8839068}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000004, y: -24.081907, z: 93.30127}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 1.4928206, y: -5.741275e-17, z: 2.5856402}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.2963, y: -24.081911, z: 83.65163}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.8839073, y: -1.715828e-17, z: 0.77274024}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 93.30128, y: -24.081907, z: 24.99999}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.5856404, y: 3.3147284e-17, z: -1.492821}
-      distance: 3.090963
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 83.65164, y: -24.081907, z: -48.296307}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0.7727405, y: 6.4035625e-17, z: -2.8839083}
-      distance: 3.0909634
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 24.999994, y: -24.081907, z: -93.3013}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -1.4928206, y: 5.741276e-17, z: -2.585641}
-      distance: 3.0909631
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29631, y: -24.081911, z: -83.65164}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.8839076, y: 1.7158303e-17, z: -0.77274126}
-      distance: 3.090963
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -93.30128, y: -24.081907, z: -25.000021}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.5856402, y: -3.3147275e-17, z: 1.4928205}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -83.65163, y: -24.081911, z: 48.29631}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0, y: -6.6294536e-17, z: 2.9856403}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 0, y: -24.081907, z: 96.59258}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.1111667, y: -4.6877305e-17, z: 2.1111662}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 4.750125, y: -1.05473945e-16, z: 4.750124}
-      distance: 6.9546647
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.9856408, y: -3.8351767e-25, z: 0.0000000172721}
+      end: {x: -0.7727406, y: -1.6008901e-17, z: 2.8839073}
       distance: 3.0909626
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 96.59258, y: -24.081905, z: 0.00000055879354}
-      distance: Infinity
+      end: {x: -1, y: 0.7647238, z: 3.7320502}
+      distance: 3.9999995
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.111167, y: 4.687733e-17, z: -2.1111672}
-      distance: 3.0909631
+      end: {x: 1.49282, y: -1.4353185e-17, z: 2.5856397}
+      distance: 3.0909617
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 4.7501254, y: 1.05473985e-16, z: -4.750126}
-      distance: 6.9546666
+      end: {x: 3.3588452, y: -3.2294666e-17, z: 5.8176894}
+      distance: 6.954664
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.00000044610348, y: 6.629454e-17, z: -2.9856408}
-      distance: 3.0909626
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -0.000008444392, y: -24.081907, z: -96.59259}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.1111672, y: 4.6877325e-17, z: -2.111167}
-      distance: 3.0909631
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -4.750126, y: 1.0547397e-16, z: -4.7501254}
-      distance: 6.9546666
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.9856408, y: -3.8351767e-25, z: 0.0000000172721}
-      distance: 3.0909626
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -96.59258, y: -24.081905, z: 0.00000055879354}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.1111662, y: -4.6877325e-17, z: 2.111167}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -4.750123, y: -1.0547399e-16, z: 4.750126}
-      distance: 6.9546647
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 0.7727408, y: -6.40356e-17, z: 2.8839068}
-      distance: 3.0909622
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 25.000004, y: -24.081907, z: 93.30127}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.5856404, y: -3.314725e-17, z: 1.4928194}
+      end: {x: 2.8839068, y: -4.2895684e-18, z: 0.77273995}
       distance: 3.090962
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 83.65164, y: -24.081911, z: 48.29628}
-      distance: Infinity
+      end: {x: 6.4887905, y: -9.651531e-18, z: 1.7386652}
+      distance: 6.9546647
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 2.8839073, y: 1.7158303e-17, z: -0.77274126}
-      distance: 3.0909626
+      end: {x: 2.585641, y: 8.286817e-18, z: -1.4928203}
+      distance: 3.090963
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 93.30128, y: -24.081907, z: -25.000021}
-      distance: Infinity
+      end: {x: 5.817692, y: 1.864534e-17, z: -3.3588457}
+      distance: 6.954666
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: 1.49282, y: 5.7412753e-17, z: -2.5856407}
-      distance: 3.0909624
-    - start: {x: 0, y: 1.8, z: 0}
-      end: {x: 48.296295, y: -24.081911, z: -83.65164}
-      distance: Infinity
-    - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -0.77274096, y: 6.403562e-17, z: -2.8839078}
+      end: {x: 0.7727408, y: 1.6008905e-17, z: -2.8839078}
       distance: 3.0909631
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -25.000011, y: -24.081907, z: -93.3013}
-      distance: Infinity
+      end: {x: 1.7386656, y: 3.6020033e-17, z: -6.4887924}
+      distance: 6.9546666
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.5856407, y: 3.3147258e-17, z: -1.4928198}
+      end: {x: -1.4928207, y: 1.4353188e-17, z: -2.5856407}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -3.358846, y: 3.2294673e-17, z: -5.8176913}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.8839076, y: 4.289576e-18, z: -0.77274126}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.488791, y: 9.651543e-18, z: -1.7386675}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.5856402, y: -8.286818e-18, z: 1.4928204}
       distance: 3.0909624
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -83.65165, y: -24.081911, z: -48.29628}
-      distance: Infinity
+      end: {x: -5.2134705, y: 0.18694603, z: 3.01}
+      distance: 6.2323604
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -2.8839073, y: -1.715828e-17, z: 0.7727403}
+      end: {x: 3.9790393e-13, y: 0.11168001, z: 2.568845}
+      distance: 2.6594641
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 0, y: -3.729068e-17, z: 6.717691}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.111167, y: -1.1719329e-17, z: 2.1111665}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 4.7501245, y: -2.6368486e-17, z: 4.750124}
+      distance: 6.9546647
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.9856408, y: -9.58794e-26, z: 0.000000017272097}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 6.7176924, y: -2.1572863e-25, z: 0.00000003886222}
+      distance: 6.9546666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.1111672, y: 1.1719328e-17, z: -2.1111665}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 4.750126, y: 2.6368493e-17, z: -4.7501254}
+      distance: 6.9546666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 0.00000023841856, y: 1.6573634e-17, z: -2.9856405}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -0.00000095367426, y: 3.7290675e-17, z: -6.717691}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.111167, y: 1.171933e-17, z: -2.1111667}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -4.7501254, y: 2.6368493e-17, z: -4.750125}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.9856405, y: -9.587941e-26, z: 0.000000017272098}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.717691, y: -2.1572866e-25, z: 0.000000038862222}
+      distance: 6.9546657
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.1111662, y: -1.1719333e-17, z: 2.1111674}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -3.0099986, y: 0.65939856, z: 3.01}
+      distance: 4.4069448
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 0.77274054, y: -1.60089e-17, z: 2.883907}
       distance: 3.0909624
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -93.30128, y: -24.081907, z: 24.99999}
-      distance: Infinity
+      end: {x: 1.7386668, y: -3.6020023e-17, z: 6.4887905}
+      distance: 6.9546647
     - start: {x: 0, y: 0.8, z: 0}
-      end: {x: -1.4928191, y: -5.7412753e-17, z: 2.5856404}
+      end: {x: 2.58564, y: -8.286812e-18, z: 1.4928193}
+      distance: 3.0909617
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 5.81769, y: -1.864533e-17, z: 3.358844}
+      distance: 6.9546638
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 2.8839076, y: 4.2895754e-18, z: -0.7727412}
+      distance: 3.090963
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 6.488792, y: 9.651541e-18, z: -1.738667}
+      distance: 6.954666
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: 1.4928205, y: 1.4353187e-17, z: -2.5856404}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: 3.3588452, y: 3.2294673e-17, z: -5.817691}
+      distance: 6.954665
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -0.7727409, y: 1.6008905e-17, z: -2.8839078}
+      distance: 3.0909631
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -1.7386669, y: 3.6020033e-17, z: -6.488793}
+      distance: 6.954667
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.585641, y: 8.286815e-18, z: -1.4928199}
+      distance: 3.0909626
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -5.817691, y: 1.8645333e-17, z: -3.3588445}
+      distance: 6.9546647
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -2.883907, y: -4.2895717e-18, z: 0.77274054}
+      distance: 3.0909624
+    - start: {x: 0, y: 1.8, z: 0}
+      end: {x: -6.488791, y: -9.651532e-18, z: 1.7386653}
+      distance: 6.954665
+    - start: {x: 0, y: 0.8, z: 0}
+      end: {x: -1.4928198, y: -1.4353188e-17, z: 2.5856402}
       distance: 3.090962
     - start: {x: 0, y: 1.8, z: 0}
-      end: {x: -48.29627, y: -24.081911, z: 83.65164}
-      distance: Infinity
+      end: {x: -1.737823, y: 0.86870265, z: 3.01}
+      distance: 3.5982556
     currentNumberOfRaycastsPerDirection: 9
