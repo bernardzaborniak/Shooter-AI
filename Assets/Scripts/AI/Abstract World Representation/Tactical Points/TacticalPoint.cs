@@ -494,6 +494,16 @@ public class TacticalPoint : MonoBehaviour
         return transform.position;
     }
 
+    public Vector3 GetStandingPosition()
+    {
+        return transform.position + transform.up * TacticalPointsManager.Instance.standingCoverHeight;
+    }
+
+    public Vector3 GetCrouchedPosition()
+    {
+        return transform.position + transform.up * TacticalPointsManager.Instance.crouchedCoverHeight;
+    }
+
 
     // Only used if type is CoverShootPoint
     public Vector3 GetPeekPosition()

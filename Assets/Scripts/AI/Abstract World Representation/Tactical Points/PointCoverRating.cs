@@ -29,7 +29,7 @@ public class PointCoverRating
 
     
 
-    public float DetermineQualityOfDefensiveCover(Vector3 directionTowardsThreat, float distanceToThreat, bool crouching)
+    /*public float DetermineQualityOfDefensiveCover(Vector3 directionTowardsThreat, float distanceToThreat, bool crouching)
     {
         //if(crouching)
 
@@ -51,6 +51,6 @@ public class PointCoverRating
     public float DetermineQualityOfLineOfSight(Vector3 directionFromPositionToTarget)
     {
         return 1;
-    }
+    }*/
 }
 
