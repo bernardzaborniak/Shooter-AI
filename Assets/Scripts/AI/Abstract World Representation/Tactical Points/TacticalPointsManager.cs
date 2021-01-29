@@ -116,9 +116,13 @@ public class TacticalPointsManager : MonoBehaviour
     {
         tacticalPointsSceneInfo.ResetInfo();
 
+        Debug.Log("tactical Points-----");
+
         int id = 0;
         foreach (TacticalPoint point in tacticalPoints)
         {
+            Debug.Log("point: " + point);
+
             point.SetPointReferenceID(id);
             id++;
 

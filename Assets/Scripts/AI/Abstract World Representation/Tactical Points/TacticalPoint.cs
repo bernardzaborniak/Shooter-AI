@@ -57,6 +57,71 @@ public class TacticalPoint : MonoBehaviour
 
     [SerializeField] int pointReferenceID; //used as reference in the serialized data of the scriptable object the manager communicates to.
 
+    float distanceModeMaxDifferenceToGroup = 1f; //change this to change algorythm results
+    class CalculateDistanceModeAlgorythmGroup
+    {
+        float firstValueInGroup;
+        List<float> valuesInGroup;
+
+        public CalculateDistanceModeAlgorythmGroup(float firstValueInGroup)
+        {
+            this.firstValueInGroup = firstValueInGroup;
+            valuesInGroup = new List<float>();
+            valuesInGroup.Add(firstValueInGroup);
+        }
+
+        public float GetDistanceToGroup(float value)
+        {
+            //Debug.Log("[[[[[[[get disatcne: " + value + " & " + firstValueInGroup);
+            //Debug.Log("[[[[[[[return : " + Mathf.Abs(firstValueInGroup - value));
+            return Mathf.Abs(firstValueInGroup - value);
+        }
+
+        public void AddValueToGroup(float value)
+        {
+            valuesInGroup.Add(value);
+        }
+
+        public float GetMeanValueOfGroup()
+        {
+            float allValuesCombined = 0;
+
+            foreach (float value in valuesInGroup)
+            {
+                allValuesCombined += value;
+            }
+
+            return allValuesCombined / (valuesInGroup.Count * 1f);
+        }
+
+        public int GetGroupSize()
+        {
+            return valuesInGroup.Count;
+        }
+
+        //for debug only
+        public List<float> GetGroupValues()
+        {
+            return valuesInGroup;
+        }
+
+        public float GetGreatestDistance()
+        {
+            float biggestDistance = 0;
+
+            for (int i = 0; i < valuesInGroup.Count; i++)
+            {
+                if(valuesInGroup[i] > biggestDistance)
+                {
+                    biggestDistance = valuesInGroup[i];
+                }
+            }
+
+            return biggestDistance;
+        }
+
+    }
+
     #endregion
 
     #endregion
@@ -145,6 +210,7 @@ public class TacticalPoint : MonoBehaviour
         int numberOfRaycastsPerDirection = raycastFactor * raycastFactor;
         pointCastRaysContainer.SetUpRays(numberOfRaycastsPerDirection);
 
+        //p 0 is crouched, p 1 is standing
         // Go through once for standing and once for crouching.
         for (int p = 0; p < 2; p++)
         {
@@ -198,7 +264,103 @@ public class TacticalPoint : MonoBehaviour
 
                 #region Calculate the meanDistance -> DistanceRating
 
-                float meanDistance;
+               // Array.Sort(infoArray,
+          // delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+                //create the array of raycasts
+                RaycastUsedToGenerateCoverRating[] raycastUsedSortedByDistance = new RaycastUsedToGenerateCoverRating[numberOfRaycastsPerDirection];
+                for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                {
+                    raycastUsedSortedByDistance[n] = pointCastRaysContainer.GetRay(p, i, n);
+                }
+
+                //sort the array of raycasts
+                System.Array.Sort(raycastUsedSortedByDistance,
+                delegate (RaycastUsedToGenerateCoverRating x, RaycastUsedToGenerateCoverRating y) { return x.distance.CompareTo(y.distance); });
+
+                if(p ==1 && i == 7)
+                {
+                    Debug.Log("raycastUsedSortedByDistance: -------");
+                    for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                    {
+                        Debug.Log("ray: distance: " + raycastUsedSortedByDistance[n].distance);                   
+                    }
+                }
+
+                //The modified mode algorythm
+                CalculateDistanceModeAlgorythmGroup currentGroup = null;
+                List<CalculateDistanceModeAlgorythmGroup> groupsUsed = new List<CalculateDistanceModeAlgorythmGroup>();
+
+                for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                {
+                    if(currentGroup != null)
+                    {
+                        //check the distance to the currentGroup
+                        if(currentGroup.GetDistanceToGroup(raycastUsedSortedByDistance[n].distance) < distanceModeMaxDifferenceToGroup)
+                        {
+                            if(raycastUsedSortedByDistance[n].distance != Mathf.Infinity)
+                            {
+                                currentGroup.AddValueToGroup(raycastUsedSortedByDistance[n].distance);
+                            }
+                        }
+                        else
+                        {
+                            currentGroup = null;
+                        }
+                    }
+
+                    if(currentGroup == null)
+                    {
+                        currentGroup = new CalculateDistanceModeAlgorythmGroup(raycastUsedSortedByDistance[n].distance);
+                        groupsUsed.Add(currentGroup);
+                    }                 
+                }
+
+                if (p == 1 && i == 7)
+                {
+                    Debug.Log("groups created by algorthm: -------");
+                    for (int n = 0; n < groupsUsed.Count; n++)
+                    {
+                        Debug.Log("group: " + n + "------------------------" );
+
+                        foreach(float value in groupsUsed[n].GetGroupValues())
+                        {
+                            Debug.Log("v alueInGroup: " + value);
+                        }
+                    }
+                }
+
+                //Get the biggestGroup & their mean value is the distance we will use
+                CalculateDistanceModeAlgorythmGroup biggestGroup = null;
+                int biggestGroupSize = 0;
+                for (int n = 0; n < groupsUsed.Count; n++)
+                {
+                    if(groupsUsed[n].GetGroupSize()> biggestGroupSize)
+                    {
+                        biggestGroupSize = groupsUsed[n].GetGroupSize();
+                        biggestGroup = groupsUsed[n];
+                    }
+                }
+
+                float distanceRating = biggestGroup.GetMeanValueOfGroup();
+
+
+                /* List<RaycastUsedToGenerateCoverRating> raycastsNotInfinite = new List<RaycastUsedToGenerateCoverRating>();
+
+                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                 {
+                     if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
+                     {
+                         raycastsNotInfinite.Add()
+                         //numberOfRaycastsWhichAreNotInfinite++;
+                         //allDistancesCombined += pointCastRaysContainer.GetRay(p, i, n).distance;
+                     }
+
+                 }*/
+
+
+
+                /*float meanDistance;
                 float allDistancesCombined = 0;
                 int numberOfRaycastsWhichAreNotInfinite = 0;
 
@@ -220,43 +382,72 @@ public class TacticalPoint : MonoBehaviour
                 else
                 {
                     meanDistance = allDistancesCombined / numberOfRaycastsWhichAreNotInfinite;
-                }
+                }*/
 
                 #endregion
 
                 #region Calculate the average absolute deviation -> QualityRating
+                float qualityRating;
 
-                float averageAbsoluteDeviation;
-                float allDeviationsCombined = 0;
-
-
-                for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                if (distanceRating == Mathf.Infinity)
                 {
-                    //if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
-                    if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
-                    {
-                        // allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating.GetRay(p, i, n).distance - meanDistance);
-                        allDeviationsCombined += Mathf.Abs(pointCastRaysContainer.GetRay(p, i, n).distance - meanDistance);
-                    }
-                    else
-                    {
-                        allDeviationsCombined += maxRayLength - meanDistance;
-                    }
-                }
-
-                //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
-
-                if (numberOfRaycastsWhichAreNotInfinite == 0)
-                {
-                    averageAbsoluteDeviation = maxRayLength;//Mathf.Infinity;
+                    qualityRating = 0;
                 }
                 else
                 {
-                    //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsWhichAreNotInfinite;
-                    averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
+                    //check how many raycasts are shorter than the distance - the percentage is the quality rating
+                    float maxDistanceFromSelectedDistances = biggestGroup.GetGreatestDistance();
+                    int amountOfRacastsShorterThanTheDistanceRating = 0;
+
+                    for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                    {
+                        if (raycastUsedSortedByDistance[n].distance <= maxDistanceFromSelectedDistances)
+                        {
+                            amountOfRacastsShorterThanTheDistanceRating++;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    qualityRating = (1f * amountOfRacastsShorterThanTheDistanceRating) / numberOfRaycastsPerDirection;
                 }
 
-                float qualityRating = Utility.Remap(averageAbsoluteDeviation, maxRayLength, 0, 0, 1);
+                
+
+
+                /* float averageAbsoluteDeviation;
+                 float allDeviationsCombined = 0;
+
+
+                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
+                 {
+                     //if (!raycastsUsedForGeneratingRating.GetRay(p, i, n).IsInfinite())
+                     if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
+                     {
+                         // allDeviationsCombined += Mathf.Abs(raycastsUsedForGeneratingRating.GetRay(p, i, n).distance - meanDistance);
+                         allDeviationsCombined += Mathf.Abs(pointCastRaysContainer.GetRay(p, i, n).distance - meanDistance);
+                     }
+                     else
+                     {
+                         allDeviationsCombined += maxRayLength - meanDistance;
+                     }
+                 }
+
+                 //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
+
+                 if (numberOfRaycastsWhichAreNotInfinite == 0)
+                 {
+                     averageAbsoluteDeviation = maxRayLength;//Mathf.Infinity;
+                 }
+                 else
+                 {
+                     //averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsWhichAreNotInfinite;
+                     averageAbsoluteDeviation = allDeviationsCombined / numberOfRaycastsPerDirection;
+                 }
+
+                 float qualityRating = Utility.Remap(averageAbsoluteDeviation, maxRayLength, 0, 0, 1);*/
 
                 #endregion
 
@@ -264,12 +455,14 @@ public class TacticalPoint : MonoBehaviour
 
                 if (p == 0)
                 {
-                    pointCoverRating.crouchedDistanceRating[i] = meanDistance;
+                    //pointCoverRating.crouchedDistanceRating[i] = meanDistance;
+                    pointCoverRating.crouchedDistanceRating[i] = distanceRating;
                     pointCoverRating.crouchedQualityRating[i] = qualityRating;
                 }
                 else if (p == 1)
                 {
-                    pointCoverRating.standingDistanceRating[i] = meanDistance;
+                    //pointCoverRating.standingDistanceRating[i] = meanDistance;
+                    pointCoverRating.standingDistanceRating[i] = distanceRating;
                     pointCoverRating.standingQualityRating[i] = qualityRating;
                 }
 

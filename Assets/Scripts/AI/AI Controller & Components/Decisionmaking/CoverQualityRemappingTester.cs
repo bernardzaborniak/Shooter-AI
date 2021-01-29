@@ -8,7 +8,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
     public float distanceToTest;
     public bool crouchTest;
 
-    public TacticalPoint coverPointToTest;
+    public TacticalPoint tPointToTest;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
         directionTowardsThreat.y = 0;
 
         //float signedAngle = Vector3.SignedAngle(Vector3.forward, directionTowardsThreat, Vector3.up); //like this or better use the tactical points directions instead?
-        float signedAngle = Vector3.SignedAngle(coverPointToTest.transform.forward, directionTowardsThreat, coverPointToTest.transform.up);
+        float signedAngle = Vector3.SignedAngle(tPointToTest.transform.forward, directionTowardsThreat, tPointToTest.transform.up);
 
         //remap the angle to 360, and shift a little cause 0 index goes in both directions
         if (signedAngle < 0)
