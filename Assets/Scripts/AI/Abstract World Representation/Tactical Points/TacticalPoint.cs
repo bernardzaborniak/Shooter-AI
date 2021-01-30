@@ -77,6 +77,11 @@ public class TacticalPoint : MonoBehaviour
             return Mathf.Abs(firstValueInGroup - value);
         }
 
+        public bool IsFirstValueInfinity()
+        {
+            return firstValueInGroup == Mathf.Infinity;
+        }
+
         public void AddValueToGroup(float value)
         {
             valuesInGroup.Add(value);
@@ -278,7 +283,7 @@ public class TacticalPoint : MonoBehaviour
                 System.Array.Sort(raycastUsedSortedByDistance,
                 delegate (RaycastUsedToGenerateCoverRating x, RaycastUsedToGenerateCoverRating y) { return x.distance.CompareTo(y.distance); });
 
-                if(p ==1 && i == 7)
+                if(p ==0 && i == 6)
                 {
                     Debug.Log("raycastUsedSortedByDistance: -------");
                     for (int n = 0; n < numberOfRaycastsPerDirection; n++)
@@ -305,7 +310,14 @@ public class TacticalPoint : MonoBehaviour
                         }
                         else
                         {
-                            currentGroup = null;
+                            if (currentGroup.IsFirstValueInfinity()) //distance between infinity and infinity is infinity, but we still want to group them together
+                            {
+                                currentGroup.AddValueToGroup(raycastUsedSortedByDistance[n].distance);
+                            }
+                            else
+                            {
+                                currentGroup = null;
+                            }
                         }
                     }
 
@@ -316,7 +328,7 @@ public class TacticalPoint : MonoBehaviour
                     }                 
                 }
 
-                if (p == 1 && i == 7)
+                if (p == 0 && i == 6)
                 {
                     Debug.Log("groups created by algorthm: -------");
                     for (int n = 0; n < groupsUsed.Count; n++)
