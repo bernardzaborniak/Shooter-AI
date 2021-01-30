@@ -23,7 +23,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -44,7 +44,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
                 friendliesInfo[i] = (friendlyTransforms[i].position, Vector3.Distance(friendlyTransforms[i].position, tPointToTest.GetPointPosition()));
             }
 
-            DetermineQualityOfCover(type,threatsInfo, friendliesInfo, crouchTest);
+            DetermineQualityOfCover(type, threatsInfo, friendliesInfo, crouchTest);
         }
     }
 
@@ -55,15 +55,14 @@ public class CoverQualityRemappingTester : MonoBehaviour
         float plusPoints = 0;
         float minusPoints = 0;
 
+        float crouchedMultiplier;
+        float standingMultiplier;
+
         PointCoverRating coverRating = tPointToTest.coverRating;
 
         if (evaluationType == QualityOfCoverEvaluationType.Defensive)
         {
-            float crouchedMultiplier;
-            float standingMultiplier;
-
             //float distanceCheckMaxError = 0.5f;
-
 
             //always calculate for both standing & crocuhing, just the one not used right now, only gets half the pooints? or 0.33 vs 0.66 rating?
             if (crouching)
@@ -78,79 +77,21 @@ public class CoverQualityRemappingTester : MonoBehaviour
             }
 
             float threatsRating = RateThreatsDefensively(threats, coverRating, crouchedMultiplier, standingMultiplier);
-            //Threats - add modifiers
-            /*for (int i = 0; i < threats.Length; i++)
-            {
-                Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.GetPointPosition();
-                int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
-
-                //crouched Rating
-                if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
-                {
-                    // coverBetweenPointAndThreat = true;
-                    plusPoints += coverRating.crouchedQualityRating[index] * crouchedMultiplier;
-                }
-                else
-                {
-                    minusPoints += 1 * crouchedMultiplier; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
-                }
-
-                //standing Rating
-                if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
-                {
-                    // coverBetweenPointAndThreat = true;
-                    plusPoints += coverRating.standingQualityRating[index] * standingMultiplier;
-                }
-                else
-                {
-                    minusPoints += 1 * standingMultiplier; //if there is no cover, this is bad for the rating
-                }
-
-            }*/
 
             float friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier);
-            //friendlies - add modifiers
-            //for friendlies we want to see them when defensive, but modify with 0,5 cause theyre not soo important
-            /*for (int i = 0; i < friendlies.Length; i++)
-            {
-                Vector3 directionTowardsFriendly = friendlies[i].friendlyPosition - tPointToTest.GetPointPosition();
-                int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsFriendly);
 
-                //crouched Rating
-                if (friendlies[i].distanceToFriendly > coverRating.crouchedDistanceRating[index])
-                {
-                    // coverBetweenPointAndThreat = true;
-                    minusPoints += coverRating.crouchedQualityRating[index] * crouchedMultiplier * 0.5f;
-                }
-                else
-                {
-                    plusPoints += 0.5f * crouchedMultiplier;
-                }
-
-                //standing Rating
-                if (friendlies[i].distanceToFriendly > coverRating.standingDistanceRating[index])
-                {
-                    // coverBetweenPointAndThreat = true;
-                    minusPoints += coverRating.standingQualityRating[index] * standingMultiplier * 0.5f;
-                }
-                else
-                {
-                    plusPoints += 0.5f * standingMultiplier;
-                }
-            }*/
-
-            //endResult = plusPoints / (plusPoints + minusPoints);
             Debug.Log("threatsRating: " + threatsRating);
             Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
-            endResult = threatsRating * 0.75f + friendlyVisibilityRating*0.25f;
+            endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
         }
         else if (evaluationType == QualityOfCoverEvaluationType.Moderate)
         {
-            float crouchedMultiplier;
-            float standingMultiplier;
+            
 
-            float threatsBehindCover = 0;
-            float threatsNotBehindCover = 0;
+            float threatsRating = 0;
+            float threatsRatingCoverShootPoints = 0;
+            float friendlyVisibilityRating = 0;
+            float friendlyVisibilityRatingCoverShootPoints = 0;
 
             if (crouching)
             {
@@ -170,191 +111,82 @@ public class CoverQualityRemappingTester : MonoBehaviour
                 //cover point is rated defensively, but only the crouched cover is rated or 66/33? again
                 //shot paoints are rated 50/50 cover crocuh according to moderate formula
                 // combine  cover points + shoot points 50/50? how to do this?
+
+                for (int j = 0; j < tPointToTest.coverShootPoints.Length; j++)
+                {
+                    threatsRatingCoverShootPoints += RateThreatsModerately(threats, tPointToTest.coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    friendlyVisibilityRatingCoverShootPoints += CalculateFriendliesVisibilityRating(friendlies, tPointToTest.coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                }
+
+                threatsRatingCoverShootPoints = threatsRatingCoverShootPoints / (tPointToTest.coverShootPoints.Length * 1f);
+                friendlyVisibilityRatingCoverShootPoints = friendlyVisibilityRatingCoverShootPoints / (tPointToTest.coverShootPoints.Length * 1f);
+
+                threatsRating = RateThreatsModerately(threats, coverRating, crouchedMultiplier, standingMultiplier)*0.5f + threatsRatingCoverShootPoints*0.5f;
+                friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier)*0.5f + friendlyVisibilityRatingCoverShootPoints*0.5f;
+
             }
             else
             {
-                //just do one moderate evalueation with 66/33
-                //Threats - add modifiers
-                for (int i = 0; i < threats.Length; i++)
-                {
-                    Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.GetPointPosition();
-                    int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
-
-                    //crouched Rating
-                    if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
-                    {
-                        // coverBetweenPointAndThreat = true;
-                        threatsBehindCover += 1 * crouchedMultiplier;
-                    }
-                    else
-                    {
-                        threatsNotBehindCover += 1 * crouchedMultiplier;
-                       // minusPoints += 1 * crouchedMultiplier; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
-                    }
-
-                    //standing Rating
-                    if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
-                    {
-                        // coverBetweenPointAndThreat = true;
-                        // plusPoints += coverRating.standingQualityRating[index] * standingMultiplier;
-                        threatsBehindCover += 1 * standingMultiplier;
-                    }
-                    else
-                    {
-                        //minusPoints += 1 * standingMultiplier; //if there is no cover, this is bad for the rating
-                        threatsNotBehindCover += 1 * standingMultiplier;
-                    }
-
-                }
-
-                //friendlies - add modifiers
-                //for friendlies we want to see them when defensive, but modify with 0,5 cause theyre not soo important
-                for (int i = 0; i < friendlies.Length; i++)
-                {
-                    Vector3 directionTowardsFriendly = friendlies[i].friendlyPosition - tPointToTest.GetPointPosition();
-                    int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsFriendly);
-
-                    //crouched Rating
-                    if (friendlies[i].distanceToFriendly > coverRating.crouchedDistanceRating[index])
-                    {
-                        // coverBetweenPointAndThreat = true;
-                        minusPoints += coverRating.crouchedQualityRating[index] * crouchedMultiplier * 0.5f;
-                    }
-                    else
-                    {
-                        plusPoints += 0.5f * crouchedMultiplier;
-                    }
-
-                    //standing Rating
-                    if (friendlies[i].distanceToFriendly > coverRating.standingDistanceRating[index])
-                    {
-                        // coverBetweenPointAndThreat = true;
-                        minusPoints += coverRating.standingQualityRating[index] * standingMultiplier * 0.5f;
-                    }
-                    else
-                    {
-                        plusPoints += 0.5f * standingMultiplier;
-                    }
-                }
-
-                if(threatsNotBehindCover > 0.5f && threatsNotBehindCover < 2f)
-                {
-                    plusPoints += 3;
-                }
-
-                endResult = plusPoints / (plusPoints + minusPoints);
+                threatsRating = RateThreatsModerately(threats, coverRating, crouchedMultiplier, standingMultiplier);
+                friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier);
             }
+
+            endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
+
         }
         else if (evaluationType == QualityOfCoverEvaluationType.Agressive)
         {
-            //the ost performant analysis? - just checks for the desired position, visible enemy gives plus points
+            if (crouching)
+            {
+                crouchedMultiplier = 0.75f;
+                standingMultiplier = 0.25f;
+            }
+            else
+            {
+                crouchedMultiplier = 0.25f;
+                standingMultiplier = 0.75f;
+            }
 
+            float threatsRating = 0;
+            float friendlyVisibilityRating = 0;
+
+            //the ost performant analysis? - just checks for the desired position, visible enemy gives plus points
             //if cover point, wo only rate the shooting points agressively, else just rate agressive
             //wants to have vision to as many enemies as possible
 
             if (tPointToTest.tacticalPointType == TacticalPointType.CoverPoint)
             {
+              
                 for (int j = 0; j < tPointToTest.coverShootPoints.Length; j++)
                 {
-                    coverRating = tPointToTest.coverShootPoints[j].coverRating;
-
-                    for (int i = 0; i < threats.Length; i++)
-                    {
-                        Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.coverShootPoints[j].GetPointPosition();
-                        int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
-
-                        if (crouching)
-                        {
-                            if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
-                            {
-                                // coverBetweenPointAndThreat = true;
-                                minusPoints += coverRating.crouchedQualityRating[index];
-                            }
-                            else
-                            {
-                                plusPoints += 1; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
-                            }
-                        }
-                        else
-                        {
-                            //standing Rating
-                            if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
-                            {
-                                // coverBetweenPointAndThreat = true;
-                                minusPoints += coverRating.standingQualityRating[index];
-                            }
-                            else
-                            {
-                                plusPoints += 1; //if there is no cover, this is bad for the rating
-                            }
-                        }
-
-
-                    }
+                    threatsRating += RateThreatsAgressively(threats, tPointToTest.coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    friendlyVisibilityRating += CalculateFriendliesVisibilityRating(friendlies, tPointToTest.coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                 }
+
+                //dont divide threatsRating, cause if all of them together have rataing 1, its good enough
+                if (threatsRating > 1) threatsRating = 1;
+                friendlyVisibilityRating = friendlyVisibilityRating / (tPointToTest.coverShootPoints.Length * 1f);
             }
             else
             {
-                for (int i = 0; i < threats.Length; i++)
-                {
-                    Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.GetPointPosition();
-                    int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
-
-                    if (crouching)
-                    {
-                        if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
-                        {
-                            // coverBetweenPointAndThreat = true;
-                            minusPoints += coverRating.crouchedQualityRating[index];
-                        }
-                        else
-                        {
-                            plusPoints += 1; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
-                        }
-                    }
-                    else
-                    {
-                        //standing Rating
-                        if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
-                        {
-                            // coverBetweenPointAndThreat = true;
-                            minusPoints += coverRating.standingQualityRating[index];
-                        }
-                        else
-                        {
-                            plusPoints += 1; //if there is no cover, this is bad for the rating
-                        }
-                    }
-
-
-                }
+                 threatsRating = RateThreatsAgressively(threats, coverRating, crouchedMultiplier, standingMultiplier);
+                 friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier); 
             }
 
-            endResult = plusPoints / (plusPoints + minusPoints);
+            Debug.Log("threatsRating: " + threatsRating);
+            Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
+            endResult = threatsRating * 0.85f + friendlyVisibilityRating * 0.15f;
         }
 
-       
 
 
-        //calculate end result
 
-        
+
+
         Debug.Log("endResult: " + endResult);
         return endResult;
-
-
-
-        //3. now depending on the type of evaluation, rate the situation accordingly
-        //defensive cover, wants to have all threats befind cover and with best quality
-
-
-
-
-
-        //return 0;
     }
 
-    //void AddPoints(ref plusPoints, ref minusPoints, float distanceToTarget, float coverRatingDistance, plusPointsToAdd, minusPoints)
 
     int MapWorldSpaceDirectionToCoverRatingDirectionIndex(Vector3 worldSpaceDirection)
     {
@@ -385,9 +217,42 @@ public class CoverQualityRemappingTester : MonoBehaviour
         return (int)(signedAngle / 45f);
     }
 
+    float RateThreatsAgressively((Vector3 threatPosition, float distanceToThreat)[] threats, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
+    {
+        //the more enemies are not behind cover and visible to be shot, the better
+        float rating = 0;
+        Debug.Log("rate threats agressively----------------------------------");
+        for (int i = 0; i < threats.Length; i++)
+        {
+            Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.GetPointPosition();
+            int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
+
+            //crouched Rating
+            if (threats[i].distanceToThreat < coverRating.crouchedDistanceRating[index])
+            {
+                rating += 1 * crouchedMultiplier;
+                Debug.Log("rating += " + 1 * crouchedMultiplier);
+            }
+
+            //standing Rating
+            if (threats[i].distanceToThreat < coverRating.standingDistanceRating[index])
+            {
+                rating += 1 * standingMultiplier;
+                Debug.Log("rating += " + 1 * standingMultiplier);
+
+            }
+        }
+
+        Debug.Log("rate threats agressively rating: " + (rating / (threats.Length * 1f)));
+        return rating / (threats.Length * 1f);
+    }
+
     float RateThreatsDefensively((Vector3 threatPosition, float distanceToThreat)[] threats, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
     {
+        //the more enemies are behind cover, the better
         float rating = 0;
+
+       
 
         for (int i = 0; i < threats.Length; i++)
         {
@@ -398,29 +263,78 @@ public class CoverQualityRemappingTester : MonoBehaviour
             if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
             {
                 // coverBetweenPointAndThreat = true;
-                //plusPoints += coverRating.crouchedQualityRating[index] * crouchedMultiplier;
                 rating += coverRating.crouchedQualityRating[index] * crouchedMultiplier;
             }
-            //else
-            //{
-               // minusPoints += 1 * crouchedMultiplier; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
-            //}
+
 
             //standing Rating
             if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
             {
                 // coverBetweenPointAndThreat = true;
-                // plusPoints += coverRating.standingQualityRating[index] * standingMultiplier;
                 rating += coverRating.standingQualityRating[index] * standingMultiplier;
             }
-            //else
-            //{
-             //   minusPoints += 1 * standingMultiplier; //if there is no cover, this is bad for the rating
-            //}
-
         }
 
         return rating / (threats.Length * 1f);
+    }
+
+    float RateThreatsModerately((Vector3 threatPosition, float distanceToThreat)[] threats, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
+    {
+        //ideally 1-2 enemies are visible
+        float rating = 0;
+
+        float threatsBehindCover = 0;
+        float threatsNotBehindCover = 0;
+
+        for (int i = 0; i < threats.Length; i++)
+        {
+            Vector3 directionTowardsThreat = threats[i].threatPosition - tPointToTest.GetPointPosition();
+            int index = MapWorldSpaceDirectionToCoverRatingDirectionIndex(directionTowardsThreat);
+
+            //crouched Rating
+            if (threats[i].distanceToThreat > coverRating.crouchedDistanceRating[index])
+            {
+                // coverBetweenPointAndThreat = true;
+                threatsBehindCover += 1 * crouchedMultiplier;
+            }
+            else
+            {
+                threatsNotBehindCover += 1 * crouchedMultiplier;
+                // minusPoints += 1 * crouchedMultiplier; //if there is no cover, this is bad for the rating , also if there is no cover, the quality of the cover which isnt between e and the enemy but behing him doesnt matter
+            }
+
+            //standing Rating
+            if (threats[i].distanceToThreat > coverRating.standingDistanceRating[index])
+            {
+                // coverBetweenPointAndThreat = true;
+                threatsBehindCover += 1 * standingMultiplier;
+            }
+            else
+            {
+                //minusPoints += 1 * standingMultiplier; //if there is no cover, this is bad for the rating
+                threatsNotBehindCover += 1 * standingMultiplier;
+            }
+
+        }
+
+        if (threatsNotBehindCover > 0.5f)
+        {
+            if (threatsNotBehindCover < 1.2f)
+            {
+                rating = 1;
+            }
+            else if (threatsNotBehindCover < 2.2f)
+            {
+                rating = 0.6f;
+            }
+            else if (threatsNotBehindCover < 3.2f)
+            {
+                rating = 0.3f;
+            }
+        }
+        
+
+        return rating;
     }
 
     float CalculateFriendliesVisibilityRating((Vector3 friendlyPosition, float distanceToFriendly)[] friendlies, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
@@ -460,7 +374,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
             //}
         }
 
-        return rating/ friendlies.Length;
+        return rating / friendlies.Length;
     }
 
     //the same for agressive cover & moderate/neutral cover & but also some line of sight rating
