@@ -129,6 +129,14 @@ public class TacticalPoint : MonoBehaviour
 
     #endregion
 
+    //for evaluating rating
+    public enum QualityOfCoverEvaluationType
+    {
+        Defensive,
+        Moderate,
+        Agressive
+    }
+
     #endregion
 
     void OnEnable()
