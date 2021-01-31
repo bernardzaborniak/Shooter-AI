@@ -536,14 +536,39 @@ public class TacticalPoint : MonoBehaviour
     // Is there room on this point for another soldier?
     public bool IsPointFull()
     {
-        if (usingEntity)
+        if(tacticalPointType == TacticalPointType.CoverPoint)
         {
-            return true;
+            if (usingEntity)
+            {
+                return true;
+            }
+            else
+            {
+                for (int i = 0; i < coverShootPoints.Length; i++)
+                {
+                    if (coverShootPoints[i].IsPointFull())
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+
+            }
         }
         else
         {
-            return false;
+            if (usingEntity)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
+       
     }
 
     public void OnEntityEntersPoint(GameEntity entity)
@@ -587,8 +612,8 @@ public class TacticalPoint : MonoBehaviour
             float threatsRating = RateThreatsDefensively(threats, coverRating, crouchedMultiplier, standingMultiplier);
             float friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier);
 
-            Debug.Log("threatsRating: " + threatsRating);
-            Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
+            //Debug.Log("threatsRating: " + threatsRating);
+            //Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
             endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
         }
         else if (evaluationType == QualityOfCoverEvaluationType.Moderate)
@@ -637,8 +662,8 @@ public class TacticalPoint : MonoBehaviour
                 threatsRating = RateThreatsModerately(threats, coverRating, crouchedMultiplier, standingMultiplier);
                 friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier);
             }
-            Debug.Log("threatsRating: " + threatsRating);
-            Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
+           // Debug.Log("threatsRating: " + threatsRating);
+           // Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
 
             endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
 
@@ -681,12 +706,12 @@ public class TacticalPoint : MonoBehaviour
                 friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier);
             }
 
-            Debug.Log("threatsRating: " + threatsRating);
-            Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
+           // Debug.Log("threatsRating: " + threatsRating);
+           // Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
             endResult = threatsRating * 0.85f + friendlyVisibilityRating * 0.15f;
         }
 
-        Debug.Log("endResult: " + endResult);
+        //Debug.Log("endResult: " + endResult);
         return endResult;
     }
 
@@ -720,7 +745,7 @@ public class TacticalPoint : MonoBehaviour
     {
         //the more enemies are not behind cover and visible to be shot, the better
         float rating = 0;
-        Debug.Log("rate threats agressively----------------------------------");
+        //Debug.Log("rate threats agressively----------------------------------");
         for (int i = 0; i < threats.Length; i++)
         {
             Vector3 directionTowardsThreat = threats[i].threatPosition - GetPointPosition();
@@ -730,19 +755,19 @@ public class TacticalPoint : MonoBehaviour
             if (threats[i].distanceToThreat < coverRating.crouchedDistanceRating[index])
             {
                 rating += 1 * crouchedMultiplier;
-                Debug.Log("rating += " + 1 * crouchedMultiplier);
+               //Debug.Log("rating += " + 1 * crouchedMultiplier);
             }
 
             //standing Rating
             if (threats[i].distanceToThreat < coverRating.standingDistanceRating[index])
             {
                 rating += 1 * standingMultiplier;
-                Debug.Log("rating += " + 1 * standingMultiplier);
+                //Debug.Log("rating += " + 1 * standingMultiplier);
 
             }
         }
 
-        Debug.Log("rate threats agressively rating: " + (rating / (threats.Length * 1f)));
+        //Debug.Log("rate threats agressively rating: " + (rating / (threats.Length * 1f)));
         return rating / (threats.Length * 1f);
     }
 
@@ -848,7 +873,7 @@ public class TacticalPoint : MonoBehaviour
             {
                 // coverBetweenPointAndThreat = true;
                 //minusPoints += coverRating.crouchedQualityRating[index] * crouchedMultiplier * 0.5f;
-                Debug.Log("friendly crouching + " + crouchedMultiplier);
+                //Debug.Log("friendly crouching + " + crouchedMultiplier);
 
                 rating += 1 * crouchedMultiplier;
             }
@@ -858,7 +883,7 @@ public class TacticalPoint : MonoBehaviour
             {
                 // coverBetweenPointAndThreat = true;
                 //minusPoints += coverRating.standingQualityRating[index] * standingMultiplier * 0.5f;
-                Debug.Log("friendly standing + " + standingMultiplier);
+                //Debug.Log("friendly standing + " + standingMultiplier);
                 rating += 1 * standingMultiplier;
             }
         }

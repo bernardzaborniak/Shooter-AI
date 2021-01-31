@@ -12,7 +12,7 @@ namespace BenitosAI
 
         Queue<DecisionContext> contexesPool = new Queue<DecisionContext>();
         DecisionContext[] contexesToReturn;
-        private void Awake()
+        private void OnEnable()
         {
             for (int i = 0; i < maxTacticalPointTargetsPerDecision; i++)
             {

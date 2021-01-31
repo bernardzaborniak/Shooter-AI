@@ -45,8 +45,13 @@ namespace BenitosAI
         public float max;
         // for desired range
         public float desiredFloatValue;
-        //for CI_HS_AmmoInWeapon
+        //for WeaponID params Type
         public int weaponID;
+        //for TPointQualityEvaluationParams params type
+        public bool tPointEvaluationCrouching;
+        public QualityOfCoverEvaluationType tPointEvaluationType;
+        public int tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
+        public int tPointEvaluationMaxFriendliesToAcknowledgeWhileRating;
 
         public CustomCurve considerationCurve;
 

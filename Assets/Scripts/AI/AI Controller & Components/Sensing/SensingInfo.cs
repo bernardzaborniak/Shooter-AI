@@ -28,25 +28,31 @@ namespace BenitosAI
         Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> enemyInfosAddedThisFrame = new Dictionary<int, SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> enemyInfosAddedPreviousFrame = new Dictionary<int, SensedEntityInfo>();
-        public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0];
+        public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
 
         //Friendlies
         Queue<SensedEntityInfo> friendlyInfoPool = new Queue<SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> friendlyInfosAddedThisFrame = new Dictionary<int, SensedEntityInfo>();
         Dictionary<int, SensedEntityInfo> friendlyInfosAddedPreviousFrame = new Dictionary<int, SensedEntityInfo>();
-        public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];
+        public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
 
         //Tactical Points Cover
         Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
         Dictionary<int, SensedTacticalPointInfo> tPointCoverInfosAddedThisFrame = new Dictionary<int, SensedTacticalPointInfo>();
         Dictionary<int, SensedTacticalPointInfo> tPointCoverInfosAddedPreviousFrame = new Dictionary<int, SensedTacticalPointInfo>();
-        public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];
+        public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
 
         //Tactical Points Open Field
         Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
         Dictionary<int, SensedTacticalPointInfo> tPointOpenFieldInfosAddedThisFrame = new Dictionary<int, SensedTacticalPointInfo>();
         Dictionary<int, SensedTacticalPointInfo> tPointOpenFieldInfosAddedPreviousFrame = new Dictionary<int, SensedTacticalPointInfo>();
-        public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];
+        public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
+
+        //Tactical Points Cover Shoot
+        //Queue<SensedTacticalPointInfo> tPointCoverShootInfoPool = new Queue<SensedTacticalPointInfo>();
+        public SensedTacticalPointInfo[] tPointCoverShootInfos = new SensedTacticalPointInfo[0];//not sorted by distance
+
+
 
 
         //Infomation Freshness
@@ -54,7 +60,7 @@ namespace BenitosAI
         public int lastFrameCountInfoWasUpdated;
 
 
-        public SensingInfo(int enemiesPoolSize, int firendliesPoolSize, int tPCoverPoolSize, int tPOpenFieldPoolSize)
+        public SensingInfo(int enemiesPoolSize, int firendliesPoolSize, int tPCoverPoolSize, int tPOpenFieldPoolSize)//, int tPCoverShootPoolSize)
         {
             // Fill the Pools
             for (int i = 0; i < enemiesPoolSize; i++)
@@ -73,6 +79,10 @@ namespace BenitosAI
             {
                 tPointOpenFieldInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
+            //for (int i = 0; i < tPCoverShootPoolSize; i++)
+            //{
+            //    tPointCoverShootInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
+            //}
         }
 
         #region Adding Entities
@@ -147,6 +157,7 @@ namespace BenitosAI
             OnSensedTPoint(tPointCoverSensInterface, distance, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
         }
 
+
         public void OnSensedTPOpenField(TacticalPointSensingInterface tPointOpenFieldSensInterface, float distance)
         {
             OnSensedTPoint(tPointOpenFieldSensInterface, distance, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
@@ -203,13 +214,32 @@ namespace BenitosAI
 
         #region Updating Info after adding
 
-        public void UpdateSensingInfoAfterAddingNewInfo(Vector3 currentPosition)
+        public void UpdateSensingInfoAfterAddingNewInfo(Vector3 currentPosition, TacticalPoint currentlyUsedTPoint)
         {
             UpdateEntities(ref enemyInfos, ref enemyInfoPool, ref enemyInfosAddedThisFrame, ref enemyInfosAddedPreviousFrame);
             UpdateEntities(ref friendlyInfos, ref friendlyInfoPool, ref friendlyInfosAddedThisFrame, ref friendlyInfosAddedPreviousFrame);
 
             UpdateTPoints(currentPosition, ref tPointCoverInfos, ref tPointCoverInfoPool, ref tPointCoverInfosAddedThisFrame, ref tPointCoverInfosAddedPreviousFrame);
             UpdateTPoints(currentPosition, ref tPointOpenFieldInfos, ref tPointOpenFieldInfoPool, ref tPointOpenFieldInfosAddedThisFrame, ref tPointOpenFieldInfosAddedPreviousFrame);
+
+            //the coverShootpoints are only filled if soldier is inside TPCover
+            
+            if(currentlyUsedTPoint != null)
+            {
+                if(currentlyUsedTPoint.tacticalPointType == TacticalPointType.CoverPoint)
+                {
+                    tPointCoverShootInfos = new SensedTacticalPointInfo[currentlyUsedTPoint.coverShootPoints.Length];
+
+
+                    for (int i = 0; i < tPointCoverShootInfos.Length; i++)
+                    {
+                        tPointCoverShootInfos[i] = new SensedTacticalPointInfo();
+                        tPointCoverShootInfos[i].SetUpInfo(currentlyUsedTPoint.coverShootPoints[i].GetComponent<TacticalPointSensingInterface>(), 0);
+                    }
+                }
+            }
+
+
 
             //set the nearest just like that for now
             /*if (enemyInfos.Length > 0)

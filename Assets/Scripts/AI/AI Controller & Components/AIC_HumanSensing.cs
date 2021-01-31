@@ -47,6 +47,7 @@ namespace BenitosAI
         [SerializeField] int friendliesPoolSize;
         [SerializeField] int tPointsCoverPoolSize;
         [SerializeField] int tPointsOpenFieldPoolSize;
+        //[SerializeField] int tPointsCoverShootPoolSize;
 
         int myTeamID;
 
@@ -69,7 +70,7 @@ namespace BenitosAI
 
             // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
             myTeamID = myEntity.teamID; // cached for optimisation.
-            sensingInfo = new SensingInfo(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);
+            sensingInfo = new SensingInfo(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);//, tPointsCoverShootPoolSize);
         }
 
         public override void UpdateComponent()
@@ -153,10 +154,10 @@ namespace BenitosAI
                                 {
                                     sensingInfo.OnSensedTPOpenField(visInfo, currentDistance);
                                 }
-                                else
-                                {
-                                    Debug.LogError("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
-                                }
+                                //else
+                                //{
+                                    //Debug.LogError("sensed tactical point is not of Type CoverPoint or OpenFieldPoint - dafuck is it then?!");
+                                //}
                             }
                         }
                     }
@@ -164,7 +165,7 @@ namespace BenitosAI
 
                 #endregion
 
-                sensingInfo.UpdateSensingInfoAfterAddingNewInfo(transform.position);
+                sensingInfo.UpdateSensingInfoAfterAddingNewInfo(transform.position, currentlyUsedTPoint);
 
 
                 UnityEngine.Profiling.Profiler.EndSample();

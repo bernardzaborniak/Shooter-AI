@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
   m_Name: 0 Peek From Cover
   m_EditorClassIdentifier: 
-  decisionContextCreator: {fileID: 0}
-  correspondingAiStateCreator: {fileID: 0}
-  considerations: []
+  decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: f2ebb3fb85a407344b9ce8c1a1a60757, type: 2}
+  considerations:
+  - {fileID: 11400000, guid: 5cf5bbd5ab2dc024aa756863b11e863a, type: 2}
+  - {fileID: 11400000, guid: a351d30f756409c4aaf6f0d29e4d71a0, type: 2}
+  - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}

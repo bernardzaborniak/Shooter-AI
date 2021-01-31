@@ -33,6 +33,20 @@ namespace BenitosAI
             humanSensing.UpdateComponent();
             aimingController.UpdateComponent();
         }
+
+        public void OnEnterTPoint(TacticalPoint tPoint)
+        {
+            humanSensing.SetCurrentlyUsedTacticalPoint(tPoint);
+            tPoint.OnEntityEntersPoint(humanSensing.GetMyEntity());
+        }
+
+        public void OnLeaveTPoint(TacticalPoint tPoint)
+        {
+            humanSensing.SetCurrentlyUsedTacticalPoint(null);
+            tPoint.OnEntityExitsPoint(humanSensing.GetMyEntity());
+
+
+        }
     }
 
 }

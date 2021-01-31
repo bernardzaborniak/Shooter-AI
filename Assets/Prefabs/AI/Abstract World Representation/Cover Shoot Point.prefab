@@ -12,17 +12,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9043686618385529948, guid: 7aee00115b5b49c4783f66140fb3f5ed, type: 3}
     - target: {fileID: 2269259421604854345, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269259421604854345, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7f489c75d7cfbde47888d5550dde354b, type: 2}
     - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
-      propertyPath: tacticalPointType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: pointRenderer
       value: 
       objectReference: {fileID: 4928979965720268}
+    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: tacticalPointType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7362155681532420676, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -56,6 +60,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -68,6 +76,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -77,14 +89,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7362155682955015296, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
@@ -107,8 +111,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cover Shoot Point
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3513111682691924800, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
 --- !u!23 &4928979965720268 stripped
 MeshRenderer:

@@ -88,6 +88,20 @@ namespace BenitosAI
                     SerializedProperty weaponIDProp = serializedObject.FindProperty("weaponID");
                     EditorGUILayout.PropertyField(weaponIDProp);
                 }
+                else if(type == ConsiderationInput.InputParamsType.TPointQualityEvaluationParams)
+                {
+                    SerializedProperty tPointEvaluationCrouchingProp = serializedObject.FindProperty("tPointEvaluationCrouching");
+                    EditorGUILayout.PropertyField(tPointEvaluationCrouchingProp);
+
+                    SerializedProperty tPointEvaluationTypeProp = serializedObject.FindProperty("tPointEvaluationType");
+                    EditorGUILayout.PropertyField(tPointEvaluationTypeProp);
+
+                    SerializedProperty tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxEnemiesToAcknowledgeWhileRating");
+                    EditorGUILayout.PropertyField(tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp);
+
+                    SerializedProperty tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxFriendliesToAcknowledgeWhileRating");
+                    EditorGUILayout.PropertyField(tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp);
+                }
             }
             
 

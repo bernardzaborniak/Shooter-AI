@@ -69,11 +69,11 @@ namespace BenitosAI
 
             if (stance == SC_HS_MoveToWeaponRange.Stance.StandingIdle)
             {
-                charController.ChangeCharacterStanceToIdle();
+                charController.ChangeCharacterStanceToStandingIdle();
             }
             else if (stance == SC_HS_MoveToWeaponRange.Stance.StandingCombat)
             {
-                charController.ChangeCharacterStanceToCombatStance();
+                charController.ChangeCharacterStanceToStandingCombatStance();
             }
             else if(stance == SC_HS_MoveToWeaponRange.Stance.Crouching)
             {

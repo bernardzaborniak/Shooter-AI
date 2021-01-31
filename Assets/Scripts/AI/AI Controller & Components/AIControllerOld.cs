@@ -166,7 +166,7 @@ namespace BenitosAI
                     }
                     else
                     {
-                        characterController.ChangeCharacterStanceToCombatStance();
+                        characterController.ChangeCharacterStanceToStandingCombatStance();
                     }
 
 
@@ -213,7 +213,7 @@ namespace BenitosAI
                     }
                     else
                     {
-                        characterController.ChangeCharacterStanceToCombatStance();
+                        characterController.ChangeCharacterStanceToStandingCombatStance();
                     }
 
                     if (targetTacticalPoint.IsPointFull())
@@ -247,7 +247,7 @@ namespace BenitosAI
                     {
                         positioningState = PositioningState.InCoverShooting;
                         nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
-                        characterController.ChangeCharacterStanceToCombatStance();
+                        characterController.ChangeCharacterStanceToStandingCombatStance();
                         Debug.Log("usedCoverPost: " + usedTacticalPoint);
                         int randomNumber = UnityEngine.Random.Range(0, usedTacticalPoint.coverShootPoints.Length);
                         Debug.Log("Random number: " + usedTacticalPoint.coverShootPoints[randomNumber]);
@@ -259,7 +259,7 @@ namespace BenitosAI
                     {
                         if ((usedTacticalPoint).stanceType == 0)
                         {
-                            characterController.ChangeCharacterStanceToCombatStance();
+                            characterController.ChangeCharacterStanceToStandingCombatStance();
                         }
                         else if ((usedTacticalPoint).stanceType == 1)
                         {
@@ -290,7 +290,7 @@ namespace BenitosAI
                     {
                         if ((usedTacticalPoint).stanceType == 0)
                         {
-                            characterController.ChangeCharacterStanceToCombatStance();
+                            characterController.ChangeCharacterStanceToStandingCombatStance();
                         }
                         else if ((usedTacticalPoint).stanceType == 1)
                         {
@@ -543,7 +543,7 @@ namespace BenitosAI
 
 
                 characterController.ChangeSelectedItem(1);
-                characterController.ChangeCharacterStanceToIdle();
+                characterController.ChangeCharacterStanceToStandingIdle();
                 characterController.StopAimingSpine();
                 characterController.StopAimingWeapon();
                 if (selectedGun != null)

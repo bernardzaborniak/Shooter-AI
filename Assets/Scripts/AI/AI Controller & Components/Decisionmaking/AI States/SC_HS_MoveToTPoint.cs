@@ -4,36 +4,48 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/Hold Position", fileName = "Hold Position")]
-    public class SC_HS_HoldPosition : AIStateCreator
+    [CreateAssetMenu(menuName = "AI/States/MoveToTPoint", fileName = "MoveToTPoint")]
+
+    public class SC_HS_MoveToTPoint : AIStateCreator
     {
+        public bool sprint;
         public enum Stance
         {
             StandingIdle,
             StandingCombat,
             Crouching
         }
-        public Stance stance;
+        public EC_HumanoidCharacterController.CharacterStance stance;
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_HoldPosition state = new St_HS_HoldPosition(aiController, context, stance);
+            St_HS_MoveToTPoint state = new St_HS_MoveToTPoint(aiController, context, sprint, stance);
             return state;
         }
     }
 
-    public class St_HS_HoldPosition : AIState //AIState_HumanoidSoldier
+    public class St_HS_MoveToTPoint : AIState //AIState_HumanoidSoldier
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
 
-        SC_HS_HoldPosition.Stance stance;
+        SensedTacticalPointInfo targetTPInfo;
+        bool sprint;
+        EC_HumanoidCharacterController.CharacterStance stance;
 
-        public St_HS_HoldPosition(AIController aiController, DecisionContext context, SC_HS_HoldPosition.Stance stance)
+        float nextIssueMoveOrderTime;
+
+
+        //public override void SetUpState(AIController aiController, DecisionContext context)
+        public St_HS_MoveToTPoint(AIController aiController, DecisionContext context, bool sprint, EC_HumanoidCharacterController.CharacterStance stance)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
+            this.sprint = sprint;
             this.stance = stance;
+
+            targetTPInfo = context.targetTacticalPoint;
+
         }
 
         public override void OnStateEnter()
@@ -41,25 +53,26 @@ namespace BenitosAI
             //charController.MoveTo(targetPosition, true);
             //charController.StopAimingSpine();
             //charController.StopAimingWeapon();
-            charController.StopMoving();
 
-            if (stance == SC_HS_HoldPosition.Stance.StandingIdle)
+            if (stance == EC_HumanoidCharacterController.CharacterStance.StandingIdle)
             {
                 charController.ChangeCharacterStanceToStandingIdle();
             }
-            else if (stance == SC_HS_HoldPosition.Stance.StandingCombat)
+            else if (stance == EC_HumanoidCharacterController.CharacterStance.StandingCombatStance)
             {
                 charController.ChangeCharacterStanceToStandingCombatStance();
             }
-            else if (stance == SC_HS_HoldPosition.Stance.Crouching)
+            else if (stance == EC_HumanoidCharacterController.CharacterStance.Crouching)
             {
                 charController.ChangeCharacterStanceToCrouchingStance();
             }
+
+            charController.MoveTo(targetTPInfo.tacticalPoint.GetPointPosition(), sprint);
         }
 
         public override void OnStateExit()
         {
-
+            charController.StopMoving();
         }
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
@@ -74,11 +87,8 @@ namespace BenitosAI
 
         public override void UpdateState()
         {
-            //Debug.Log("updating state: ");
-            /*if (charController.IsMoving())
-            {
-                charController.StopMoving();
-            }*/
+
         }
     }
+
 }

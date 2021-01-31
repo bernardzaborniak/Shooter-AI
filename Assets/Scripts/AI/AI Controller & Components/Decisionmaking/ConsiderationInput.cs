@@ -14,6 +14,7 @@ namespace BenitosAI
             Range,
             RangeAndDesiredFloatValue,
             WeaponID,
+            TPointQualityEvaluationParams,
             Direction //usefull for things like prioritise targets in front of me
                       //Buff Status
                       //Assigned Tag

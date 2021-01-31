@@ -23,11 +23,15 @@ MonoBehaviour:
   exampleOutput3: 0
   exampleOutput4: 0
   exampleOutput5: 0
-  considerationInput: {fileID: 0}
+  considerationInput: {fileID: 11400000, guid: 2f262c2a80dbd594d8679bf578df0322, type: 2}
   min: 0
   max: 0
   desiredFloatValue: 0
   weaponID: 0
+  tPointEvaluationCrouching: 0
+  tPointEvaluationType: 0
+  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
+  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
     curveType: 0
     bi_threshold: 0.5

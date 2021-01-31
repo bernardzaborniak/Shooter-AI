@@ -77,10 +77,10 @@ public class EC_HumanoidCharacterController : EntityComponent
     #region State Fields
 
     // ---------- CharacterStance ---------
-    enum CharacterStance
+    public enum CharacterStance
     {
-        Idle,
-        CombatStance,
+        StandingIdle,
+        StandingCombatStance,
         Crouching,
     }
     CharacterStance currentStance;
@@ -179,11 +179,11 @@ public class EC_HumanoidCharacterController : EntityComponent
             // -------- Stances -------
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                ChangeCharacterStanceToIdle();
+                ChangeCharacterStanceToStandingIdle();
             }
             if (Input.GetKeyDown(KeyCode.X))
             {
-                ChangeCharacterStanceToCombatStance();
+                ChangeCharacterStanceToStandingCombatStance();
             }
             if (Input.GetKeyDown(KeyCode.C))
             {
@@ -430,7 +430,7 @@ public class EC_HumanoidCharacterController : EntityComponent
     void SetUpCharacter()
     {
         // the same as ChangeCharacterStanceToIdle but isnt blocked if already in idle stance
-        currentStance = CharacterStance.Idle;
+        currentStance = CharacterStance.StandingIdle;
         movementController.SetDefaultSpeed(idleWalkingSpeed);
         movementController.SetSprintSpeed(idleSprintingSpeed);
         movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
@@ -442,11 +442,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         StopAimingWeapon();
     }
 
-    public void ChangeCharacterStanceToIdle()
+    public void ChangeCharacterStanceToStandingIdle()
     {
-        if (currentStance != CharacterStance.Idle)
+        if (currentStance != CharacterStance.StandingIdle)
         {
-            currentStance = CharacterStance.Idle;
+            currentStance = CharacterStance.StandingIdle;
             movementController.SetDefaultSpeed(idleWalkingSpeed);
             movementController.SetSprintSpeed(idleSprintingSpeed);
             movementController.SetStationaryTurnSpeed(idleStationaryTurnSpeed);
@@ -461,14 +461,14 @@ public class EC_HumanoidCharacterController : EntityComponent
         }
     }
 
-    public void ChangeCharacterStanceToCombatStance()
+    public void ChangeCharacterStanceToStandingCombatStance()
     {
 
-        if (currentStance != CharacterStance.CombatStance)
+        if (currentStance != CharacterStance.StandingCombatStance)
         {
             if (interactionController.DoesCurrentItemInHandAllowCombatStance())
             {
-                currentStance = CharacterStance.CombatStance;
+                currentStance = CharacterStance.StandingCombatStance;
                 movementController.SetDefaultSpeed(combatStanceWalkingSpeed);
                 movementController.SetSprintSpeed(combatStanceSprintingSpeed);
                 movementController.SetStationaryTurnSpeed(combatStationaryTurnSpeed);
@@ -514,7 +514,7 @@ public class EC_HumanoidCharacterController : EntityComponent
 
     bool DoesCurrentStanceAllowAiming()
     {
-        if (currentStance == CharacterStance.Idle)
+        if (currentStance == CharacterStance.StandingIdle)
         {
             return false;
         }
