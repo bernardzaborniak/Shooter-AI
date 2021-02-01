@@ -30,6 +30,9 @@ namespace BenitosAI
         Queue<SensedEntityInfo> sensedEntityInfoPool = new Queue<SensedEntityInfo>();
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         public int maxTPointsSensed = 30;
+        [Tooltip("limit their number, so there will be less cover points ignored")]
+        int maxOpenFieldPointsSensed = 15; 
+
         Queue<SensedTacticalPointInfo> sensedTPointInfoPool = new Queue<SensedTacticalPointInfo>();
 
         public int maxTCoverShootPointsSensed = 5;
@@ -90,7 +93,7 @@ namespace BenitosAI
             {
                 sensedTPointInfoPool.Enqueue(new SensedTacticalPointInfo());
             }
-            Debug.Log("sensedTPointInfoPool size: " + sensedTPointInfoPool.Count);
+            //Debug.Log("sensedTPointInfoPool size: " + sensedTPointInfoPool.Count);
 
             for (int i = 0; i < maxTCoverShootPointsSensed; i++)
             {
@@ -210,10 +213,7 @@ namespace BenitosAI
                 HashSet<SensedTacticalPointInfo> openFieldPointsSensed = new HashSet<SensedTacticalPointInfo>();
 
                 int openFieldPointsAlreadySensed = 0;
-                int maxOpenFieldPointsSensed = 15; //limit their number, theres too much of them
 
-                Debug.Log("before ging thorugh all points: queue size: " + sensedTPointInfoPool.Count);
-                Debug.Log("before ging thorugh all points: collidersInRadius.Length: " + collidersInRadius.Length);
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
                     if (collidersInRadius[i] != null)
@@ -223,8 +223,6 @@ namespace BenitosAI
 
                         if (!visInfo.tacticalPointAssignedTo.IsPointFull())
                         {
-                           
-
                             if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
                             {
                                 currentTPInfo = sensedTPointInfoPool.Dequeue();
