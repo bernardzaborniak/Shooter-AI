@@ -11,6 +11,7 @@ namespace BenitosAI
         #region Fields
 
         int hashCode; // used by sensig info to store in dictionary
+
         public GameEntity entity;
         public EntityTags entityTags;
         public EntitySensingInterface visInfo;
@@ -43,6 +44,15 @@ namespace BenitosAI
         {
             
         }
+
+        public SensedEntityInfo(SensedEntityInfo infoToCopyFrom)
+        {
+            if(infoToCopyFrom != null)
+            {
+                CopyInfo(infoToCopyFrom);
+            }
+        }
+
 
         public void SetUpInfo(EntitySensingInterface visInfo, float distance)
         {
@@ -190,9 +200,9 @@ namespace BenitosAI
             if (GetType() != obj.GetType())
                 return false;
 
-            SensedEntityInfo point = (SensedEntityInfo)obj;
+            SensedEntityInfo entity = (SensedEntityInfo)obj;
 
-            if (GetHashCode() != point.GetHashCode())
+            if (GetHashCode() != entity.GetHashCode())
                 return false;
 
             return true;

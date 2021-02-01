@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class TacticalPointSensingInterface : MonoBehaviour
 {
     public TacticalPoint tacticalPointAssignedTo;
@@ -11,3 +12,4 @@ public class TacticalPointSensingInterface : MonoBehaviour
         return tacticalPointAssignedTo.transform.position;
     }
 }
+*/

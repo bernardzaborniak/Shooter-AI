@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
     
-
+    //creates a lot of garbage?
     [System.Serializable]
     public class DecisionContextVisualiser        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
     {
@@ -41,8 +41,8 @@ namespace BenitosAI
             this.name = context.decision.name;
             this.decision = context.decision;
             this.aiController = context.aiController;
-            this.targetEntity = context.targetEntity;
-            this.targetTacticalPoint = context.targetTacticalPoint;
+            this.targetEntity = new SensedEntityInfo(context.targetEntity);  
+            this.targetTacticalPoint = new SensedTacticalPointInfo(context.targetTacticalPoint);
             rating = context.rating;
 
             Consideration[] considerations;

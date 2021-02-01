@@ -192,24 +192,24 @@ namespace BenitosAI
                 {
                     if (collidersInRadius[i] != null)
                     {
-                        TacticalPointSensingInterface visInfo = collidersInRadius[i].GetComponent<TacticalPointSensingInterface>();
-                        float currentDistance = Vector3.Distance(myPosition, visInfo.GetPointPosition());
+                        TacticalPoint tPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
+                        float currentDistance = Vector3.Distance(myPosition, tPoint.GetPointPosition());
 
-                        if (!visInfo.tacticalPointAssignedTo.IsPointFull())
+                        if (!tPoint.IsPointFull())
                         {
-                            if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
+                            if (tPoint.tacticalPointType == TacticalPointType.CoverPoint)
                             {
                                 currentTPInfo = sensedTPointInfoPool.Dequeue();
-                                currentTPInfo.SetUpInfo(visInfo, currentDistance);
+                                currentTPInfo.SetUpInfo(tPoint, currentDistance);
                                 coverPointsSensed.Add(currentTPInfo);
                             }
                             else if(openFieldPointsAlreadySensed< maxOpenFieldPointsSensed)
                             {
-                                if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.OpenFieldPoint)
+                                if (tPoint.tacticalPointType == TacticalPointType.OpenFieldPoint)
                                 {
                                     openFieldPointsAlreadySensed++;
                                     currentTPInfo = sensedTPointInfoPool.Dequeue();
-                                    currentTPInfo.SetUpInfo(visInfo, currentDistance);
+                                    currentTPInfo.SetUpInfo(tPoint, currentDistance);
                                     openFieldPointsSensed.Add(currentTPInfo);
                                 }
                             }
@@ -228,9 +228,9 @@ namespace BenitosAI
                     //coverShootPointInfos = new SensedTacticalPointInfo[currentlyUsedPoint.coverShootPoints.Length];
                     for (int i = 0; i < currentlyUsedPoint.coverShootPoints.Length; i++)
                     {
-                        TacticalPointSensingInterface visInfo = currentlyUsedPoint.coverShootPoints[i].GetComponent<TacticalPointSensingInterface>();
+                        TacticalPoint tPoint = currentlyUsedPoint.coverShootPoints[i].GetComponent<TacticalPoint>();
                         currentShootPointInfo = sensedTCoverShootPointInfoPool.Dequeue();
-                        currentShootPointInfo.SetUpInfo(visInfo, Vector3.Distance(myPosition, visInfo.GetPointPosition()));
+                        currentShootPointInfo.SetUpInfo(tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition()));
                         //coverShootPointInfos[i] = sensedTCoverShootPointInfoPool.Dequeue();
                         coverShootPointInfos.Add(currentShootPointInfo);
                     }

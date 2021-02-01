@@ -57,7 +57,7 @@ namespace BenitosAI
 
         #endregion
 
-        TacticalPoint currentlyUsedTPoint;
+        [SerializeField] TacticalPoint currentlyUsedTPoint;
 
         #endregion
 

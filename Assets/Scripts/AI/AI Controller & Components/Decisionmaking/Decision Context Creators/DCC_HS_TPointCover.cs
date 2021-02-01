@@ -22,23 +22,23 @@ namespace BenitosAI
 
         public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
         {
-            AIController_Blackboard sensingInfo = ((AIController_HumanoidSoldier)aiController).blackboard;
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)aiController).blackboard;
 
-            int coverpointsCountCount = sensingInfo.tPointCoverInfos.Length;
-            if (coverpointsCountCount > maxTacticalPointTargetsPerDecision)
+            int coverPointsCountCount = blackboard.tPointCoverInfos.Length;
+            if (coverPointsCountCount > maxTacticalPointTargetsPerDecision)
             {
-                coverpointsCountCount = maxTacticalPointTargetsPerDecision;
+                coverPointsCountCount = maxTacticalPointTargetsPerDecision;
             }
-            contexesToReturn = new DecisionContext[coverpointsCountCount];
+            contexesToReturn = new DecisionContext[coverPointsCountCount];
 
-            for (int i = 0; i < coverpointsCountCount; i++)
+            for (int i = 0; i < coverPointsCountCount; i++)
             {
                 contexesToReturn[i] = contexesPool.Dequeue();
-                contexesToReturn[i].SetUpContext(decision, aiController, null, sensingInfo.tPointCoverInfos[i]);
+                contexesToReturn[i].SetUpContext(decision, aiController, null, blackboard.tPointCoverInfos[i]);
             }
 
             //return them back to the pool
-            for (int i = 0; i < coverpointsCountCount; i++)
+            for (int i = 0; i < coverPointsCountCount; i++)
             {
                 contexesPool.Enqueue(contexesToReturn[i]);
             }

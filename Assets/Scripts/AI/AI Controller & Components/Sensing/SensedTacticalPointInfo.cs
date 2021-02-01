@@ -10,7 +10,7 @@ namespace BenitosAI
     {
         int hashCode; // used by sensig info to store in dictionary
         public TacticalPoint tacticalPoint;
-        public TacticalPointSensingInterface visInfo;
+       // public TacticalPointSensingInterface visInfo;
 
         public float lastDistanceMeasured;
 
@@ -22,15 +22,35 @@ namespace BenitosAI
            
         }
 
-        public void SetUpInfo(TacticalPointSensingInterface visInfo, float distance)
+        public SensedTacticalPointInfo(SensedTacticalPointInfo infoToCopyFrom)
         {
-            this.visInfo = visInfo;
-            tacticalPoint = visInfo.tacticalPointAssignedTo;
+            if (infoToCopyFrom != null)
+            {
+                CopyInfo(infoToCopyFrom);
+            }
+        }
+
+        //public void SetUpInfo(TacticalPointSensingInterface visInfo, float distance)
+        public void SetUpInfo(TacticalPoint tacticalPoint, float distance)
+        {
+            //this.visInfo = visInfo;
+            //tacticalPoint = visInfo.tacticalPointAssignedTo;
+            this.tacticalPoint = tacticalPoint;
             hashCode = tacticalPoint.GetHashCode();
             lastDistanceMeasured = distance;
 
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;
+        }
+
+        public void CopyInfo(SensedTacticalPointInfo infoToCopyFrom)
+        {
+            tacticalPoint = infoToCopyFrom.tacticalPoint;
+            hashCode = infoToCopyFrom.hashCode;
+            lastDistanceMeasured = infoToCopyFrom.lastDistanceMeasured;
+
+            timeWhenLastSeen = infoToCopyFrom.timeWhenLastSeen;
+            frameCountWhenLastSeen = infoToCopyFrom.frameCountWhenLastSeen;
         }
 
         public bool IsValid()
@@ -42,6 +62,23 @@ namespace BenitosAI
         public override int GetHashCode()
         {
             return hashCode;
+        }
+
+        //when 2 objects have the same hashcode, equals is checked on them before adding them to a hash set?
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (GetType() != obj.GetType())
+                return false;
+
+            SensedTacticalPointInfo point = (SensedTacticalPointInfo)obj;
+
+            if (GetHashCode() != point.GetHashCode())
+                return false;
+
+            return true;
         }
     }
 }

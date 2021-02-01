@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7362155682955015296}
   - component: {fileID: 4265351544102868340}
-  - component: {fileID: 5758466623038299993}
   - component: {fileID: 2269259421604854345}
   - component: {fileID: 902266486636468215}
   - component: {fileID: 3513111682691924800}
@@ -56,19 +55,6 @@ MonoBehaviour:
   pointRenderer: {fileID: 0}
   stanceType: 0
   pointReferenceID: 0
---- !u!114 &5758466623038299993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362155682955015299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44e4af21e4db1c94eb5db746edbf04b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tacticalPointAssignedTo: {fileID: 4265351544102868340}
 --- !u!23 &2269259421604854345
 MeshRenderer:
   m_ObjectHideFlags: 0
