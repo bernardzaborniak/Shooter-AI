@@ -289,6 +289,11 @@ namespace BenitosAI
             }
         }
 
+        public void UpdateEntityInfoDistance(ref SensedEntityInfo entityInfo)
+        {
+            entityInfo.lastDistanceMeasured = Vector3.Distance(transform.position, entityInfo.GetEntityPosition());
+        }
+
        
        
     }

@@ -17,11 +17,11 @@ namespace BenitosAI
         public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
 
         //Tactical Points Cover
-        Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
+        //Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
         public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
 
         //Tactical Points Open Field
-        Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
+        //Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
         public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
 
         //Tactical Points Cover Shoot
@@ -40,6 +40,9 @@ namespace BenitosAI
 
         TacticalPoint currentlyUsedTPoint;
 
+        [Tooltip("occasionally used to update some values")]
+        public AIC_HumanSensing sensing;
+
 
         void Start()
         //public AIController_Blackboard(int enemyInfosPoolSize, int firendlyInfosPoolSize, int tPCoverInfosPoolSize, int tPOpenFieldInfosPoolSize, int tPCoverShootInfosPoolSize)
@@ -53,14 +56,14 @@ namespace BenitosAI
             {
                 friendlyInfoPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
-            for (int i = 0; i < tPCoverInfosPoolSize; i++)
+            /*for (int i = 0; i < tPCoverInfosPoolSize; i++)
             {
                 tPointCoverInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
             for (int i = 0; i < tPOpenFieldInfosPoolSize; i++)
             {
                 tPointOpenFieldInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
-            }
+            }*/
             //for (int i = 0; i < tPCoverShootInfosPoolSize; i++)
             //{
              //   tPointCoverShootInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
@@ -69,14 +72,23 @@ namespace BenitosAI
 
         public void UpdateEntityInfos(HashSet<SensedEntityInfo> newEnemyInfos, HashSet<SensedEntityInfo> newFriendlyInfos)
         {
-           // HashSet<(EntitySensingInterface enemyEntitySensInterface, float distance)> oldEnemyInfoTuples = new HashSet<(EntitySensingInterface enemyEntitySensInterface, float distance)>();
+            //the new entities are registered, while the older ones arent forgotten completely
+
+            //first Enemies
 
             //Add old values which arent overriden to the new values set
             for (int i = 0; i < enemyInfos.Length; i++)
             {
                 if (!newEnemyInfos.Contains(enemyInfos[i]))
                 {
-                    newEnemyInfos.Add(enemyInfos[i]);
+                    //if hasnt died yet
+                    if (enemyInfos[i].IsAlive())
+                    {
+                        //update distance inside info
+                        sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                        newEnemyInfos.Add(enemyInfos[i]);
+                    }
+                    
                 }
 
                 //Return the infos to the pool again
@@ -91,20 +103,68 @@ namespace BenitosAI
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
 
-            int newInfoArraySize = enemyInfoPool.Count;
-            if(newEnemyInfos.Count < newInfoArraySize) newInfoArraySize = newEnemyInfos.Count;
+            int newEnemyInfoArraySize = enemyInfoPool.Count;
+            if(newEnemyInfos.Count < newEnemyInfoArraySize) newEnemyInfoArraySize = newEnemyInfos.Count;
 
-            infoArray = new SensedEntityInfo[newInfoArraySize];
+            enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
 
-            for (int i = 0; i < newInfoArraySize; i++)
+            for (int i = 0; i < newEnemyInfoArraySize; i++)
             {
-                infoArray[i] = enemyInfoPool.Dequeue();
-                infoArray[i].SetUp(newEnemyInfosArray[i]);
+                enemyInfos[i] = enemyInfoPool.Dequeue();
+                enemyInfos[i].SetUpInfo(newEnemyInfosArray[i].visInfo, newEnemyInfosArray[i].lastDistanceMeasured);
+            }
+
+
+            //Friendlies
+
+            //Add old values which arent overriden to the new values set
+            for (int i = 0; i < friendlyInfos.Length; i++)
+            {
+                if (!newFriendlyInfos.Contains(friendlyInfos[i]))
+                {
+                    //if hasnt died yet
+                    if (friendlyInfos[i].IsAlive())
+                    {
+                        //update distance inside info
+                        sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
+                        newFriendlyInfos.Add(friendlyInfos[i]);
+                    }
+
+                }
+
+                //Return the infos to the pool again
+                friendlyInfoPool.Enqueue(friendlyInfos[i]);
+            }
+
+            //convert the HashSet to Array & Sort it
+            SensedEntityInfo[] newFriendlyInfosArray = new SensedEntityInfo[newFriendlyInfos.Count];
+            newFriendlyInfos.CopyTo(newFriendlyInfosArray);
+
+            Array.Sort(newFriendlyInfosArray,
+            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+
+            int newFriendlyInfoArraySize = friendlyInfoPool.Count;
+            if (newFriendlyInfos.Count < newFriendlyInfoArraySize) newFriendlyInfoArraySize = newFriendlyInfos.Count;
+
+            enemyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
+
+            for (int i = 0; i < newFriendlyInfoArraySize; i++)
+            {
+                friendlyInfos[i] = friendlyInfoPool.Dequeue();
+                friendlyInfos[i].SetUpInfo(newFriendlyInfosArray[i].visInfo, newFriendlyInfosArray[i].lastDistanceMeasured);
             }
         }
 
         public void UpdateTPointInfos(HashSet<SensedTacticalPointInfo> newCoverPointInfos, HashSet<SensedTacticalPointInfo> newOpenFieldInfos, HashSet<SensedTacticalPointInfo> coverShootPointInfos)
         {
+            //now go through cover and open field points, also just override it?
+            tPointCoverInfos = new SensedTacticalPointInfo[newCoverPointInfos.Count];
+            newCoverPointInfos.CopyTo(tPointCoverInfos);
+
+            tPointOpenFieldInfos = new SensedTacticalPointInfo[newOpenFieldInfos.Count];
+            newOpenFieldInfos.CopyTo(tPointOpenFieldInfos);
+
             //the cover shoot points are just overriden
             tPointCoverShootInfos = new SensedTacticalPointInfo[coverShootPointInfos.Count];
             coverShootPointInfos.CopyTo(tPointCoverShootInfos);
