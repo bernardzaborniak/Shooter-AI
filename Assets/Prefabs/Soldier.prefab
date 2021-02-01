@@ -1038,11 +1038,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2247668115459400645}
   - component: {fileID: 6567086041650918770}
+  - component: {fileID: 6005514798904244086}
   - component: {fileID: 7864116541130220572}
   - component: {fileID: 3586266366417383842}
   - component: {fileID: 5846961643459389589}
   - component: {fileID: 4214416404046456006}
-  - component: {fileID: 6005514798904244086}
   m_Layer: 0
   m_Name: AI Controller
   m_TagString: Untagged
@@ -1081,13 +1081,34 @@ MonoBehaviour:
   - {fileID: 7864116541130220572}
   - {fileID: 3586266366417383842}
   characterController: {fileID: 8032510007199776535}
-  sensing: {fileID: 7864116541130220572}
+  blackboard: {fileID: 6005514798904244086}
   aimingController: {fileID: 3586266366417383842}
   maxRangeToEnemy: 20
   minRangeToEnemy: 8
   desiredRangeToEnemy: 14
   targetMaxOffset: 8
   targetPositionVisualised: {fileID: 5713231771712369939}
+--- !u!114 &6005514798904244086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2925017821980787382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b17c14859a4e44f9e52c65367febce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterController: {fileID: 8032510007199776535}
+  health: {fileID: 3435694260906315833}
+  sensing: {fileID: 7864116541130220572}
+  lastTimeSensingInfoWasUpdated: 0
+  lastFrameCountSensingInfoWasUpdated: 0
+  enemyInfosPoolSize: 15
+  firendlyInfosPoolSize: 10
+  tPCoverInfosPoolSize: 15
+  tPOpenFieldInfosPoolSize: 20
 --- !u!114 &7864116541130220572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,6 +1123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackboard: {fileID: 6005514798904244086}
   myEntityCollider: {fileID: 8562225995320379315}
+  headTransform: {fileID: 1936154419766259478}
   visionRadius: 40
   hearingRadius: 7
   sensingTPointsRadius: 8
@@ -1111,13 +1133,13 @@ MonoBehaviour:
   postSensingLayerMask:
     serializedVersion: 2
     m_Bits: 33554432
-  maxEntitiesSensed: 30
-  maxTPointsSensed: 30
-  maxTCoverShootPointsSensed: 5
-  visibilityLosTestLayermask:
+  visibilityLosTestLayerMask:
     serializedVersion: 2
     m_Bits: 768
-  headTransform: {fileID: 1936154419766259478}
+  maxEntitiesSensed: 30
+  maxTPointsSensed: 30
+  maxOpenFieldPointsSensed: 15
+  maxTCoverShootPointsSensed: 5
   optimiser: {fileID: 4214416404046456006}
 --- !u!114 &3586266366417383842
 MonoBehaviour:
@@ -1162,32 +1184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateSensingNextTimePossible: 0
---- !u!114 &6005514798904244086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2925017821980787382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00b17c14859a4e44f9e52c65367febce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 8032510007199776535}
-  health: {fileID: 3435694260906315833}
-  enemyInfos: []
-  friendlyInfos: []
-  tPointCoverInfos: []
-  tPointOpenFieldInfos: []
-  tPointCoverShootInfos: []
-  lastTimeSensingInfoWasUpdated: 0
-  lastFrameCountSensingInfoWasUpdated: 0
-  enemyInfosPoolSize: 15
-  firendlyInfosPoolSize: 10
-  tPCoverInfosPoolSize: 15
-  tPOpenFieldInfosPoolSize: 20
-  sensing: {fileID: 7864116541130220572}
 --- !u!1 &3033485311553759571
 GameObject:
   m_ObjectHideFlags: 0

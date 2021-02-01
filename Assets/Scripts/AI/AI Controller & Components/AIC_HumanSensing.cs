@@ -6,70 +6,48 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    // Fills the SensingInfo which is used by the AI 
+    // Updates the blackboard info every interval. Has A Pool of EntitySensedInfos.
     public class AIC_HumanSensing : AIComponent
     {
+        #region Fields
 
-        //the sensing info is filled by the sensingcomponenty using the Physics System
-        public AIController_Blackboard blackboard;
+        [SerializeField] AIController_Blackboard blackboard;
 
         [Header("Physics Search Values")]
         [Tooltip("Assign this to the collider of the unit, which is sensing, so it does not sense itself as a friendly")]
-        public Collider myEntityCollider;
-
-        public float visionRadius;
-        [Tooltip("for now hearing, just automaticly detects enemies in this radius")]
-        public float hearingRadius;
-        [Tooltip("tPoints are automaticly sensed in this radius, without any vision checks")]
-        public float sensingTPointsRadius;
-        //Collider[] collidersInRadius;
-        public LayerMask sensingLayerMask;
-        public LayerMask postSensingLayerMask;
-        [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
-        public int maxEntitiesSensed = 30;
-        Queue<SensedEntityInfo> sensedEntityInfoPool = new Queue<SensedEntityInfo>();
-        [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
-        public int maxTPointsSensed = 30;
-        [Tooltip("limit their number, so there will be less cover points ignored")]
-        int maxOpenFieldPointsSensed = 15; 
-
-        Queue<SensedTacticalPointInfo> sensedTPointInfoPool = new Queue<SensedTacticalPointInfo>();
-
-        public int maxTCoverShootPointsSensed = 5;
-        Queue<SensedTacticalPointInfo> sensedTCoverShootPointInfoPool = new Queue<SensedTacticalPointInfo>();
-
-        public LayerMask visibilityLosTestLayermask;
-
+        [SerializeField] Collider myEntityCollider;
 
         [Header("For Line of Sight & local position")]
         public Transform headTransform;
 
+        [SerializeField] float visionRadius;
+        [Tooltip("for now hearing, just automaticly detects enemies in this radius")]
+        [SerializeField] float hearingRadius;
+        [Tooltip("tPoints are automaticly sensed in this radius, without any vision checks")]
+        [SerializeField] float sensingTPointsRadius;
+        [SerializeField] LayerMask sensingLayerMask;
+        [SerializeField] LayerMask postSensingLayerMask;
+        [SerializeField] LayerMask visibilityLosTestLayerMask;
 
-
-
-        //public float sensingInterval = 0.5f;
-        //float nextSensingTime;
+        [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
+        [SerializeField] int maxEntitiesSensed = 30;
+        Queue<SensedEntityInfo> sensedEntityInfoPool = new Queue<SensedEntityInfo>();
+        
+        [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
+        [SerializeField] int maxTPointsSensed = 30;
+        [Tooltip("limit their number, so there will be less cover points ignored")]
+        [SerializeField] int maxOpenFieldPointsSensed = 15;
+        Queue<SensedTacticalPointInfo> sensedTPointInfoPool = new Queue<SensedTacticalPointInfo>();
+        [SerializeField] int maxTCoverShootPointsSensed = 5;
+        Queue<SensedTacticalPointInfo> sensedTCoverShootPointInfoPool = new Queue<SensedTacticalPointInfo>();
 
 
         [Header("Optimisation")]
         public SensingOptimiser optimiser;
 
-
-
         int myTeamID;
 
-        //#region Pooling
-
-
-
-        //#endregion
-
-        #region Variables only cached if called repeatedly in one frame
-
-        float myHealthRatio;
-
         #endregion
-
 
         public override void SetUpComponent(GameEntity entity)
         {
@@ -79,6 +57,7 @@ namespace BenitosAI
             myTeamID = myEntity.teamID; // cached for optimisation.
             //sensingInfo = new AIController_Blackboard(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);//, tPointsCoverShootPoolSize);
 
+            // Set Up Pools
             for (int i = 0; i < maxEntitiesSensed; i++)
             {
                 sensedEntityInfoPool.Enqueue(new SensedEntityInfo());
@@ -88,7 +67,6 @@ namespace BenitosAI
             {
                 sensedTPointInfoPool.Enqueue(new SensedTacticalPointInfo());
             }
-            //Debug.Log("sensedTPointInfoPool size: " + sensedTPointInfoPool.Count);
 
             for (int i = 0; i < maxTCoverShootPointsSensed; i++)
             {
@@ -107,7 +85,6 @@ namespace BenitosAI
 
                 blackboard.lastTimeSensingInfoWasUpdated = Time.time;
                 blackboard.lastFrameCountSensingInfoWasUpdated = Time.frameCount;
-
                 Vector3 myPosition = transform.position;
                 float distanceToTarget;
 
@@ -147,7 +124,7 @@ namespace BenitosAI
                             {
                                 //LOS check
                                 RaycastHit hit;
-                                if (Physics.Raycast(headTransform.position, currentEntitySensInterface.GetRandomPointForLineOfSightTest() - headTransform.position, out hit, Mathf.Infinity, visibilityLosTestLayermask))
+                                if (Physics.Raycast(headTransform.position, currentEntitySensInterface.GetRandomPointForLineOfSightTest() - headTransform.position, out hit, Mathf.Infinity, visibilityLosTestLayerMask))
                                 {
                                     Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                                     if (hitbox)
@@ -186,12 +163,12 @@ namespace BenitosAI
                 {
                     sensedEntityInfoPool.Enqueue(info);
                 }
-                enemiesSensed.Clear();
+                //enemiesSensed.Clear();
                 foreach (SensedEntityInfo info in friendliesSensed)
                 {
                     sensedEntityInfoPool.Enqueue(info);
                 }
-                friendliesSensed.Clear();
+                //friendliesSensed.Clear();
 
                 //dont clear thoose, they get deleted anyway?
 
@@ -267,26 +244,21 @@ namespace BenitosAI
                 {
                     sensedTPointInfoPool.Enqueue(info);
                 }
-                enemiesSensed.Clear();
+                //enemiesSensed.Clear();
                 foreach (SensedTacticalPointInfo info in openFieldPointsSensed)
                 {
                     sensedTPointInfoPool.Enqueue(info);
                 }
-                friendliesSensed.Clear();
+                //friendliesSensed.Clear();
 
                 foreach(SensedTacticalPointInfo info in coverShootPointInfos)
                 {
                     sensedTCoverShootPointInfoPool.Enqueue(info);
                 }
-                coverShootPointInfos.Clear();
-
-
+                //coverShootPointInfos.Clear();
 
 
                 #endregion
-
-                //blackboard.UpdateSensingInfoAfterAddingNewInfo(transform.position, currentlyUsedTPoint);
-
 
                 UnityEngine.Profiling.Profiler.EndSample();
 
@@ -297,8 +269,6 @@ namespace BenitosAI
         {
             entityInfo.lastDistanceMeasured = Vector3.Distance(transform.position, entityInfo.GetEntityPosition());
         }
-
-       
        
     }
 

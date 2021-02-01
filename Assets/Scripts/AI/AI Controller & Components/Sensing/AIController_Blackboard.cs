@@ -5,45 +5,52 @@ using System;
 
 namespace BenitosAI
 {
-
+    // Holds informion, acts like the memory of the AI. Has A Pool of EntitySensedInfos.
     public class AIController_Blackboard: AIComponent
     {
+        #region Fields
+
         //some values are recieved by other scripts
         [Header("Scripts to Get Values From")]
         [Tooltip("Reference for cecking things like ammo ")]
-        public EC_HumanoidCharacterController characterController;
+        [SerializeField] EC_HumanoidCharacterController characterController;
         [Tooltip("Reference for cecking health ")]
-        public EC_Health health;
+        [SerializeField] EC_Health health;
+
+        [Tooltip("occasionally used to update some values")]
+        public AIC_HumanSensing sensing;
 
         #region For Storing Sensing Information
         [Header("For Storing Sensing Information")]
-        //Enemies
-        public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
-        Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
-
-        //Friendlies
-        public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
-        Queue<SensedEntityInfo> friendlyInfosPool = new Queue<SensedEntityInfo>();
-
-
-        //Tactical Points Cover
-        //Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
-        public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
-
-        //Tactical Points Open Field
-        //Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
-        public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
-
-        //Tactical Points Cover Shoot
-        //Queue<SensedTacticalPointInfo> tPointCoverShootInfoPool = new Queue<SensedTacticalPointInfo>();
-        public SensedTacticalPointInfo[] tPointCoverShootInfos = new SensedTacticalPointInfo[0];//not sorted by distance
 
         //Infomation Freshness
         public float lastTimeSensingInfoWasUpdated;
         public int lastFrameCountSensingInfoWasUpdated;
 
+        //Enemies
+        [NonSerialized] public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
+        Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
+
+        //Friendlies
+        [NonSerialized] public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
+        Queue<SensedEntityInfo> friendlyInfosPool = new Queue<SensedEntityInfo>();
+
+
+        //Tactical Points Cover
+        //Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
+        [NonSerialized] public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
+
+        //Tactical Points Open Field
+        //Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
+        [NonSerialized] public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
+
+        //Tactical Points Cover Shoot
+        //Queue<SensedTacticalPointInfo> tPointCoverShootInfoPool = new Queue<SensedTacticalPointInfo>();
+        [NonSerialized] public SensedTacticalPointInfo[] tPointCoverShootInfos = new SensedTacticalPointInfo[0];//not sorted by distance
+
+
         [SerializeField] int enemyInfosPoolSize;
-        [SerializeField] int firendlyInfosPoolSize;
+        [SerializeField] int friendlyInfosPoolSize;
         [SerializeField] int tPCoverInfosPoolSize;
         [SerializeField] int tPOpenFieldInfosPoolSize;
         //int tPCoverShootInfosPoolSize = 5;
@@ -52,8 +59,8 @@ namespace BenitosAI
 
         TacticalPoint currentlyUsedTPoint;
 
-        [Tooltip("occasionally used to update some values")]
-        public AIC_HumanSensing sensing;
+        #endregion
+
 
         public override void SetUpComponent(GameEntity entity)
         {
@@ -61,13 +68,12 @@ namespace BenitosAI
 
             //myTeamID = myEntity.teamID; // cached for optimisation.
 
-
             // Fill the Pools
             for (int i = 0; i < enemyInfosPoolSize; i++)
             {
                 enemyInfoPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
-            for (int i = 0; i < firendlyInfosPoolSize; i++)
+            for (int i = 0; i < friendlyInfosPoolSize; i++)
             {
                 friendlyInfosPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
@@ -85,13 +91,16 @@ namespace BenitosAI
             //}
         }
 
+        #region Updating Sensing Information
+
         public void UpdateEntityInfos(HashSet<SensedEntityInfo> newEnemyInfos, HashSet<SensedEntityInfo> newFriendlyInfos)
         {
             //Remember, newEnemyInfos & newFriendlyInfos are readonly, dont change them or the two pools of SensedEntityInfo inside blackboard & sensing will start messing with each other :(
 
-            //the new entities are registered, while the older ones arent forgotten completely
+            //-> The new entities are registered, while the older ones arent forgotten completely.
 
-            //first Enemies
+            #region Register new Enemies
+
             HashSet<SensedEntityInfo> oldEnemiesToHoldOn = new HashSet<SensedEntityInfo>();
 
             //Carry over old values which arent overriden to the new values set
@@ -99,10 +108,10 @@ namespace BenitosAI
             {
                 if (!newEnemyInfos.Contains(enemyInfos[i]))
                 {
-                    //if hasnt died yet
+                    //If hasnt died yet
                     if (enemyInfos[i].IsAlive())
                     {
-                        //update distance inside info
+                        //Update distance inside info, the unit can roughly predit how far the unit will be by now.
                         sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
                         oldEnemiesToHoldOn.Add(enemyInfos[i]);
                     }
@@ -114,7 +123,7 @@ namespace BenitosAI
             }
 
 
-            //convert the HashSet to Array & Sort it
+            //Convert the HashSet to Array & Sort it
             SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[newEnemyInfos.Count + oldEnemiesToHoldOn.Count];
             newEnemyInfos.CopyTo(newEnemyInfosSortedArray,0);
             oldEnemiesToHoldOn.CopyTo(newEnemyInfosSortedArray, newEnemyInfos.Count);
@@ -132,12 +141,13 @@ namespace BenitosAI
             for (int i = 0; i < newEnemyInfoArraySize; i++)
             {
                 enemyInfos[i] = enemyInfoPool.Dequeue();
-                enemyInfos[i].CopyInfo(newEnemyInfosSortedArray[i]);
-
+                enemyInfos[i].CopyInfo(newEnemyInfosSortedArray[i]);  //The info is copied - this prevents referencing objects from the sensing pool, we only want objects from the blackboard pool here.
             }
 
+            #endregion
 
-            //Friendlies
+            #region Register new Friendlies
+
             HashSet<SensedEntityInfo> oldFriendliesToHoldOn = new HashSet<SensedEntityInfo>();
 
             //Carry over old values which arent overriden to the new values set
@@ -148,7 +158,7 @@ namespace BenitosAI
                     //if hasnt died yet
                     if (friendlyInfos[i].IsAlive())
                     {
-                        //update distance inside info
+                        //Update distance inside info, the unit can roughly predit how far the unit will be by now.
                         sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
                         oldFriendliesToHoldOn.Add(friendlyInfos[i]);
                     }
@@ -171,26 +181,30 @@ namespace BenitosAI
 
 
             int newFriendlyInfoArraySize = newFriendlyInfosSortedArray.Length;
-            if (newFriendlyInfoArraySize > enemyInfosPoolSize) newFriendlyInfoArraySize = enemyInfosPoolSize;
+            if (newFriendlyInfoArraySize > friendlyInfosPoolSize) newFriendlyInfoArraySize = friendlyInfosPoolSize;
 
             friendlyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
 
             for (int i = 0; i < newFriendlyInfoArraySize; i++)
             {
                 friendlyInfos[i] = friendlyInfosPool.Dequeue();
-                friendlyInfos[i].CopyInfo(newFriendlyInfosSortedArray[i]);
+                friendlyInfos[i].CopyInfo(newFriendlyInfosSortedArray[i]); //The info is copied - this prevents referencing objects from the sensing pool, we only want objects from the blackboard pool here.
 
             }
+
+            #endregion
         }
 
         public void UpdateTPointInfos(HashSet<SensedTacticalPointInfo> newCoverPointInfos, HashSet<SensedTacticalPointInfo> newOpenFieldInfos, HashSet<SensedTacticalPointInfo> coverShootPointInfos)
         {
-            //now go through cover and open field points, also just override it?
+            //For TPoints, we just override them, the references here are referencing SensedTacticalPointInfo objects inside the SensingPool.
+
             tPointCoverInfos = new SensedTacticalPointInfo[newCoverPointInfos.Count];
             newCoverPointInfos.CopyTo(tPointCoverInfos);
             
             Array.Sort(tPointCoverInfos,
             delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
 
             tPointOpenFieldInfos = new SensedTacticalPointInfo[newOpenFieldInfos.Count];
             newOpenFieldInfos.CopyTo(tPointOpenFieldInfos);
@@ -199,7 +213,6 @@ namespace BenitosAI
             delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
 
-            //the cover shoot points are just overriden
             tPointCoverShootInfos = new SensedTacticalPointInfo[coverShootPointInfos.Count];
             coverShootPointInfos.CopyTo(tPointCoverShootInfos);
 
@@ -207,6 +220,8 @@ namespace BenitosAI
             delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
         }
+
+        #endregion
 
 
         public void SetCurrentlyUsedTacticalPoint(TacticalPoint usedPoint)

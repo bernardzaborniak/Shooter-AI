@@ -12,7 +12,7 @@ namespace BenitosAI
         public AIComponent[] aIComponents;
 
         public EC_HumanoidCharacterController characterController;
-        public AIC_HumanSensing sensing;
+        public AIController_Blackboard blackboard;
         public AIC_AimingController aimingController;
 
         public float maxRangeToEnemy;
@@ -103,7 +103,7 @@ namespace BenitosAI
             SensedEntityInfo nearestEnemyInfo = null;
             try
             {
-                nearestEnemyInfo = sensing.blackboard.enemyInfos[0];
+                nearestEnemyInfo = blackboard.enemyInfos[0];
             }catch(Exception e) { }
 
             Vector3 directionToNearestEnemy = Vector3.zero;
@@ -138,7 +138,7 @@ namespace BenitosAI
 
             //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
             //Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos;
-            SensedTacticalPointInfo[] possiblePosts = sensing.blackboard.tPointCoverInfos;
+            SensedTacticalPointInfo[] possiblePosts = blackboard.tPointCoverInfos;
 
 
             #endregion

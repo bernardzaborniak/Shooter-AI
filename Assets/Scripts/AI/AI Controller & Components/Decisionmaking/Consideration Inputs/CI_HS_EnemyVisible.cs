@@ -16,7 +16,7 @@ namespace BenitosAI
             //if (((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.sensingInfo.enemyInfos.Length > 0)
 
             //dont forget to check how old an infomration about an enemy is
-            SensedEntityInfo[] infos = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.blackboard.enemyInfos;
+            SensedEntityInfo[] infos = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.enemyInfos;
             if (infos.Length > 0)
             {
                 for (int i = 0; i < infos.Length; i++)

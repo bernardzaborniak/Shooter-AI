@@ -13,9 +13,9 @@ namespace BenitosAI
         {
             UnityEngine.Profiling.Profiler.BeginSample("RateCoverPoint");
 
-            AIC_HumanSensing sensing = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing;
-            SensedEntityInfo[] enemyInfos = sensing.blackboard.enemyInfos;
-            SensedEntityInfo[] friendlyInfos = sensing.blackboard.friendlyInfos;
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
+            SensedEntityInfo[] enemyInfos = blackboard.enemyInfos;
+            SensedEntityInfo[] friendlyInfos = blackboard.friendlyInfos;
 
             //cap the lengths if needed
             int threatsInfoLength = consideration.tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;

@@ -21,7 +21,7 @@ namespace BenitosAI
 
         public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
         {
-            AIController_Blackboard sensingInfo = ((AIController_HumanoidSoldier)aiController).humanSensing.blackboard;
+            AIController_Blackboard sensingInfo = ((AIController_HumanoidSoldier)aiController).blackboard;
 
             int enemyEntitiesCount = sensingInfo.enemyInfos.Length;
             //Debug.Log("enemy entities count: " + sensingInfo.enemyInfos.Length);
