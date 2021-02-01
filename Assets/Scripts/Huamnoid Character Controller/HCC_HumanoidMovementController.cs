@@ -154,7 +154,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         {
             Ordered,
             BeingExecuted,
-            Paused,
+            ScheduledForAbort,
             NoOrder
         }
 
@@ -194,9 +194,10 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
             orderExecutionStatus = OrderExecutionStatus.NoOrder;
         }
 
-        public void OnPause()
+        
+        public void OnScheduleAbort()
         {
-            orderExecutionStatus = OrderExecutionStatus.Paused;
+            orderExecutionStatus = OrderExecutionStatus.ScheduledForAbort;
         }
 
         public void OnResume()
@@ -213,19 +214,23 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
 
         public bool IsPaused()
         {
-            return orderExecutionStatus == OrderExecutionStatus.Paused;
+            return orderExecutionStatus == OrderExecutionStatus.ScheduledForAbort;
         }
 
         public bool IsWaitingForExecution()
         {
-            return orderExecutionStatus == OrderExecutionStatus.Paused || orderExecutionStatus == OrderExecutionStatus.Ordered;
+            return orderExecutionStatus == OrderExecutionStatus.ScheduledForAbort || orderExecutionStatus == OrderExecutionStatus.Ordered;
             //return orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 
         public bool IsFinishedOrNoOrder()
         {
-            return orderExecutionStatus == OrderExecutionStatus.NoOrder;
-            
+            return orderExecutionStatus == OrderExecutionStatus.NoOrder;        
+        }
+
+        public bool IsScheduledForAbort()
+        {
+            return orderExecutionStatus == OrderExecutionStatus.ScheduledForAbort;
         }
 
         #endregion
@@ -324,6 +329,15 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
                 {
                     currentMovementOrder.OnFinishedExecuting();
+                }
+            }
+            else if (currentMovementOrder.IsScheduledForAbort())
+            {
+                //The Scheduling and check are needed, cause the Unity NavmeshAgent throws an exception when reseting his patho or stopping him while he is traversing a Link.
+                if (agent.isOnNavMesh)
+                {
+                    agent.ResetPath();
+                    currentMovementOrder.OnAbort();
                 }
             }
 
@@ -474,31 +488,32 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         //{
         //try //use try, cause sometimes this could be called wrongly before ai system placed the agent on the navmesh.
         //{
-        if (agent.isOnNavMesh)
+        /*if (agent.isOnNavMesh)
         {
             agent.ResetPath();
         }
-        agent.isStopped = true;
+        agent.isStopped = true;*/
         //}catch(Exception e) { }
         //currentMovementOrder.sprint = false;
 
-        currentMovementOrder.OnAbort();
+        //currentMovementOrder.OnAbort();
+        currentMovementOrder.OnScheduleAbort();
         //}
     }
 
-    public void PauseMoving()
+    /*public void PauseMoving()
     {
         if (movementState == MovementState.Default)
         {
             if (currentMovementOrder.IsBeingExecuted())
             {
                 agent.isStopped = true;
-                currentMovementOrder.OnPause();
+                currentMovementOrder.OnScheduleAbort();
             }
         }
-    }
+    }*/
 
-    public void ResumeMoving()
+    /*public void ResumeMoving()
     {
         if (currentMovementOrder.IsPaused())
         {
@@ -506,7 +521,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
             currentMovementOrder.OnResume();
         }
     
-    }
+    }*/
 
     #endregion
 
