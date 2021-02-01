@@ -19,7 +19,7 @@ namespace BenitosAI
 
 
     // Custom Object used for saving and transfering sensing information, needs Expanding with adding some kind of memory
-    public class SensingInfo
+    public class SensingInfoOld
     {
         //Enemies
         //public SensedEntityInfo nearestEnemyInfo; //nearest enemy is just the first one in the array

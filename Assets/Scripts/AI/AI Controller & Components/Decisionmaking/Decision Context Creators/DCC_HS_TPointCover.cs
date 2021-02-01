@@ -22,7 +22,7 @@ namespace BenitosAI
 
         public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
         {
-            SensingInfo sensingInfo = ((AIController_HumanoidSoldier)aiController).humanSensing.sensingInfo;
+            AIController_Blackboard sensingInfo = ((AIController_HumanoidSoldier)aiController).humanSensing.blackboard;
 
             int coverpointsCountCount = sensingInfo.tPointCoverInfos.Length;
             if (coverpointsCountCount > maxTacticalPointTargetsPerDecision)

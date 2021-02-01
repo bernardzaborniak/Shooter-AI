@@ -649,9 +649,12 @@ public class TacticalPoint : MonoBehaviour
                     threatsRatingCoverShootPoints += RateThreatsModerately(threats, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                     friendlyVisibilityRatingCoverShootPoints += CalculateFriendliesVisibilityRating(friendlies, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                 }
-
-                threatsRatingCoverShootPoints = threatsRatingCoverShootPoints / (coverShootPoints.Length * 1f);
-                friendlyVisibilityRatingCoverShootPoints = friendlyVisibilityRatingCoverShootPoints / (coverShootPoints.Length * 1f);
+                if (coverShootPoints.Length > 0) //would return nan if divided by 0
+                {
+                    threatsRatingCoverShootPoints = threatsRatingCoverShootPoints / (coverShootPoints.Length * 1f);
+                    friendlyVisibilityRatingCoverShootPoints = friendlyVisibilityRatingCoverShootPoints / (coverShootPoints.Length * 1f);
+                }
+                
 
                 threatsRating = RateThreatsDefensively(threats, coverRating, crouchedMultiplier, standingMultiplier) * 0.5f + threatsRatingCoverShootPoints * 0.5f;
                 friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, coverRating, crouchedMultiplier, standingMultiplier) * 0.5f + friendlyVisibilityRatingCoverShootPoints * 0.5f;
@@ -695,10 +698,12 @@ public class TacticalPoint : MonoBehaviour
                     threatsRating += RateThreatsAgressively(threats, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                     friendlyVisibilityRating += CalculateFriendliesVisibilityRating(friendlies, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                 }
-
-                //Dont divide threatsRating, cause if all of them together have rating 1, its good enough.
-                if (threatsRating > 1) threatsRating = 1;
-                friendlyVisibilityRating = friendlyVisibilityRating / (coverShootPoints.Length * 1f);
+                if (coverShootPoints.Length > 0)
+                {
+                    //Dont divide threatsRating, cause if all of them together have rating 1, its good enough.
+                    if (threatsRating > 1) threatsRating = 1;
+                    friendlyVisibilityRating = friendlyVisibilityRating / (coverShootPoints.Length * 1f);
+                }       
             }
             else
             {
@@ -768,7 +773,11 @@ public class TacticalPoint : MonoBehaviour
         }
 
         //Debug.Log("rate threats agressively rating: " + (rating / (threats.Length * 1f)));
-        return rating / (threats.Length * 1f);
+        if (threats.Length > 0)
+        {
+            rating = rating / (threats.Length * 1f);
+        }
+        return rating;
     }
 
     float RateThreatsDefensively((Vector3 threatPosition, float distanceToThreat)[] threats, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
@@ -799,7 +808,11 @@ public class TacticalPoint : MonoBehaviour
             }
         }
 
-        return rating / (threats.Length * 1f);
+        if (threats.Length > 0)
+        {
+            rating = rating / (threats.Length * 1f);
+        }
+        return rating;
     }
 
     float RateThreatsModerately((Vector3 threatPosition, float distanceToThreat)[] threats, PointCoverRating coverRating, float crouchedMultiplier, float standingMultiplier)
@@ -888,7 +901,11 @@ public class TacticalPoint : MonoBehaviour
             }
         }
 
-        return rating / friendlies.Length;
+        if (friendlies.Length > 0)
+        {
+            rating = rating / (friendlies.Length * 1f);
+        }
+        return rating;
     }
 
     #endregion

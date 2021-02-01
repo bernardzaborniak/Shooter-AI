@@ -11,9 +11,11 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("RateCoverPoint");
+
             AIC_HumanSensing sensing = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing;
-            SensedEntityInfo[] enemyInfos = sensing.sensingInfo.enemyInfos;
-            SensedEntityInfo[] friendlyInfos = sensing.sensingInfo.friendlyInfos;
+            SensedEntityInfo[] enemyInfos = sensing.blackboard.enemyInfos;
+            SensedEntityInfo[] friendlyInfos = sensing.blackboard.friendlyInfos;
 
             //cap the lengths if needed
             int threatsInfoLength = consideration.tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
@@ -42,8 +44,20 @@ namespace BenitosAI
                 friendliesInfo[i] = (friendlyInfos[i].GetEntityPosition(), Vector3.Distance(friendlyInfos[i].GetEntityPosition(), decisionContext.targetTacticalPoint.tacticalPoint.GetPointPosition()));
             }
 
-            return decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching);
+            /* Debug.Log("CI_HS_TPointCoverQualityForCurrentSituation returns: " + decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching));
+             Debug.Log("decisionContext " + decisionContext);
+             Debug.Log("decisionContext.targetTacticalPoint " + decisionContext.targetTacticalPoint);
+             Debug.Log("consideration.tPointEvaluationType " + consideration.tPointEvaluationType);
+             Debug.Log("threatsInfo " + threatsInfo);
+             Debug.Log("friendliesInfo " + friendliesInfo);*/
+            //if(float.IsNaN( decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching)))
+            // {
+            //     Debug.Log("NANANANANA");
+            // }
+            float rating = decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching);
+            UnityEngine.Profiling.Profiler.EndSample();
 
+            return rating;
         }
     }
 

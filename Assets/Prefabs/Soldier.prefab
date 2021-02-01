@@ -906,7 +906,7 @@ MonoBehaviour:
       weigt: 2.5
     - name: '0 Peek From Cover '
       decision: {fileID: 11400000, guid: ab1d7d3a650a3e7488fa221dfe8a2207, type: 2}
-      weigt: 3
+      weigt: 4
     - name: '0 Walk To Nearest Fitting Cover '
       decision: {fileID: 11400000, guid: bfcbd981e770b3a4d8c7490300d4f115, type: 2}
       weigt: 2
@@ -923,6 +923,12 @@ MonoBehaviour:
         entityTeamID: 0
         lastDistanceMeasured: 0
         hasMovement: 0
+        timeWhenLastSeen: 0
+        frameCountWhenLastSeen: 0
+      targetTacticalPoint:
+        tacticalPoint: {fileID: 0}
+        visInfo: {fileID: 0}
+        lastDistanceMeasured: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
       considerationVisualisers: []
@@ -951,6 +957,12 @@ MonoBehaviour:
         entityTeamID: 0
         lastDistanceMeasured: 0
         hasMovement: 0
+        timeWhenLastSeen: 0
+        frameCountWhenLastSeen: 0
+      targetTacticalPoint:
+        tacticalPoint: {fileID: 0}
+        visInfo: {fileID: 0}
+        lastDistanceMeasured: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
       considerationVisualisers: []

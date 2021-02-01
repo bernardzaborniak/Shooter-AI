@@ -14,11 +14,19 @@ namespace BenitosAI
         //every decision has a list of considerations based on which to decide
         [Space(5)]
         [SerializeField] Consideration[] considerations;
+        [Space(5)]
+        [SerializeField] BonusConsiderationWrapper[] bonusConsiderations;
 
         //also has its own codestate initialised on start and passed to the decision layer, if decision was selected
 
         //public AIStateEnum correspondingAIState;
-      
+        [System.Serializable]
+        public class BonusConsiderationWrapper
+        {
+            public Consideration consideration;
+            public float weight;
+        }
+
 
         public AIState CreateState(AIController aiController, DecisionContext context)
         {
@@ -46,6 +54,11 @@ namespace BenitosAI
                     score *= considerations[c].GetConsiderationRating(contexts[i]);
                     //Debug.Log("score: " + score);
 
+                }
+
+                for (int c = 0; c < bonusConsiderations.Length; c++)
+                {
+                    score += bonusConsiderations[c].consideration.GetConsiderationRating(contexts[i]) * bonusConsiderations[c].weight;
                 }
 
                 //Debug.Log("score before makeup: " + score);

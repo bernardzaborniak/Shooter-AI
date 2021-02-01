@@ -67,8 +67,8 @@ namespace BenitosAI
         public LayerMask selectingSoldiersLayerMask;
 
         //for updating sensing UI
-        SensingInfo selectedSoldiersSensingInfo;
-        SensingInfo selectedSoldiersSensingInfoLastFrame;
+        AIController_Blackboard selectedSoldiersSensingInfo;
+        AIController_Blackboard selectedSoldiersSensingInfoLastFrame;
         float lastUpdateSensingFrameCount;
 
         #region Variables Cached to reduce garbage
@@ -122,8 +122,8 @@ namespace BenitosAI
                         if (hit.transform.gameObject.GetComponent<GameEntity>())
                         {
                             currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
-                            selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().sensingInfo; //not the nicest way to get this sensing component;
-                            lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
+                            selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().blackboard; //not the nicest way to get this sensing component;
+                            lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated;
                         }
                         else
                         {
@@ -386,10 +386,10 @@ namespace BenitosAI
             //else only update ui everytime the sensing component updated
             else if (selectedSoldiersSensingInfo != null)
             {
-                if (lastUpdateSensingFrameCount != selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated)
+                if (lastUpdateSensingFrameCount != selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated)
                 {
                     aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
-                    lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountInfoWasUpdated;
+                    lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated;
                 }
             }
         }

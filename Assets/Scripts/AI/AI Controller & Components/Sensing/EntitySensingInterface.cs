@@ -22,6 +22,9 @@ namespace BenitosAI
         public Transform criticalAimPosition;
         public float width;
 
+        [Tooltip("for line of sight checks a random point on the body is selected")]
+        public Transform[] losCheckPoints;
+
         //[Header("Tags")]
         //public EntityTags entityTags;
 
@@ -83,6 +86,11 @@ namespace BenitosAI
         public int GetTeamID()
         {
             return entityAssignedTo.teamID;
+        }
+
+        public Vector3 GetRandomPointForLineOfSightTest()
+        {
+            return losCheckPoints[Random.Range(0, losCheckPoints.Length - 1)].position;
         }
 
         /* public virtual EntityActionBeingExecuted[] GetActionsBeingExecuted()

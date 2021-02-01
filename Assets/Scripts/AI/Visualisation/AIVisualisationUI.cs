@@ -180,7 +180,7 @@ namespace BenitosAI
             }
         }
 
-        public void UpdateSensingUIItems(SensingInfo sensingInfo)
+        public void UpdateSensingUIItems(AIController_Blackboard sensingInfo)
         {
             //Reset the UI - delete all enemies & friendlies etc
 

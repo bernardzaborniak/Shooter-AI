@@ -5,6 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
     // SensingInfo Component saves information about tactical points it has seen in this container.
+    [System.Serializable]//For debug purposes
     public class SensedTacticalPointInfo
     {
         int hashCode; // used by sensig info to store in dictionary
@@ -21,12 +22,12 @@ namespace BenitosAI
            
         }
 
-        public void SetUpInfo(TacticalPointSensingInterface visInfo, float squaredDistance)
+        public void SetUpInfo(TacticalPointSensingInterface visInfo, float distance)
         {
             this.visInfo = visInfo;
             tacticalPoint = visInfo.tacticalPointAssignedTo;
             hashCode = tacticalPoint.GetHashCode();
-            lastDistanceMeasured = squaredDistance;
+            lastDistanceMeasured = distance;
 
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;

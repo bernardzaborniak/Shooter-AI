@@ -103,7 +103,7 @@ namespace BenitosAI
             SensedEntityInfo nearestEnemyInfo = null;
             try
             {
-                nearestEnemyInfo = sensing.sensingInfo.enemyInfos[0];
+                nearestEnemyInfo = sensing.blackboard.enemyInfos[0];
             }catch(Exception e) { }
 
             Vector3 directionToNearestEnemy = Vector3.zero;
@@ -138,7 +138,7 @@ namespace BenitosAI
 
             //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
             //Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos;
-            SensedTacticalPointInfo[] possiblePosts = sensing.sensingInfo.tPointCoverInfos;
+            SensedTacticalPointInfo[] possiblePosts = sensing.blackboard.tPointCoverInfos;
 
 
             #endregion

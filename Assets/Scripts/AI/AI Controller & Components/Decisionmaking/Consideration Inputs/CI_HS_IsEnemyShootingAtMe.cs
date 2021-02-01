@@ -12,7 +12,7 @@ namespace BenitosAI
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
             AIC_HumanSensing sensing = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing;
-            SensedEntityInfo[] infos = sensing.sensingInfo.enemyInfos;
+            SensedEntityInfo[] infos = sensing.blackboard.enemyInfos;
 
             for (int i = 0; i < infos.Length; i++)
             {
