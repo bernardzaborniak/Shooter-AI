@@ -11,8 +11,8 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            AIC_HumanSensing sensing = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing;
-            SensedEntityInfo[] infos = sensing.blackboard.enemyInfos;
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
+            SensedEntityInfo[] infos = blackboard.enemyInfos;
 
             for (int i = 0; i < infos.Length; i++)
             {
@@ -21,7 +21,7 @@ namespace BenitosAI
                 {
                     if(tag.type == EntityActionTagType.ShootingAtTarget)
                     {
-                        if(tag.shootAtTarget == sensing.GetMyEntity())
+                        if(tag.shootAtTarget == blackboard.GetMyEntity())
                         {
                             return 1;
                         }
@@ -30,16 +30,6 @@ namespace BenitosAI
             }
 
             return 0;
-            // if(decisionContext.targetEntity)
-
-            if (((AIController_HumanoidSoldier)decisionContext.aiController).characterController.GetCurrentSelectedItemID() == consideration.weaponID)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
         }
     }
 }

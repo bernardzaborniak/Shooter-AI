@@ -19,7 +19,7 @@ namespace BenitosAI
                 {
                     return 1;
                 }
-                else if(decisionContext.targetTacticalPoint.tacticalPoint.usingEntity == ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.GetMyEntity())
+                else if(decisionContext.targetTacticalPoint.tacticalPoint.usingEntity == ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetMyEntity())
                 {
                     //else if i am already using it
                     return 1;

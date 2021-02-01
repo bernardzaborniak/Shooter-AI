@@ -15,7 +15,7 @@ namespace BenitosAI
             //- check if hitbox entity is target entity
 
             // get head posiiton from sensing, target from context
-            TacticalPoint tPoint = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.GetCurrentlyUsedTacticalPoint();
+            TacticalPoint tPoint = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetCurrentlyUsedTacticalPoint();
             if (tPoint != null)
             {
                 if(tPoint.tacticalPointType == TacticalPointType.CoverPoint)

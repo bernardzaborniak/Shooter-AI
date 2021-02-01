@@ -10,8 +10,10 @@ namespace BenitosAI
         public EC_HumanoidCharacterController characterController;
 
         [Header("AI Components")]
+        public AIController_Blackboard blackboard;
         public AIC_HumanSensing humanSensing;
         public AIC_AimingController aimingController;
+        //change the components to just an array?
 
 
         // Start is called before the first frame update
@@ -20,6 +22,7 @@ namespace BenitosAI
 
             base.SetUpComponent(entity);
 
+            blackboard.SetUpComponent(myEntity);
             humanSensing.SetUpComponent(myEntity);
             aimingController.SetUpComponent(myEntity);
         }
@@ -30,20 +33,21 @@ namespace BenitosAI
             base.UpdateComponent();
 
             //Update Components
+            blackboard.UpdateComponent();
             humanSensing.UpdateComponent();
             aimingController.UpdateComponent();
         }
 
         public void OnEnterTPoint(TacticalPoint tPoint)
         {
-            humanSensing.SetCurrentlyUsedTacticalPoint(tPoint);
-            tPoint.OnEntityEntersPoint(humanSensing.GetMyEntity());
+            blackboard.SetCurrentlyUsedTacticalPoint(tPoint);
+            tPoint.OnEntityEntersPoint(blackboard.GetMyEntity());
         }
 
         public void OnLeaveTPoint(TacticalPoint tPoint)
         {
-            humanSensing.SetCurrentlyUsedTacticalPoint(null);
-            tPoint.OnEntityExitsPoint(humanSensing.GetMyEntity());
+            blackboard.SetCurrentlyUsedTacticalPoint(null);
+            tPoint.OnEntityExitsPoint(blackboard.GetMyEntity());
 
 
         }

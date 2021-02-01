@@ -60,7 +60,7 @@ namespace BenitosAI
         public int lastFrameCountInfoWasUpdated;
 
 
-        public SensingInfo(int enemiesPoolSize, int firendliesPoolSize, int tPCoverPoolSize, int tPOpenFieldPoolSize)//, int tPCoverShootPoolSize)
+        public SensingInfoOld(int enemiesPoolSize, int firendliesPoolSize, int tPCoverPoolSize, int tPOpenFieldPoolSize)//, int tPCoverShootPoolSize)
         {
             // Fill the Pools
             for (int i = 0; i < enemiesPoolSize; i++)

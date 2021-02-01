@@ -10,7 +10,7 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            return ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.GetRemainingHealthToMaxHalthRatio();
+            return ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetRemainingHealthToMaxHalthRatio();
         }
 
     }

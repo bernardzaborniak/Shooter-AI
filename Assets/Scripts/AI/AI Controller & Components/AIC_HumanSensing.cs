@@ -9,12 +9,7 @@ namespace BenitosAI
     // Fills the SensingInfo which is used by the AI 
     public class AIC_HumanSensing : AIComponent
     {
-        //some values are recieved by other scripts
-        [Header("Scripts to Get Values From")]
-        [Tooltip("Reference for cecking things like ammo ")]
-        public EC_HumanoidCharacterController characterController;
-        [Tooltip("Reference for cecking health ")]
-        public EC_Health health;
+
         //the sensing info is filled by the sensingcomponenty using the Physics System
         public AIController_Blackboard blackboard;
 
@@ -57,10 +52,10 @@ namespace BenitosAI
         public SensingOptimiser optimiser;
 
         //sensing info caps
-        [SerializeField] int enemiesPoolSize;
+        /*[SerializeField] int enemiesPoolSize;
         [SerializeField] int friendliesPoolSize;
         [SerializeField] int tPointsCoverPoolSize;
-        [SerializeField] int tPointsOpenFieldPoolSize;
+        [SerializeField] int tPointsOpenFieldPoolSize;*/
         //[SerializeField] int tPointsCoverShootPoolSize;
 
         int myTeamID;
@@ -95,6 +90,7 @@ namespace BenitosAI
             {
                 sensedTPointInfoPool.Enqueue(new SensedTacticalPointInfo());
             }
+            Debug.Log("sensedTPointInfoPool size: " + sensedTPointInfoPool.Count);
 
             for (int i = 0; i < maxTCoverShootPointsSensed; i++)
             {
@@ -213,6 +209,11 @@ namespace BenitosAI
                 HashSet<SensedTacticalPointInfo> coverPointsSensed = new HashSet<SensedTacticalPointInfo>();
                 HashSet<SensedTacticalPointInfo> openFieldPointsSensed = new HashSet<SensedTacticalPointInfo>();
 
+                int openFieldPointsAlreadySensed = 0;
+                int maxOpenFieldPointsSensed = 15; //limit their number, theres too much of them
+
+                Debug.Log("before ging thorugh all points: queue size: " + sensedTPointInfoPool.Count);
+                Debug.Log("before ging thorugh all points: collidersInRadius.Length: " + collidersInRadius.Length);
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
                     if (collidersInRadius[i] != null)
@@ -222,17 +223,25 @@ namespace BenitosAI
 
                         if (!visInfo.tacticalPointAssignedTo.IsPointFull())
                         {
-                            currentTPInfo = sensedTPointInfoPool.Dequeue();
-                            currentTPInfo.SetUpInfo(visInfo, currentDistance);
+                           
 
                             if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.CoverPoint)
                             {
+                                currentTPInfo = sensedTPointInfoPool.Dequeue();
+                                currentTPInfo.SetUpInfo(visInfo, currentDistance);
                                 coverPointsSensed.Add(currentTPInfo);
                             }
-                            else if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.OpenFieldPoint)
+                            else if(openFieldPointsAlreadySensed< maxOpenFieldPointsSensed)
                             {
-                                openFieldPointsSensed.Add(currentTPInfo);
+                                if (visInfo.tacticalPointAssignedTo.tacticalPointType == TacticalPointType.OpenFieldPoint)
+                                {
+                                    openFieldPointsAlreadySensed++;
+                                    currentTPInfo = sensedTPointInfoPool.Dequeue();
+                                    currentTPInfo.SetUpInfo(visInfo, currentDistance);
+                                    openFieldPointsSensed.Add(currentTPInfo);
+                                }
                             }
+                            //cover shoot points are ignored at this step, they dont have a collider
                         }
                     }
                 }

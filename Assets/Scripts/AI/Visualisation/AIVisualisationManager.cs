@@ -67,8 +67,8 @@ namespace BenitosAI
         public LayerMask selectingSoldiersLayerMask;
 
         //for updating sensing UI
-        AIController_Blackboard selectedSoldiersSensingInfo;
-        AIController_Blackboard selectedSoldiersSensingInfoLastFrame;
+        AIController_Blackboard selectedSoldierBlackboard;
+        AIController_Blackboard selectedSoldiersBlackboardLastFrame;
         float lastUpdateSensingFrameCount;
 
         #region Variables Cached to reduce garbage
@@ -122,13 +122,13 @@ namespace BenitosAI
                         if (hit.transform.gameObject.GetComponent<GameEntity>())
                         {
                             currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
-                            selectedSoldiersSensingInfo = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIC_HumanSensing>().blackboard; //not the nicest way to get this sensing component;
-                            lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated;
+                            selectedSoldierBlackboard = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIController_Blackboard>(); //not the nicest way to get this sensing component;
+                            lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
                         }
                         else
                         {
                             currentSelectedSoldier = null;
-                            selectedSoldiersSensingInfo = null;
+                            selectedSoldierBlackboard = null;
                             lastUpdateSensingFrameCount = 0;
                         }
 
@@ -136,7 +136,7 @@ namespace BenitosAI
                     else
                     {
                         currentSelectedSoldier = null;
-                        selectedSoldiersSensingInfo = null;
+                        selectedSoldierBlackboard = null;
                         lastUpdateSensingFrameCount = 0;
                     }
                 }
@@ -150,13 +150,13 @@ namespace BenitosAI
             else
             {
                 selectedSoldierVisualiser.SetActive(false);
-                selectedSoldiersSensingInfo = null;
+                selectedSoldierBlackboard = null;
             }
 
             if (Application.isPlaying)
             {
-                UpdateSensingUI();
-                selectedSoldiersSensingInfoLastFrame = selectedSoldiersSensingInfo;
+                UpdateBlackboardUI();
+                selectedSoldiersBlackboardLastFrame = selectedSoldierBlackboard;
             }
 
 
@@ -362,34 +362,34 @@ namespace BenitosAI
             return false;
         }
 
-        void UpdateSensingUI()
+        void UpdateBlackboardUI()
         {
             // Update UI only if needed
             // -> everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
 
 
             //if deselected soldier
-            if (selectedSoldiersSensingInfo == null && selectedSoldiersSensingInfoLastFrame != null)
+            if (selectedSoldierBlackboard == null && selectedSoldiersBlackboardLastFrame != null)
             {
                 aIVisualisationUI.UpdateSensingUIItems(null);
             }
             //if selected soldier
-            else if (selectedSoldiersSensingInfo != null && selectedSoldiersSensingInfoLastFrame == null)
+            else if (selectedSoldierBlackboard != null && selectedSoldiersBlackboardLastFrame == null)
             {
-                aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
+                aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
             }
             //if selected different soldier
-            else if (selectedSoldiersSensingInfo != selectedSoldiersSensingInfoLastFrame)
+            else if (selectedSoldierBlackboard != selectedSoldiersBlackboardLastFrame)
             {
-                aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
+                aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
             }
             //else only update ui everytime the sensing component updated
-            else if (selectedSoldiersSensingInfo != null)
+            else if (selectedSoldierBlackboard != null)
             {
-                if (lastUpdateSensingFrameCount != selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated)
+                if (lastUpdateSensingFrameCount != selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated)
                 {
-                    aIVisualisationUI.UpdateSensingUIItems(selectedSoldiersSensingInfo);
-                    lastUpdateSensingFrameCount = selectedSoldiersSensingInfo.lastFrameCountSensingInfoWasUpdated;
+                    aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
+                    lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
                 }
             }
         }
