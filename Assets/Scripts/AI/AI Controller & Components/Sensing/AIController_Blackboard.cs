@@ -27,33 +27,17 @@ namespace BenitosAI
         public float lastTimeSensingInfoWasUpdated;
         public int lastFrameCountSensingInfoWasUpdated;
 
-        //Enemies
+
         [NonSerialized] public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
-        Queue<SensedEntityInfo> enemyInfoPool = new Queue<SensedEntityInfo>();
-
-        //Friendlies
         [NonSerialized] public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
-        Queue<SensedEntityInfo> friendlyInfosPool = new Queue<SensedEntityInfo>();
+        [NonSerialized] public SensedTacticalPointInfo[] tPCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
+        [NonSerialized] public SensedTacticalPointInfo[] tPOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
+        [NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
 
-
-        //Tactical Points Cover
-        //Queue<SensedTacticalPointInfo> tPointCoverInfoPool = new Queue<SensedTacticalPointInfo>();
-        [NonSerialized] public SensedTacticalPointInfo[] tPointCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
-
-        //Tactical Points Open Field
-        //Queue<SensedTacticalPointInfo> tPointOpenFieldInfoPool = new Queue<SensedTacticalPointInfo>();
-        [NonSerialized] public SensedTacticalPointInfo[] tPointOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
-
-        //Tactical Points Cover Shoot
-        //Queue<SensedTacticalPointInfo> tPointCoverShootInfoPool = new Queue<SensedTacticalPointInfo>();
-        [NonSerialized] public SensedTacticalPointInfo[] tPointCoverShootInfos = new SensedTacticalPointInfo[0];//not sorted by distance
-
-
-        [SerializeField] int enemyInfosPoolSize;
-        [SerializeField] int friendlyInfosPoolSize;
-        [SerializeField] int tPCoverInfosPoolSize;
-        [SerializeField] int tPOpenFieldInfosPoolSize;
-        //int tPCoverShootInfosPoolSize = 5;
+        [SerializeField] int maxEnemyInfosCount;
+        [SerializeField] int maxFriendlyInfosCount;
+        [SerializeField] int maxTPCoverInfosCount;
+        [SerializeField] int maxTPOpenFieldInfosCount;
 
         #endregion
 
@@ -66,140 +50,188 @@ namespace BenitosAI
         {
             base.SetUpComponent(entity);
 
-            //myTeamID = myEntity.teamID; // cached for optimisation.
-
-            // Fill the Pools
-            for (int i = 0; i < enemyInfosPoolSize; i++)
-            {
-                enemyInfoPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
-            }
-            for (int i = 0; i < friendlyInfosPoolSize; i++)
-            {
-                friendlyInfosPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
-            }
-            /*for (int i = 0; i < tPCoverInfosPoolSize; i++)
-            {
-                tPointCoverInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
-            }
-            for (int i = 0; i < tPOpenFieldInfosPoolSize; i++)
-            {
-                tPointOpenFieldInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
-            }*/
-            //for (int i = 0; i < tPCoverShootInfosPoolSize; i++)
-            //{
-            //   tPointCoverShootInfoPool.Enqueue(new SensedTacticalPointInfo()); //rework the neemy Sensed Info Constructor to not have params
-            //}
         }
 
-        #region Updating Sensing Information
+    #region Updating Sensing Information
 
-        public void UpdateEntityInfos(HashSet<SensedEntityInfo> newEnemyInfos, HashSet<SensedEntityInfo> newFriendlyInfos)
+        public void UpdateEntityInfos(HashSet<(EntitySensingInterface, float)> newEnemyInfos, HashSet<(EntitySensingInterface, float)> newFriendlyInfos)
         {
-            //Remember, newEnemyInfos & newFriendlyInfos are readonly, dont change them or the two pools of SensedEntityInfo inside blackboard & sensing will start messing with each other :(
-
             //-> The new entities are registered, while the older ones arent forgotten completely.
 
-            #region Register new Enemies
+            #region------------Enemies------------------
 
-            HashSet<SensedEntityInfo> oldEnemiesToHoldOn = new HashSet<SensedEntityInfo>();
-
-            //Carry over old values which arent overriden to the new values set
+            //1. Create dictionary of current infos        
+            Dictionary<int,SensedEntityInfo> currentEnemyInfosDict = new Dictionary<int,SensedEntityInfo>(); //the entity hashSets are the keys
             for (int i = 0; i < enemyInfos.Length; i++)
             {
-                if (!newEnemyInfos.Contains(enemyInfos[i]))
-                {
-                    //If hasnt died yet
-                    if (enemyInfos[i].IsAlive())
-                    {
-                        //Update distance inside info, the unit can roughly predit how far the unit will be by now.
-                        sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
-                        oldEnemiesToHoldOn.Add(enemyInfos[i]);
-                    }
-                    
-                }
-
-                //Return the infos to the pool again
-                enemyInfoPool.Enqueue(enemyInfos[i]);
+                currentEnemyInfosDict.Add(enemyInfos[i].entity.GetHashCode(), enemyInfos[i]);
             }
 
+            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+            foreach ((EntitySensingInterface entitySensInterface, float distanceToEntity) newEntityInfoTuple in newEnemyInfos)
+            {
+                int currentKey = newEntityInfoTuple.entitySensInterface.entityAssignedTo.GetHashCode();
+                if (currentEnemyInfosDict.ContainsKey(currentKey))
+                {
+                    // update the current info
+                    currentEnemyInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
+                }
+                else
+                {
+                    // or create & add new info
+                    currentEnemyInfosDict.Add(currentKey, new SensedEntityInfo(newEntityInfoTuple.entitySensInterface, newEntityInfoTuple.distanceToEntity));
+                }
+            }
 
-            //Convert the HashSet to Array & Sort it
-            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[newEnemyInfos.Count + oldEnemiesToHoldOn.Count];
-            newEnemyInfos.CopyTo(newEnemyInfosSortedArray,0);
-            oldEnemiesToHoldOn.CopyTo(newEnemyInfosSortedArray, newEnemyInfos.Count);
+            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
+            currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray,0);
 
-
+            //4. Sort array according to distance
             Array.Sort(newEnemyInfosSortedArray,
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
-
+            //5 Cut array
             int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
-            if(newEnemyInfoArraySize > enemyInfosPoolSize) newEnemyInfoArraySize = enemyInfosPoolSize;
+            if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
 
             enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
 
             for (int i = 0; i < newEnemyInfoArraySize; i++)
             {
-                enemyInfos[i] = enemyInfoPool.Dequeue();
-                enemyInfos[i].CopyInfo(newEnemyInfosSortedArray[i]);  //The info is copied - this prevents referencing objects from the sensing pool, we only want objects from the blackboard pool here.
+                enemyInfos[i] = newEnemyInfosSortedArray[i];
+
+                //if we still have old info, not updated this frame, "predict" its distance
+                if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
+                {
+                    sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                }
             }
 
-            #endregion
+            #endregion ------------------------------
 
-            #region Register new Friendlies
+            #region------------Friendlies------------------
 
-            HashSet<SensedEntityInfo> oldFriendliesToHoldOn = new HashSet<SensedEntityInfo>();
-
-            //Carry over old values which arent overriden to the new values set
+            //1. Create dictionary of current infos        
+            Dictionary<int, SensedEntityInfo> currentFriendlyInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
             for (int i = 0; i < friendlyInfos.Length; i++)
             {
-                if (!newFriendlyInfos.Contains(friendlyInfos[i]))
-                {
-                    //if hasnt died yet
-                    if (friendlyInfos[i].IsAlive())
-                    {
-                        //Update distance inside info, the unit can roughly predit how far the unit will be by now.
-                        sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
-                        oldFriendliesToHoldOn.Add(friendlyInfos[i]);
-                    }
-
-                }
-
-                //Return the infos to the pool again
-                friendlyInfosPool.Enqueue(friendlyInfos[i]);
+                currentFriendlyInfosDict.Add(friendlyInfos[i].entity.GetHashCode(), friendlyInfos[i]);
             }
 
+            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+            foreach ((EntitySensingInterface entitySensInterface, float distanceToEntity) newEntityInfoTuple in newFriendlyInfos)
+            {
+                int currentKey = newEntityInfoTuple.entitySensInterface.entityAssignedTo.GetHashCode();
+                if (currentFriendlyInfosDict.ContainsKey(currentKey))
+                {
+                    // update the current info
+                    currentFriendlyInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
+                }
+                else
+                {
+                    // or create & add new info
+                    currentFriendlyInfosDict.Add(currentKey, new SensedEntityInfo(newEntityInfoTuple.entitySensInterface, newEntityInfoTuple.distanceToEntity));
+                }
+            }
 
-            //convert the HashSet to Array & Sort it
-            SensedEntityInfo[] newFriendlyInfosSortedArray = new SensedEntityInfo[newFriendlyInfos.Count + oldFriendliesToHoldOn.Count];
-            newFriendlyInfos.CopyTo(newFriendlyInfosSortedArray, 0);
-            oldFriendliesToHoldOn.CopyTo(newFriendlyInfosSortedArray, newFriendlyInfos.Count);
+            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+            SensedEntityInfo[] newFriendlyInfosSortedArray = new SensedEntityInfo[currentFriendlyInfosDict.Count];
+            currentFriendlyInfosDict.Values.CopyTo(newFriendlyInfosSortedArray, 0);
 
-
+            //4. Sort array according to distance
             Array.Sort(newFriendlyInfosSortedArray,
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
-
+            //5 Cut array
             int newFriendlyInfoArraySize = newFriendlyInfosSortedArray.Length;
-            if (newFriendlyInfoArraySize > friendlyInfosPoolSize) newFriendlyInfoArraySize = friendlyInfosPoolSize;
+            if (newFriendlyInfoArraySize > maxFriendlyInfosCount) newFriendlyInfoArraySize = maxFriendlyInfosCount;
 
             friendlyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
 
             for (int i = 0; i < newFriendlyInfoArraySize; i++)
             {
-                friendlyInfos[i] = friendlyInfosPool.Dequeue();
-                friendlyInfos[i].CopyInfo(newFriendlyInfosSortedArray[i]); //The info is copied - this prevents referencing objects from the sensing pool, we only want objects from the blackboard pool here.
+                friendlyInfos[i] = newFriendlyInfosSortedArray[i];
 
+                //if we still have old info, not updated this frame, "predict" its distance
+                if (friendlyInfos[i].frameCountWhenLastSeen != Time.frameCount)
+                {
+                    sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
+                }
             }
 
-            #endregion
+            #endregion --------------------------------
         }
 
-        public void UpdateTPointInfos(HashSet<SensedTacticalPointInfo> newCoverPointInfos, HashSet<SensedTacticalPointInfo> newOpenFieldInfos, HashSet<SensedTacticalPointInfo> coverShootPointInfos)
+        public void UpdateTPointInfos(HashSet<(TacticalPoint, float)> newTPCoverInfos, HashSet<(TacticalPoint, float)> newTPOpenFieldInfos, HashSet<(TacticalPoint, float)> newTPCoverPeekInfos)
         {
+            //-----Eureka?-----
+            //1. create dictionary of current infos
+            //2. go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+            //3. convert fictionary back to array -->dict.Values.CopyTo(foos, 0);
+            //4. sort array
+            //5 cut array
+
+            UpdateTPointInfos(newTPCoverInfos, tPCoverInfos, maxTPCoverInfosCount);
+            UpdateTPointInfos(newTPOpenFieldInfos, tPOpenFieldInfos, maxTPOpenFieldInfosCount);
+            UpdateTPointInfos(newTPCoverPeekInfos, tPCoverPeekInfos, 10); //it will hopefully never by more than 3
+
+            #region------------Cover Points------------------
+
+            //1. Create dictionary of current infos        
+            /* Dictionary<int, SensedTacticalPointInfo> currentTPCoverInfosDict = new Dictionary<int, SensedTacticalPointInfo>(); //the entity hashSets are the keys
+             for (int i = 0; i < tPCoverInfos.Length; i++)
+             {
+                 currentTPCoverInfosDict.Add(tPCoverInfos[i].tacticalPoint.GetHashCode(), tPCoverInfos[i]);
+             }
+
+             //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+             foreach ((TacticalPoint tPoint, float distanceToPoint) newTPInfoTuple in newTPCoverInfos)
+             {
+                 int currentKey = newTPInfoTuple.tPoint.GetHashCode();
+                 if (currentTPCoverInfosDict.ContainsKey(currentKey))
+                 {
+                     // update the current info
+                     currentTPCoverInfosDict[currentKey].UpdateInfo(newTPInfoTuple.distanceToPoint);
+                 }
+                 else
+                 {
+                     // or create & add new info
+                     currentTPCoverInfosDict.Add(currentKey, new SensedTacticalPointInfo(newTPInfoTuple.tPoint, newTPInfoTuple.distanceToPoint));
+                 }
+             }
+
+             //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+             SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
+             currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray, 0);
+
+             //4. Sort array according to distance
+             Array.Sort(newEnemyInfosSortedArray,
+             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+             //5 Cut array
+             int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
+             if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
+
+             enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
+
+             for (int i = 0; i < newEnemyInfoArraySize; i++)
+             {
+                 enemyInfos[i] = newEnemyInfosSortedArray[i];
+
+                 //if we still have old info, not updated this frame, "predict" its distance
+                 if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
+                 {
+                     sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                 }
+             }
+
+             #endregion ------------------------------*/
+
+
             //For TPoints, we just override them, the references here are referencing SensedTacticalPointInfo objects inside the SensingPool.
 
-            tPointCoverInfos = new SensedTacticalPointInfo[newCoverPointInfos.Count];
+            /*tPointCoverInfos = new SensedTacticalPointInfo[newCoverPointInfos.Count];
             newCoverPointInfos.CopyTo(tPointCoverInfos);
             
             Array.Sort(tPointCoverInfos,
@@ -218,6 +250,58 @@ namespace BenitosAI
 
             Array.Sort(tPointCoverShootInfos,
             delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+            */
+        }
+
+        void UpdateTPointInfos(HashSet<(TacticalPoint, float)> newTPInfos, SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
+        {
+            //1. Create dictionary of current infos        
+            Dictionary<int, SensedTacticalPointInfo> currentTPInfosDict = new Dictionary<int, SensedTacticalPointInfo>(); //the entity hashSets are the keys
+            for (int i = 0; i < infosToUpdate.Length; i++)
+            {
+                currentTPInfosDict.Add(infosToUpdate[i].tacticalPoint.GetHashCode(), infosToUpdate[i]);
+            }
+
+            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+            foreach ((TacticalPoint tPoint, float distanceToPoint) newTPInfoTuple in newTPCoverInfos)
+            {
+                int currentKey = newTPInfoTuple.tPoint.GetHashCode();
+                if (currentTPCoverInfosDict.ContainsKey(currentKey))
+                {
+                    // update the current info
+                    currentTPCoverInfosDict[currentKey].UpdateInfo(newTPInfoTuple.distanceToPoint);
+                }
+                else
+                {
+                    // or create & add new info
+                    currentTPCoverInfosDict.Add(currentKey, new SensedTacticalPointInfo(newTPInfoTuple.tPoint, newTPInfoTuple.distanceToPoint));
+                }
+            }
+
+            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
+            currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray, 0);
+
+            //4. Sort array according to distance
+            Array.Sort(newEnemyInfosSortedArray,
+            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+            //5 Cut array
+            int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
+            if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
+
+            enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
+
+            for (int i = 0; i < newEnemyInfoArraySize; i++)
+            {
+                enemyInfos[i] = newEnemyInfosSortedArray[i];
+
+                //if we still have old info, not updated this frame, "predict" its distance
+                if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
+                {
+                    sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                }
+            }
 
         }
 

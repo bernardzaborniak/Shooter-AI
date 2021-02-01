@@ -237,20 +237,20 @@ namespace BenitosAI
                 sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(blackboard.friendlyInfos.Length);
 
                 // Update TPoints Cover Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in blackboard.tPointCoverInfos)
+                foreach (SensedTacticalPointInfo tPoint in blackboard.tPCoverInfos)
                 {
                     topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                     topicPanel.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
-                sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPointCoverInfos.Length);
+                sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverInfos.Length);
 
                 // Update TPoints OpenField Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in blackboard.tPointOpenFieldInfos)
+                foreach (SensedTacticalPointInfo tPoint in blackboard.tPOpenFieldInfos)
                 {
                     topicPanel = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
                     topicPanel.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
-                sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPointOpenFieldInfos.Length);
+                sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPOpenFieldInfos.Length);
             }
             else
             {

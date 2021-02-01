@@ -9,7 +9,7 @@ namespace BenitosAI
     public class SensedTacticalPointInfo
     {
         int hashCode; // used by sensig info to store in dictionary
-        public TacticalPoint tacticalPoint;
+        public readonly TacticalPoint tacticalPoint;
        // public TacticalPointSensingInterface visInfo;
 
         public float lastDistanceMeasured;
@@ -17,21 +17,23 @@ namespace BenitosAI
         public float timeWhenLastSeen;
         public int frameCountWhenLastSeen;
 
-        public SensedTacticalPointInfo()
+        public SensedTacticalPointInfo(TacticalPoint tacticalPoint, float distance)
         {
-           
+            this.tacticalPoint = tacticalPoint;
+            //hashCode = tacticalPoint.GetHashCode();
+            UpdateInfo(distance);
         }
 
-        public SensedTacticalPointInfo(SensedTacticalPointInfo infoToCopyFrom)
+        /*public SensedTacticalPointInfo(SensedTacticalPointInfo infoToCopyFrom)
         {
             if (infoToCopyFrom != null)
             {
                 CopyInfo(infoToCopyFrom);
             }
-        }
+        }*/
 
         //public void SetUpInfo(TacticalPointSensingInterface visInfo, float distance)
-        public void SetUpInfo(TacticalPoint tacticalPoint, float distance)
+        /*public void SetUpInfo(TacticalPoint tacticalPoint, float distance)
         {
             //this.visInfo = visInfo;
             //tacticalPoint = visInfo.tacticalPointAssignedTo;
@@ -41,9 +43,21 @@ namespace BenitosAI
 
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;
+        }*/
+
+        public void UpdateInfo(float distance)
+        {
+            //this.visInfo = visInfo;
+            //tacticalPoint = visInfo.tacticalPointAssignedTo;
+            //this.tacticalPoint = tacticalPoint;
+            //hashCode = tacticalPoint.GetHashCode();
+            lastDistanceMeasured = distance;
+
+            timeWhenLastSeen = Time.time;
+            frameCountWhenLastSeen = Time.frameCount;
         }
 
-        public void CopyInfo(SensedTacticalPointInfo infoToCopyFrom)
+        /*public void CopyInfo(SensedTacticalPointInfo infoToCopyFrom)
         {
             tacticalPoint = infoToCopyFrom.tacticalPoint;
             hashCode = infoToCopyFrom.hashCode;
@@ -51,7 +65,7 @@ namespace BenitosAI
 
             timeWhenLastSeen = infoToCopyFrom.timeWhenLastSeen;
             frameCountWhenLastSeen = infoToCopyFrom.frameCountWhenLastSeen;
-        }
+        }*/
 
         public bool IsValid()
         {
@@ -59,7 +73,7 @@ namespace BenitosAI
             return tacticalPoint;
         }
 
-        public override int GetHashCode()
+        /*public override int GetHashCode()
         {
             return hashCode;
         }
@@ -79,6 +93,6 @@ namespace BenitosAI
                 return false;
 
             return true;
-        }
+        }*/
     }
 }

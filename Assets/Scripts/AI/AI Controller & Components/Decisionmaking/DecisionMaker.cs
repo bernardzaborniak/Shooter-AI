@@ -41,8 +41,8 @@ namespace BenitosAI
             this.name = context.decision.name;
             this.decision = context.decision;
             this.aiController = context.aiController;
-            this.targetEntity = new SensedEntityInfo(context.targetEntity);  
-            this.targetTacticalPoint = new SensedTacticalPointInfo(context.targetTacticalPoint);
+            this.targetEntity = context.targetEntity;//new SensedEntityInfo(context.targetEntity);  
+            this.targetTacticalPoint = context.targetTacticalPoint;//new SensedTacticalPointInfo(context.targetTacticalPoint);
             rating = context.rating;
 
             Consideration[] considerations;

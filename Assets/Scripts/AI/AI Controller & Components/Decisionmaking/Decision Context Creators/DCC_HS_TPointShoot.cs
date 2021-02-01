@@ -24,7 +24,7 @@ namespace BenitosAI
 
         public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
         {
-            coverShootPoints = ((AIController_HumanoidSoldier)aiController).blackboard.tPointCoverShootInfos;
+            coverShootPoints = ((AIController_HumanoidSoldier)aiController).blackboard.tPCoverPeekInfos;
 
             contexesToReturn = new DecisionContext[coverShootPoints.Length];
 

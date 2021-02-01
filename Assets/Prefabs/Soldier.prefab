@@ -917,17 +917,10 @@ MonoBehaviour:
       decision: {fileID: 0}
       aiController: {fileID: 0}
       targetEntity:
-        entity: {fileID: 0}
-        entityTags: {fileID: 0}
-        visInfo: {fileID: 0}
-        entityTeamID: 0
         lastDistanceMeasured: 0
-        hasMovement: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
       targetTacticalPoint:
-        tacticalPoint: {fileID: 0}
-        visInfo: {fileID: 0}
         lastDistanceMeasured: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
@@ -951,17 +944,10 @@ MonoBehaviour:
       decision: {fileID: 0}
       aiController: {fileID: 0}
       targetEntity:
-        entity: {fileID: 0}
-        entityTags: {fileID: 0}
-        visInfo: {fileID: 0}
-        entityTeamID: 0
         lastDistanceMeasured: 0
-        hasMovement: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
       targetTacticalPoint:
-        tacticalPoint: {fileID: 0}
-        visInfo: {fileID: 0}
         lastDistanceMeasured: 0
         timeWhenLastSeen: 0
         frameCountWhenLastSeen: 0
@@ -1105,10 +1091,11 @@ MonoBehaviour:
   sensing: {fileID: 7864116541130220572}
   lastTimeSensingInfoWasUpdated: 0
   lastFrameCountSensingInfoWasUpdated: 0
-  enemyInfosPoolSize: 15
-  firendlyInfosPoolSize: 10
-  tPCoverInfosPoolSize: 15
-  tPOpenFieldInfosPoolSize: 20
+  maxEnemyInfosCount: 10
+  maxFriendlyInfosCount: 6
+  maxTPCoverInfosCount: 8
+  maxTPOpenFieldInfosCount: 8
+  currentlyUsedTPoint: {fileID: 0}
 --- !u!114 &7864116541130220572
 MonoBehaviour:
   m_ObjectHideFlags: 0

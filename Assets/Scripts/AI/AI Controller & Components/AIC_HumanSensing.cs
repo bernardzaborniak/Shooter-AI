@@ -31,15 +31,12 @@ namespace BenitosAI
 
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         [SerializeField] int maxEntitiesSensed = 30;
-        Queue<SensedEntityInfo> sensedEntityInfoPool = new Queue<SensedEntityInfo>();
         
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         [SerializeField] int maxTPointsSensed = 30;
         [Tooltip("limit their number, so there will be less cover points ignored")]
         [SerializeField] int maxOpenFieldPointsSensed = 15;
-        Queue<SensedTacticalPointInfo> sensedTPointInfoPool = new Queue<SensedTacticalPointInfo>();
         [SerializeField] int maxTCoverShootPointsSensed = 5;
-        Queue<SensedTacticalPointInfo> sensedTCoverShootPointInfoPool = new Queue<SensedTacticalPointInfo>();
 
 
         [Header("Optimisation")]
@@ -55,23 +52,6 @@ namespace BenitosAI
 
             // nextSensingTime = Time.time + UnityEngine.Random.Range(0, sensingInterval);
             myTeamID = myEntity.teamID; // cached for optimisation.
-            //sensingInfo = new AIController_Blackboard(enemiesPoolSize, friendliesPoolSize, tPointsCoverPoolSize, tPointsOpenFieldPoolSize);//, tPointsCoverShootPoolSize);
-
-            // Set Up Pools
-            for (int i = 0; i < maxEntitiesSensed; i++)
-            {
-                sensedEntityInfoPool.Enqueue(new SensedEntityInfo());
-            }
-
-            for (int i = 0; i < maxTPointsSensed; i++)
-            {
-                sensedTPointInfoPool.Enqueue(new SensedTacticalPointInfo());
-            }
-
-            for (int i = 0; i < maxTCoverShootPointsSensed; i++)
-            {
-                sensedTCoverShootPointInfoPool.Enqueue(new SensedTacticalPointInfo());
-            }
         }
 
         public override void UpdateComponent()
@@ -94,9 +74,8 @@ namespace BenitosAI
                 Collider[] collidersInRadius = new Collider[maxEntitiesSensed]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, visionRadius, collidersInRadius, sensingLayerMask); //use non alloc to prevent garbage
 
-                HashSet<SensedEntityInfo> enemiesSensed = new HashSet<SensedEntityInfo>();
-                HashSet<SensedEntityInfo> friendliesSensed = new HashSet<SensedEntityInfo>();
-                SensedEntityInfo currentEntityInfo;
+                HashSet<(EntitySensingInterface, float)> enemiesSensed = new HashSet<(EntitySensingInterface, float)>();
+                HashSet<(EntitySensingInterface,float)> friendliesSensed = new HashSet<(EntitySensingInterface, float)>();
                 EntitySensingInterface currentEntitySensInterface;
                 Vector3 targetLocalPosition;
                 bool targetVisible;
@@ -139,17 +118,14 @@ namespace BenitosAI
 
                             if (targetVisible)
                             {
-                                currentEntityInfo = sensedEntityInfoPool.Dequeue();
-                                currentEntityInfo.SetUpInfo(currentEntitySensInterface, distanceToTarget);
-
-
                                 if (currentEntitySensInterface.entityAssignedTo.teamID != myTeamID)
                                 {
-                                    enemiesSensed.Add(currentEntityInfo);
+                                    Debug.Log("sensed enemy: " + currentEntitySensInterface.entityAssignedTo.GetHashCode());
+                                    enemiesSensed.Add((currentEntitySensInterface, distanceToTarget));
                                 }
                                 else
                                 {
-                                    friendliesSensed.Add(currentEntityInfo);
+                                    friendliesSensed.Add((currentEntitySensInterface, distanceToTarget));
                                 }
                             }                         
                         }
@@ -158,19 +134,6 @@ namespace BenitosAI
 
                 blackboard.UpdateEntityInfos(enemiesSensed, friendliesSensed);
 
-                //Clean up
-                foreach (SensedEntityInfo info in enemiesSensed)
-                {
-                    sensedEntityInfoPool.Enqueue(info);
-                }
-                //enemiesSensed.Clear();
-                foreach (SensedEntityInfo info in friendliesSensed)
-                {
-                    sensedEntityInfoPool.Enqueue(info);
-                }
-                //friendliesSensed.Clear();
-
-                //dont clear thoose, they get deleted anyway?
 
 
 
@@ -182,9 +145,8 @@ namespace BenitosAI
                 collidersInRadius = new Collider[maxTPointsSensed]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingTPointsRadius, collidersInRadius, postSensingLayerMask);
 
-                SensedTacticalPointInfo currentTPInfo;
-                HashSet<SensedTacticalPointInfo> coverPointsSensed = new HashSet<SensedTacticalPointInfo>();
-                HashSet<SensedTacticalPointInfo> openFieldPointsSensed = new HashSet<SensedTacticalPointInfo>();
+                HashSet<(TacticalPoint,float)> coverPointsSensed = new HashSet<(TacticalPoint, float)>();
+                HashSet<(TacticalPoint, float)> openFieldPointsSensed = new HashSet<(TacticalPoint, float)>();
 
                 int openFieldPointsAlreadySensed = 0;
 
@@ -199,18 +161,14 @@ namespace BenitosAI
                         {
                             if (tPoint.tacticalPointType == TacticalPointType.CoverPoint)
                             {
-                                currentTPInfo = sensedTPointInfoPool.Dequeue();
-                                currentTPInfo.SetUpInfo(tPoint, currentDistance);
-                                coverPointsSensed.Add(currentTPInfo);
+                                coverPointsSensed.Add((tPoint, currentDistance));
                             }
                             else if(openFieldPointsAlreadySensed< maxOpenFieldPointsSensed)
                             {
                                 if (tPoint.tacticalPointType == TacticalPointType.OpenFieldPoint)
                                 {
                                     openFieldPointsAlreadySensed++;
-                                    currentTPInfo = sensedTPointInfoPool.Dequeue();
-                                    currentTPInfo.SetUpInfo(tPoint, currentDistance);
-                                    openFieldPointsSensed.Add(currentTPInfo);
+                                    openFieldPointsSensed.Add((tPoint, currentDistance));
                                 }
                             }
                             //cover shoot points are ignored at this step, they dont have a collider
@@ -219,44 +177,19 @@ namespace BenitosAI
                 }
 
                 //Add coverShootPoints if i am inside a point
-                SensedTacticalPointInfo currentShootPointInfo;
-                HashSet<SensedTacticalPointInfo> coverShootPointInfos = new HashSet<SensedTacticalPointInfo>();
+                HashSet<(TacticalPoint, float)> coverShootPointInfos = new HashSet<(TacticalPoint, float)>();
 
                 TacticalPoint currentlyUsedPoint = blackboard.GetCurrentlyUsedTacticalPoint();
                 if (currentlyUsedPoint != null)
                 {
-                    //coverShootPointInfos = new SensedTacticalPointInfo[currentlyUsedPoint.coverShootPoints.Length];
                     for (int i = 0; i < currentlyUsedPoint.coverShootPoints.Length; i++)
                     {
                         TacticalPoint tPoint = currentlyUsedPoint.coverShootPoints[i].GetComponent<TacticalPoint>();
-                        currentShootPointInfo = sensedTCoverShootPointInfoPool.Dequeue();
-                        currentShootPointInfo.SetUpInfo(tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition()));
-                        //coverShootPointInfos[i] = sensedTCoverShootPointInfoPool.Dequeue();
-                        coverShootPointInfos.Add(currentShootPointInfo);
+                        coverShootPointInfos.Add((tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition())));
                     }
                 }
 
                 blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverShootPointInfos);
-
-
-                //Clean up
-                foreach (SensedTacticalPointInfo info in coverPointsSensed)
-                {
-                    sensedTPointInfoPool.Enqueue(info);
-                }
-                //enemiesSensed.Clear();
-                foreach (SensedTacticalPointInfo info in openFieldPointsSensed)
-                {
-                    sensedTPointInfoPool.Enqueue(info);
-                }
-                //friendliesSensed.Clear();
-
-                foreach(SensedTacticalPointInfo info in coverShootPointInfos)
-                {
-                    sensedTCoverShootPointInfoPool.Enqueue(info);
-                }
-                //coverShootPointInfos.Clear();
-
 
                 #endregion
 

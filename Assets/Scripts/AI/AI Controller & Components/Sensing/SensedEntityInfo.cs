@@ -5,23 +5,23 @@ using UnityEngine;
 namespace BenitosAI
 {
     [System.Serializable]//For debug purposes
-    // SensingInfo Component saves information about other entities it has seen in this container.
+    // Saves the information an ai has about other entities inside this container - the values are constantly updated, if you reference this object, its values can change, but the assigned entity never changes
     public class SensedEntityInfo
     {
         #region Fields
 
-        int hashCode; // used by sensig info to store in dictionary
+        //int hashCode; // used by sensig info to store in dictionary
 
-        public GameEntity entity;
-        public EntityTags entityTags;
-        public EntitySensingInterface visInfo;
-        public int entityTeamID;
+        public readonly GameEntity entity;
+        public readonly EntityTags entityTags;
+        public readonly EntitySensingInterface sensInterface;
+        public readonly int entityTeamID;
 
         Vector3 lastSeenEntityPosition;
         public float lastDistanceMeasured;
 
         //Movement
-        public bool hasMovement;
+        //public readonly bool hasMovement;
         Vector3 lastSeenVelocity;
         Vector3 lastSeenAngularVelocity;
 
@@ -40,72 +40,53 @@ namespace BenitosAI
 
         //Later on we need a reference to the skills here if we want to call get CriticalAim pos and similar from the visibility Info
 
-        public SensedEntityInfo()
+        public SensedEntityInfo(EntitySensingInterface sensInterface, float distance)
         {
-            
+            this.sensInterface = sensInterface;
+            entity = sensInterface.entityAssignedTo;
+            entityTags = entity.entityTags;
+            entityTeamID = entity.teamID;
+
+            UpdateInfo(distance);
         }
 
-        public SensedEntityInfo(SensedEntityInfo infoToCopyFrom)
+        /*public SensedEntityInfo(SensedEntityInfo infoToCopyFrom)
         {
             if(infoToCopyFrom != null)
             {
                 CopyInfo(infoToCopyFrom);
             }
-        }
+        }*/
 
 
-        public void SetUpInfo(EntitySensingInterface visInfo, float distance)
+        public void UpdateInfo( float distance)
         {
-            this.visInfo = visInfo;
             timeWhenLastSeen = Time.time;
             frameCountWhenLastSeen = Time.frameCount;
 
-            entity = visInfo.entityAssignedTo;
-            entityTags = entity.entityTags;
-            hashCode = entity.GetHashCode();
-            lastSeenEntityPosition = visInfo.GetEntityPosition();
-            entityTeamID = entity.teamID;
-
+            //hashCode = entity.GetHashCode();
+            lastSeenEntityPosition = sensInterface.GetEntityPosition();
             lastDistanceMeasured = distance;
 
             //Set Movement Speeds
-            if (visInfo.HasMovement())
+            if (HasMovement())
             {
-                hasMovement = true;
-                lastSeenVelocity = visInfo.GetCurrentVelocity();
-                lastSeenAngularVelocity = visInfo.GetCurrentAngularVelocity();
+                lastSeenVelocity = sensInterface.GetCurrentVelocity();
+                lastSeenAngularVelocity = sensInterface.GetCurrentAngularVelocity();
             }
             else
             {
-                hasMovement = false;
             }
 
             //Set Aim Positions
-            lastSeenAimPosition = visInfo.GetAimPosition();
-            lastSeenCriticalAimPosition = visInfo.GetCriticalAimPosition();
+            lastSeenAimPosition = sensInterface.GetAimPosition();
+            lastSeenCriticalAimPosition = sensInterface.GetCriticalAimPosition();
         }
 
-        public void CopyInfo(SensedEntityInfo infoToCopy)
+
+        public bool HasMovement()
         {
-            this.visInfo = infoToCopy.visInfo;
-            timeWhenLastSeen = infoToCopy.timeWhenLastSeen;
-            frameCountWhenLastSeen = infoToCopy.frameCountWhenLastSeen;
-
-            entity = infoToCopy.entity;
-            entityTags = infoToCopy.entityTags;
-            hashCode = infoToCopy.hashCode;
-            lastSeenEntityPosition = infoToCopy.lastSeenEntityPosition;
-            entityTeamID = infoToCopy.entityTeamID;
-
-            lastDistanceMeasured = infoToCopy.lastDistanceMeasured;
-
-            hasMovement = infoToCopy.hasMovement;
-            lastSeenVelocity = infoToCopy.lastSeenVelocity;
-            lastSeenAngularVelocity = infoToCopy.lastSeenAngularVelocity;
-
-            //Set Aim Positions
-            lastSeenAimPosition = infoToCopy.lastSeenAimPosition;
-            lastSeenCriticalAimPosition = infoToCopy.lastSeenCriticalAimPosition;
+            return sensInterface.HasMovement();
         }
 
         public bool IsAlive()
@@ -119,7 +100,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return visInfo.GetAimPosition();
+                    return sensInterface.GetAimPosition();
                 }
             }
 
@@ -133,7 +114,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return visInfo.GetCriticalAimPosition();
+                    return sensInterface.GetCriticalAimPosition();
                 }
             }
 
@@ -146,7 +127,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return visInfo.GetCurrentVelocity();
+                    return sensInterface.GetCurrentVelocity();
                 }
             }
 
@@ -160,7 +141,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return visInfo.GetCurrentAngularVelocity();
+                    return sensInterface.GetCurrentAngularVelocity();
                 }
             }
 
@@ -174,7 +155,7 @@ namespace BenitosAI
             {
                 if (Time.time - timeWhenLastSeen < timeDelayAfterWhichPositionIsntUpdated)
                 {
-                    return visInfo.transform.position;
+                    return sensInterface.transform.position;
                 }
             }
 
@@ -186,7 +167,7 @@ namespace BenitosAI
             return p1.timeWhenLastSeen.CompareTo(p2.timeWhenLastSeen);
         }*/
 
-        public override int GetHashCode()
+        /*public override int GetHashCode()
         {
             return hashCode;
         }
@@ -206,7 +187,7 @@ namespace BenitosAI
                 return false;
 
             return true;
-        }
+        }*/
     }
 
 }

@@ -24,7 +24,7 @@ namespace BenitosAI
         {
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)aiController).blackboard;
 
-            int coverPointsCountCount = blackboard.tPointCoverInfos.Length;
+            int coverPointsCountCount = blackboard.tPCoverInfos.Length;
             if (coverPointsCountCount > maxTacticalPointTargetsPerDecision)
             {
                 coverPointsCountCount = maxTacticalPointTargetsPerDecision;
@@ -34,7 +34,7 @@ namespace BenitosAI
             for (int i = 0; i < coverPointsCountCount; i++)
             {
                 contexesToReturn[i] = contexesPool.Dequeue();
-                contexesToReturn[i].SetUpContext(decision, aiController, null, blackboard.tPointCoverInfos[i]);
+                contexesToReturn[i].SetUpContext(decision, aiController, null, blackboard.tPCoverInfos[i]);
             }
 
             //return them back to the pool

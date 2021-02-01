@@ -138,7 +138,7 @@ namespace BenitosAI
 
             //HashSet<SensedTacticalPointInfo> possiblePosts = sensing.sensingInfo.tPointsCoverInfos.;
             //Dictionary<int,SensedTacticalPointInfo>.ValueCollection possiblePosts = sensing.sensingInfo.tPointsCoverInfos;
-            SensedTacticalPointInfo[] possiblePosts = blackboard.tPointCoverInfos;
+            SensedTacticalPointInfo[] possiblePosts = blackboard.tPCoverInfos;
 
 
             #endregion
