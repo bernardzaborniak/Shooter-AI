@@ -23,7 +23,7 @@ namespace BenitosAI
 
         //Friendlies
         public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
-        Queue<SensedEntityInfo> friendlyInfoPool = new Queue<SensedEntityInfo>();
+        Queue<SensedEntityInfo> friendlyInfosPool = new Queue<SensedEntityInfo>();
 
 
         //Tactical Points Cover
@@ -69,7 +69,7 @@ namespace BenitosAI
             }
             for (int i = 0; i < firendlyInfosPoolSize; i++)
             {
-                friendlyInfoPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
+                friendlyInfosPool.Enqueue(new SensedEntityInfo()); //rework the neemy Sensed Info Constructor to not have params
             }
             /*for (int i = 0; i < tPCoverInfosPoolSize; i++)
             {
@@ -87,12 +87,15 @@ namespace BenitosAI
 
         public void UpdateEntityInfos(HashSet<SensedEntityInfo> newEnemyInfos, HashSet<SensedEntityInfo> newFriendlyInfos)
         {
+            //Remember, newEnemyInfos & newFriendlyInfos are readonly, dont change them or the two pools of SensedEntityInfo inside blackboard & sensing will start messing with each other :(
+
             //the new entities are registered, while the older ones arent forgotten completely
 
             //first Enemies
+            HashSet<SensedEntityInfo> oldEnemiesToHoldOn = new HashSet<SensedEntityInfo>();
 
-            //Add old values which arent overriden to the new values set
-            /*for (int i = 0; i < enemyInfos.Length; i++)
+            //Carry over old values which arent overriden to the new values set
+            for (int i = 0; i < enemyInfos.Length; i++)
             {
                 if (!newEnemyInfos.Contains(enemyInfos[i]))
                 {
@@ -101,7 +104,7 @@ namespace BenitosAI
                     {
                         //update distance inside info
                         sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
-                        newEnemyInfos.Add(enemyInfos[i]);
+                        oldEnemiesToHoldOn.Add(enemyInfos[i]);
                     }
                     
                 }
@@ -110,29 +113,34 @@ namespace BenitosAI
                 enemyInfoPool.Enqueue(enemyInfos[i]);
             }
 
-            //convert the HashSet to Array & Sort it
-            SensedEntityInfo[] newEnemyInfosArray = new SensedEntityInfo[newEnemyInfos.Count];
-            newEnemyInfos.CopyTo(newEnemyInfosArray);
 
-            Array.Sort(newEnemyInfosArray,
+            //convert the HashSet to Array & Sort it
+            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[newEnemyInfos.Count + oldEnemiesToHoldOn.Count];
+            newEnemyInfos.CopyTo(newEnemyInfosSortedArray,0);
+            oldEnemiesToHoldOn.CopyTo(newEnemyInfosSortedArray, newEnemyInfos.Count);
+
+
+            Array.Sort(newEnemyInfosSortedArray,
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
 
-            int newEnemyInfoArraySize = enemyInfoPool.Count;
-            if(newEnemyInfos.Count < newEnemyInfoArraySize) newEnemyInfoArraySize = newEnemyInfos.Count;
+            int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
+            if(newEnemyInfoArraySize > enemyInfosPoolSize) newEnemyInfoArraySize = enemyInfosPoolSize;
 
             enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
 
             for (int i = 0; i < newEnemyInfoArraySize; i++)
             {
                 enemyInfos[i] = enemyInfoPool.Dequeue();
-                enemyInfos[i].SetUpInfo(newEnemyInfosArray[i].visInfo, newEnemyInfosArray[i].lastDistanceMeasured);
+                enemyInfos[i].CopyInfo(newEnemyInfosSortedArray[i]);
+
             }
 
 
             //Friendlies
+            HashSet<SensedEntityInfo> oldFriendliesToHoldOn = new HashSet<SensedEntityInfo>();
 
-            //Add old values which arent overriden to the new values set
+            //Carry over old values which arent overriden to the new values set
             for (int i = 0; i < friendlyInfos.Length; i++)
             {
                 if (!newFriendlyInfos.Contains(friendlyInfos[i]))
@@ -142,33 +150,37 @@ namespace BenitosAI
                     {
                         //update distance inside info
                         sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
-                        newFriendlyInfos.Add(friendlyInfos[i]);
+                        oldFriendliesToHoldOn.Add(friendlyInfos[i]);
                     }
 
                 }
 
                 //Return the infos to the pool again
-                friendlyInfoPool.Enqueue(friendlyInfos[i]);
+                friendlyInfosPool.Enqueue(friendlyInfos[i]);
             }
 
-            //convert the HashSet to Array & Sort it
-            SensedEntityInfo[] newFriendlyInfosArray = new SensedEntityInfo[newFriendlyInfos.Count];
-            newFriendlyInfos.CopyTo(newFriendlyInfosArray);
 
-            Array.Sort(newFriendlyInfosArray,
+            //convert the HashSet to Array & Sort it
+            SensedEntityInfo[] newFriendlyInfosSortedArray = new SensedEntityInfo[newFriendlyInfos.Count + oldFriendliesToHoldOn.Count];
+            newFriendlyInfos.CopyTo(newFriendlyInfosSortedArray, 0);
+            oldFriendliesToHoldOn.CopyTo(newFriendlyInfosSortedArray, newFriendlyInfos.Count);
+
+
+            Array.Sort(newFriendlyInfosSortedArray,
             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
 
-            int newFriendlyInfoArraySize = friendlyInfoPool.Count;
-            if (newFriendlyInfos.Count < newFriendlyInfoArraySize) newFriendlyInfoArraySize = newFriendlyInfos.Count;
+            int newFriendlyInfoArraySize = newFriendlyInfosSortedArray.Length;
+            if (newFriendlyInfoArraySize > enemyInfosPoolSize) newFriendlyInfoArraySize = enemyInfosPoolSize;
 
-            enemyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
+            friendlyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
 
             for (int i = 0; i < newFriendlyInfoArraySize; i++)
             {
-                friendlyInfos[i] = friendlyInfoPool.Dequeue();
-                friendlyInfos[i].SetUpInfo(newFriendlyInfosArray[i].visInfo, newFriendlyInfosArray[i].lastDistanceMeasured);
-            }*/
+                friendlyInfos[i] = friendlyInfosPool.Dequeue();
+                friendlyInfos[i].CopyInfo(newFriendlyInfosSortedArray[i]);
+
+            }
         }
 
         public void UpdateTPointInfos(HashSet<SensedTacticalPointInfo> newCoverPointInfos, HashSet<SensedTacticalPointInfo> newOpenFieldInfos, HashSet<SensedTacticalPointInfo> coverShootPointInfos)

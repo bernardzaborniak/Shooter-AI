@@ -54,12 +54,7 @@ namespace BenitosAI
         [Header("Optimisation")]
         public SensingOptimiser optimiser;
 
-        //sensing info caps
-        /*[SerializeField] int enemiesPoolSize;
-        [SerializeField] int friendliesPoolSize;
-        [SerializeField] int tPointsCoverPoolSize;
-        [SerializeField] int tPointsOpenFieldPoolSize;*/
-        //[SerializeField] int tPointsCoverShootPoolSize;
+
 
         int myTeamID;
 
@@ -197,6 +192,8 @@ namespace BenitosAI
                     sensedEntityInfoPool.Enqueue(info);
                 }
                 friendliesSensed.Clear();
+
+                //dont clear thoose, they get deleted anyway?
 
 
 

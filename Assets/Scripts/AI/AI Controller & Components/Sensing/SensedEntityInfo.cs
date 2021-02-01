@@ -75,6 +75,29 @@ namespace BenitosAI
             lastSeenCriticalAimPosition = visInfo.GetCriticalAimPosition();
         }
 
+        public void CopyInfo(SensedEntityInfo infoToCopy)
+        {
+            this.visInfo = infoToCopy.visInfo;
+            timeWhenLastSeen = infoToCopy.timeWhenLastSeen;
+            frameCountWhenLastSeen = infoToCopy.frameCountWhenLastSeen;
+
+            entity = infoToCopy.entity;
+            entityTags = infoToCopy.entityTags;
+            hashCode = infoToCopy.hashCode;
+            lastSeenEntityPosition = infoToCopy.lastSeenEntityPosition;
+            entityTeamID = infoToCopy.entityTeamID;
+
+            lastDistanceMeasured = infoToCopy.lastDistanceMeasured;
+
+            hasMovement = infoToCopy.hasMovement;
+            lastSeenVelocity = infoToCopy.lastSeenVelocity;
+            lastSeenAngularVelocity = infoToCopy.lastSeenAngularVelocity;
+
+            //Set Aim Positions
+            lastSeenAimPosition = infoToCopy.lastSeenAimPosition;
+            lastSeenCriticalAimPosition = infoToCopy.lastSeenCriticalAimPosition;
+        }
+
         public bool IsAlive()
         {
             return entity;
@@ -156,6 +179,23 @@ namespace BenitosAI
         public override int GetHashCode()
         {
             return hashCode;
+        }
+
+        //when 2 objects have the same hashcode, equals is checked on them before adding them to a hash set?
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (GetType() != obj.GetType())
+                return false;
+
+            SensedEntityInfo point = (SensedEntityInfo)obj;
+
+            if (GetHashCode() != point.GetHashCode())
+                return false;
+
+            return true;
         }
     }
 
