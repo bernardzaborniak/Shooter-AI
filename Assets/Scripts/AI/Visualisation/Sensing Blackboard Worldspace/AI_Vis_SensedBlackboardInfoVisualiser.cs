@@ -1,0 +1,122 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class AI_Vis_SensedBlackboardInfoVisualiser : MonoBehaviour
+{
+    public Transform objectToAlignToCamera;
+    public TMP_Text tmp_type;
+    public TMP_Text tmp_name;
+    public TMP_Text tmp_distance;
+    public TMP_Text tmp_timeSinceLastSeen;
+    public TMP_Text tmp_framesSinceLastSeen;
+
+    float timeWhenLastSeen;
+    int frameCountWhenLastSeen;
+
+    public void UpdateVisualiser(Vector3 cameraForward)
+    {
+        tmp_timeSinceLastSeen.text = (Time.time - timeWhenLastSeen).ToString("F2");
+        tmp_framesSinceLastSeen.text = (Time.frameCount - frameCountWhenLastSeen).ToString();
+
+        //objectToAlignToCamera.rotation = Quaternion.LookRotation(-(cameraPosition - objectToAlignToCamera.position));
+        objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
+    }
+
+    public void SetUpForEnemyEntityInfo(BenitosAI.SensedEntityInfo entityInfo)
+    {
+        //tmp_type.gameObject.SetActive(true);
+        if (entityInfo.IsAlive())
+        {
+            tmp_type.text = "Enemy";
+            tmp_name.text = entityInfo.entity.name + " " + entityInfo.entity.GetHashCode();  
+        }
+        else
+        {
+            tmp_type.text = "Enemy";
+            tmp_name.text = "He Dead";
+        }
+
+        tmp_distance.text = entityInfo.lastDistanceMeasured.ToString("F1");
+
+        timeWhenLastSeen = entityInfo.timeWhenLastSeen;
+        frameCountWhenLastSeen = entityInfo.frameCountWhenLastSeen;
+
+        transform.position = entityInfo.GetEntityPosition();
+
+
+    }
+
+    public void SetUpForFriendlyEntityInfo(BenitosAI.SensedEntityInfo entityInfo)
+    {
+        if (entityInfo.IsAlive())
+        {
+            tmp_type.text = "Friendly";
+            tmp_name.text = entityInfo.entity.name + " " + entityInfo.entity.GetHashCode();
+        }
+        else
+        {
+            tmp_type.text = "Friendly";
+            tmp_name.text = "He Dead";
+        }
+
+        tmp_distance.text = entityInfo.lastDistanceMeasured.ToString("F1");
+
+        timeWhenLastSeen = entityInfo.timeWhenLastSeen;
+        frameCountWhenLastSeen = entityInfo.frameCountWhenLastSeen;
+
+        transform.position = entityInfo.GetEntityPosition();
+    }
+
+    public void SetUpForTPointCoverInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    {
+        tmp_type.text = "TP Cover";
+        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+
+        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
+        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+
+        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+
+    }
+
+    public void SetUpForTPointOpenFieldInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    {
+        tmp_type.text = "TP Open Field";
+        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+
+        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
+        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+
+        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+    }
+
+    public void SetUpForTPointCoverPeekInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    {
+        tmp_type.text = "TP Cover Peek";
+        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+
+        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
+        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+
+        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+    }
+
+
+    public void SetUpForCurrentlyUsedTPoint(TacticalPoint tPoint)
+    {
+        tmp_type.text = "Curr. used TP";
+        tmp_name.text = tPoint.name + " " + tPoint.GetHashCode();
+        tmp_distance.gameObject.SetActive(false);
+        tmp_timeSinceLastSeen.gameObject.SetActive(false);
+        tmp_framesSinceLastSeen.gameObject.SetActive(false);
+
+        transform.position = tPoint.GetPointPosition();
+
+
+    }
+}

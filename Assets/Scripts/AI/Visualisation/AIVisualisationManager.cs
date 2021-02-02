@@ -160,12 +160,32 @@ namespace BenitosAI
 
 
         [Header("For Visualising Sensing/Blackboard Information in World Space")]
-        public Transform showEnemiesInWorldBox;
+        /*public Transform showEnemiesInWorldBox;
         public Transform showFriendliesInWorldBox;
         public Transform showTPCoverInWorldBox;
         public Transform showTPOpenFieldInWorldBox;
         public Transform showTPCoverPeekInWorldBox;
-        public Transform showTPCurrentlyUsedInWorldBox;
+        public Transform showTPCurrentlyUsedInWorldBox;*/
+        public Transform visualisedBlackboardInfoParent;
+
+        [SerializeField] GameObject enemyInfoVisualiserPrefab;
+        [SerializeField] GameObject friendlyInfoVisualiserPrefab;
+        [SerializeField] GameObject tPCoverInfoVisualiserPrefab;
+        [SerializeField] GameObject tPOpenFieldInfoVisualiserPrefab;
+        [SerializeField] GameObject tPCoverPeekInfoVisualiserPrefab;
+        [SerializeField] GameObject tPCurrentlyUsedInfoVisualiserPrefab;
+
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> visualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+
+        /*HashSet<AI_Vis_SensedBlackboardInfoVisualiser> enemyInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> friendlyInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPCoverInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPOpenFieldInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPCoverPeekInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        AI_Vis_SensedBlackboardInfoVisualiser tPCurrentlyUsedInfoVisualiserInUse;*/
+
+
+        //AI_Vis_SensedBlackboardInfoVisualiser
 
         #region Variables Cached to reduce garbage
 
@@ -506,89 +526,107 @@ namespace BenitosAI
 
         public void AlignBlackboardInfoVisualisersToCamera()
         {
-            Vector3 camPos = cameraController.transform.position;
-            Quaternion camRot = cameraController.transform.rotation;
             Vector3 camForward = cameraController.transform.forward;
 
-            showEnemiesInWorldBox.forward = cameraController.transform.position - showEnemiesInWorldBox.position;
-            showFriendliesInWorldBox.forward = cameraController.transform.position - showFriendliesInWorldBox.position;
-            showTPCoverInWorldBox.forward = cameraController.transform.position - showTPCoverInWorldBox.position;
-            showTPOpenFieldInWorldBox.forward = cameraController.transform.position - showTPOpenFieldInWorldBox.position;
-            showTPCoverPeekInWorldBox.forward = cameraController.transform.position - showTPCoverPeekInWorldBox.position;
-            showTPCurrentlyUsedInWorldBox.forward = cameraController.transform.position - showTPCurrentlyUsedInWorldBox.position;
+            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in visualisersInUse)
+            {
+                visualiser.UpdateVisualiser(camForward);
+            }
         }
 
         public void UpdateBlackboardInfoVisualisersInWorldSpace()
         {
-            Debug.Log("UpdateBlackboardInfoVisualisersInWorldSpace");
+            UnityEngine.Profiling.Profiler.BeginSample("UpdateBlackboardInfoVisualisersInWorldSpace");
+            //Debug.Log("UpdateBlackboardInfoVisualisersInWorldSpace");
 
-            if(selectedSoldierBlackboard != null)
+
+            //1. Delete all current
+            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in visualisersInUse)
             {
+                Destroy(visualiser.gameObject);
+            }
+            visualisersInUse.Clear();
+
+
+            //2. Instantiate new ones
+
+            if (selectedSoldierBlackboard != null)
+            {
+                GameObject instantiatedObject;
+                AI_Vis_SensedBlackboardInfoVisualiser instantiatedVisualiser;
+
                 if (settings.ShowEnemiesInWorld)
                 {
-                    showEnemiesInWorldBox.gameObject.SetActive(true);
+                    for (int i = 0; i < selectedSoldierBlackboard.enemyInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(enemyInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForEnemyEntityInfo(selectedSoldierBlackboard.enemyInfos[i]);
+
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }
                 }
-                else
-                {
-                    showEnemiesInWorldBox.gameObject.SetActive(false);
-                }
+
 
                 if (settings.ShowFriendliesInWorld)
                 {
-                    showFriendliesInWorldBox.gameObject.SetActive(true);
-                }
-                else
-                {
-                    showFriendliesInWorldBox.gameObject.SetActive(false);
+                    for (int i = 0; i < selectedSoldierBlackboard.friendlyInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(friendlyInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForFriendlyEntityInfo(selectedSoldierBlackboard.friendlyInfos[i]);
+
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }
                 }
 
                 if (settings.ShowTPCoverInWorld)
                 {
-                    showTPCoverInWorldBox.gameObject.SetActive(true);
-                }
-                else
-                {
-                    showTPCoverInWorldBox.gameObject.SetActive(false);
+                    for (int i = 0; i < selectedSoldierBlackboard.tPCoverInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(tPCoverInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForTPointCoverInfo(selectedSoldierBlackboard.tPCoverInfos[i]);
+
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }
                 }
 
                 if (settings.ShowTPOpenFieldInWorld)
                 {
-                    showTPOpenFieldInWorldBox.gameObject.SetActive(true);
-                }
-                else
-                {
-                    showTPOpenFieldInWorldBox.gameObject.SetActive(false);
+                    for (int i = 0; i < selectedSoldierBlackboard.tPOpenFieldInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(tPOpenFieldInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForTPointOpenFieldInfo(selectedSoldierBlackboard.tPOpenFieldInfos[i]);
+
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }
                 }
 
                 if (settings.ShowTPCoverPeekInWorld)
                 {
-                    showTPCoverPeekInWorldBox.gameObject.SetActive(true);
-                }
-                else
-                {
-                    showTPCoverPeekInWorldBox.gameObject.SetActive(false);
+                    for (int i = 0; i < selectedSoldierBlackboard.tPCoverPeekInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(tPCoverPeekInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForTPointCoverPeekInfo(selectedSoldierBlackboard.tPCoverPeekInfos[i]);
+
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }
                 }
 
                 if (settings.ShowTPCurrentlyUsedInWorld)
                 {
-                    showTPCurrentlyUsedInWorldBox.gameObject.SetActive(true);
-                }
-                else
-                {
-                    showTPCurrentlyUsedInWorldBox.gameObject.SetActive(false);
-                }
+                    instantiatedObject = Instantiate(tPCurrentlyUsedInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                    instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                    instantiatedVisualiser.SetUpForCurrentlyUsedTPoint(selectedSoldierBlackboard.GetCurrentlyUsedTacticalPoint());
 
+                    visualisersInUse.Add(instantiatedVisualiser);
+                }
             }
-            else
-            {
-                showEnemiesInWorldBox.gameObject.SetActive(false);
-                showFriendliesInWorldBox.gameObject.SetActive(false);
-                showTPCoverInWorldBox.gameObject.SetActive(false);
-                showTPOpenFieldInWorldBox.gameObject.SetActive(false);
-                showTPCoverPeekInWorldBox.gameObject.SetActive(false);
-                showTPCurrentlyUsedInWorldBox.gameObject.SetActive(false);
-            }
-    }
+            UnityEngine.Profiling.Profiler.EndSample();
+        }
 
         public void FrameCameraOnObject(Transform objectToFrameOn)
         {
