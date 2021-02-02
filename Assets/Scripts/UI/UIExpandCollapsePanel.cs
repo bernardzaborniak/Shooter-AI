@@ -14,14 +14,18 @@ public class UIExpandCollapsePanel : MonoBehaviour
 
     public void OnExpandOrHideToogleableButtonClicked(ToogleableButton button)
     {
-        if (button.active)
+        if (panelToExpand)
         {
-            panelToExpand.gameObject.SetActive(true);
+            if (button.active)
+            {
+                panelToExpand.gameObject.SetActive(true);
+            }
+            else
+            {
+                panelToExpand.gameObject.SetActive(false);
+            }
         }
-        else
-        {
-            panelToExpand.gameObject.SetActive(false);
-        }
+        
         //UpdateContentSizeFitter();
         // Invoke("UpdateContentSizeFitterDelayed", 0.02f);  // a delay of 0.1f does not work, the UI System seems to update delayed. If it isnt working, increase the delay to 0.5f or smth.
 
@@ -38,7 +42,7 @@ public class UIExpandCollapsePanel : MonoBehaviour
 
     public void UpdateNumberOfItemsInsidePanel(int itemsInsidePanel)
     {
-        tmp_numberOfItemsInsidePanel.text = itemsInsidePanel.ToString();
+        if(tmp_numberOfItemsInsidePanel) tmp_numberOfItemsInsidePanel.text = itemsInsidePanel.ToString();
     }
 
    /* void UpdateContentSizeFitterDelayed()

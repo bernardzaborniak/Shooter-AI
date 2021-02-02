@@ -38,6 +38,7 @@ namespace BenitosAI
         public UIExpandCollapsePanel sensingTPointsCoverPanel;
         public UIExpandCollapsePanel sensingTPointsOpenFieldPanel;
         public UIExpandCollapsePanel sensingTPointsCoverPeekPanel;
+        public UIExpandCollapsePanel sensingTPointCurrentlyUsedPanel;
 
 
 
@@ -209,6 +210,10 @@ namespace BenitosAI
                 {
                     objectsToDestroy.Add(sensingTPointsCoverPeekPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                for (int i = 0; i < sensingTPointCurrentlyUsedPanel.panelToExpand.childCount; i++)
+                {
+                    objectsToDestroy.Add(sensingTPointCurrentlyUsedPanel.panelToExpand.GetChild(i).gameObject);
+                }
 
 
                 foreach (GameObject obj in objectsToDestroy)
@@ -265,6 +270,17 @@ namespace BenitosAI
                     newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
                 sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
+
+                // Update TPoints CurrentlyUsed Panel --------------------------------
+                if(blackboard.GetCurrentlyUsedTacticalPoint())
+                {
+                    TacticalPoint tPoint = blackboard.GetCurrentlyUsedTacticalPoint();
+                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointCurrentlyUsedPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    newSensingItem.SetUp((tPoint.tacticalPointType.ToString() + tPoint.GetHashCode()), 0, 0, 0, tPoint.transform, manager);
+                }
+                //sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
+
+                
             }
             else
             {
@@ -301,7 +317,14 @@ namespace BenitosAI
                     Destroy(sensingTPointsCoverPeekPanel.panelToExpand.GetChild(i).gameObject);
                 }
                 sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(0);
-                
+
+
+                for (int i = 0; i < sensingTPointCurrentlyUsedPanel.panelToExpand.childCount; i++)
+                {
+                    Destroy(sensingTPointCurrentlyUsedPanel.panelToExpand.GetChild(i).gameObject);
+                }
+                sensingTPointCurrentlyUsedPanel.UpdateNumberOfItemsInsidePanel(0);
+
 
             }
         }
@@ -310,32 +333,32 @@ namespace BenitosAI
 
         public void OnShowEnemyInfosInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowEnemiesInWorld = button.active;
         }
 
         public void OnShowFriendlyInfosInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowFriendliesInWorld = button.active;
         }
 
         public void OnShowTPCoverInfosInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowTPCoverInWorld = button.active;
         }
 
         public void OnShowTPOpenFieldInfosInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowTPOpenFieldInWorld = button.active;
         }
 
         public void OnShowTPCoverPeekInfosInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowTPCoverPeekInWorld = button.active;
         }
 
         public void OnShowCurrentlyUsedTPointInWorldButtonClicked(ToogleableButton button)
         {
-
+            manager.settings.ShowTPCurrentlyUsedInWorld = button.active;
         }
 
         #endregion

@@ -17,7 +17,9 @@ namespace BenitosAI
         [System.Serializable]
         public class Settings
         {
-            [Header("Tactical Points")]
+            public AIVisualisationManager manager;
+
+            [Header("Visualising Tactical Points")]
             public bool showOpenFieldPoints;
             public bool showCoverPoints;
             public bool showCoverShootPoints;
@@ -29,6 +31,91 @@ namespace BenitosAI
             public bool showCoverQualityRating;
             [ConditionalHide("showCoverQualityRating")]
             public bool showCoverQualityRatingNumbers;
+
+            [Header("Visualising Sensing/Blackboard Information")]
+            [SerializeField] bool showEnemiesInWorld;
+            public bool ShowEnemiesInWorld
+            {
+                get
+                {
+                    return showEnemiesInWorld;
+                }
+                set
+                {
+                    showEnemiesInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
+            [SerializeField] bool showFriendliesInWorld;
+            public bool ShowFriendliesInWorld
+            {
+                get
+                {
+                    return showFriendliesInWorld;
+                }
+                set
+                {
+                    showFriendliesInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
+            [SerializeField] bool showTPCoverInWorld;
+            public bool ShowTPCoverInWorld
+            {
+                get
+                {
+                    return showTPCoverInWorld;
+                }
+                set
+                {
+                    showTPCoverInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
+            [SerializeField] bool showTPOpenFieldInWorld;
+            public bool ShowTPOpenFieldInWorld
+            {
+                get
+                {
+                    return showTPOpenFieldInWorld;
+                }
+                set
+                {
+                    showTPOpenFieldInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
+            [SerializeField] bool showTPCoverPeekInWorld;
+            public bool ShowTPCoverPeekInWorld
+            {
+                get
+                {
+                    return showTPCoverPeekInWorld;
+                }
+                set
+                {
+                    showTPCoverPeekInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
+            [SerializeField] bool showTPCurrentlyUsedInWorld;
+            public bool ShowTPCurrentlyUsedInWorld
+            {
+                get
+                {
+                    return showTPCurrentlyUsedInWorld;
+                }
+                set
+                {
+                    showTPCurrentlyUsedInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
 
         }
 
@@ -71,6 +158,15 @@ namespace BenitosAI
         AIController_Blackboard selectedSoldiersBlackboardLastFrame;
         float lastUpdateSensingFrameCount;
 
+
+        [Header("For Visualising Sensing/Blackboard Information in World Space")]
+        public Transform showEnemiesInWorldBox;
+        public Transform showFriendliesInWorldBox;
+        public Transform showTPCoverInWorldBox;
+        public Transform showTPOpenFieldInWorldBox;
+        public Transform showTPCoverPeekInWorldBox;
+        public Transform showTPCurrentlyUsedInWorldBox;
+
         #region Variables Cached to reduce garbage
 
         //--------- UpdateVisualisersShown -------
@@ -85,6 +181,8 @@ namespace BenitosAI
 
         void OnEnable()   //switched it to OnEnable, cause it also triggers in EditMode unlike Awake
         {
+            settings.manager = this;
+
             tacticalPointVisualisersNotInUse = new Queue<TacticalPointVisualiser>();
             tacticalPointVisualisersInUse = new HashSet<TacticalPointVisualiser>();
             tacticalPointsBeingCurrentlyVisualised = new HashSet<TacticalPoint>();
@@ -156,7 +254,8 @@ namespace BenitosAI
 
             if (Application.isPlaying)
             {
-                UpdateBlackboardUI();
+                UpdateBlackboardVisualisers();
+                //UpdateBlackboardInfoVisualisersInWorldSpace();
                 selectedSoldiersBlackboardLastFrame = selectedSoldierBlackboard;
             }
 
@@ -171,7 +270,7 @@ namespace BenitosAI
                 {
                     if (Time.frameCount % 12 == 0)
                     {
-                        UpdateVisualisersShown(false);
+                        UpdateTPointVisualisersShown(false);
                     }
                 }
             }
@@ -190,7 +289,7 @@ namespace BenitosAI
                     if (EditorApplication.timeSinceStartup > nextUpdateVisualisersTime)
                     {
                         nextUpdateVisualisersTime = (float)EditorApplication.timeSinceStartup + updateVisualisersInEditModeInterval;
-                        UpdateVisualisersShown(true); //maybe this should be done every x frames too? But how to achieve this in Edit mode?
+                        UpdateTPointVisualisersShown(true); //maybe this should be done every x frames too? But how to achieve this in Edit mode?
                     }
                 }
 
@@ -198,7 +297,7 @@ namespace BenitosAI
         }
 #endif
 
-        void UpdateVisualisersShown(bool inSceneView)
+        void UpdateTPointVisualisersShown(bool inSceneView)
         {
             #region Prepare Variables
 
@@ -363,7 +462,7 @@ namespace BenitosAI
             return false;
         }
 
-        void UpdateBlackboardUI()
+        void UpdateBlackboardVisualisers() //both ui and in world space
         {
             // Update UI only if needed
             // -> everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
@@ -374,16 +473,20 @@ namespace BenitosAI
             if (selectedSoldierBlackboard == null)// && selectedSoldiersBlackboardLastFrame != null)
             {
                 aIVisualisationUI.UpdateSensingUIItems(null);
+                UpdateBlackboardInfoVisualisersInWorldSpace();
             }
             //if selected soldier
             else if (selectedSoldierBlackboard != null && selectedSoldiersBlackboardLastFrame == null)
             {
                 aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
+                UpdateBlackboardInfoVisualisersInWorldSpace();
             }
             //if selected different soldier
             else if (selectedSoldierBlackboard != selectedSoldiersBlackboardLastFrame)
             {
                 aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
+                UpdateBlackboardInfoVisualisersInWorldSpace();
+
             }
             //else only update ui everytime the sensing component updated
             else if (selectedSoldierBlackboard != null)
@@ -391,12 +494,101 @@ namespace BenitosAI
                 if (lastUpdateSensingFrameCount != selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated)
                 {
                     aIVisualisationUI.UpdateSensingUIItems(selectedSoldierBlackboard);
+                    UpdateBlackboardInfoVisualisersInWorldSpace();
                     lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
                 }
             }
+
+            AlignBlackboardInfoVisualisersToCamera();
             UnityEngine.Profiling.Profiler.EndSample();
 
         }
+
+        public void AlignBlackboardInfoVisualisersToCamera()
+        {
+            Vector3 camPos = cameraController.transform.position;
+            Quaternion camRot = cameraController.transform.rotation;
+            Vector3 camForward = cameraController.transform.forward;
+
+            showEnemiesInWorldBox.forward = cameraController.transform.position - showEnemiesInWorldBox.position;
+            showFriendliesInWorldBox.forward = cameraController.transform.position - showFriendliesInWorldBox.position;
+            showTPCoverInWorldBox.forward = cameraController.transform.position - showTPCoverInWorldBox.position;
+            showTPOpenFieldInWorldBox.forward = cameraController.transform.position - showTPOpenFieldInWorldBox.position;
+            showTPCoverPeekInWorldBox.forward = cameraController.transform.position - showTPCoverPeekInWorldBox.position;
+            showTPCurrentlyUsedInWorldBox.forward = cameraController.transform.position - showTPCurrentlyUsedInWorldBox.position;
+        }
+
+        public void UpdateBlackboardInfoVisualisersInWorldSpace()
+        {
+            Debug.Log("UpdateBlackboardInfoVisualisersInWorldSpace");
+
+            if(selectedSoldierBlackboard != null)
+            {
+                if (settings.ShowEnemiesInWorld)
+                {
+                    showEnemiesInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showEnemiesInWorldBox.gameObject.SetActive(false);
+                }
+
+                if (settings.ShowFriendliesInWorld)
+                {
+                    showFriendliesInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showFriendliesInWorldBox.gameObject.SetActive(false);
+                }
+
+                if (settings.ShowTPCoverInWorld)
+                {
+                    showTPCoverInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showTPCoverInWorldBox.gameObject.SetActive(false);
+                }
+
+                if (settings.ShowTPOpenFieldInWorld)
+                {
+                    showTPOpenFieldInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showTPOpenFieldInWorldBox.gameObject.SetActive(false);
+                }
+
+                if (settings.ShowTPCoverPeekInWorld)
+                {
+                    showTPCoverPeekInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showTPCoverPeekInWorldBox.gameObject.SetActive(false);
+                }
+
+                if (settings.ShowTPCurrentlyUsedInWorld)
+                {
+                    showTPCurrentlyUsedInWorldBox.gameObject.SetActive(true);
+                }
+                else
+                {
+                    showTPCurrentlyUsedInWorldBox.gameObject.SetActive(false);
+                }
+
+            }
+            else
+            {
+                showEnemiesInWorldBox.gameObject.SetActive(false);
+                showFriendliesInWorldBox.gameObject.SetActive(false);
+                showTPCoverInWorldBox.gameObject.SetActive(false);
+                showTPOpenFieldInWorldBox.gameObject.SetActive(false);
+                showTPCoverPeekInWorldBox.gameObject.SetActive(false);
+                showTPCurrentlyUsedInWorldBox.gameObject.SetActive(false);
+            }
+    }
 
         public void FrameCameraOnObject(Transform objectToFrameOn)
         {
