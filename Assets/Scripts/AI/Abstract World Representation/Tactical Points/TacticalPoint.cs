@@ -34,6 +34,9 @@ public class TacticalPoint : MonoBehaviour
     public TacticalPoint[] coverPeekPoints; //or ShotPositions
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
     public Transform coverPeekPointsParent;
+    [ShowWhen("tacticalPointType", TacticalPointType.CoverPeekPoint)]
+    public TacticalPoint coverPointAssignedTo;
+
 
     public float radius;
     public int capacity;
@@ -152,7 +155,7 @@ public class TacticalPoint : MonoBehaviour
     }
 
     #region Used In Edit Mode
-
+#if UNITY_EDITOR
     public void UpdateCoverShootPoints()
     {
         //Updates the references of children instantiated in editor by the level Designer
@@ -165,14 +168,19 @@ public class TacticalPoint : MonoBehaviour
                 if (tp)
                 {
                     coverPeekPoints[i] = tp;
+                    coverPeekPoints[i].coverPointAssignedTo = this;
+                    EditorUtility.SetDirty(coverPeekPoints[i]);
+
                 }
                 else
                 {
                     Debug.Log("children of coverShootPointsParent on: " + gameObject.name + " is not a tactical point -> fix this");
                 }
             }
+            EditorUtility.SetDirty(this);
         }
     }
+#endif
 
     public void ResetRotation()
     {

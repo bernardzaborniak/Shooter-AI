@@ -175,20 +175,34 @@ namespace BenitosAI
                     }
                 }
 
-                //Add coverShootPoints if i am inside a point
-                HashSet<(TacticalPoint, float)> coverShootPointInfos = new HashSet<(TacticalPoint, float)>();
+                //Add coverPeekPoints if i am inside a point
+                HashSet<(TacticalPoint, float)> coverPeekPointInfos = new HashSet<(TacticalPoint, float)>();
 
                 TacticalPoint currentlyUsedPoint = blackboard.GetCurrentlyUsedTacticalPoint();
+                TacticalPoint[] currentCoverPeekPoints = new TacticalPoint[0];
                 if (currentlyUsedPoint != null)
                 {
-                    for (int i = 0; i < currentlyUsedPoint.coverPeekPoints.Length; i++)
+                    //Debug.Log("I am inside Cover Point Point");
+                    if(currentlyUsedPoint.tacticalPointType == TacticalPointType.CoverPoint) 
                     {
-                        TacticalPoint tPoint = currentlyUsedPoint.coverPeekPoints[i].GetComponent<TacticalPoint>();
-                        coverShootPointInfos.Add((tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition())));
+                        currentCoverPeekPoints = currentlyUsedPoint.coverPeekPoints;
                     }
+                    else if(currentlyUsedPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+                    {
+                        //Debug.Log("I am inside Cover Peek Point");
+                        currentCoverPeekPoints = currentlyUsedPoint.coverPointAssignedTo.coverPeekPoints;
+                    }
+
+                    for (int i = 0; i < currentCoverPeekPoints.Length; i++)
+                    {
+                        TacticalPoint tPoint = currentCoverPeekPoints[i];
+                        //Debug.Log("Sensed new Cover Peek Point: " + tPoint.GetHashCode());
+                        coverPeekPointInfos.Add((tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition())));
+                    }
+
                 }
 
-                blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverShootPointInfos);
+                blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverPeekPointInfos);
 
                 #endregion
 
