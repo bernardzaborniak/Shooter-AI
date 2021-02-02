@@ -54,14 +54,17 @@ namespace BenitosAI
 
     #region Updating Sensing Information
 
-        public void UpdateEntityInfos(HashSet<(EntitySensingInterface, float)> newEnemyInfos, HashSet<(EntitySensingInterface, float)> newFriendlyInfos)
+        public void UpdateEntityInfos( HashSet<(EntitySensingInterface, float)> newEnemyInfos,  HashSet<(EntitySensingInterface, float)> newFriendlyInfos)
         {
             //-> The new entities are registered, while the older ones arent forgotten completely.
+
+            UpdateEntityInfos(ref newEnemyInfos, ref enemyInfos, maxEnemyInfosCount);
+            UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount);
 
             #region------------Enemies------------------
 
             //1. Create dictionary of current infos        
-            Dictionary<int,SensedEntityInfo> currentEnemyInfosDict = new Dictionary<int,SensedEntityInfo>(); //the entity hashSets are the keys
+            /*Dictionary<int,SensedEntityInfo> currentEnemyInfosDict = new Dictionary<int,SensedEntityInfo>(); //the entity hashSets are the keys
             for (int i = 0; i < enemyInfos.Length; i++)
             {
                 currentEnemyInfosDict.Add(enemyInfos[i].entity.GetHashCode(), enemyInfos[i]);
@@ -158,102 +161,71 @@ namespace BenitosAI
                 {
                     sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
                 }
-            }
+            }*/
 
             #endregion --------------------------------
         }
 
-        public void UpdateTPointInfos(HashSet<(TacticalPoint, float)> newTPCoverInfos, HashSet<(TacticalPoint, float)> newTPOpenFieldInfos, HashSet<(TacticalPoint, float)> newTPCoverPeekInfos)
+        public void UpdateTPointInfos( HashSet<(TacticalPoint, float)> newTPCoverInfos,  HashSet<(TacticalPoint, float)> newTPOpenFieldInfos,  HashSet<(TacticalPoint, float)> newTPCoverPeekInfos)
         {
-            //-----Eureka?-----
-            //1. create dictionary of current infos
-            //2. go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
-            //3. convert fictionary back to array -->dict.Values.CopyTo(foos, 0);
-            //4. sort array
-            //5 cut array
-
-            UpdateTPointInfos(newTPCoverInfos, tPCoverInfos, maxTPCoverInfosCount);
-            UpdateTPointInfos(newTPOpenFieldInfos, tPOpenFieldInfos, maxTPOpenFieldInfosCount);
-            UpdateTPointInfos(newTPCoverPeekInfos, tPCoverPeekInfos, 10); //it will hopefully never by more than 3
-
-            #region------------Cover Points------------------
-
-            //1. Create dictionary of current infos        
-            /* Dictionary<int, SensedTacticalPointInfo> currentTPCoverInfosDict = new Dictionary<int, SensedTacticalPointInfo>(); //the entity hashSets are the keys
-             for (int i = 0; i < tPCoverInfos.Length; i++)
-             {
-                 currentTPCoverInfosDict.Add(tPCoverInfos[i].tacticalPoint.GetHashCode(), tPCoverInfos[i]);
-             }
-
-             //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
-             foreach ((TacticalPoint tPoint, float distanceToPoint) newTPInfoTuple in newTPCoverInfos)
-             {
-                 int currentKey = newTPInfoTuple.tPoint.GetHashCode();
-                 if (currentTPCoverInfosDict.ContainsKey(currentKey))
-                 {
-                     // update the current info
-                     currentTPCoverInfosDict[currentKey].UpdateInfo(newTPInfoTuple.distanceToPoint);
-                 }
-                 else
-                 {
-                     // or create & add new info
-                     currentTPCoverInfosDict.Add(currentKey, new SensedTacticalPointInfo(newTPInfoTuple.tPoint, newTPInfoTuple.distanceToPoint));
-                 }
-             }
-
-             //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
-             SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
-             currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray, 0);
-
-             //4. Sort array according to distance
-             Array.Sort(newEnemyInfosSortedArray,
-             delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-             //5 Cut array
-             int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
-             if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
-
-             enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
-
-             for (int i = 0; i < newEnemyInfoArraySize; i++)
-             {
-                 enemyInfos[i] = newEnemyInfosSortedArray[i];
-
-                 //if we still have old info, not updated this frame, "predict" its distance
-                 if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
-                 {
-                     sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
-                 }
-             }
-
-             #endregion ------------------------------*/
-
-
-            //For TPoints, we just override them, the references here are referencing SensedTacticalPointInfo objects inside the SensingPool.
-
-            /*tPointCoverInfos = new SensedTacticalPointInfo[newCoverPointInfos.Count];
-            newCoverPointInfos.CopyTo(tPointCoverInfos);
-            
-            Array.Sort(tPointCoverInfos,
-            delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-
-            tPointOpenFieldInfos = new SensedTacticalPointInfo[newOpenFieldInfos.Count];
-            newOpenFieldInfos.CopyTo(tPointOpenFieldInfos);
-
-            Array.Sort(tPointOpenFieldInfos,
-            delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-
-            tPointCoverShootInfos = new SensedTacticalPointInfo[coverShootPointInfos.Count];
-            coverShootPointInfos.CopyTo(tPointCoverShootInfos);
-
-            Array.Sort(tPointCoverShootInfos,
-            delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-            */
+            UpdateTPointInfos(ref newTPCoverInfos, ref tPCoverInfos, maxTPCoverInfosCount);
+            UpdateTPointInfos(ref newTPOpenFieldInfos, ref tPOpenFieldInfos, maxTPOpenFieldInfosCount);
+            UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos, 10); //it will hopefully never by more than 3
         }
 
-        void UpdateTPointInfos(HashSet<(TacticalPoint, float)> newTPInfos, SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
+        void UpdateEntityInfos(ref HashSet<(EntitySensingInterface, float)> newEntityInfos, ref SensedEntityInfo[] infosToUpdate, int maxInfosCount)
+        {
+            //1. Create dictionary of current infos        
+            Dictionary<int, SensedEntityInfo> currentEntityInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
+            for (int i = 0; i < infosToUpdate.Length; i++)
+            {
+                currentEntityInfosDict.Add(infosToUpdate[i].entity.GetHashCode(), infosToUpdate[i]);
+            }
+
+            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
+            foreach ((EntitySensingInterface entitySensInterface, float distanceToEntity) newEntityInfoTuple in newEntityInfos)
+            {
+                int currentKey = newEntityInfoTuple.entitySensInterface.entityAssignedTo.GetHashCode();
+                if (currentEntityInfosDict.ContainsKey(currentKey))
+                {
+                    // update the current info
+                    currentEntityInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
+                }
+                else
+                {
+                    // or create & add new info
+                    currentEntityInfosDict.Add(currentKey, new SensedEntityInfo(newEntityInfoTuple.entitySensInterface, newEntityInfoTuple.distanceToEntity));
+                }
+            }
+
+            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+            SensedEntityInfo[] newInfosSortedArray = new SensedEntityInfo[currentEntityInfosDict.Count];
+            currentEntityInfosDict.Values.CopyTo(newInfosSortedArray, 0);
+
+            //4. Sort array according to distance
+            Array.Sort(newInfosSortedArray,
+            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+            //5 Cut array
+            int newInfosArraySize = newInfosSortedArray.Length;
+            if (newInfosArraySize > maxInfosCount) newInfosArraySize = maxInfosCount;
+
+            infosToUpdate = new SensedEntityInfo[newInfosArraySize];
+
+            for (int i = 0; i < newInfosArraySize; i++)
+            {
+                infosToUpdate[i] = newInfosSortedArray[i];
+
+                //if we still have old info, not updated this frame, "predict" its distance
+                if (infosToUpdate[i].frameCountWhenLastSeen != Time.frameCount)
+                {
+                    sensing.UpdateEntityInfoDistance(ref infosToUpdate[i]);
+                }
+            }
+
+        }
+
+        void UpdateTPointInfos(ref HashSet<(TacticalPoint, float)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
         {
             //1. Create dictionary of current infos        
             Dictionary<int, SensedTacticalPointInfo> currentTPInfosDict = new Dictionary<int, SensedTacticalPointInfo>(); //the entity hashSets are the keys
@@ -263,43 +235,43 @@ namespace BenitosAI
             }
 
             //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
-            foreach ((TacticalPoint tPoint, float distanceToPoint) newTPInfoTuple in newTPCoverInfos)
+            foreach ((TacticalPoint tPoint, float distanceToPoint) newTPInfoTuple in newTPInfos)
             {
                 int currentKey = newTPInfoTuple.tPoint.GetHashCode();
-                if (currentTPCoverInfosDict.ContainsKey(currentKey))
+                if (currentTPInfosDict.ContainsKey(currentKey))
                 {
                     // update the current info
-                    currentTPCoverInfosDict[currentKey].UpdateInfo(newTPInfoTuple.distanceToPoint);
+                    currentTPInfosDict[currentKey].UpdateInfo(newTPInfoTuple.distanceToPoint);
                 }
                 else
                 {
                     // or create & add new info
-                    currentTPCoverInfosDict.Add(currentKey, new SensedTacticalPointInfo(newTPInfoTuple.tPoint, newTPInfoTuple.distanceToPoint));
+                    currentTPInfosDict.Add(currentKey, new SensedTacticalPointInfo(newTPInfoTuple.tPoint, newTPInfoTuple.distanceToPoint));
                 }
             }
 
             //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
-            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
-            currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray, 0);
+            SensedTacticalPointInfo[] newTPInfosSortedArray = new SensedTacticalPointInfo[currentTPInfosDict.Count];
+            currentTPInfosDict.Values.CopyTo(newTPInfosSortedArray, 0);
 
             //4. Sort array according to distance
-            Array.Sort(newEnemyInfosSortedArray,
-            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+            Array.Sort(newTPInfosSortedArray,
+            delegate (SensedTacticalPointInfo x, SensedTacticalPointInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
 
             //5 Cut array
-            int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
-            if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
+            int newTPInfoArraySize = newTPInfosSortedArray.Length;
+            if (newTPInfoArraySize > maxEnemyInfosCount) newTPInfoArraySize = maxEnemyInfosCount;
 
-            enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
+            infosToUpdate = new SensedTacticalPointInfo[newTPInfoArraySize];
 
-            for (int i = 0; i < newEnemyInfoArraySize; i++)
+            for (int i = 0; i < newTPInfoArraySize; i++)
             {
-                enemyInfos[i] = newEnemyInfosSortedArray[i];
+                infosToUpdate[i] = newTPInfosSortedArray[i];
 
                 //if we still have old info, not updated this frame, "predict" its distance
-                if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
+                if (infosToUpdate[i].frameCountWhenLastSeen != Time.frameCount)
                 {
-                    sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                    sensing.UpdateTPInfoDistance(ref infosToUpdate[i]);
                 }
             }
 

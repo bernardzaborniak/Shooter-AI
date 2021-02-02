@@ -120,7 +120,6 @@ namespace BenitosAI
                             {
                                 if (currentEntitySensInterface.entityAssignedTo.teamID != myTeamID)
                                 {
-                                    Debug.Log("sensed enemy: " + currentEntitySensInterface.entityAssignedTo.GetHashCode());
                                     enemiesSensed.Add((currentEntitySensInterface, distanceToTarget));
                                 }
                                 else
@@ -182,9 +181,9 @@ namespace BenitosAI
                 TacticalPoint currentlyUsedPoint = blackboard.GetCurrentlyUsedTacticalPoint();
                 if (currentlyUsedPoint != null)
                 {
-                    for (int i = 0; i < currentlyUsedPoint.coverShootPoints.Length; i++)
+                    for (int i = 0; i < currentlyUsedPoint.coverPeekPoints.Length; i++)
                     {
-                        TacticalPoint tPoint = currentlyUsedPoint.coverShootPoints[i].GetComponent<TacticalPoint>();
+                        TacticalPoint tPoint = currentlyUsedPoint.coverPeekPoints[i].GetComponent<TacticalPoint>();
                         coverShootPointInfos.Add((tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition())));
                     }
                 }
@@ -202,7 +201,14 @@ namespace BenitosAI
         {
             entityInfo.lastDistanceMeasured = Vector3.Distance(transform.position, entityInfo.GetEntityPosition());
         }
-       
+
+        public void UpdateTPInfoDistance(ref SensedTacticalPointInfo tPointInfo)
+        {
+            tPointInfo.lastDistanceMeasured = Vector3.Distance(transform.position, tPointInfo.tacticalPoint.GetPointPosition());
+        }
+
+        
+
     }
 
 }

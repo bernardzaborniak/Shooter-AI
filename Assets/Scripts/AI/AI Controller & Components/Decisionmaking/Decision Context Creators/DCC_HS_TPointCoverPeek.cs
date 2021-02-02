@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/Decision Context Creator/HumanoidSolder_TacticalPointCoverShootPoint", fileName = "HS_TacticalPointCoverShootPoint")]
+    [CreateAssetMenu(menuName = "AI/Decision Context Creator/HumanoidSolder_TPointCoverPeek", fileName = "HS_TPointCoverPeek")]
 
-    public class DCC_HS_TPointShoot : DecisionContextCreator
+    public class DCC_HS_TPointCoverPeek : DecisionContextCreator
     {
         public int maxTacticalPointTargetsPerDecision = 4;
         Queue<DecisionContext> contexesPool = new Queue<DecisionContext>();

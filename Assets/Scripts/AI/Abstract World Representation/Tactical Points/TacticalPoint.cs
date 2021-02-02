@@ -10,7 +10,7 @@ public enum TacticalPointType
 {
     OpenFieldPoint,
     CoverPoint,
-    CoverShootPoint
+    CoverPeekPoint
 }
 
 //for evaluating rating
@@ -31,9 +31,9 @@ public class TacticalPoint : MonoBehaviour
 
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
-    public TacticalPoint[] coverShootPoints; //or ShotPositions
+    public TacticalPoint[] coverPeekPoints; //or ShotPositions
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
-    public Transform coverShootPointsParent;
+    public Transform coverPeekPointsParent;
 
     public float radius;
     public int capacity;
@@ -158,13 +158,13 @@ public class TacticalPoint : MonoBehaviour
         //Updates the references of children instantiated in editor by the level Designer
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
-            coverShootPoints = new TacticalPoint[coverShootPointsParent.childCount];
-            for (int i = 0; i < coverShootPointsParent.childCount; i++)
+            coverPeekPoints = new TacticalPoint[coverPeekPointsParent.childCount];
+            for (int i = 0; i < coverPeekPointsParent.childCount; i++)
             {
-                TacticalPoint tp = coverShootPointsParent.GetChild(i).GetComponent<TacticalPoint>();
+                TacticalPoint tp = coverPeekPointsParent.GetChild(i).GetComponent<TacticalPoint>();
                 if (tp)
                 {
-                    coverShootPoints[i] = tp;
+                    coverPeekPoints[i] = tp;
                 }
                 else
                 {
@@ -179,10 +179,10 @@ public class TacticalPoint : MonoBehaviour
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
             //save old positions
-            Vector3[] oldPositions = new Vector3[coverShootPoints.Length];
+            Vector3[] oldPositions = new Vector3[coverPeekPoints.Length];
             for (int i = 0; i < oldPositions.Length; i++)
             {
-                oldPositions[i] = coverShootPoints[i].transform.position;
+                oldPositions[i] = coverPeekPoints[i].transform.position;
             }
 
             //rotate parent
@@ -191,8 +191,8 @@ public class TacticalPoint : MonoBehaviour
             //restore old posiitons
             for (int i = 0; i < oldPositions.Length; i++)
             {
-                coverShootPoints[i].transform.position = oldPositions[i];
-                coverShootPoints[i].transform.rotation = Quaternion.identity;
+                coverPeekPoints[i].transform.position = oldPositions[i];
+                coverPeekPoints[i].transform.rotation = Quaternion.identity;
             }
         }
         else
@@ -544,9 +544,9 @@ public class TacticalPoint : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < coverShootPoints.Length; i++)
+                for (int i = 0; i < coverPeekPoints.Length; i++)
                 {
-                    if (coverShootPoints[i].IsPointFull())
+                    if (coverPeekPoints[i].IsPointFull())
                     {
                         return true;
                     }
@@ -644,15 +644,15 @@ public class TacticalPoint : MonoBehaviour
                 //shot paoints are rated 50/50 cover crocuh according to moderate formula
                 //combine  cover points + shoot points 50/50
 
-                for (int j = 0; j < coverShootPoints.Length; j++)
+                for (int j = 0; j < coverPeekPoints.Length; j++)
                 {
-                    threatsRatingCoverShootPoints += RateThreatsModerately(threats, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
-                    friendlyVisibilityRatingCoverShootPoints += CalculateFriendliesVisibilityRating(friendlies, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    threatsRatingCoverShootPoints += RateThreatsModerately(threats, coverPeekPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    friendlyVisibilityRatingCoverShootPoints += CalculateFriendliesVisibilityRating(friendlies, coverPeekPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                 }
-                if (coverShootPoints.Length > 0) //would return nan if divided by 0
+                if (coverPeekPoints.Length > 0) //would return nan if divided by 0
                 {
-                    threatsRatingCoverShootPoints = threatsRatingCoverShootPoints / (coverShootPoints.Length * 1f);
-                    friendlyVisibilityRatingCoverShootPoints = friendlyVisibilityRatingCoverShootPoints / (coverShootPoints.Length * 1f);
+                    threatsRatingCoverShootPoints = threatsRatingCoverShootPoints / (coverPeekPoints.Length * 1f);
+                    friendlyVisibilityRatingCoverShootPoints = friendlyVisibilityRatingCoverShootPoints / (coverPeekPoints.Length * 1f);
                 }
                 
 
@@ -693,16 +693,16 @@ public class TacticalPoint : MonoBehaviour
             if (tacticalPointType == TacticalPointType.CoverPoint)
             {
 
-                for (int j = 0; j < coverShootPoints.Length; j++)
+                for (int j = 0; j < coverPeekPoints.Length; j++)
                 {
-                    threatsRating += RateThreatsAgressively(threats, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
-                    friendlyVisibilityRating += CalculateFriendliesVisibilityRating(friendlies, coverShootPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    threatsRating += RateThreatsAgressively(threats, coverPeekPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
+                    friendlyVisibilityRating += CalculateFriendliesVisibilityRating(friendlies, coverPeekPoints[j].coverRating, crouchedMultiplier, standingMultiplier);
                 }
-                if (coverShootPoints.Length > 0)
+                if (coverPeekPoints.Length > 0)
                 {
                     //Dont divide threatsRating, cause if all of them together have rating 1, its good enough.
                     if (threatsRating > 1) threatsRating = 1;
-                    friendlyVisibilityRating = friendlyVisibilityRating / (coverShootPoints.Length * 1f);
+                    friendlyVisibilityRating = friendlyVisibilityRating / (coverPeekPoints.Length * 1f);
                 }       
             }
             else

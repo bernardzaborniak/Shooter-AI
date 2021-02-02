@@ -149,6 +149,7 @@ namespace BenitosAI
             }
             else
             {
+
                 selectedSoldierVisualiser.SetActive(false);
                 selectedSoldierBlackboard = null;
             }
@@ -354,7 +355,7 @@ namespace BenitosAI
             {
                 if (settings.showCoverPoints) return true;
             }
-            else if (point.tacticalPointType == TacticalPointType.CoverShootPoint)
+            else if (point.tacticalPointType == TacticalPointType.CoverPeekPoint)
             {
                 if (settings.showCoverShootPoints) return true;
             }
@@ -366,10 +367,11 @@ namespace BenitosAI
         {
             // Update UI only if needed
             // -> everytime a soldier is selected or deselected and everytime sensing was updated by the soldier
+            UnityEngine.Profiling.Profiler.BeginSample("UpdateBlackboardUI");
 
 
-            //if deselected soldier
-            if (selectedSoldierBlackboard == null && selectedSoldiersBlackboardLastFrame != null)
+            //if deselected soldier (soldier died will not be active here, cause than the reference to selectedsoldiersblackbard last frame is false too -> so we just delete every frame
+            if (selectedSoldierBlackboard == null)// && selectedSoldiersBlackboardLastFrame != null)
             {
                 aIVisualisationUI.UpdateSensingUIItems(null);
             }
@@ -392,6 +394,8 @@ namespace BenitosAI
                     lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
                 }
             }
+            UnityEngine.Profiling.Profiler.EndSample();
+
         }
 
         public void FrameCameraOnObject(Transform objectToFrameOn)

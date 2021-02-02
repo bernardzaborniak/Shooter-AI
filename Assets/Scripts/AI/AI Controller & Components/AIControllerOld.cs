@@ -249,11 +249,11 @@ namespace BenitosAI
                         nextChangeCoverStanceTime = Time.time + UnityEngine.Random.Range(switchingBetweenCoverHidingAndShootingIntervalMin, switchingBetweenCoverHidingAndShootingIntervalMax);
                         characterController.ChangeCharacterStanceToStandingCombatStance();
                         Debug.Log("usedCoverPost: " + usedTacticalPoint);
-                        int randomNumber = UnityEngine.Random.Range(0, usedTacticalPoint.coverShootPoints.Length);
-                        Debug.Log("Random number: " + usedTacticalPoint.coverShootPoints[randomNumber]);
-                        Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)]: " + usedTacticalPoint.coverShootPoints[randomNumber]);
-                        Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position: " + usedTacticalPoint.coverShootPoints[randomNumber].transform.position);
-                        characterController.MoveTo(usedTacticalPoint.coverShootPoints[randomNumber].transform.position);
+                        int randomNumber = UnityEngine.Random.Range(0, usedTacticalPoint.coverPeekPoints.Length);
+                        Debug.Log("Random number: " + usedTacticalPoint.coverPeekPoints[randomNumber]);
+                        Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)]: " + usedTacticalPoint.coverPeekPoints[randomNumber]);
+                        Debug.Log("usedCoverPost.PeekPositions[UnityEngine.Random.Range(0, usedCoverPost.PeekPositions.Length)].transform.position: " + usedTacticalPoint.coverPeekPoints[randomNumber].transform.position);
+                        characterController.MoveTo(usedTacticalPoint.coverPeekPoints[randomNumber].transform.position);
                     }
                     else
                     {
