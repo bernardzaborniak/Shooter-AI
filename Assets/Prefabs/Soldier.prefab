@@ -885,6 +885,7 @@ MonoBehaviour:
   decisionLayers:
   - name: Positioning Layer
     decisionMethod: 0
+    discardThreshold: 0.15
     decisions:
     - name: 'Run To Middle '
       decision: {fileID: 11400000, guid: 6fcd3f9116695334c94ca9b170dec177, type: 2}
@@ -927,6 +928,7 @@ MonoBehaviour:
       considerationVisualisers: []
   - name: Item Interaction layer
     decisionMethod: 0
+    discardThreshold: 0.15
     decisions:
     - name: 'Hold Weapon In Hand Idle '
       decision: {fileID: 11400000, guid: 2bf66bd181e107e40ba609ae243fefe5, type: 2}
@@ -1091,6 +1093,7 @@ MonoBehaviour:
   sensing: {fileID: 7864116541130220572}
   lastTimeSensingInfoWasUpdated: 0
   lastFrameCountSensingInfoWasUpdated: 0
+  tPCoverPeekInfos: []
   maxEnemyInfosCount: 10
   maxFriendlyInfosCount: 6
   maxTPCoverInfosCount: 8

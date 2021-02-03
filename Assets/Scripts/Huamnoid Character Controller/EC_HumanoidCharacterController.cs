@@ -778,6 +778,11 @@ public class EC_HumanoidCharacterController : EntityComponent
         return aimingController.GetCurrentWeaponAimingErrorAngle(ignoreRecoil);
     }
 
+    public Transform GetCurrentWeaponShootPoint()
+    {
+        return aimingController.GetCurrentWeaponShootPoint();
+    }
+
 
     public bool IsAimingWeapon()
     {

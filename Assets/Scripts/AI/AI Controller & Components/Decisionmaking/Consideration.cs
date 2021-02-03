@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/Consideration/Consideration", fileName = "new Consideration")]
+    [CreateAssetMenu(menuName = "AI/Consideration", fileName = "new Consideration")]
     public class Consideration : ScriptableObject
     {
 

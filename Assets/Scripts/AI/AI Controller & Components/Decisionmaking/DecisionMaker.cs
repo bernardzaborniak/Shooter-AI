@@ -70,6 +70,8 @@ namespace BenitosAI
         }
 
         public DecisionMethod decisionMethod;
+        [Tooltip("When rating a decision, if the score drops below this value -> just discard the decision")]
+        public float discardThreshold;
 
         public DecisionWrapper[] decisions;
 
@@ -93,6 +95,8 @@ namespace BenitosAI
 
         public void Decide() //Decide();
         {
+            UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Decide");
+
             currentDecisionContextsVisualisation.Clear();
 
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
@@ -104,12 +108,12 @@ namespace BenitosAI
             for (int i = 0; i < decisions.Length; i++)
             {
                // Debug.Log("Current Decision: " + decisions[i].decision.name + "--------------------]");
-                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController);
+                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
                 //Debug.Log("decision ocntext size in decision mker: " + decisionContexesToAdd.Length);
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
                     //add weight
-                    decisionContexesToAdd[j].rating *= decisions[i].weigt;
+                    //decisionContexesToAdd[j].rating *= decisions[i].weigt;
                     //add contexes to all current contexes
                     currentDecisionContexts.Add(decisionContexesToAdd[j]);
                     currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
@@ -137,8 +141,8 @@ namespace BenitosAI
             }
 
             currentDecisionContexts.Clear();
-           // Debug.Log("Decide END========================================================================- ");
-
+            // Debug.Log("Decide END========================================================================- ");
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public void StartExecutingDecision(DecisionContext decisionContext)

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/TPointCoverQualityForCurrentSituation", fileName = "TPointCoverQualityForCurrentSituation")]
+    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/TPointCoverQualityForCurrentSituation", fileName = "TPointCoverQualityForCurrentSituation")]
     public class CI_HS_TPointCoverQualityForCurrentSituation : ConsiderationInput
     {
 

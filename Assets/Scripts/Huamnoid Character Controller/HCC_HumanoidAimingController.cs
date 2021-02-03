@@ -660,6 +660,16 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 
     }
 
+    public Transform GetCurrentWeaponShootPoint()
+    {
+        if (currentlySelectedWeapon)
+        {
+            return currentlySelectedWeapon.shootPoint;
+        }
+
+        return null;
+    }
+
     #endregion
 
     #region Debug

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/Distance To Enemy", fileName = "DistanceToEnemy")]
+    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/Distance To Enemy", fileName = "DistanceToEnemy")]
     public class CI_HS_DistanceToEnemy : ConsiderationInput
     {
         //AIController_HumanoidSoldier aiControllerHuman;

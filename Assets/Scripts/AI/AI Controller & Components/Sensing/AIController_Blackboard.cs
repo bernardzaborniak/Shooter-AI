@@ -311,6 +311,11 @@ namespace BenitosAI
             return myEntity.entityTags;
         }
 
+        public Transform GetCurrentUsedGunShootPoint()
+        {
+            return characterController.GetCurrentWeaponShootPoint();
+        }
+
 
     }
 

@@ -34,7 +34,7 @@ namespace BenitosAI
         }
 
 
-        public DecisionContext[] GetRatedDecisionContexts(AIController aiController)
+        public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float weight, float discardThreshold)
         {
             // Create contexes according to number of targets
             DecisionContext[] contexts = decisionContextCreator.GetDecisionContexes(this, aiController);
@@ -42,8 +42,11 @@ namespace BenitosAI
             // Score each context
             for (int i = 0; i < contexts.Length; i++)
             {
+                contexts[i].RateContext(considerations, bonusConsiderations, weight, discardThreshold);
+                //make a seperate method for rating contexes
 
-                float score = 1;
+                //float score = 1;
+                /*float score = weight;
 
                 for (int c = 0; c < considerations.Length; c++)
                 {
@@ -53,6 +56,12 @@ namespace BenitosAI
                     //Debug.Log("score: " + score + " *= " + considerations[c].GetConsiderationRating(contexts[i]));
                     score *= considerations[c].GetConsiderationRating(contexts[i]);
                     //Debug.Log("score: " + score);
+                    if(score< discardThreshold)
+                    {
+                        score = -1;
+                        contexts[i].rating = score;
+                        break;
+                    }
 
                 }
 
@@ -66,7 +75,7 @@ namespace BenitosAI
                 score += score * ((1 - score) * (1 - (1 / considerations.Length)));
                 //Debug.Log("score after makeup: " + score);
 
-                contexts[i].rating = score;
+                contexts[i].rating = score;*/
 
             }
 

@@ -618,11 +618,14 @@ namespace BenitosAI
 
                 if (settings.ShowTPCurrentlyUsedInWorld)
                 {
-                    instantiatedObject = Instantiate(tPCurrentlyUsedInfoVisualiserPrefab, visualisedBlackboardInfoParent);
-                    instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
-                    instantiatedVisualiser.SetUpForCurrentlyUsedTPoint(selectedSoldierBlackboard.GetCurrentlyUsedTacticalPoint());
+                    if (selectedSoldierBlackboard.GetCurrentlyUsedTacticalPoint())
+                    {
+                        instantiatedObject = Instantiate(tPCurrentlyUsedInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForCurrentlyUsedTPoint(selectedSoldierBlackboard.GetCurrentlyUsedTacticalPoint());
 
-                    visualisersInUse.Add(instantiatedVisualiser);
+                        visualisersInUse.Add(instantiatedVisualiser);
+                    }                 
                 }
             }
             UnityEngine.Profiling.Profiler.EndSample();

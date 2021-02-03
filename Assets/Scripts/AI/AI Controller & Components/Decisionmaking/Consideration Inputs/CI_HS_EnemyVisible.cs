@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/Enemy Visible", fileName = "Enemy Visible")]
+    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/Enemy Visible", fileName = "Enemy Visible")]
     public class CI_HS_EnemyVisible : ConsiderationInput
     {
         [Tooltip("If the information about the enemy entity is older than x seconds, ignore it")]

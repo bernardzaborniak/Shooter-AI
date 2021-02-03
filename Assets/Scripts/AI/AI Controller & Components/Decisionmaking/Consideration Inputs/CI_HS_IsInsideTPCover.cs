@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration/Input/Humanoid/IsInsideTPCover", fileName = "Is Inside TP Cover")]
+    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/IsInsideTPCover", fileName = "Is Inside TP Cover")]
 
     public class CI_HS_IsInsideTPCover : ConsiderationInput
     {
