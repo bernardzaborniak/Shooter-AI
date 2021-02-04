@@ -180,7 +180,12 @@ namespace BenitosAI
             Dictionary<int, SensedEntityInfo> currentEntityInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
             for (int i = 0; i < infosToUpdate.Length; i++)
             {
-                currentEntityInfosDict.Add(infosToUpdate[i].entity.GetHashCode(), infosToUpdate[i]);
+                if (infosToUpdate[i].IsAlive())
+                {
+                    //update its distance - the ai is "predicting" it
+                    sensing.UpdateEntityInfoDistance(ref infosToUpdate[i]);
+                    currentEntityInfosDict.Add(infosToUpdate[i].entity.GetHashCode(), infosToUpdate[i]);
+                }
             }
 
             //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
@@ -216,12 +221,6 @@ namespace BenitosAI
             for (int i = 0; i < newInfosArraySize; i++)
             {
                 infosToUpdate[i] = newInfosSortedArray[i];
-
-                //if we still have old info, not updated this frame, "predict" its distance
-                if (infosToUpdate[i].frameCountWhenLastSeen != Time.frameCount)
-                {
-                    sensing.UpdateEntityInfoDistance(ref infosToUpdate[i]);
-                }
             }
 
         }
@@ -232,6 +231,7 @@ namespace BenitosAI
             Dictionary<int, SensedTacticalPointInfo> currentTPInfosDict = new Dictionary<int, SensedTacticalPointInfo>(); //the entity hashSets are the keys
             for (int i = 0; i < infosToUpdate.Length; i++)
             {
+                sensing.UpdateTPInfoDistance(ref infosToUpdate[i]);
                 currentTPInfosDict.Add(infosToUpdate[i].tacticalPoint.GetHashCode(), infosToUpdate[i]);
             }
 
@@ -268,12 +268,6 @@ namespace BenitosAI
             for (int i = 0; i < newTPInfoArraySize; i++)
             {
                 infosToUpdate[i] = newTPInfosSortedArray[i];
-
-                //if we still have old info, not updated this frame, "predict" its distance
-                if (infosToUpdate[i].frameCountWhenLastSeen != Time.frameCount)
-                {
-                    sensing.UpdateTPInfoDistance(ref infosToUpdate[i]);
-                }
             }
 
         }
