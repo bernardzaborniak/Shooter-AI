@@ -76,7 +76,7 @@ namespace BenitosAI
         public DecisionWrapper[] decisions;
 
        
-        DecisionContext currentDecidedDecisionContext;
+        //DecisionContext currentDecidedDecisionContext;
         AIState currentState;
         AIController aiController;
        
@@ -85,7 +85,8 @@ namespace BenitosAI
         [Space(10)]
         public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
         [Space(5)]
-        public DecisionContextVisualiser lastSelectedDecisionContext;
+        public DecisionContextVisualiser lastSelectedDecisionContextVisualiser;
+        public DecisionContext lastSelectedDecisionContext = new DecisionContext();
 
 
         public void SetUpDecisionLayer(AIController aiController)
@@ -140,10 +141,12 @@ namespace BenitosAI
             // the check here needs to be different - how do we check if a decision context is the same? -> check if the assigned decsision and targets are all the same? -
             // or check if their states are the same - the states are initialised by decisions at runtime or at start?- how are the states parameters set?
 
-            if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
+            // TODO coulsd it be that because of pooling currentDecidedDecisionContextis already used by somebody else?
+            //if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
+            if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContext))
             {
-                currentDecidedDecisionContext = decisionContext;
-                lastSelectedDecisionContext = new DecisionContextVisualiser(currentDecidedDecisionContext);
+                //currentDecidedDecisionContext = decisionContext;
+                //lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(currentDecidedDecisionContext);
 
                 if (currentState != null)
                 {
@@ -151,9 +154,26 @@ namespace BenitosAI
                     aiController.entityTags.RemoveEntityActionTags(currentState.GetActionTagsToRemoveOnStateExit());
                 }
 
-                currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
+                //currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
+                currentState = decisionContext.decision.CreateState(aiController, decisionContext);
                 currentState.OnStateEnter();
+                Debug.Log("on state Enter");
+                if (lastSelectedDecisionContext.decision != null)
+                {
+                    Debug.Log("previous state: " + lastSelectedDecisionContext.decision.name);
+                }
+                Debug.Log("new state: " + decisionContext.decision.name);
+
                 aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
+
+                //lastSelectedDecisionContext = Copy decisionContext;
+                lastSelectedDecisionContext.SetUpContext(decisionContext);
+                lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(decisionContext);
+
+            }
+            else
+            {
+                //Debug.Log("new decision context: " + decisionContext.decision.name + " was the same as last:" + lastSelectedDecisionContext.decision.name);
             }
 
         }

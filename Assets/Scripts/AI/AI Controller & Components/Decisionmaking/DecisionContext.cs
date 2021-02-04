@@ -30,6 +30,16 @@ namespace BenitosAI
             rating = objectToCopyValuesFrom.rating;
         }
 
+        public void SetUpContext(DecisionContext objectToCopyValuesFrom)
+        {
+            this.decision = objectToCopyValuesFrom.decision;
+            this.aiController = objectToCopyValuesFrom.aiController;
+            this.targetEntity = objectToCopyValuesFrom.targetEntity;
+            this.targetTacticalPoint = objectToCopyValuesFrom.targetTacticalPoint;
+
+            this.rating = objectToCopyValuesFrom.rating;
+        }
+
         public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetEntity, SensedTacticalPointInfo targetTacticalPoint)
         {
             this.decision = decision;
@@ -56,6 +66,7 @@ namespace BenitosAI
 
             return false;
         }
+
 
         public void RateContext(Consideration[] considerations, Decision.BonusConsiderationWrapper[] bonusConsiderations, float weight, float discardThreshold)
         {
