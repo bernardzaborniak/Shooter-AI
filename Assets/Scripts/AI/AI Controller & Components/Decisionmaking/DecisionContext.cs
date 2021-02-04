@@ -59,32 +59,18 @@ namespace BenitosAI
 
         public void RateContext(Consideration[] considerations, Decision.BonusConsiderationWrapper[] bonusConsiderations, float weight, float discardThreshold)
         {
-            //DecisionContext[] contexts = decisionContextCreator.GetDecisionContexes(this, aiController);
-
-            // Score each context
-            //for (int i = 0; i < contexts.Length; i++)
-            //{
-                //make a seperate method for rating contexes
-
-                //float score = 1;
                 float score = weight;
 
                 for (int c = 0; c < considerations.Length; c++)
                 {
-                    //Debug.Log("new consideration being rated -----------------------------------" + considerations[c].name);
-
-
-                    //Debug.Log("score: " + score + " *= " + considerations[c].GetConsiderationRating(contexts[i]));
                     score *= considerations[c].GetConsiderationRating(this);
-                    //Debug.Log("score: " + score);
+
                     if (score < discardThreshold)
                     {
-                    //Debug.Log("Discard decision Context");
                         score = -1;
                         rating = score;
                         return ;
                     }
-
                 }
 
                 for (int c = 0; c < bonusConsiderations.Length; c++)
@@ -92,17 +78,10 @@ namespace BenitosAI
                     score += bonusConsiderations[c].consideration.GetConsiderationRating(this) * bonusConsiderations[c].weight;
                 }
 
-                //Debug.Log("score before makeup: " + score);
                 //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
                 score += score * ((1 - score) * (1 - (1 / considerations.Length)));
-                //Debug.Log("score after makeup: " + score);
 
                 rating = score;
-
-//}
-
-
-           // return contexts;
         }
     }
 }

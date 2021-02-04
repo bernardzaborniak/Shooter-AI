@@ -19,7 +19,7 @@ namespace BenitosAI
             }   
         }
 
-        public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
+        public override DecisionContext[] GetDecisionContexts(Decision decision, AIController aiController)
         {
             AIController_Blackboard sensingInfo = ((AIController_HumanoidSoldier)aiController).blackboard;
 

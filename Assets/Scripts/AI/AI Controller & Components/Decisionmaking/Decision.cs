@@ -37,46 +37,12 @@ namespace BenitosAI
         public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float weight, float discardThreshold)
         {
             // Create contexes according to number of targets
-            DecisionContext[] contexts = decisionContextCreator.GetDecisionContexes(this, aiController);
+            DecisionContext[] contexts = decisionContextCreator.GetDecisionContexts(this, aiController);
 
             // Score each context
             for (int i = 0; i < contexts.Length; i++)
             {
                 contexts[i].RateContext(considerations, bonusConsiderations, weight, discardThreshold);
-                //make a seperate method for rating contexes
-
-                //float score = 1;
-                /*float score = weight;
-
-                for (int c = 0; c < considerations.Length; c++)
-                {
-                    //Debug.Log("new consideration being rated -----------------------------------" + considerations[c].name);
-
-
-                    //Debug.Log("score: " + score + " *= " + considerations[c].GetConsiderationRating(contexts[i]));
-                    score *= considerations[c].GetConsiderationRating(contexts[i]);
-                    //Debug.Log("score: " + score);
-                    if(score< discardThreshold)
-                    {
-                        score = -1;
-                        contexts[i].rating = score;
-                        break;
-                    }
-
-                }
-
-                for (int c = 0; c < bonusConsiderations.Length; c++)
-                {
-                    score += bonusConsiderations[c].consideration.GetConsiderationRating(contexts[i]) * bonusConsiderations[c].weight;
-                }
-
-                //Debug.Log("score before makeup: " + score);
-                //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
-                score += score * ((1 - score) * (1 - (1 / considerations.Length)));
-                //Debug.Log("score after makeup: " + score);
-
-                contexts[i].rating = score;*/
-
             }
 
 

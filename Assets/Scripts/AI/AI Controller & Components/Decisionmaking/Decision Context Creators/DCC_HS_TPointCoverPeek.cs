@@ -22,7 +22,7 @@ namespace BenitosAI
             }
         }
 
-        public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
+        public override DecisionContext[] GetDecisionContexts(Decision decision, AIController aiController)
         {
             coverShootPoints = ((AIController_HumanoidSoldier)aiController).blackboard.tPCoverPeekInfos;
 

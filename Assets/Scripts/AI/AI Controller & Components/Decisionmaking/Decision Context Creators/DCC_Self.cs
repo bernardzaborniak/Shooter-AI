@@ -13,7 +13,7 @@ namespace BenitosAI
             myselfContext[0] = new DecisionContext();
         }
 
-        public override DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
+        public override DecisionContext[] GetDecisionContexts(Decision decision, AIController aiController)
         {
             myselfContext[0].SetUpContext(decision, aiController, null, null);
             return myselfContext;

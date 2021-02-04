@@ -107,33 +107,23 @@ namespace BenitosAI
 
             for (int i = 0; i < decisions.Length; i++)
             {
-               // Debug.Log("Current Decision: " + decisions[i].decision.name + "--------------------]");
                 DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
-                //Debug.Log("decision ocntext size in decision mker: " + decisionContexesToAdd.Length);
+
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
-                    //add weight
-                    //decisionContexesToAdd[j].rating *= decisions[i].weigt;
                     //add contexes to all current contexes
                     currentDecisionContexts.Add(decisionContexesToAdd[j]);
                     currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
 
                     currentRating = decisionContexesToAdd[j].rating;
-                    //Debug.Log("current Decision Context: " + decisionContexesToAdd[j].decision + " rating: " + currentRating);
                     if (currentRating > bestRatingSoFar)
                     {
-                       // Debug.Log("rating was higher than best rating so far, which was: " + bestRatingSoFar);
-
                         bestRatingSoFar = currentRating;
-                        //bestRatedDecisionContext = decisionContexesToAdd[j];
                         //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
                         bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);
-                        //Debug.Log("-> set new - best rated Decision context: " + bestRatedDecisionContext.decision);
                     }
                 }
-               // Debug.Log("Current Decision END: " + decisions[i].decision.name + "--------------------]");
             }
-            //Debug.Log("best rated Decision context: " + bestRatedDecisionContext.decision);
 
             if(bestRatedDecisionContext != null)
             {
@@ -150,9 +140,6 @@ namespace BenitosAI
             // the check here needs to be different - how do we check if a decision context is the same? -> check if the assigned decsision and targets are all the same? -
             // or check if their states are the same - the states are initialised by decisions at runtime or at start?- how are the states parameters set?
 
-            //TODO Rethink
-
-            //if (decisionContext != currentDecidedDecisionContext)
             if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
             {
                 currentDecidedDecisionContext = decisionContext;
@@ -167,12 +154,6 @@ namespace BenitosAI
                 currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
                 currentState.OnStateEnter();
                 aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
-
-                /*if (currentDecidedDecisionContext.decision.correspondingAIState == AIStateEnum.TestState)
-                {
-                    currentState = new St_HS_MovingToZeroPoint();
-                    currentState.OnStateEnter();
-                }*/
             }
 
         }

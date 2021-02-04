@@ -15,7 +15,7 @@ namespace BenitosAI
 
         public DecisionContextTargetType decisionContextTargetType;*/
 
-        public virtual DecisionContext[] GetDecisionContexes(Decision decision, AIController aiController)
+        public virtual DecisionContext[] GetDecisionContexts(Decision decision, AIController aiController)
         {
             return null;
         }
