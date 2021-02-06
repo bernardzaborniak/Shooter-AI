@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-   // [System.Serializable]
     //If memory is enabled ,info about used decisionContexts is saved in this wrapper class
     public class DecisionMemoryItem
     {
@@ -16,14 +15,11 @@ namespace BenitosAI
         public AIController aiController; //who s asking?
 
         // Optional
-        //public SensedEntityInfo targetEntity; //Who is the target of my action
         public GameEntity targetEntity; //Who is the target of my action
-        //public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
         public TacticalPoint targetTacticalPoint; //Who is the target of my action
 
         // --------------Timing----------------
         public float timeWhenDecided;
-        //public int cycles
 
 
         [System.Serializable]
@@ -77,37 +73,29 @@ namespace BenitosAI
         public List<DecisionMemoryItem> decisionMemoryItems = new List<DecisionMemoryItem>();
     }
 
-    //[System.Serializable]
-    //This class is a bit dirty to ensure that the decisionmaker works performant without it too
     public class DecisionMakerMemoryCycle
     {
         public int frameCountWhenCycleDecided;
         public float timeWhenCycleDecided;
 
-        //public List<DecisionContextMemoryItem[]> decisionMemoryLayers; //= new List<DecisionContextMemoryItem[]>();
+        
+
         public DecisionMemoryLayer[] decisionMemoryLayers;
 
         public DecisionMakerMemoryCycle(int numberOfDecisionLayers)
         {
-            Debug.Log("Set up memoryCacly");
 
-                frameCountWhenCycleDecided = Time.frameCount;
-                timeWhenCycleDecided = Time.time;
+            frameCountWhenCycleDecided = Time.frameCount;
+            timeWhenCycleDecided = Time.time;
 
-            //decisionMemoryLayers = new List<DecisionMemoryItem[]>();
             decisionMemoryLayers = new DecisionMemoryLayer[numberOfDecisionLayers];
             for (int i = 0; i < decisionMemoryLayers.Length; i++)
             {
                 decisionMemoryLayers[i] = new DecisionMemoryLayer();
             }
-
-
-
         }
-
-
-        //public  cycleItems;
     }
+
 
     // Holds memory for all decision makers used 
     public class DecisionMakerMemory : MonoBehaviour
@@ -120,7 +108,6 @@ namespace BenitosAI
         DecisionMakerMemoryCycle currentMemoryCycle; 
         DecisionMakerMemoryCycle previousMemoryCycle; 
 
-        //I use a kind of 2 dimensional list instead of a dicitonary to allow memory sorted by rating
         Queue<DecisionMakerMemoryCycle> memoryCycles = new Queue<DecisionMakerMemoryCycle>();
 
 
@@ -184,7 +171,7 @@ namespace BenitosAI
 
                 memoryCycles.Enqueue(currentMemoryCycle);
 
-                //cut the queue
+                //cut the queue if too long
                 while (memoryCycles.Count > memoryDepth)
                 {
                     memoryCycles.Dequeue();
@@ -192,55 +179,10 @@ namespace BenitosAI
             }
         }
 
-        /* public void OnDecisionMakerDecided(int decisionLayer, List<DecisionContext> contextsDecidedUpon)
-         {
-             Debug.Log("contexes before sorting:-----------");
-             for (int i = 0; i < contextsDecidedUpon.Count; i++)
-             {
-                 Debug.Log("i: " + i + " " + contextsDecidedUpon[i].decision.name + " rating: " + contextsDecidedUpon[i].rating);
-             }
-
-             //sort contextsDecidedUpon according to rating-----------
-             contextsDecidedUpon.Sort((p1, p2) => p1.rating.CompareTo(p2.rating));
-             contextsDecidedUpon.Reverse();
-
-             //Debug.Log("OnDecisionMakerDecided: decisionLayer: " + decisionLayer);
-             //instantiate new cycle item if needed
-             if (Time.frameCount != currentMemoryCycle.frameCountWhenCycleDecided)
-             {
-                 currentMemoryCycle = new DecisionMakerCycleMemory();
-
-                 memoryItems.Enqueue(currentMemoryCycle);
-
-                 //cut the queue
-                 while(memoryItems.Count > memoryDepth)
-                 {
-                     memoryItems.Dequeue();
-                 }
-             }
-
-             currentMemoryCycle.cycleItems.Insert(decisionLayer, new DecisionContextMemoryItem[contextsDecidedUpon.Count]);
-             //add to the current cycle
-             Debug.Log("contextsDecidedUpon----------------------------------");
-             for (int i = 0; i < contextsDecidedUpon.Count; i++)
-             {
-                 Debug.Log("i: " + i + " " + contextsDecidedUpon[i].decision.name + " rating: "  + contextsDecidedUpon[i].rating);
-                 currentMemoryCycle.cycleItems[decisionLayer][i] = new DecisionContextMemoryItem(contextsDecidedUpon[i]);
-             }
-
-
-             //visualisation only for debug purposes
-            // memoryVisualisation = new DecisionMakerCycleMemory[memoryItems.Count];
-             //memoryItems.CopyTo(memoryVisualisation, 0);
-             //System.Array.Reverse(memoryVisualisation);
-         }*/
-
-
-        //used by visualisation
-        public DecisionMakerMemoryCycle GetCurrentDecisionMakerMemoryCycle()
-        {
-            return currentMemoryCycle;
-        }
+       public DecisionMemoryItem GetCurrentlySelectedItem(int decisionLayer)
+       {
+            return currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem;
+       }
 
     }
 

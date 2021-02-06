@@ -342,10 +342,20 @@ namespace BenitosAI
         void UpdateTPointVisualisersShown(bool inSceneView)
         {
             #region Prepare Variables
+            Vector3 camPos = Vector3.zero;
+            Quaternion camRot = Quaternion.identity;
+            Vector3 camForward = Vector3.zero;
 
-            Vector3 camPos = cameraController.transform.position;
-            Quaternion camRot = cameraController.transform.rotation;
-            Vector3 camForward = cameraController.transform.forward;
+            try
+            {
+                 camPos = cameraController.transform.position;
+                 camRot = cameraController.transform.rotation;
+                 camForward = cameraController.transform.forward;
+            }catch(Exception e)
+            {
+                //will cause exceptions in prefab edit mode
+            }
+           
 
 
 #if UNITY_EDITOR
@@ -576,13 +586,9 @@ namespace BenitosAI
                         //-> a not so elegant way to get this object -> its for debug only anyway
                         DecisionMakerMemory memory = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).memory;
 
-                        DecisionMakerMemoryCycle currentCycle = memory.GetCurrentDecisionMakerMemoryCycle();
-
-                       // Debug.Log("selected decision 1: " + currentCycle.decisionMemoryLayers[0].selectedItem.decision);
-                        //Debug.Log("selected decision 1: " + currentCycle.decisionMemoryLayers[1].selectedItem.decision);
                         try
                         {
-                            visualiser.UpdateVisualiser(cameraController.transform.forward, currentCycle.decisionMemoryLayers[0].selectedItem.decision.name, currentCycle.decisionMemoryLayers[0].selectedItem.timeWhenDecided, currentCycle.decisionMemoryLayers[1].selectedItem.decision.name, currentCycle.decisionMemoryLayers[1].selectedItem.timeWhenDecided);
+                            visualiser.UpdateVisualiser(cameraController.transform.forward, memory.GetCurrentlySelectedItem(0), memory.GetCurrentlySelectedItem(1));
                         }catch(Exception e)
                         {
                             //I do this, cause it sometimes causes an index out of range exception if memory wasnt updated yet?

@@ -3,65 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-
-public class AI_Vis_SelectedDecisionsVisualiser : MonoBehaviour
+namespace BenitosAI
 {
-    public Transform objectToAlignToCamera;
 
-    public TMP_Text tmp_decision1;
-    public TMP_Text tmp_timeSinceSelectedDecision1;
-
-    //float timeWhenDecision1Selected;
-
-    public TMP_Text tmp_decision2;
-    public TMP_Text tmp_timeSinceSelectedDecision2;
-
-    //float timeWhenDecision2Selected;
-
-
-    public void UpdateVisualiser(Vector3 cameraForward, string decisionLayer1Name, float decisionLayer1SelectedTime, string decisionLayer2Name, float decisionLayer2SelectedTime)
+    public class AI_Vis_SelectedDecisionsVisualiser : MonoBehaviour
     {
-        objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
+        public Transform objectToAlignToCamera;
+        
+        [Space(5)]
+        public TMP_Text tmp_decision1;
+        public TMP_Text tmp_timeSinceSelectedDecision1;
+        public TMP_Text tmp_decision1Rating;
 
-        tmp_decision1.text = decisionLayer1Name;
-        tmp_timeSinceSelectedDecision1.text = (Time.time - decisionLayer1SelectedTime).ToString("F2");
+        [Space(5)]
+        public TMP_Text tmp_decision2;
+        public TMP_Text tmp_timeSinceSelectedDecision2;
+        public TMP_Text tmp_decision2Rating;
 
-        tmp_decision2.text = decisionLayer2Name;
-        tmp_timeSinceSelectedDecision2.text = (Time.time - decisionLayer2SelectedTime).ToString("F2");
 
-    }
-
-    /*public void UpdateVisualiser(Vector3 cameraForward)
-    {
-
-        tmp_timeSinceSelectedDecision1.text = (Time.time - timeWhenDecision1Selected).ToString("F2");
-        tmp_timeSinceSelectedDecision2.text = (Time.frameCount - timeWhenDecision2Selected).ToString("F2");
-
-        //objectToAlignToCamera.rotation = Quaternion.LookRotation(-(cameraPosition - objectToAlignToCamera.position));
-        objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
-    }
-
-    public void SetUpForDecisionSelected(BenitosAI.DecisionContext decisionContext)
-    {
-        //tmp_type.gameObject.SetActive(true);
-       /* if (entityInfo.IsAlive())
+        public void UpdateVisualiser(Vector3 cameraForward, DecisionMemoryItem selectedDecision1, DecisionMemoryItem selectedDecision2)
         {
-            tmp_type.text = "Enemy";
-            tmp_name.text = entityInfo.entity.name + " " + entityInfo.entity.GetHashCode();
+            objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
+
+            tmp_decision1.text = selectedDecision1.decision.name;
+            tmp_timeSinceSelectedDecision1.text = (Time.time - selectedDecision1.timeWhenDecided).ToString("F2");
+            tmp_decision1Rating.text = selectedDecision1.rating.ToString("F2");
+
+            tmp_decision2.text = selectedDecision2.decision.name;
+            tmp_timeSinceSelectedDecision2.text = (Time.time - selectedDecision2.timeWhenDecided).ToString("F2");
+            tmp_decision2Rating.text = selectedDecision2.rating.ToString("F2");
         }
-        else
-        {
-            tmp_type.text = "Enemy";
-            tmp_name.text = "He Dead";
-        }
-
-        tmp_distance.text = entityInfo.lastDistanceMeasured.ToString("F1");
-
-        timeWhenLastSeen = entityInfo.timeWhenLastSeen;
-        frameCountWhenLastSeen = entityInfo.frameCountWhenLastSeen;
-
-        transform.position = entityInfo.GetEntityPosition();*/
-
-
-   // }
+    }
 }
+

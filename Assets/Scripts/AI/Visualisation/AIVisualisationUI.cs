@@ -13,7 +13,7 @@ namespace BenitosAI
 
         public AIVisualisationManager manager;
 
-        [Header("Tactical Points Options")]
+        [Header("Show in World Space Options")]
         public ToogleableButton showOpenFieldPointsButton;
         public ToogleableButton showCoverPointsButton;
         public ToogleableButton showCoverShootPointsButton;
@@ -23,6 +23,8 @@ namespace BenitosAI
         [Space(5)]
         public ToogleableButton showCoverQualityRatingButton;
         public ToogleableButton showCoverQualityRatingNumbersButton;
+        [Space(5)]
+        public ToogleableButton showSelectedDecisionsButton;
 
         [Header("Selected Soldier Info")]
         public GameObject soldierSelectionUI;
@@ -79,6 +81,9 @@ namespace BenitosAI
             showCoverQualityRatingButton.SetActiveExternally(manager.settings.showCoverQualityRating);
             showCoverQualityRatingNumbersButton.SetActiveExternally(manager.settings.showCoverQualityRatingNumbers);
 
+            showSelectedDecisionsButton.SetActiveExternally(manager.settings.showSelectedDecisionsInWorldSpace);
+
+
             if (manager.currentSelectedSoldier)
             {
                 tmp_EntityName.text = manager.currentSelectedSoldier.name + " " + manager.currentSelectedSoldier.GetHashCode();
@@ -124,6 +129,11 @@ namespace BenitosAI
         public void OnShowCoverQualityRatingNumbersButtonClicked(ToogleableButton button)
         {
             manager.settings.showCoverQualityRatingNumbers = button.active;
+        }
+
+        public void OnShowSelectedDecisionsButtonClicked(ToogleableButton button)
+        {
+            manager.settings.showSelectedDecisionsInWorldSpace = button.active;
         }
 
         public void OnHideSoldierSelectionInfoButtonClicked(ToogleableButton button)
