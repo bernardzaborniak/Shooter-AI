@@ -32,6 +32,9 @@ namespace BenitosAI
             [ConditionalHide("showCoverQualityRating")]
             public bool showCoverQualityRatingNumbers;
 
+            public bool showSelectedDecisionsInWorldSpace;
+
+
             [Header("Visualising Sensing/Blackboard Information")]
             [SerializeField] bool showEnemiesInWorld;
             public bool ShowEnemiesInWorld
@@ -160,13 +163,7 @@ namespace BenitosAI
 
 
         [Header("For Visualising Sensing/Blackboard Information in World Space")]
-        /*public Transform showEnemiesInWorldBox;
-        public Transform showFriendliesInWorldBox;
-        public Transform showTPCoverInWorldBox;
-        public Transform showTPOpenFieldInWorldBox;
-        public Transform showTPCoverPeekInWorldBox;
-        public Transform showTPCurrentlyUsedInWorldBox;*/
-        public Transform visualisedBlackboardInfoParent;
+        [SerializeField] Transform visualisedBlackboardInfoParent;
 
         [SerializeField] GameObject enemyInfoVisualiserPrefab;
         [SerializeField] GameObject friendlyInfoVisualiserPrefab;
@@ -175,17 +172,26 @@ namespace BenitosAI
         [SerializeField] GameObject tPCoverPeekInfoVisualiserPrefab;
         [SerializeField] GameObject tPCurrentlyUsedInfoVisualiserPrefab;
 
-        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> visualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
+        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> blackboardInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
 
-        /*HashSet<AI_Vis_SensedBlackboardInfoVisualiser> enemyInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
-        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> friendlyInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
-        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPCoverInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
-        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPOpenFieldInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
-        HashSet<AI_Vis_SensedBlackboardInfoVisualiser> tPCoverPeekInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
-        AI_Vis_SensedBlackboardInfoVisualiser tPCurrentlyUsedInfoVisualiserInUse;*/
+        [Header("For Visualising Selected Decisions of Entities in World Space")]
+        //Thoose are pooled
+        [SerializeField] Transform selectedDecisionsVisualiserParent;
+        [SerializeField] GameObject selectedDecisionsVisualiserPrefab;
+        //they are being updated every frame? - here accurace is pretty inmportant
+        //[SerializeField] float updateWorldSpaceDecisionVisualisersInterval;
+        //float nextUpdateWorldSpaceDecisionVisualisersTime;
+        [SerializeField] int decidedDecisionsVisualisersPoolSize = 30;
+        [SerializeField] LayerMask decidedDecisionsVisualisersEntityScanLayerMask;
+        [SerializeField] float decidedDecisionsVisualisersEntityScanRadius;
+        //every frame all of the visualisers are deactivated and added to pool, than we scan for entities with physics, than they are taken from pools and activated
+        Queue<AI_Vis_SelectedDecisionsVisualiser> decidedDecisionsVisualisersPool = new Queue<AI_Vis_SelectedDecisionsVisualiser>();
+        HashSet<AI_Vis_SelectedDecisionsVisualiser> decidedDecisionsVisualisersInUse = new HashSet<AI_Vis_SelectedDecisionsVisualiser>();
 
 
-        //AI_Vis_SensedBlackboardInfoVisualiser
+
+
+
 
         #region Variables Cached to reduce garbage
 
@@ -220,6 +226,17 @@ namespace BenitosAI
 
             // Square Distances for optimisation purposes.
             ratingRingCullDistanceSquared = ratingRingCullDistance * ratingRingCullDistance;
+
+            //Set up the decided Decision Visualisers Pool
+            if (Application.isPlaying)
+            {
+                for (int i = 0; i < decidedDecisionsVisualisersPoolSize; i++)
+                {
+                    GameObject obj = Instantiate(selectedDecisionsVisualiserPrefab, selectedDecisionsVisualiserParent);
+                    obj.SetActive(false);
+                    decidedDecisionsVisualisersPool.Enqueue(obj.GetComponent<AI_Vis_SelectedDecisionsVisualiser>());
+                }
+            }
         }
 
         void Update()
@@ -283,7 +300,7 @@ namespace BenitosAI
             #endregion
 
 
-            // Update is called only in Play Mode.
+            // Update TPoints is called only in Play Mode.
             if (!lockTPVisualisers)
             {
                 if (Application.isPlaying)
@@ -293,6 +310,11 @@ namespace BenitosAI
                         UpdateTPointVisualisersShown(false);
                     }
                 }
+            }
+
+            if (Application.isPlaying)
+            {
+                UpdateSelectedDecisionsVisualisers();
             }
 
         }
@@ -524,11 +546,60 @@ namespace BenitosAI
 
         }
 
+        void UpdateSelectedDecisionsVisualisers()
+        {
+            //clean up
+            foreach (AI_Vis_SelectedDecisionsVisualiser visualiser in decidedDecisionsVisualisersInUse)
+            {
+                visualiser.gameObject.SetActive(false);
+                decidedDecisionsVisualisersPool.Enqueue(visualiser);
+            }
+
+            decidedDecisionsVisualisersInUse.Clear();
+
+            //if showing enabled, enable them again with new settings, break up if queue limit reached
+            if (settings.showSelectedDecisionsInWorldSpace)
+            {
+                //Scan for entities
+                Collider[] gameEntitiesInArea = Physics.OverlapSphere(cameraController.transform.position, decidedDecisionsVisualisersEntityScanRadius, decidedDecisionsVisualisersEntityScanLayerMask);
+
+                for (int i = 0; i < gameEntitiesInArea.Length; i++)
+                {
+                    if (decidedDecisionsVisualisersPool.Count > 0)
+                    {
+                        AI_Vis_SelectedDecisionsVisualiser visualiser = decidedDecisionsVisualisersPool.Dequeue();
+                        decidedDecisionsVisualisersInUse.Add(visualiser);
+                        visualiser.gameObject.SetActive(true);
+                        visualiser.transform.position = gameEntitiesInArea[i].transform.position;
+
+                        //how does he visualiser get the information form the entity? - need to search for memory object
+                        //-> a not so elegant way to get this object -> its for debug only anyway
+                        DecisionMakerMemory memory = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).memory;
+
+                        DecisionMakerCycleMemory currentCycle = memory.GetCurrentDecisionMakerMemoryCycle();
+                        try
+                        {
+                            visualiser.UpdateVisualiser(cameraController.transform.forward, currentCycle.cycleItems[0][0].decision.name, currentCycle.cycleItems[0][0].timeWhenDecided, currentCycle.cycleItems[1][0].decision.name, currentCycle.cycleItems[1][0].timeWhenDecided);
+                        }catch(Exception e)
+                        {
+                            //I do this, cause it sometimes causes an index out of range exception if memory wasnt updated yet?
+                            Debug.Log("checking memory would give an exception");
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+
+        }
+
         public void AlignBlackboardInfoVisualisersToCamera()
         {
             Vector3 camForward = cameraController.transform.forward;
 
-            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in visualisersInUse)
+            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in blackboardInfoVisualisersInUse)
             {
                 visualiser.UpdateVisualiser(camForward);
             }
@@ -541,11 +612,11 @@ namespace BenitosAI
 
 
             //1. Delete all current
-            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in visualisersInUse)
+            foreach (AI_Vis_SensedBlackboardInfoVisualiser visualiser in blackboardInfoVisualisersInUse)
             {
                 Destroy(visualiser.gameObject);
             }
-            visualisersInUse.Clear();
+            blackboardInfoVisualisersInUse.Clear();
 
 
             //2. Instantiate new ones
@@ -563,7 +634,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForEnemyEntityInfo(selectedSoldierBlackboard.enemyInfos[i]);
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }
                 }
 
@@ -576,7 +647,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForFriendlyEntityInfo(selectedSoldierBlackboard.friendlyInfos[i]);
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }
                 }
 
@@ -588,7 +659,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForTPointCoverInfo(selectedSoldierBlackboard.tPCoverInfos[i]);
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }
                 }
 
@@ -600,7 +671,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForTPointOpenFieldInfo(selectedSoldierBlackboard.tPOpenFieldInfos[i]);
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }
                 }
 
@@ -612,7 +683,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForTPointCoverPeekInfo(selectedSoldierBlackboard.tPCoverPeekInfos[i]);
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }
                 }
 
@@ -624,7 +695,7 @@ namespace BenitosAI
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForCurrentlyUsedTPoint(selectedSoldierBlackboard.GetCurrentlyUsedTacticalPoint());
 
-                        visualisersInUse.Add(instantiatedVisualiser);
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }                 
                 }
             }

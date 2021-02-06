@@ -11,6 +11,8 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
         //public AIComponent[] aIComponents;
         [Tooltip("the current action tags are being set by the states which are currently executed")]
         public EntityTags entityTags;
+        [Tooltip("[optional]if memory is assigned, previous decisions will be saved inside of it -> only for debugging cause of performance impact")]
+        public DecisionMakerMemory memory;
         public DecisionMaker[] decisionLayers;
         [Space(10)]
         public float decisionInterval;
@@ -49,7 +51,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
                 for (int i = 0; i < decisionLayers.Length; i++)
                 {
-                    decisionLayers[i].Decide();
+                    decisionLayers[i].Decide(memory, i);
                 }
             }
         }

@@ -8,17 +8,30 @@ public class AI_Vis_SelectedDecisionsVisualiser : MonoBehaviour
 {
     public Transform objectToAlignToCamera;
 
-    public TMP_Text tmp_timeSinceSelectedDecision1;
     public TMP_Text tmp_decision1;
-    float timeWhenDecision1Selected;
+    public TMP_Text tmp_timeSinceSelectedDecision1;
 
-    public TMP_Text tmp_timeSinceSelectedDecision2;
+    //float timeWhenDecision1Selected;
+
     public TMP_Text tmp_decision2;
-    float timeWhenDecision2Selected;
+    public TMP_Text tmp_timeSinceSelectedDecision2;
+
+    //float timeWhenDecision2Selected;
 
 
+    public void UpdateVisualiser(Vector3 cameraForward, string decisionLayer1Name, float decisionLayer1SelectedTime, string decisionLayer2Name, float decisionLayer2SelectedTime)
+    {
+        objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
 
-    public void UpdateVisualiser(Vector3 cameraForward)
+        tmp_decision1.text = decisionLayer1Name;
+        tmp_timeSinceSelectedDecision1.text = (Time.time - decisionLayer1SelectedTime).ToString("F2");
+
+        tmp_decision2.text = decisionLayer2Name;
+        tmp_timeSinceSelectedDecision2.text = (Time.time - decisionLayer2SelectedTime).ToString("F2");
+
+    }
+
+    /*public void UpdateVisualiser(Vector3 cameraForward)
     {
 
         tmp_timeSinceSelectedDecision1.text = (Time.time - timeWhenDecision1Selected).ToString("F2");
@@ -50,5 +63,5 @@ public class AI_Vis_SelectedDecisionsVisualiser : MonoBehaviour
         transform.position = entityInfo.GetEntityPosition();*/
 
 
-    }
+   // }
 }
