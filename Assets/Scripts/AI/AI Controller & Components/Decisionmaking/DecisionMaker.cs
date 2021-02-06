@@ -119,8 +119,6 @@ namespace BenitosAI
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
                     //add contexes to all current contexes
-                    Debug.Log("adding context to list: " + decisionContexesToAdd[j].decision.name);
-                    //currentDecisionContexts.Add(decisionContexesToAdd[j]);
 
                     if (memory != null)
                     {
@@ -136,33 +134,14 @@ namespace BenitosAI
                         //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
                         bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);  
                     }
-                   /* Debug.Log("going through list after adding context to list ---------");
-                    for (int x = 0; x < currentDecisionContexts.Count; x++)
-                    {
-                        Debug.Log("i: " + x + " " + currentDecisionContexts[x].decision.name + " rating: " + currentDecisionContexts[x].rating);
-                    }*/
                 }
             }
 
             if(bestRatedDecisionContext != null)
             {
-               
-
                 StartExecutingDecision(bestRatedDecisionContext);
             }
 
-            /*if(memory != null)
-            {
-                Debug.Log("going through list before sending to memory: ---------");
-                for (int i = 0; i < currentDecisionContexts.Count; i++)
-                {
-                    Debug.Log("i: " + i + " " + currentDecisionContexts[i].decision.name + " rating: " + currentDecisionContexts[i].rating);
-                }
-
-                memory.OnDecisionMakerDecided(decisionMakerLayer, currentDecisionContexts);
-            }*/
-
-            //currentDecisionContexts.Clear();
             // Debug.Log("Decide END========================================================================- ");
             UnityEngine.Profiling.Profiler.EndSample();
         }

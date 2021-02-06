@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform shootPoint;
 
+    [Tooltip("max is 3")]
+    public int timeSpeedLevel = 3;
+
 
     enum PlayerControllerMode
     {
@@ -24,6 +27,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         ChangeToFlyMode();
+
+        timeSpeedLevel = 3;
 
     }
 
@@ -72,6 +77,32 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 1f;
         }
 
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            timeSpeedLevel =  Mathf.Clamp(timeSpeedLevel-1, 0, 3);
+
+            UpdateTimeScale();
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel + 1, 0, 3);
+
+            UpdateTimeScale();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if(Time.timeScale == 0)
+            {
+                UpdateTimeScale();
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
+        }
+
         #endregion
 
         #region FlyGun
@@ -86,6 +117,28 @@ public class PlayerController : MonoBehaviour
         }
 
         #endregion
+    }
+
+    void UpdateTimeScale()
+    {
+        if (timeSpeedLevel == 0)
+        {
+            Time.timeScale = 0f;
+        }
+        else if (timeSpeedLevel == 1)
+        {
+            Time.timeScale = 0.2f;
+        }
+        else if (timeSpeedLevel == 2)
+        {
+            Time.timeScale = 0.5f;
+
+        }
+        else if (timeSpeedLevel == 3)
+        {
+            Time.timeScale = 1f;
+
+        }
     }
 
     void ChangeToFlyMode()
