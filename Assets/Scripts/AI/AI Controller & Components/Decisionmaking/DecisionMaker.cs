@@ -80,21 +80,27 @@ namespace BenitosAI
         AIState currentState;
         AIController aiController;
        
-        [Space(5)]
-        public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
+        //[Space(5)]
+       // public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
         [Space(10)]
         public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
         [Space(5)]
         public DecisionContextVisualiser lastSelectedDecisionContextVisualiser;
         public DecisionContext lastSelectedDecisionContext = new DecisionContext();
 
+        //only used if memory is used
+        DecisionMakerMemory memory;
+        int decisionMakerLayer;
 
-        public void SetUpDecisionLayer(AIController aiController)
+        public void SetUpDecisionLayer(AIController aiController, DecisionMakerMemory memory, int decisionMakerLayer)
         {
             this.aiController = aiController;
+
+            this.memory = memory;
+            this.decisionMakerLayer = decisionMakerLayer;
         }
 
-        public void Decide(DecisionMakerMemory memory, int decisionMakerLayer) //Decide();
+        public void Decide()  //the parameters are only used if memory is used
         {
             UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Decide");
 
@@ -114,7 +120,13 @@ namespace BenitosAI
                 {
                     //add contexes to all current contexes
                     Debug.Log("adding context to list: " + decisionContexesToAdd[j].decision.name);
-                    currentDecisionContexts.Add(decisionContexesToAdd[j]);
+                    //currentDecisionContexts.Add(decisionContexesToAdd[j]);
+
+                    if (memory != null)
+                    {
+                        //send current context to memory
+                        memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j]);
+                    }
                     currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
 
                     currentRating = decisionContexesToAdd[j].rating;
@@ -122,22 +134,24 @@ namespace BenitosAI
                     {
                         bestRatingSoFar = currentRating;
                         //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
-                        bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);
+                        bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);  
                     }
-                    Debug.Log("going through list after adding context to list ---------");
+                   /* Debug.Log("going through list after adding context to list ---------");
                     for (int x = 0; x < currentDecisionContexts.Count; x++)
                     {
                         Debug.Log("i: " + x + " " + currentDecisionContexts[x].decision.name + " rating: " + currentDecisionContexts[x].rating);
-                    }
+                    }*/
                 }
             }
 
             if(bestRatedDecisionContext != null)
             {
+               
+
                 StartExecutingDecision(bestRatedDecisionContext);
             }
 
-            if(memory != null)
+            /*if(memory != null)
             {
                 Debug.Log("going through list before sending to memory: ---------");
                 for (int i = 0; i < currentDecisionContexts.Count; i++)
@@ -146,9 +160,9 @@ namespace BenitosAI
                 }
 
                 memory.OnDecisionMakerDecided(decisionMakerLayer, currentDecisionContexts);
-            }
+            }*/
 
-            currentDecisionContexts.Clear();
+            //currentDecisionContexts.Clear();
             // Debug.Log("Decide END========================================================================- ");
             UnityEngine.Profiling.Profiler.EndSample();
         }
@@ -162,6 +176,7 @@ namespace BenitosAI
             //if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
             if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContext))
             {
+               
                 //currentDecidedDecisionContext = decisionContext;
                 //lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(currentDecidedDecisionContext);
 
@@ -187,9 +202,20 @@ namespace BenitosAI
                 lastSelectedDecisionContext.SetUpContext(decisionContext);
                 lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(decisionContext);
 
+                if (memory != null)
+                {
+                    //send current context to memory
+                    memory.RememberSelectedContext(decisionMakerLayer, decisionContext);
+                }
+
             }
             else
             {
+                if(memory != null)
+                {
+                    //send current context to memory
+                    memory.RememberSelectedContextSameAsLastCycle(decisionMakerLayer);
+                }
                 //Debug.Log("new decision context: " + decisionContext.decision.name + " was the same as last:" + lastSelectedDecisionContext.decision.name);
             }
 

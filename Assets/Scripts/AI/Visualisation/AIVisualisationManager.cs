@@ -576,10 +576,13 @@ namespace BenitosAI
                         //-> a not so elegant way to get this object -> its for debug only anyway
                         DecisionMakerMemory memory = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).memory;
 
-                        DecisionMakerCycleMemory currentCycle = memory.GetCurrentDecisionMakerMemoryCycle();
+                        DecisionMakerMemoryCycle currentCycle = memory.GetCurrentDecisionMakerMemoryCycle();
+
+                       // Debug.Log("selected decision 1: " + currentCycle.decisionMemoryLayers[0].selectedItem.decision);
+                        //Debug.Log("selected decision 1: " + currentCycle.decisionMemoryLayers[1].selectedItem.decision);
                         try
                         {
-                            visualiser.UpdateVisualiser(cameraController.transform.forward, currentCycle.cycleItems[0][0].decision.name, currentCycle.cycleItems[0][0].timeWhenDecided, currentCycle.cycleItems[1][0].decision.name, currentCycle.cycleItems[1][0].timeWhenDecided);
+                            visualiser.UpdateVisualiser(cameraController.transform.forward, currentCycle.decisionMemoryLayers[0].selectedItem.decision.name, currentCycle.decisionMemoryLayers[0].selectedItem.timeWhenDecided, currentCycle.decisionMemoryLayers[1].selectedItem.decision.name, currentCycle.decisionMemoryLayers[1].selectedItem.timeWhenDecided);
                         }catch(Exception e)
                         {
                             //I do this, cause it sometimes causes an index out of range exception if memory wasnt updated yet?

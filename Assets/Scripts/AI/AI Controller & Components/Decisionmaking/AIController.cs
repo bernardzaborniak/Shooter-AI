@@ -29,7 +29,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
             for (int i = 0; i < decisionLayers.Length; i++)
             {
-                decisionLayers[i].SetUpDecisionLayer(this);
+                decisionLayers[i].SetUpDecisionLayer(this, memory, i);
             }
 
         }
@@ -51,7 +51,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
                 for (int i = 0; i < decisionLayers.Length; i++)
                 {
-                    decisionLayers[i].Decide(memory, i);
+                    decisionLayers[i].Decide();
                 }
             }
         }
