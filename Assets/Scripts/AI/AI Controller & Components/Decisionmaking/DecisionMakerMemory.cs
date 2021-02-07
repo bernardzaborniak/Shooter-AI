@@ -12,6 +12,7 @@ namespace BenitosAI
 
         // Mandatory
         public Decision decision; //what are we trying to do?
+        public float decisionWeight;
         public AIController aiController; //who s asking?
 
         // Optional
@@ -39,29 +40,15 @@ namespace BenitosAI
             }
         }
 
-        public class BonusConsiderationMemory
-        {
-            public string considerationName;
-            public float input;
-            public float rating;
-            public float weight;
 
-            public BonusConsiderationMemory(string considerationName, float input, float rating, float weight)
-            {
-                this.considerationName = considerationName;
-                this.input = input;
-                this.rating = rating;
-                this.weight = weight;
-            }
-        }
 
         public ConsiderationMemory[] considerationsMemory;
-        public BonusConsiderationMemory[] bonusConsiderationsMemory;
 
 
-        public DecisionMemoryItem(DecisionContext context)
+        public DecisionMemoryItem(DecisionContext context, float decisionWeight)
         {
             rating = context.rating;
+            this.decisionWeight = decisionWeight;
             decision = context.decision;
             aiController = context.aiController;
             if (context.targetEntity != null)
@@ -83,20 +70,11 @@ namespace BenitosAI
             {
                 considerationsMemory[i] = new ConsiderationMemory(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
             }
-
-            //Set Up Bonus Considerations
-            Decision.BonusConsiderationWrapper[] bonusConsiderations = context.decision.GetBonusConsiderations();
-            bonusConsiderationsMemory = new BonusConsiderationMemory[bonusConsiderations.Length];
-            for (int i = 0; i < bonusConsiderations.Length; i++)
-            {
-                bonusConsiderationsMemory[i] = new BonusConsiderationMemory(bonusConsiderations[i].consideration.name, bonusConsiderations[i].consideration.GetConsiderationInput(context), bonusConsiderations[i].consideration.GetConsiderationRating(context), bonusConsiderations[i].weight);
-            }
-
         }
 
         public bool IsTheSameAsContext(DecisionContext context)
         {
-            DecisionMemoryItem testItem = new DecisionMemoryItem(context);
+            DecisionMemoryItem testItem = new DecisionMemoryItem(context, 0); //weight is ignored when checking for identity
 
             bool isTheSame = false;
 
@@ -191,13 +169,13 @@ namespace BenitosAI
             currentMemoryCycle = new DecisionMakerMemoryCycle(numberOfDecisionLayers);
         }
 
-        public void RememberContext(int decisionLayer, DecisionContext context)
+        public void RememberContext(int decisionLayer, DecisionContext context, float decisionWeight)
         {
             InstantateNewCycleIfNeeded();
 
             try
             {
-                currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems.Add(new DecisionMemoryItem(context));
+                currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems.Add(new DecisionMemoryItem(context, decisionWeight));
             }
             catch(System.Exception e)
             {

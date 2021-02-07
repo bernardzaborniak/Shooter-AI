@@ -68,7 +68,7 @@ namespace BenitosAI
         }
 
 
-        public void RateContext(Consideration[] considerations, Decision.BonusConsiderationWrapper[] bonusConsiderations, float weight, float discardThreshold)
+        public void RateContext(Consideration[] considerations, float weight, float discardThreshold)
         {
                 float score = weight;
 
@@ -82,11 +82,6 @@ namespace BenitosAI
                         rating = score;
                         return ;
                     }
-                }
-
-                for (int c = 0; c < bonusConsiderations.Length; c++)
-                {
-                    score += bonusConsiderations[c].consideration.GetConsiderationRating(this) * bonusConsiderations[c].weight;
                 }
 
                 //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer

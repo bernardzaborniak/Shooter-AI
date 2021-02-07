@@ -123,7 +123,7 @@ namespace BenitosAI
                     if (memory != null)
                     {
                         //send current context to memory
-                        memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j]);
+                        memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j], decisions[i].weigt);
                     }
                     currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
 

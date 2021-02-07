@@ -10,6 +10,7 @@ namespace BenitosAI
     {
         public TextMeshProUGUI tmp_decisionName;
         public TextMeshProUGUI tmp_rating;
+        public TextMeshProUGUI tmp_weight;
         public TextMeshProUGUI tmp_timeSinceDecided;
         public TextMeshProUGUI tmp_targetName;
         public TextMeshProUGUI tmp_considerationNumber;
@@ -27,13 +28,14 @@ namespace BenitosAI
         public void SetUp(DecisionMemoryItem memoryItem, AIVisualisationManager managerReference, bool selectedDecision = false)
         {
             tmp_decisionName.text = memoryItem.decision.name;
-            if(memoryItem.rating == -1)
+            tmp_weight.text = memoryItem.decisionWeight.ToString("F2");
+            if (memoryItem.rating == -1)
             {
                 tmp_rating.text = "reject";
             }
             else if (selectedDecision)
             {
-                tmp_rating.text = memoryItem.rating.ToString("F2") + " SEL";
+                tmp_rating.text = memoryItem.rating.ToString("F2") + " [S]";
             }
             else
             {
@@ -76,12 +78,6 @@ namespace BenitosAI
                 spawnedConsiderationItem.SetUp(memoryItem.considerationsMemory[i]);
             }
 
-            //Set Up Bonus Considerations
-            for (int i = 0; i < memoryItem.considerationsMemory.Length; i++)
-            {
-                AI_Vis_UI_Consideration spawnedConsiderationItem = Instantiate(considerationPrefab, considerationParent).GetComponent<AI_Vis_UI_Consideration>();
-                spawnedConsiderationItem.SetUp(memoryItem.considerationsMemory[i]);
-            }
 
         }
 
