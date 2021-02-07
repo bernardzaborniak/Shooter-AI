@@ -44,12 +44,6 @@ namespace BenitosAI
             tmp_considerationNumber.text = memoryItem.decision.GetConsiderations().Length.ToString();
 
 
-            //tmp_sensedThingName.text = sensedThingName;
-            //tmp_sensedThingDistance.text = Mathf.Sqrt(sensedThingDistance).ToString("F1");
-            //tmp_sensedThingDistance.text = sensedThingDistance.ToString("F1");
-            //this.timeLastSensed = timeLastSensed;
-            //this.frameCountLastSensed = frameCountLastSensed;
-
             timeWhenDecided = memoryItem.timeWhenDecided;
 
             // Set up for camera framing
@@ -72,6 +66,23 @@ namespace BenitosAI
             }
 
             Update();
+
+
+            //Set Up Considerations:
+
+            for (int i = 0; i < memoryItem.considerationsMemory.Length; i++)
+            {
+                AI_Vis_UI_Consideration spawnedConsiderationItem = Instantiate(considerationPrefab, considerationParent).GetComponent<AI_Vis_UI_Consideration>();
+                spawnedConsiderationItem.SetUp(memoryItem.considerationsMemory[i]);
+            }
+
+            //Set Up Bonus Considerations
+            for (int i = 0; i < memoryItem.considerationsMemory.Length; i++)
+            {
+                AI_Vis_UI_Consideration spawnedConsiderationItem = Instantiate(considerationPrefab, considerationParent).GetComponent<AI_Vis_UI_Consideration>();
+                spawnedConsiderationItem.SetUp(memoryItem.considerationsMemory[i]);
+            }
+
         }
 
         /*public void UpdateTimeSinceLastSeen(float sensedTimeSinceLastSeen)

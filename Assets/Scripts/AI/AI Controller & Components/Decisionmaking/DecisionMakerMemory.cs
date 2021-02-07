@@ -39,7 +39,24 @@ namespace BenitosAI
             }
         }
 
+        public class BonusConsiderationMemory
+        {
+            public string considerationName;
+            public float input;
+            public float rating;
+            public float weight;
+
+            public BonusConsiderationMemory(string considerationName, float input, float rating, float weight)
+            {
+                this.considerationName = considerationName;
+                this.input = input;
+                this.rating = rating;
+                this.weight = weight;
+            }
+        }
+
         public ConsiderationMemory[] considerationsMemory;
+        public BonusConsiderationMemory[] bonusConsiderationsMemory;
 
 
         public DecisionMemoryItem(DecisionContext context)
@@ -59,13 +76,22 @@ namespace BenitosAI
             //timeWhenDecided = context.time
             timeWhenDecided = Time.time;
 
-
+            // Set Up Considerations
             Consideration[] considerations = context.decision.GetConsiderations();
             considerationsMemory = new ConsiderationMemory[considerations.Length];
             for (int i = 0; i < considerations.Length; i++)
             {
                 considerationsMemory[i] = new ConsiderationMemory(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
             }
+
+            //Set Up Bonus Considerations
+            Decision.BonusConsiderationWrapper[] bonusConsiderations = context.decision.GetBonusConsiderations();
+            bonusConsiderationsMemory = new BonusConsiderationMemory[bonusConsiderations.Length];
+            for (int i = 0; i < bonusConsiderations.Length; i++)
+            {
+                bonusConsiderationsMemory[i] = new BonusConsiderationMemory(bonusConsiderations[i].consideration.name, bonusConsiderations[i].consideration.GetConsiderationInput(context), bonusConsiderations[i].consideration.GetConsiderationRating(context), bonusConsiderations[i].weight);
+            }
+
         }
 
         public bool IsTheSameAsContext(DecisionContext context)

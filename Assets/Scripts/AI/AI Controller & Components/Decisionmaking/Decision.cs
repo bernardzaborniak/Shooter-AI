@@ -54,6 +54,11 @@ namespace BenitosAI
         {
             return considerations;
         }
+
+        public BonusConsiderationWrapper[] GetBonusConsiderations()
+        {
+            return considerations;
+        }
     }
 
 }
