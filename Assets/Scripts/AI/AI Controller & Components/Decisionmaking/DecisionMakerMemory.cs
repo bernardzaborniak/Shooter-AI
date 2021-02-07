@@ -243,7 +243,20 @@ namespace BenitosAI
             return currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems;
         }
 
-       public DecisionMemoryItem GetCurrentlySelectedItem(int decisionLayer)
+        public List<DecisionMemoryItem> GetPreviousCycleDecisions(int decisionLayer, int stepsBackward)
+        {
+            DecisionMakerMemoryCycle cycle = null;
+            Queue<DecisionMakerMemoryCycle> memoryCyclesToOpen = new Queue<DecisionMakerMemoryCycle>(memoryCycles);
+            for (int i = 0; i < stepsBackward; i++)
+            {
+                cycle = memoryCyclesToOpen.Dequeue();
+            }
+
+            cycle.decisionMemoryLayers[decisionLayer].SortItems();
+            return cycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems;
+        }
+
+        public DecisionMemoryItem GetCurrentlySelectedItem(int decisionLayer)
        {
             return currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem;
        }
@@ -255,6 +268,18 @@ namespace BenitosAI
 
         public float GetCurrentCycleTimeWhenCycleDecided()
         {
+            return currentMemoryCycle.timeWhenCycleDecided;
+        }
+
+        public float GetPreviousCycleTimeWhenCycleDecided(int stepsBackward)
+        {
+            float currentTimeWhenCycleDecided;
+            Queue<DecisionMakerMemoryCycle> memoryCyclesToOpen = new Queue<DecisionMakerMemoryCycle>(memoryCycles);
+            for (int i = 0; i < stepsBackward; i++)
+            {
+                currentTimeWhenCycleDecided = memoryCyclesToOpen.Dequeue().timeWhenCycleDecided;
+            }
+
             return currentMemoryCycle.timeWhenCycleDecided;
         }
 
