@@ -53,6 +53,8 @@ namespace BenitosAI
 
         [Header("Decisionmaking Menu")]
         public GameObject decisionMakerMenu;
+
+        public TextMeshProUGUI tmp_CurrentCycleTiming;
         public UIExpandCollapsePanel decisionLayer1Panel;
         public UIExpandCollapsePanel decisionLayer2Panel;
         //public RectTransform decisionsLayer1Parent;
@@ -346,6 +348,8 @@ namespace BenitosAI
         public void UpdateDecisionUIItems(DecisionMakerMemory memory)
         {
             //Destroy immediate all old ones to ensure the vertical layout group works correctly
+            tmp_CurrentCycleTiming.text = "0";
+
 
             objectsToDestroy.Clear();
 
@@ -370,20 +374,37 @@ namespace BenitosAI
             //instantiate new ones accoring to memory
             if(memory != null)
             {
+                tmp_CurrentCycleTiming.text = (Time.time - memory.GetCurrentCycleTimeWhenCycleDecided()).ToString("F2");
+
                 AI_Vis_UI_DecisionContext newDecisionItem;
 
                 foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(0))
                 {
                     newDecisionItem = Instantiate(decisionInfoPrefab, decisionLayer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-                    newDecisionItem.SetUp(memoryItem,manager);
+
+                    if (memoryItem.wasSelected)
+                    {
+                        newDecisionItem.SetUp(memoryItem, manager, true);
+                    }
+                    else
+                    {
+                        newDecisionItem.SetUp(memoryItem, manager);
+                    }
                 }
                 decisionLayer1Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
-
 
                 foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(1))
                 {
                     newDecisionItem = Instantiate(decisionInfoPrefab, decisionLayer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-                    newDecisionItem.SetUp(memoryItem, manager);
+
+                    if (memoryItem.wasSelected)
+                    {
+                        newDecisionItem.SetUp(memoryItem, manager, true);
+                    }
+                    else
+                    {
+                        newDecisionItem.SetUp(memoryItem, manager);
+                    }
                 }
                 decisionLayer2Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
 

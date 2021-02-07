@@ -24,10 +24,22 @@ namespace BenitosAI
         Transform referencedObjectTransform;
         AIVisualisationManager managerReference;
 
-        public void SetUp(DecisionMemoryItem memoryItem, AIVisualisationManager managerReference)
+        public void SetUp(DecisionMemoryItem memoryItem, AIVisualisationManager managerReference, bool selectedDecision = false)
         {
             tmp_decisionName.text = memoryItem.decision.name;
-            tmp_rating.text = memoryItem.rating.ToString("F2");
+            if(memoryItem.rating == -1)
+            {
+                tmp_rating.text = "reject";
+            }
+            else if (selectedDecision)
+            {
+                tmp_rating.text = memoryItem.rating.ToString("F2") + " SEL";
+            }
+            else
+            {
+                tmp_rating.text = memoryItem.rating.ToString("F2");
+            }
+            
             tmp_timeSinceDecided.text = memoryItem.timeWhenDecided.ToString("F2");
             tmp_considerationNumber.text = memoryItem.decision.GetConsiderations().Length.ToString();
 

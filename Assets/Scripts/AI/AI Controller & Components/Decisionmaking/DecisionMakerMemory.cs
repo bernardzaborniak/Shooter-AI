@@ -21,6 +21,8 @@ namespace BenitosAI
         // --------------Timing----------------
         public float timeWhenDecided;
 
+        public bool wasSelected;
+
 
         //[System.Serializable]
         public class ConsiderationMemory
@@ -65,12 +67,59 @@ namespace BenitosAI
                 considerationsMemory[i] = new ConsiderationMemory(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
             }
         }
+
+        public bool IsTheSameAsContext(DecisionContext context)
+        {
+            DecisionMemoryItem testItem = new DecisionMemoryItem(context);
+
+            bool isTheSame = false;
+
+            if(rating == testItem.rating)
+            {
+                if(decision == testItem.decision)
+                {
+                    if(aiController == testItem.aiController)
+                    {
+                        if(targetEntity == testItem.targetEntity)
+                        {
+                            if(targetTacticalPoint == testItem.targetTacticalPoint)
+                            {
+                                isTheSame = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            return isTheSame;
+        }
+
+
     }
 
     public class DecisionMemoryLayer
     {
         public DecisionMemoryItem selectedItem;
         public List<DecisionMemoryItem> decisionMemoryItems = new List<DecisionMemoryItem>();
+
+        public void SortItems()
+        {
+            decisionMemoryItems.Sort((p1, p2) => p1.rating.CompareTo(p2.rating));
+            decisionMemoryItems.Reverse();
+        }
+
+        public void SetSelectedItem(DecisionContext context)
+        {
+            for (int i = 0; i < decisionMemoryItems.Count; i++)
+            {
+                if (decisionMemoryItems[i].IsTheSameAsContext(context))
+                {
+                    selectedItem = decisionMemoryItems[i];
+                    decisionMemoryItems[i].wasSelected = true;
+                }
+            }
+        }
     }
 
     public class DecisionMakerMemoryCycle
@@ -138,12 +187,15 @@ namespace BenitosAI
 
             try
             {
-                currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem = new DecisionMemoryItem(context);
+               // currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem = new DecisionMemoryItem(context);
+                currentMemoryCycle.decisionMemoryLayers[decisionLayer].SetSelectedItem(context);
             }
             catch (System.Exception e)
             {
                 throw new System.Exception("DecisionMakerMemory.numberOfDecisionLayers is not set properly");
             }
+
+
 
         }
 
@@ -153,6 +205,8 @@ namespace BenitosAI
 
             if(previousMemoryCycle != null)
             {
+                //currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem = previousMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem;
+                currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems.Add(previousMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem);
                 currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem = previousMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem;
             }
 
@@ -181,6 +235,7 @@ namespace BenitosAI
 
         public List<DecisionMemoryItem> GetCurrentCycleDecisions(int decisionLayer)
         {
+            currentMemoryCycle.decisionMemoryLayers[decisionLayer].SortItems();
             return currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems;
         }
 
@@ -192,6 +247,11 @@ namespace BenitosAI
         public int GetFrameCountCycleDecided()
         {
             return currentMemoryCycle.frameCountWhenCycleDecided;
+        }
+
+        public float GetCurrentCycleTimeWhenCycleDecided()
+        {
+            return currentMemoryCycle.timeWhenCycleDecided;
         }
 
     }
