@@ -161,6 +161,12 @@ namespace BenitosAI
         AIController_Blackboard selectedSoldiersBlackboardLastFrame;
         float lastUpdateSensingFrameCount;
 
+        //for updating decision UI 
+        bool updatedDecisionUIAfterTimeStopped;
+        DecisionMakerMemory selectedSoldierMemory;
+        DecisionMakerMemory selectedSoldierMemoryLastFrame;
+        float lastUpdateDecisionsFrameCount;
+
 
         [Header("For Visualising Sensing/Blackboard Information in World Space")]
         [SerializeField] Transform visualisedBlackboardInfoParent;
@@ -257,22 +263,34 @@ namespace BenitosAI
                         if (hit.transform.gameObject.GetComponent<GameEntity>())
                         {
                             currentSelectedSoldier = hit.transform.gameObject.GetComponent<GameEntity>();
+
                             selectedSoldierBlackboard = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIController_Blackboard>(); //not the nicest way to get this sensing component;
                             lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
+
+                            selectedSoldierMemory = currentSelectedSoldier.transform.GetChild(2).GetComponent<DecisionMakerMemory>();
+                            lastUpdateDecisionsFrameCount = selectedSoldierMemory.GetFrameCountCycleDecided();
                         }
                         else
                         {
                             currentSelectedSoldier = null;
+                            
                             selectedSoldierBlackboard = null;
                             lastUpdateSensingFrameCount = 0;
+
+                            selectedSoldierMemory = null;
+                            lastUpdateDecisionsFrameCount = 0;
                         }
 
                     }
                     else
                     {
                         currentSelectedSoldier = null;
+
                         selectedSoldierBlackboard = null;
                         lastUpdateSensingFrameCount = 0;
+
+                        selectedSoldierMemory = null;
+                        lastUpdateDecisionsFrameCount = 0;
                     }
                 }
             }
@@ -287,13 +305,16 @@ namespace BenitosAI
 
                 selectedSoldierVisualiser.SetActive(false);
                 selectedSoldierBlackboard = null;
+                selectedSoldierMemory = null;
             }
 
             if (Application.isPlaying)
             {
                 UpdateBlackboardVisualisers();
+                UpdateDecisionUI();
                 //UpdateBlackboardInfoVisualisersInWorldSpace();
                 selectedSoldiersBlackboardLastFrame = selectedSoldierBlackboard;
+                selectedSoldierMemoryLastFrame = selectedSoldierMemory;
             }
 
 
@@ -314,7 +335,7 @@ namespace BenitosAI
 
             if (Application.isPlaying)
             {
-                UpdateSelectedDecisionsVisualisers();
+                UpdateSelectedDecisionsWorldspaceVisualisers();
             }
 
         }
@@ -556,7 +577,7 @@ namespace BenitosAI
 
         }
 
-        void UpdateSelectedDecisionsVisualisers()
+        void UpdateSelectedDecisionsWorldspaceVisualisers()
         {
             //clean up
             foreach (AI_Vis_SelectedDecisionsVisualiser visualiser in decidedDecisionsVisualisersInUse)
@@ -709,6 +730,36 @@ namespace BenitosAI
                 }
             }
             UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        public void UpdateDecisionUI()
+        {
+            //only update this if time is stopped for performance reasons, also only then you can really read it
+            if(Time.timeScale == 0)
+            {
+                if (!updatedDecisionUIAfterTimeStopped)
+                {
+                    if (selectedSoldierMemory != null)
+                    {
+                        aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierMemory);
+                        updatedDecisionUIAfterTimeStopped = true;
+                    }
+                }
+                else if (selectedSoldierMemory != selectedSoldierMemoryLastFrame)
+                {
+                    aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierMemory);
+
+                }
+            }
+            else
+            {
+
+                aIVisualisationUI.UpdateDecisionUIItems(null);
+                updatedDecisionUIAfterTimeStopped = false;
+
+            }
+
+            
         }
 
         public void FrameCameraOnObject(Transform objectToFrameOn)

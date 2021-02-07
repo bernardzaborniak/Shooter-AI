@@ -168,12 +168,13 @@ namespace BenitosAI
                 //currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
                 currentState = decisionContext.decision.CreateState(aiController, decisionContext);
                 currentState.OnStateEnter();
-                Debug.Log("on state Enter");
+               
+                /*Debug.Log("on state Enter");
                 if (lastSelectedDecisionContext.decision != null)
                 {
                     Debug.Log("previous state: " + lastSelectedDecisionContext.decision.name);
                 }
-                Debug.Log("new state: " + decisionContext.decision.name);
+                Debug.Log("new state: " + decisionContext.decision.name);*/
 
                 aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
 

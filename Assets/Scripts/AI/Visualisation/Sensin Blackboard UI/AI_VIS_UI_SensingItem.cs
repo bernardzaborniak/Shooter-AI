@@ -6,7 +6,7 @@ using TMPro;
 namespace BenitosAI
 {
 
-    public class AI_VIS_UI_SensingItem : MonoBehaviour
+    public class AI_Vis_UI_SensingItem : MonoBehaviour
     {
         public TextMeshProUGUI tmp_sensedThingName;
         public TextMeshProUGUI tmp_sensedThingDistance;

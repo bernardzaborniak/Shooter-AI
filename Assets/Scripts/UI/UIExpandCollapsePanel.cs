@@ -7,8 +7,8 @@ using TMPro;
 public class UIExpandCollapsePanel : MonoBehaviour
 {
     public Transform panelToExpand;
-    [Tooltip("Content Size Fitters inside layout groups need to be updated per script to layout properly - unity bug? or I am using it wrong, but it makes sense")]
-    public ContentSizeFitter contentSizeFitterToUpdate;
+    //[Tooltip("Content Size Fitters inside layout groups need to be updated per script to layout properly - unity bug? or I am using it wrong, but it makes sense")]
+    //public ContentSizeFitter contentSizeFitterToUpdate;
 
     public TextMeshProUGUI tmp_numberOfItemsInsidePanel;
 

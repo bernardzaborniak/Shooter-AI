@@ -22,12 +22,12 @@ namespace BenitosAI
         public float timeWhenDecided;
 
 
-        [System.Serializable]
+        //[System.Serializable]
         public class ConsiderationMemory
         {
-            [SerializeField] string considerationName;
-            [SerializeField] float input;
-            [SerializeField] float rating;
+            public string considerationName;
+            public float input;
+            public float rating;
 
             public ConsiderationMemory(string considerationName, float input, float rating)
             {
@@ -179,10 +179,20 @@ namespace BenitosAI
             }
         }
 
+        public List<DecisionMemoryItem> GetCurrentCycleDecisions(int decisionLayer)
+        {
+            return currentMemoryCycle.decisionMemoryLayers[decisionLayer].decisionMemoryItems;
+        }
+
        public DecisionMemoryItem GetCurrentlySelectedItem(int decisionLayer)
        {
             return currentMemoryCycle.decisionMemoryLayers[decisionLayer].selectedItem;
        }
+
+        public int GetFrameCountCycleDecided()
+        {
+            return currentMemoryCycle.frameCountWhenCycleDecided;
+        }
 
     }
 

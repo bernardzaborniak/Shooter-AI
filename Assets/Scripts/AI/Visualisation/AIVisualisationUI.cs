@@ -13,6 +13,14 @@ namespace BenitosAI
 
         public AIVisualisationManager manager;
 
+        public enum DetailedMenuState
+        {
+            NoMenu,
+            SensingMenuOpen,
+            DecisionmakerMenuOpen
+        }
+        public DetailedMenuState detailedMenuState = DetailedMenuState.NoMenu;
+
         [Header("Show in World Space Options")]
         public ToogleableButton showOpenFieldPointsButton;
         public ToogleableButton showCoverPointsButton;
@@ -43,28 +51,24 @@ namespace BenitosAI
         public UIExpandCollapsePanel sensingTPointCurrentlyUsedPanel;
 
 
-
         [Header("Decisionmaking Menu")]
-        public GameObject decisionmakerMenu;
+        public GameObject decisionMakerMenu;
+        public UIExpandCollapsePanel decisionLayer1Panel;
+        public UIExpandCollapsePanel decisionLayer2Panel;
+        //public RectTransform decisionsLayer1Parent;
+        //public RectTransform decisionsLayer2Parent;
+        //public RectTransform decisionsLayer3Parent; ...
+        public GameObject decisionInfoPrefab;
 
-        public enum DetailedMenuState
-        {
-            NoMenu,
-            SensingMenuOpen,
-            DecisionmakerMenuOpen
-        }
-        public DetailedMenuState detailedMenuState = DetailedMenuState.NoMenu;
+      
 
-        #region Variables cached to reduce garbage
 
-        // ----- UpdateSensingUIItems-------
+        // ----- Update SensingUIItems & Decision UI Items-------
 
         HashSet<GameObject> objectsToDestroy = new HashSet<GameObject>();
 
-
         //--------------------
 
-        #endregion
 
         #endregion
 
@@ -158,7 +162,7 @@ namespace BenitosAI
             else if (detailedMenuState == DetailedMenuState.DecisionmakerMenuOpen)
             {
                 sensingMenu.SetActive(true);
-                decisionmakerMenu.SetActive(false);
+                decisionMakerMenu.SetActive(false);
 
                 detailedMenuState = DetailedMenuState.SensingMenuOpen;
             }
@@ -174,19 +178,19 @@ namespace BenitosAI
         {
             if (detailedMenuState == DetailedMenuState.DecisionmakerMenuOpen)
             {
-                decisionmakerMenu.SetActive(false);
+                decisionMakerMenu.SetActive(false);
                 detailedMenuState = DetailedMenuState.NoMenu;
             }
             else if (detailedMenuState == DetailedMenuState.SensingMenuOpen)
             {
                 sensingMenu.SetActive(false);
-                decisionmakerMenu.SetActive(true);
+                decisionMakerMenu.SetActive(true);
 
                 detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
             }
             else if (detailedMenuState == DetailedMenuState.NoMenu)
             {
-                decisionmakerMenu.SetActive(true);
+                decisionMakerMenu.SetActive(true);
                 detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
 
             }
@@ -231,14 +235,14 @@ namespace BenitosAI
                     DestroyImmediate(obj);
                 }
 
-                AI_VIS_UI_SensingItem newSensingItem;
+                AI_Vis_UI_SensingItem newSensingItem;
 
                 // Update Enemies Panel --------------------------------
                 foreach (SensedEntityInfo enemy in blackboard.enemyInfos)
                 {
                     if (enemy.IsAlive())
                     {
-                        newSensingItem = Instantiate(sensingUIItemPrefab, sensingEnemiesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                        newSensingItem = Instantiate(sensingUIItemPrefab, sensingEnemiesPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                         //topicPanel.SetUp((enemy.entity.name + enemy.entity.GetHashCode()), enemy.lastDistanceMeasured, enemy.timeWhenLastSeen, enemy.frameCountWhenLastSeen, enemy.entity.transform, manager);
                         newSensingItem.SetUp((enemy.entity.name + enemy.GetHashCode()), enemy.lastDistanceMeasured, enemy.timeWhenLastSeen, enemy.frameCountWhenLastSeen, enemy.entity.transform, manager);
                     }
@@ -250,7 +254,7 @@ namespace BenitosAI
                 {
                     if (friendly.IsAlive())
                     {
-                        newSensingItem = Instantiate(sensingUIItemPrefab, sensingFriendliesPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                        newSensingItem = Instantiate(sensingUIItemPrefab, sensingFriendliesPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                         newSensingItem.SetUp((friendly.entity.name + friendly.entity.GetHashCode()), friendly.lastDistanceMeasured, friendly.timeWhenLastSeen, friendly.frameCountWhenLastSeen, friendly.entity.transform, manager);
                     }
 
@@ -260,7 +264,7 @@ namespace BenitosAI
                 // Update TPoints Cover Panel --------------------------------
                 foreach (SensedTacticalPointInfo tPoint in blackboard.tPCoverInfos)
                 {
-                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                     newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
                 sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverInfos.Length);
@@ -268,7 +272,7 @@ namespace BenitosAI
                 // Update TPoints OpenField Panel --------------------------------
                 foreach (SensedTacticalPointInfo tPoint in blackboard.tPOpenFieldInfos)
                 {
-                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                     newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
                 sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPOpenFieldInfos.Length);
@@ -276,7 +280,7 @@ namespace BenitosAI
                 // Update TPoints CoverPeek Panel --------------------------------
                 foreach (SensedTacticalPointInfo tPoint in blackboard.tPCoverPeekInfos)
                 {
-                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPeekPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPeekPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                     newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
                 }
                 sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
@@ -285,7 +289,7 @@ namespace BenitosAI
                 if(blackboard.GetCurrentlyUsedTacticalPoint())
                 {
                     TacticalPoint tPoint = blackboard.GetCurrentlyUsedTacticalPoint();
-                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointCurrentlyUsedPanel.panelToExpand).GetComponent<AI_VIS_UI_SensingItem>();
+                    newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointCurrentlyUsedPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                     newSensingItem.SetUp((tPoint.tacticalPointType.ToString() + tPoint.GetHashCode()), 0, 0, 0, tPoint.transform, manager);
                 }
                 //sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
@@ -335,6 +339,53 @@ namespace BenitosAI
                 }
                 sensingTPointCurrentlyUsedPanel.UpdateNumberOfItemsInsidePanel(0);
 
+
+            }
+        }
+
+        public void UpdateDecisionUIItems(DecisionMakerMemory memory)
+        {
+            //Destroy immediate all old ones to ensure the vertical layout group works correctly
+
+            objectsToDestroy.Clear();
+
+            for (int i = 0; i < decisionLayer1Panel.panelToExpand.childCount; i++)
+            {
+                objectsToDestroy.Add(decisionLayer1Panel.panelToExpand.GetChild(i).gameObject);
+            }
+            decisionLayer1Panel.UpdateNumberOfItemsInsidePanel(0);
+
+            for (int i = 0; i < decisionLayer2Panel.panelToExpand.childCount; i++)
+            {
+                objectsToDestroy.Add(decisionLayer2Panel.panelToExpand.GetChild(i).gameObject);
+            }
+            decisionLayer2Panel.UpdateNumberOfItemsInsidePanel(0);
+
+            foreach (GameObject obj in objectsToDestroy)
+            {
+                DestroyImmediate(obj);
+            }
+
+
+            //instantiate new ones accoring to memory
+            if(memory != null)
+            {
+                AI_Vis_UI_DecisionContext newDecisionItem;
+
+                foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(0))
+                {
+                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionLayer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem,manager);
+                }
+                decisionLayer1Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
+
+
+                foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(1))
+                {
+                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionLayer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem, manager);
+                }
+                decisionLayer2Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
 
             }
         }
