@@ -12,12 +12,15 @@ namespace BenitosAI
     // Holds an internal statemachine concerning current states executing
     public class DecisionMaker
     {
+        #region Fields
+
+        // For now only used by visualisation, but could also play a part in deciding 
+        // - creates a lot of garbage?
         [System.Serializable]
         public class Memory
         {
-            //creates a lot of garbage?
             [System.Serializable]
-            public class DecisionContextMemory        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
+            public class DecisionContextMemory
             {
                 [HideInInspector]
                 public string name;
@@ -28,10 +31,10 @@ namespace BenitosAI
                 public AIController aiController; //who s asking?
 
                 public GameEntity targetEntity; //Who is the target of my action
+                public string targetEntityName; //Used to still know the target if the entity was already destroyed
                 public TacticalPoint targetTacticalPoint; //Who is the target of my action
 
                 public float timeOfDecison;
-                //public bool wasSelected;
 
                 [System.Serializable]
                 public class ConsiderationMemory
@@ -62,6 +65,9 @@ namespace BenitosAI
                     try{  this.targetEntity = context.targetEntity.entity;  }
                     catch (System.Exception e) { }
 
+                    try { targetEntityName = targetEntity.name + " " + targetEntity.GetHashCode(); }
+                    catch (System.Exception e) { targetEntityName = "no Target"; }
+
                     try { this.targetTacticalPoint = context.targetTacticalPoint.tacticalPoint; }
                     catch (System.Exception e) { }
 
@@ -77,7 +83,6 @@ namespace BenitosAI
 
 
             }
-
 
             Queue<DecisionContextMemory> selectedDecisionsRememberedQueue = new Queue<DecisionContextMemory>();
             public int numberOfPriorSelectedDecisionsRemembered = 8;
@@ -123,9 +128,6 @@ namespace BenitosAI
 
         }
 
-
-
-
         public string name = "new Layer";
 
         public enum DecisionMethod
@@ -140,48 +142,32 @@ namespace BenitosAI
 
         public DecisionWrapper[] decisions;
 
-       
-        //DecisionContext currentDecidedDecisionContext;
         AIState currentState;
         AIController aiController;
        
-        //[Space(5)]
-       // public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
-        //[Space(10)]
-        //public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
-       // [Space(5)]
-        //public DecisionContextVisualiser lastSelectedDecisionContextVisualiser;
-        public DecisionContext lastSelectedDecisionContext = new DecisionContext();
+        DecisionContext lastSelectedDecisionContext = new DecisionContext(); //was public before - does it cause errors?
 
-        //only used if memory is used
-        //DecisionMakerMemory memory;
         [Header("Memory")]
         [SerializeField] bool useMemory;
         public Memory memory;
-       // int decisionMakerLayer;
 
-        //public void SetUpDecisionLayer(AIController aiController, DecisionMakerMemory memory, int decisionMakerLayer)
-        public void SetUpDecisionLayer(AIController aiController)//, int decisionMakerLayer)
+        #endregion
+
+        public void SetUpDecisionLayer(AIController aiController)
         {
             this.aiController = aiController;
-
-            //this.memory = memory;
-            //this.decisionMakerLayer = decisionMakerLayer;
         }
 
-        public void Decide()  //the parameters are only used if memory is used
+        public void Decide() 
         {
             UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Decide");
 
-            //currentDecisionContextsVisualisation.Clear();
             if (useMemory) memory.CleanUpLastDecisionRemembered();
-
 
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
             float currentRating = 0;
             float bestRatingSoFar = 0;
             DecisionContext bestRatedDecisionContext = null;
-            //Debug.Log("Decide========================================================================- ");
 
             for (int i = 0; i < decisions.Length; i++)
             {
@@ -189,14 +175,6 @@ namespace BenitosAI
 
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {
-                    //add contexes to all current contexes
-
-
-                   // if (useMemory) memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j], decisions[i].weigt);
-                    if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
-
-                    //currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
-
                     currentRating = decisionContexesToAdd[j].rating;
                     if (currentRating > bestRatingSoFar)
                     {
@@ -204,6 +182,9 @@ namespace BenitosAI
                         //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
                         bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);  
                     }
+
+                    if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
+
                 }
             }
 
@@ -214,7 +195,6 @@ namespace BenitosAI
                 StartExecutingDecision(bestRatedDecisionContext);
             }
 
-            // Debug.Log("Decide END========================================================================- ");
             UnityEngine.Profiling.Profiler.EndSample();
         }
 
@@ -224,57 +204,24 @@ namespace BenitosAI
             // or check if their states are the same - the states are initialised by decisions at runtime or at start?- how are the states parameters set?
 
             // TODO coulsd it be that because of pooling currentDecidedDecisionContextis already used by somebody else?
-            //if (!decisionContext.ContextIsTheSameAs(currentDecidedDecisionContext))
             if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContext))
-            {
-               
-                //currentDecidedDecisionContext = decisionContext;
-                //lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(currentDecidedDecisionContext);
-
+            {             
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
                     aiController.entityTags.RemoveEntityActionTags(currentState.GetActionTagsToRemoveOnStateExit());
                 }
 
-                //currentState = currentDecidedDecisionContext.decision.CreateState(aiController, currentDecidedDecisionContext);
                 currentState = decisionContext.decision.CreateState(aiController, decisionContext);
                 currentState.OnStateEnter();
-               
-                /*Debug.Log("on state Enter");
-                if (lastSelectedDecisionContext.decision != null)
-                {
-                    Debug.Log("previous state: " + lastSelectedDecisionContext.decision.name);
-                }
-                Debug.Log("new state: " + decisionContext.decision.name);*/
 
                 aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
 
-                //lastSelectedDecisionContext = Copy decisionContext;
                 lastSelectedDecisionContext.SetUpContext(decisionContext);
-                //lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(decisionContext);
 
                 if (useMemory) memory.OnSelectedNewDecision(decisionContext);
-                //if (memory != null)
-                //{
-                    //send current context to memory
-                 //   memory.RememberSelectedContext(decisionMakerLayer, decisionContext);
-                //}
-
             }
-            /*else
-            {
-                if(memory != null)
-                {
-                    //send current context to memory
-                    memory.RememberSelectedContextSameAsLastCycle(decisionMakerLayer);
-                }
-                //Debug.Log("new decision context: " + decisionContext.decision.name + " was the same as last:" + lastSelectedDecisionContext.decision.name);
-            }*/
-
         }
-
-        //before rating & decising the decisions have to be set up according to current sensing, if there are more targets for one decision, the decision has to be seperated into several ones
 
         public void UpdateCurrentState()
         {
@@ -286,11 +233,7 @@ namespace BenitosAI
         }
 
 
-
         //all decisions get a deference to the decision layer they cre called from ,so they can call set state on it
         // every decision has its state in code? - no all states should be declared inside the decision layer? or inside the individual decisions would be better
-
-
-
     }
 }

@@ -60,7 +60,6 @@ namespace BenitosAI
 
         [Space(5)]
         public GameObject lastCycleMenu;
-        // public TextMeshProUGUI tmp_cycle0Timing;
         public UIExpandCollapsePanel selectedDecisionsRememberedLayer1Panel;
         public UIExpandCollapsePanel selectedDecisionsRememberedLayer2Panel;
 

@@ -28,16 +28,12 @@ namespace BenitosAI
         public void SetUp(DecisionMaker.Memory.DecisionContextMemory memoryItem, AIVisualisationManager managerReference)//, bool selectedDecision = false)
         {
             tmp_decisionName.text = memoryItem.decision.name;
-            //tmp_weight.text = memoryItem.decisionWeight.ToString("F2");
             tmp_weight.text = memoryItem.weight.ToString("F2");
             if (memoryItem.rating == -1)
             {
                 tmp_rating.text = "reject";
             }
-            /*else if (selectedDecision)
-            {
-                tmp_rating.text = memoryItem.rating.ToString("F2") + " [S]";
-            }*/
+
             else
             {
                 tmp_rating.text = memoryItem.rating.ToString("F2");
@@ -54,19 +50,16 @@ namespace BenitosAI
             if(memoryItem.targetEntity != null)
             {
                 referencedObjectTransform = memoryItem.targetEntity.transform;
-                tmp_targetName.text = memoryItem.targetEntity.name + memoryItem.targetEntity.GetHashCode();
-
-            }
+            }    
             else if(memoryItem.targetTacticalPoint != null)
             {
                 referencedObjectTransform = memoryItem.targetTacticalPoint.transform;
                 tmp_targetName.text = memoryItem.targetTacticalPoint.name + memoryItem.targetTacticalPoint.GetHashCode();
 
             }
-            else
-            {
-                tmp_targetName.text = "no Target";
-            }
+
+            tmp_targetName.text = memoryItem.targetEntityName;
+
 
             Update();
 
@@ -82,16 +75,10 @@ namespace BenitosAI
 
         }
 
-        /*public void UpdateTimeSinceLastSeen(float sensedTimeSinceLastSeen)
-        {
-            tmp_sensedTimeSinceLastSeen.text = sensedTimeSinceLastSeen.ToString("F1");
-        }*/
-
         private void Update()
         {
             //just update the time
             tmp_timeSinceDecided.text = (Time.time - timeWhenDecided).ToString("F2");
-            //tmp_sensedFrameCountLastSeen.text = (Time.frameCount - frameCountLastSensed).ToString("F1");
         }
 
         public void OnFrameOnObjectButtonClicked()
