@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityTemplateProjects;
+using TMPro;
 
 
 public class PlayerController : MonoBehaviour
 {
     public SimpleCameraController simpleCameraController;
+    public TextMeshProUGUI tmp_currentTimescale;
 
     [Header("For Camera Gun")]
     public GameObject projectilePrefab;
@@ -60,7 +62,8 @@ public class PlayerController : MonoBehaviour
         {
             Time.timeScale = 0.6f;
         }
-        else */if (Input.GetKeyDown(KeyCode.Alpha7))
+        else */
+        /*if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             Time.timeScale = 0f;
         }
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             Time.timeScale = 1f;
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -100,6 +103,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 Time.timeScale = 0;
+                tmp_currentTimescale.text = Time.timeScale.ToString("F2");
             }
         }
 
@@ -128,6 +132,7 @@ public class PlayerController : MonoBehaviour
         else if (timeSpeedLevel == 1)
         {
             Time.timeScale = 0.2f;
+
         }
         else if (timeSpeedLevel == 2)
         {
@@ -139,6 +144,7 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 1f;
 
         }
+        tmp_currentTimescale.text = Time.timeScale.ToString("F2");
     }
 
     void ChangeToFlyMode()
