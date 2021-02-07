@@ -95,7 +95,7 @@ namespace BenitosAI
 
         public void OnFrameOnObjectButtonClicked()
         {
-            Debug.Log("button clicked");
+            Debug.Log("OnFrame button clicked");
             if(referencedObjectTransform != null)
             {
                 managerReference.FrameCameraOnObject(referencedObjectTransform);
