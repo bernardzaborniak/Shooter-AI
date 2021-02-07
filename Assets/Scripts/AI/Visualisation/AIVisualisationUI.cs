@@ -53,28 +53,21 @@ namespace BenitosAI
 
         [Header("Decisionmaking Menu")]
         public GameObject decisionMakerMenu;
-        [Space(5)]
-
-        public TextMeshProUGUI tmp_cycle0Timing;
-        public UIExpandCollapsePanel decisionCycle0Layer1Panel;
-        public UIExpandCollapsePanel decisionCycle0Layer2Panel;
 
         [Space(5)]
-        public GameObject previousCyclesParent;
+        public UIExpandCollapsePanel lastCycleLayer1Panel;
+        public UIExpandCollapsePanel lastCycleLayer2Panel;
+
         [Space(5)]
+        public GameObject lastCycleMenu;
+        // public TextMeshProUGUI tmp_cycle0Timing;
+        public UIExpandCollapsePanel selectedDecisionsRememberedLayer1Panel;
+        public UIExpandCollapsePanel selectedDecisionsRememberedLayer2Panel;
 
-        public TextMeshProUGUI tmp_cycleMin1Timing;
-        public UIExpandCollapsePanel decisionCycleMin1Layer1Panel;
-        public UIExpandCollapsePanel decisionCycleMin1Layer2Panel;
         [Space(5)]
-
-        public TextMeshProUGUI tmp_cycleMin2Timing;
-        public UIExpandCollapsePanel decisionCycleMin2Layer1Panel;
-        public UIExpandCollapsePanel decisionCycleMin2Layer2Panel;
-
         public GameObject decisionInfoPrefab;
 
-      
+   
 
 
         // ----- Update SensingUIItems & Decision UI Items-------
@@ -144,6 +137,7 @@ namespace BenitosAI
         {
             manager.settings.showCoverQualityRating = button.active;
         }
+
         public void OnShowCoverQualityRatingNumbersButtonClicked(ToogleableButton button)
         {
             manager.settings.showCoverQualityRatingNumbers = button.active;
@@ -170,11 +164,11 @@ namespace BenitosAI
         {
             if (button.active)
             {
-                previousCyclesParent.SetActive(true);
+               // previousCyclesParent.SetActive(true);
             }
             else
             {
-                previousCyclesParent.SetActive(false);
+               // previousCyclesParent.SetActive(false);
             }
         }
 
@@ -219,6 +213,18 @@ namespace BenitosAI
                 decisionMakerMenu.SetActive(true);
                 detailedMenuState = DetailedMenuState.DecisionmakerMenuOpen;
 
+            }
+        }
+
+        public void OnOpenLastCycleMenuButtonClicked(ToogleableButton button)
+        {
+            if (button.active)
+            {
+                lastCycleMenu.SetActive(true);
+            }
+            else
+            {
+                lastCycleMenu.SetActive(false);
             }
         }
 
@@ -369,27 +375,37 @@ namespace BenitosAI
             }
         }
 
-        public void UpdateDecisionUIItems(DecisionMakerMemory memory)
+        public void UpdateDecisionUIItems(AIController_HumanoidSoldier aiController)
         {
             //Destroy immediate all old ones to ensure the vertical layout group works correctly
-            tmp_cycle0Timing.text = "0";
-            tmp_cycleMin1Timing.text = "0";
-            tmp_cycleMin2Timing.text = "0";
-
 
             objectsToDestroy.Clear();
 
-            for (int i = 0; i < decisionCycle0Layer1Panel.panelToExpand.childCount; i++)
+            // Selected Decisions Remembered
+            for (int i = 0; i < selectedDecisionsRememberedLayer1Panel.panelToExpand.childCount; i++)
             {
-                objectsToDestroy.Add(decisionCycle0Layer1Panel.panelToExpand.GetChild(i).gameObject);
+                objectsToDestroy.Add(selectedDecisionsRememberedLayer1Panel.panelToExpand.GetChild(i).gameObject);
             }
-            decisionCycle0Layer1Panel.UpdateNumberOfItemsInsidePanel(0);
+            selectedDecisionsRememberedLayer1Panel.UpdateNumberOfItemsInsidePanel(0);
 
-            for (int i = 0; i < decisionCycle0Layer2Panel.panelToExpand.childCount; i++)
+            for (int i = 0; i < selectedDecisionsRememberedLayer2Panel.panelToExpand.childCount; i++)
             {
-                objectsToDestroy.Add(decisionCycle0Layer2Panel.panelToExpand.GetChild(i).gameObject);
+                objectsToDestroy.Add(selectedDecisionsRememberedLayer2Panel.panelToExpand.GetChild(i).gameObject);
             }
-            decisionCycle0Layer2Panel.UpdateNumberOfItemsInsidePanel(0);
+            selectedDecisionsRememberedLayer2Panel.UpdateNumberOfItemsInsidePanel(0);
+
+            // Laast Cycle
+            for (int i = 0; i < lastCycleLayer1Panel.panelToExpand.childCount; i++)
+            {
+                objectsToDestroy.Add(lastCycleLayer1Panel.panelToExpand.GetChild(i).gameObject);
+            }
+            lastCycleLayer1Panel.UpdateNumberOfItemsInsidePanel(0);
+
+            for (int i = 0; i < lastCycleLayer2Panel.panelToExpand.childCount; i++)
+            {
+                objectsToDestroy.Add(lastCycleLayer2Panel.panelToExpand.GetChild(i).gameObject);
+            }
+            lastCycleLayer2Panel.UpdateNumberOfItemsInsidePanel(0);
 
             foreach (GameObject obj in objectsToDestroy)
             {
@@ -397,107 +413,44 @@ namespace BenitosAI
             }
 
 
-            //instantiate new ones accoring to memory
-            if(memory != null)
+            // Instantiate new ones accoring to memory
+            if(aiController != null)
             {
-                tmp_cycle0Timing.text = (Time.time - memory.GetCurrentCycleTimeWhenCycleDecided()).ToString("F2");
-                tmp_cycleMin1Timing.text = (Time.time-memory.GetPreviousCycleTimeWhenCycleDecided(1)).ToString("F2");
-                tmp_cycleMin2Timing.text = (Time.time - memory.GetPreviousCycleTimeWhenCycleDecided(2)).ToString("F2");
-
                 AI_Vis_UI_DecisionContext newDecisionItem;
 
-                //Current Cycle
-                foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(0))
+                // Selected Decisions Remembered
+
+                foreach (DecisionMaker.Memory.DecisionContextMemory memoryItem in aiController.decisionLayers[0].memory.selectedDecisionsRemembered)
                 {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycle0Layer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem = Instantiate(decisionInfoPrefab, selectedDecisionsRememberedLayer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem, manager);
 
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
                 }
-                decisionCycle0Layer1Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
+                selectedDecisionsRememberedLayer1Panel.UpdateNumberOfItemsInsidePanel(aiController.decisionLayers[0].memory.selectedDecisionsRemembered.Length);
 
-                foreach (DecisionMemoryItem memoryItem in memory.GetCurrentCycleDecisions(1))
+                foreach (DecisionMaker.Memory.DecisionContextMemory memoryItem in aiController.decisionLayers[1].memory.selectedDecisionsRemembered)
                 {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycle0Layer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
+                    newDecisionItem = Instantiate(decisionInfoPrefab, selectedDecisionsRememberedLayer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem, manager);
                 }
-                decisionCycle0Layer2Panel.UpdateNumberOfItemsInsidePanel(memory.GetCurrentCycleDecisions(0).Count);
+                selectedDecisionsRememberedLayer2Panel.UpdateNumberOfItemsInsidePanel(aiController.decisionLayers[0].memory.selectedDecisionsRemembered.Length);
 
-                //Cycle -1
-                foreach (DecisionMemoryItem memoryItem in memory.GetPreviousCycleDecisions(0, 1))
+                // Last Cycle
+                foreach (DecisionMaker.Memory.DecisionContextMemory memoryItem in aiController.decisionLayers[0].memory.lastDecisionsRemembered)
                 {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycleMin1Layer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
+                    newDecisionItem = Instantiate(decisionInfoPrefab, lastCycleLayer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem, manager);
+                    
                 }
-                decisionCycleMin1Layer1Panel.UpdateNumberOfItemsInsidePanel(memory.GetPreviousCycleDecisions(0, 1).Count);
+                lastCycleLayer1Panel.UpdateNumberOfItemsInsidePanel(aiController.decisionLayers[0].memory.lastDecisionsRemembered.Count);
 
-                foreach (DecisionMemoryItem memoryItem in memory.GetPreviousCycleDecisions(1, 1))
+                foreach (DecisionMaker.Memory.DecisionContextMemory memoryItem in aiController.decisionLayers[1].memory.lastDecisionsRemembered)
                 {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycleMin1Layer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
+                    newDecisionItem = Instantiate(decisionInfoPrefab, lastCycleLayer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
+                    newDecisionItem.SetUp(memoryItem, manager);
                 }
-                decisionCycleMin1Layer2Panel.UpdateNumberOfItemsInsidePanel(memory.GetPreviousCycleDecisions(1, 1).Count);
+                lastCycleLayer2Panel.UpdateNumberOfItemsInsidePanel(aiController.decisionLayers[0].memory.lastDecisionsRemembered.Count);
 
-                //Cycle -2
-                foreach (DecisionMemoryItem memoryItem in memory.GetPreviousCycleDecisions(0, 1))
-                {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycleMin1Layer1Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
-                }
-                decisionCycleMin1Layer1Panel.UpdateNumberOfItemsInsidePanel(memory.GetPreviousCycleDecisions(0, 1).Count);
-
-                foreach (DecisionMemoryItem memoryItem in memory.GetPreviousCycleDecisions(1, 1))
-                {
-                    newDecisionItem = Instantiate(decisionInfoPrefab, decisionCycleMin1Layer2Panel.panelToExpand).GetComponent<AI_Vis_UI_DecisionContext>();
-
-                    if (memoryItem.wasSelected)
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager, true);
-                    }
-                    else
-                    {
-                        newDecisionItem.SetUp(memoryItem, manager);
-                    }
-                }
-                decisionCycleMin1Layer2Panel.UpdateNumberOfItemsInsidePanel(memory.GetPreviousCycleDecisions(1, 1).Count);
 
             }
         }

@@ -163,9 +163,8 @@ namespace BenitosAI
 
         //for updating decision UI 
         bool updatedDecisionUIAfterTimeStopped;
-        DecisionMakerMemory selectedSoldierMemory;
-        DecisionMakerMemory selectedSoldierMemoryLastFrame;
-        float lastUpdateDecisionsFrameCount;
+        AIController_HumanoidSoldier selectedSoldierAIController;
+        AIController_HumanoidSoldier selectedSoldierAiControllerLastFrame;
 
 
         [Header("For Visualising Sensing/Blackboard Information in World Space")]
@@ -267,8 +266,7 @@ namespace BenitosAI
                             selectedSoldierBlackboard = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIController_Blackboard>(); //not the nicest way to get this sensing component;
                             lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
 
-                            selectedSoldierMemory = currentSelectedSoldier.transform.GetChild(2).GetComponent<DecisionMakerMemory>();
-                            lastUpdateDecisionsFrameCount = selectedSoldierMemory.GetFrameCountCycleDecided();
+                            selectedSoldierAIController = currentSelectedSoldier.transform.GetChild(2).GetComponent<AIController_HumanoidSoldier>();
                         }
                         else
                         {
@@ -277,8 +275,7 @@ namespace BenitosAI
                             selectedSoldierBlackboard = null;
                             lastUpdateSensingFrameCount = 0;
 
-                            selectedSoldierMemory = null;
-                            lastUpdateDecisionsFrameCount = 0;
+                            selectedSoldierAIController = null;
                         }
 
                     }
@@ -289,8 +286,7 @@ namespace BenitosAI
                         selectedSoldierBlackboard = null;
                         lastUpdateSensingFrameCount = 0;
 
-                        selectedSoldierMemory = null;
-                        lastUpdateDecisionsFrameCount = 0;
+                        selectedSoldierAIController = null;
                     }
                 }
             }
@@ -305,7 +301,7 @@ namespace BenitosAI
 
                 selectedSoldierVisualiser.SetActive(false);
                 selectedSoldierBlackboard = null;
-                selectedSoldierMemory = null;
+                selectedSoldierAIController = null;
             }
 
             if (Application.isPlaying)
@@ -314,7 +310,7 @@ namespace BenitosAI
                 UpdateDecisionUI();
                 //UpdateBlackboardInfoVisualisersInWorldSpace();
                 selectedSoldiersBlackboardLastFrame = selectedSoldierBlackboard;
-                selectedSoldierMemoryLastFrame = selectedSoldierMemory;
+                selectedSoldierAiControllerLastFrame = selectedSoldierAIController;
             }
 
 
@@ -605,11 +601,11 @@ namespace BenitosAI
 
                         //how does he visualiser get the information form the entity? - need to search for memory object
                         //-> a not so elegant way to get this object -> its for debug only anyway
-                        DecisionMakerMemory memory = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).memory;
-
+                        DecisionMaker.Memory memoryLayer0 = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).decisionLayers[0].memory;
+                        DecisionMaker.Memory memoryLayer1 = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).decisionLayers[1].memory;
                         try
                         {
-                            visualiser.UpdateVisualiser(cameraController.transform.forward, memory.GetCurrentlySelectedItem(0), memory.GetCurrentlySelectedItem(1));
+                            visualiser.UpdateVisualiser(cameraController.transform.forward, memoryLayer0.selectedDecisionsRemembered[0], memoryLayer1.selectedDecisionsRemembered[0]);
                         }catch(Exception e)
                         {
                             //I do this, cause it sometimes causes an index out of range exception if memory wasnt updated yet?
@@ -739,15 +735,15 @@ namespace BenitosAI
             {
                 if (!updatedDecisionUIAfterTimeStopped)
                 {
-                    if (selectedSoldierMemory != null)
+                    if (selectedSoldierAIController != null)
                     {
-                        aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierMemory);
+                        aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierAIController);
                         updatedDecisionUIAfterTimeStopped = true;
                     }
                 }
-                else if (selectedSoldierMemory != selectedSoldierMemoryLastFrame)
+                else if (selectedSoldierAIController != selectedSoldierAiControllerLastFrame)
                 {
-                    aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierMemory);
+                    aIVisualisationUI.UpdateDecisionUIItems(selectedSoldierAIController);
 
                 }
             }

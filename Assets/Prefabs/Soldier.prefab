@@ -883,7 +883,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityTags: {fileID: 6599549110616915}
-  memory: {fileID: 1523593354861529090}
   decisionLayers:
   - name: Positioning Layer
     decisionMethod: 0
@@ -913,21 +912,11 @@ MonoBehaviour:
     - name: '0 Walk To Nearest Fitting Cover '
       decision: {fileID: 11400000, guid: bfcbd981e770b3a4d8c7490300d4f115, type: 2}
       weigt: 2
-    currentDecisionContextsVisualisation: []
-    lastSelectedDecisionContextVisualiser:
-      name: 
-      rating: 0
-      decision: {fileID: 0}
-      aiController: {fileID: 0}
-      targetEntity:
-        lastDistanceMeasured: 0
-        timeWhenLastSeen: 0
-        frameCountWhenLastSeen: 0
-      targetTacticalPoint:
-        lastDistanceMeasured: 0
-        timeWhenLastSeen: 0
-        frameCountWhenLastSeen: 0
-      considerationVisualisers: []
+    useMemory: 1
+    memory:
+      numberOfPriorSelectedDecisionsRemembered: 8
+      selectedDecisionsRemembered: []
+      lastDecisionsRemembered: []
   - name: Item Interaction layer
     decisionMethod: 0
     discardThreshold: 0.15
@@ -941,21 +930,11 @@ MonoBehaviour:
     - name: 'Shoot Weapon At Enemy '
       decision: {fileID: 11400000, guid: d7eebe65d50f3e840a97304fab5e4b39, type: 2}
       weigt: 2
-    currentDecisionContextsVisualisation: []
-    lastSelectedDecisionContextVisualiser:
-      name: 
-      rating: 0
-      decision: {fileID: 0}
-      aiController: {fileID: 0}
-      targetEntity:
-        lastDistanceMeasured: 0
-        timeWhenLastSeen: 0
-        frameCountWhenLastSeen: 0
-      targetTacticalPoint:
-        lastDistanceMeasured: 0
-        timeWhenLastSeen: 0
-        frameCountWhenLastSeen: 0
-      considerationVisualisers: []
+    useMemory: 1
+    memory:
+      numberOfPriorSelectedDecisionsRemembered: 8
+      selectedDecisionsRemembered: []
+      lastDecisionsRemembered: []
   decisionInterval: 0.3
   characterController: {fileID: 8032510007199776535}
   blackboard: {fileID: 6005514798904244086}

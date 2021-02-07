@@ -5,62 +5,127 @@ using UnityEngine;
 namespace BenitosAI
 {
     
-    //creates a lot of garbage?
-    [System.Serializable]
-    public class DecisionContextVisualiser        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
-    {
-        [HideInInspector]
-        public string name;
-        public float rating;
-
-        public Decision decision; //what are we trying to do?
-        public AIController aiController; //who s asking?
-
-        public SensedEntityInfo targetEntity; //Who is the target of my action
-        public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
-
-        [System.Serializable]
-        public class ConsiderationVisualiser
-        {
-            [SerializeField] string considerationName;
-            [SerializeField] float input;
-            [SerializeField] float rating;
-
-            public ConsiderationVisualiser(string considerationName, float input, float rating)
-            {
-                this.considerationName = considerationName;
-                this.input = input;
-                this.rating = rating;
-            }
-        }
-
-        [SerializeField] ConsiderationVisualiser[] considerationVisualisers;
-
-        public DecisionContextVisualiser(DecisionContext context)
-        {
-            this.name = context.decision.name;
-            this.decision = context.decision;
-            this.aiController = context.aiController;
-            this.targetEntity = context.targetEntity;//new SensedEntityInfo(context.targetEntity);  
-            this.targetTacticalPoint = context.targetTacticalPoint;//new SensedTacticalPointInfo(context.targetTacticalPoint);
-            rating = context.rating;
-
-            Consideration[] considerations;
-            considerations = context.decision.GetConsiderations();
-            considerationVisualisers = new ConsiderationVisualiser[considerations.Length];
-
-            for (int i = 0; i < considerationVisualisers.Length; i++)
-            {
-                considerationVisualisers[i] = new ConsiderationVisualiser(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
-            }
-        }
-    }
+   
 
     [System.Serializable]
     // Holds an array of all possible decisions, rates them and decides which to execute.
     // Holds an internal statemachine concerning current states executing
     public class DecisionMaker
     {
+        [System.Serializable]
+        public class Memory
+        {
+            //creates a lot of garbage?
+            [System.Serializable]
+            public class DecisionContextMemory        //as decision context objects are reused, this visualiser shows which context was use for this specific instance
+            {
+                [HideInInspector]
+                public string name;
+                public float rating;
+                public float weight;
+
+                public Decision decision; //what are we trying to do?
+                public AIController aiController; //who s asking?
+
+                public GameEntity targetEntity; //Who is the target of my action
+                public TacticalPoint targetTacticalPoint; //Who is the target of my action
+
+                public float timeOfDecison;
+                //public bool wasSelected;
+
+                [System.Serializable]
+                public class ConsiderationMemory
+                {
+                    public string considerationName;
+                    public float input;
+                    public float rating;
+
+                    public ConsiderationMemory(string considerationName, float input, float rating)
+                    {
+                        this.considerationName = considerationName;
+                        this.input = input;
+                        this.rating = rating;
+                    }
+                }
+
+                public ConsiderationMemory[] considerationsMemory;
+
+                public DecisionContextMemory(DecisionContext context, float weight)
+                {
+                    this.name = context.decision.name;
+                    rating = context.rating;
+                    this.weight = weight;
+                    this.decision = context.decision;
+                    this.aiController = context.aiController;
+                    timeOfDecison = Time.time;
+
+                    try{  this.targetEntity = context.targetEntity.entity;  }
+                    catch (System.Exception e) { }
+
+                    try { this.targetTacticalPoint = context.targetTacticalPoint.tacticalPoint; }
+                    catch (System.Exception e) { }
+
+                    Consideration[] considerations;
+                    considerations = context.decision.GetConsiderations();
+                    considerationsMemory = new ConsiderationMemory[considerations.Length];
+
+                    for (int i = 0; i < considerationsMemory.Length; i++)
+                    {
+                        considerationsMemory[i] = new ConsiderationMemory(considerations[i].name, considerations[i].GetConsiderationInput(context), considerations[i].GetConsiderationRating(context));
+                    }
+                }
+
+
+            }
+
+
+            Queue<DecisionContextMemory> selectedDecisionsRememberedQueue = new Queue<DecisionContextMemory>();
+            public int numberOfPriorSelectedDecisionsRemembered = 8;
+            public DecisionContextMemory[] selectedDecisionsRemembered; //visualised as sorted array
+
+            public List<DecisionContextMemory> lastDecisionsRemembered = new List<DecisionContextMemory>();
+
+
+            //1
+            public void CleanUpLastDecisionRemembered()
+            {
+                lastDecisionsRemembered.Clear();
+            }
+
+            //2
+            public void AddToLastDecisionsRemembered(DecisionContext context, float weight)
+            {
+                lastDecisionsRemembered.Add(new DecisionContextMemory(context, weight));
+            }
+
+            //3
+            public void SortLastDecisionsRemembered()
+            {
+                //sorted by weight
+                lastDecisionsRemembered.Sort((p1, p2) => p1.rating.CompareTo(p2.rating));
+                lastDecisionsRemembered.Reverse();
+            }
+
+            public void OnSelectedNewDecision(DecisionContext context)
+            {
+                //add to queue
+                selectedDecisionsRememberedQueue.Enqueue(new DecisionContextMemory(context, 0));
+                //cut queue if necessary
+                while(selectedDecisionsRememberedQueue.Count> numberOfPriorSelectedDecisionsRemembered)
+                {
+                    selectedDecisionsRememberedQueue.Dequeue();
+                }
+                //convert queue to array
+                selectedDecisionsRemembered = new DecisionContextMemory[selectedDecisionsRememberedQueue.Count];
+                selectedDecisionsRememberedQueue.CopyTo(selectedDecisionsRemembered, 0);
+                System.Array.Reverse(selectedDecisionsRemembered);
+            }
+
+        }
+
+
+
+
         public string name = "new Layer";
 
         public enum DecisionMethod
@@ -82,29 +147,35 @@ namespace BenitosAI
        
         //[Space(5)]
        // public List<DecisionContext> currentDecisionContexts = new List<DecisionContext>();
-        [Space(10)]
-        public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
-        [Space(5)]
-        public DecisionContextVisualiser lastSelectedDecisionContextVisualiser;
+        //[Space(10)]
+        //public List<DecisionContextVisualiser> currentDecisionContextsVisualisation = new List<DecisionContextVisualiser>();
+       // [Space(5)]
+        //public DecisionContextVisualiser lastSelectedDecisionContextVisualiser;
         public DecisionContext lastSelectedDecisionContext = new DecisionContext();
 
         //only used if memory is used
-        DecisionMakerMemory memory;
-        int decisionMakerLayer;
+        //DecisionMakerMemory memory;
+        [Header("Memory")]
+        [SerializeField] bool useMemory;
+        public Memory memory;
+       // int decisionMakerLayer;
 
-        public void SetUpDecisionLayer(AIController aiController, DecisionMakerMemory memory, int decisionMakerLayer)
+        //public void SetUpDecisionLayer(AIController aiController, DecisionMakerMemory memory, int decisionMakerLayer)
+        public void SetUpDecisionLayer(AIController aiController)//, int decisionMakerLayer)
         {
             this.aiController = aiController;
 
-            this.memory = memory;
-            this.decisionMakerLayer = decisionMakerLayer;
+            //this.memory = memory;
+            //this.decisionMakerLayer = decisionMakerLayer;
         }
 
         public void Decide()  //the parameters are only used if memory is used
         {
             UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Decide");
 
-            currentDecisionContextsVisualisation.Clear();
+            //currentDecisionContextsVisualisation.Clear();
+            if (useMemory) memory.CleanUpLastDecisionRemembered();
+
 
             //scores all decisions, select the best one, and create new state if this decision is different than the previous one
             float currentRating = 0;
@@ -120,12 +191,11 @@ namespace BenitosAI
                 {
                     //add contexes to all current contexes
 
-                    if (memory != null)
-                    {
-                        //send current context to memory
-                        memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j], decisions[i].weigt);
-                    }
-                    currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
+
+                   // if (useMemory) memory.RememberContext(decisionMakerLayer, decisionContexesToAdd[j], decisions[i].weigt);
+                    if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
+
+                    //currentDecisionContextsVisualisation.Add(new DecisionContextVisualiser(decisionContexesToAdd[j]));
 
                     currentRating = decisionContexesToAdd[j].rating;
                     if (currentRating > bestRatingSoFar)
@@ -136,6 +206,8 @@ namespace BenitosAI
                     }
                 }
             }
+
+            if (useMemory) memory.SortLastDecisionsRemembered();
 
             if(bestRatedDecisionContext != null)
             {
@@ -180,16 +252,17 @@ namespace BenitosAI
 
                 //lastSelectedDecisionContext = Copy decisionContext;
                 lastSelectedDecisionContext.SetUpContext(decisionContext);
-                lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(decisionContext);
+                //lastSelectedDecisionContextVisualiser = new DecisionContextVisualiser(decisionContext);
 
-                if (memory != null)
-                {
+                if (useMemory) memory.OnSelectedNewDecision(decisionContext);
+                //if (memory != null)
+                //{
                     //send current context to memory
-                    memory.RememberSelectedContext(decisionMakerLayer, decisionContext);
-                }
+                 //   memory.RememberSelectedContext(decisionMakerLayer, decisionContext);
+                //}
 
             }
-            else
+            /*else
             {
                 if(memory != null)
                 {
@@ -197,7 +270,7 @@ namespace BenitosAI
                     memory.RememberSelectedContextSameAsLastCycle(decisionMakerLayer);
                 }
                 //Debug.Log("new decision context: " + decisionContext.decision.name + " was the same as last:" + lastSelectedDecisionContext.decision.name);
-            }
+            }*/
 
         }
 

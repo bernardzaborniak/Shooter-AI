@@ -15,7 +15,7 @@ namespace BenitosAI
         public TextMeshProUGUI tmp_considerationInput;
         public TextMeshProUGUI tmp_considerationOutput;
 
-        public void SetUp(DecisionMemoryItem.ConsiderationMemory considerationMemory)
+        public void SetUp(DecisionMaker.Memory.DecisionContextMemory.ConsiderationMemory considerationMemory)
         {
             tmp_considerationName.text = considerationMemory.considerationName;
             tmp_considerationInput.text = considerationMemory.input.ToString("F");

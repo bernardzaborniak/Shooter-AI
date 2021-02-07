@@ -23,30 +23,31 @@ namespace BenitosAI
         float timeWhenDecided;
 
         Transform referencedObjectTransform;
-        AIVisualisationManager managerReference;
+        AIVisualisationManager managerReference; //Needed for framing camera - would be better of as a singleton?
 
-        public void SetUp(DecisionMemoryItem memoryItem, AIVisualisationManager managerReference, bool selectedDecision = false)
+        public void SetUp(DecisionMaker.Memory.DecisionContextMemory memoryItem, AIVisualisationManager managerReference)//, bool selectedDecision = false)
         {
             tmp_decisionName.text = memoryItem.decision.name;
-            tmp_weight.text = memoryItem.decisionWeight.ToString("F2");
+            //tmp_weight.text = memoryItem.decisionWeight.ToString("F2");
+            tmp_weight.text = memoryItem.weight.ToString("F2");
             if (memoryItem.rating == -1)
             {
                 tmp_rating.text = "reject";
             }
-            else if (selectedDecision)
+            /*else if (selectedDecision)
             {
                 tmp_rating.text = memoryItem.rating.ToString("F2") + " [S]";
-            }
+            }*/
             else
             {
                 tmp_rating.text = memoryItem.rating.ToString("F2");
             }
             
-            tmp_timeSinceDecided.text = memoryItem.timeWhenDecided.ToString("F2");
+            tmp_timeSinceDecided.text = memoryItem.timeOfDecison.ToString("F2");
             tmp_considerationNumber.text = memoryItem.decision.GetConsiderations().Length.ToString();
 
 
-            timeWhenDecided = memoryItem.timeWhenDecided;
+            timeWhenDecided = memoryItem.timeOfDecison;
 
             // Set up for camera framing
             this.managerReference = managerReference;

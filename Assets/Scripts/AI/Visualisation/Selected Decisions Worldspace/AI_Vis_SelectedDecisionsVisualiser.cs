@@ -21,16 +21,16 @@ namespace BenitosAI
         public TMP_Text tmp_decision2Rating;
 
 
-        public void UpdateVisualiser(Vector3 cameraForward, DecisionMemoryItem selectedDecision1, DecisionMemoryItem selectedDecision2)
+        public void UpdateVisualiser(Vector3 cameraForward, DecisionMaker.Memory.DecisionContextMemory selectedDecision1, DecisionMaker.Memory.DecisionContextMemory selectedDecision2)
         {
             objectToAlignToCamera.rotation = Quaternion.LookRotation(cameraForward);
 
             tmp_decision1.text = selectedDecision1.decision.name;
-            tmp_timeSinceSelectedDecision1.text = (Time.time - selectedDecision1.timeWhenDecided).ToString("F2");
+            tmp_timeSinceSelectedDecision1.text = (Time.time - selectedDecision1.timeOfDecison).ToString("F2");
             tmp_decision1Rating.text = selectedDecision1.rating.ToString("F2");
 
             tmp_decision2.text = selectedDecision2.decision.name;
-            tmp_timeSinceSelectedDecision2.text = (Time.time - selectedDecision2.timeWhenDecided).ToString("F2");
+            tmp_timeSinceSelectedDecision2.text = (Time.time - selectedDecision2.timeOfDecison).ToString("F2");
             tmp_decision2Rating.text = selectedDecision2.rating.ToString("F2");
         }
     }
