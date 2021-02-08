@@ -25,9 +25,13 @@ MonoBehaviour:
   exampleOutput5: 0
   considerationInput: {fileID: 11400000, guid: 6d94c6711557e2a4aa199770780acea3, type: 2}
   min: 0
-  max: 30
+  max: 60
   desiredFloatValue: 0
   weaponID: 0
+  tPointEvaluationCrouching: 0
+  tPointEvaluationType: 0
+  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
+  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
     curveType: 2
     bi_threshold: 0.5

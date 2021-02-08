@@ -219,7 +219,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
 
         public bool IsWaitingForExecution()
         {
-            return orderExecutionStatus == OrderExecutionStatus.ScheduledForAbort || orderExecutionStatus == OrderExecutionStatus.Ordered;
+            return orderExecutionStatus == OrderExecutionStatus.Ordered;
             //return orderExecutionStatus == OrderExecutionStatus.Ordered;
         }
 

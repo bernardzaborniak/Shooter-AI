@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BenitosAI
 {
     // Package of Information concerning a decision
-   // [System.Serializable] //Only for Debug purposes
+    // [System.Serializable] //Only for Debug purposes
     public class DecisionContext
     {
         public float rating;
@@ -18,7 +18,7 @@ namespace BenitosAI
         // Optional
         public SensedEntityInfo targetEntity; //Who is the target of my action
         public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
-    
+
         public DecisionContext()
         {
 
@@ -53,11 +53,11 @@ namespace BenitosAI
         {
             if (otherContext == null) return false;
 
-            if(decision == otherContext.decision)
+            if (decision == otherContext.decision)
             {
-                if(targetEntity == otherContext.targetEntity)
+                if (targetEntity == otherContext.targetEntity)
                 {
-                    if(targetTacticalPoint == otherContext.targetTacticalPoint)
+                    if (targetTacticalPoint == otherContext.targetTacticalPoint)
                     {
                         return true;
                     }
@@ -70,24 +70,26 @@ namespace BenitosAI
 
         public void RateContext(Consideration[] considerations, float weight, float discardThreshold)
         {
-                float score = weight;
+            float score = weight;
 
-                for (int c = 0; c < considerations.Length; c++)
+            for (int c = 0; c < considerations.Length; c++)
+            {
+                score *= considerations[c].GetConsiderationRating(this);
+
+                if (score < discardThreshold)
                 {
-                    score *= considerations[c].GetConsiderationRating(this);
-
-                    if (score < discardThreshold)
-                    {
-                        score = -1;
-                        rating = score;
-                        return ;
-                    }
+                    score = -1;
+                    rating = score;
+                    return;
                 }
+            }
 
-                //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
-                score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+            //Add makeup Value / Compensation Factor - as you multiply normalized values, teh total drops - if we dont do this more considerations will result in a lower weight - according to Mark Dave and a tipp from Ben Sizer
+            score /= weight;    
+            score += score * ((1 - score) * (1 - (1 / considerations.Length)));
+            score *= weight;
 
-                rating = score;
+            rating = score;
         }
     }
 }

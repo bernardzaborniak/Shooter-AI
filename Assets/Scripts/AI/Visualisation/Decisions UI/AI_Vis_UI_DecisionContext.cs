@@ -33,7 +33,6 @@ namespace BenitosAI
             {
                 tmp_rating.text = "reject";
             }
-
             else
             {
                 tmp_rating.text = memoryItem.rating.ToString("F2");
@@ -47,9 +46,11 @@ namespace BenitosAI
 
             // Set up for camera framing
             this.managerReference = managerReference;
+            
             if(memoryItem.targetEntity != null)
             {
                 referencedObjectTransform = memoryItem.targetEntity.transform;
+                tmp_targetName.text = memoryItem.targetEntityName;
             }    
             else if(memoryItem.targetTacticalPoint != null)
             {
@@ -57,8 +58,11 @@ namespace BenitosAI
                 tmp_targetName.text = memoryItem.targetTacticalPoint.name + memoryItem.targetTacticalPoint.GetHashCode();
 
             }
+            else
+            {
+                tmp_targetName.text = memoryItem.targetEntityName;
+            }
 
-            tmp_targetName.text = memoryItem.targetEntityName;
 
 
             Update();

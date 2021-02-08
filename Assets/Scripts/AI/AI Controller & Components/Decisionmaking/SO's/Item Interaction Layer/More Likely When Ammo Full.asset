@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: When Ammo Full
+  m_Name: More Likely When Ammo Full
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
@@ -28,6 +28,10 @@ MonoBehaviour:
   max: 0
   desiredFloatValue: 0
   weaponID: 1
+  tPointEvaluationCrouching: 0
+  tPointEvaluationType: 0
+  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
+  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
     curveType: 2
     bi_threshold: 0.5

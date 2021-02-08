@@ -56,7 +56,7 @@ namespace BenitosAI
                 public DecisionContextMemory(DecisionContext context, float weight)
                 {
                     this.name = context.decision.name;
-                    rating = context.rating;
+                    this.rating = context.rating;
                     this.weight = weight;
                     this.decision = context.decision;
                     this.aiController = context.aiController;
