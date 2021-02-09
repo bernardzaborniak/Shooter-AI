@@ -8,12 +8,10 @@ namespace BenitosAI
 
     public class DCC_HS_TPointCoverPeek : DecisionContextCreator
     {
-        public int maxTacticalPointTargetsPerDecision = 4;
+        public int maxTacticalPointTargetsPerDecision = 10;
+
         Queue<DecisionContext> contexesPool = new Queue<DecisionContext>();
-
         DecisionContext[] contexesToReturn;
-        SensedTacticalPointInfo[] coverShootPoints;
-
         private void OnEnable()
         {
             for (int i = 0; i < maxTacticalPointTargetsPerDecision; i++)
@@ -24,25 +22,29 @@ namespace BenitosAI
 
         public override DecisionContext[] GetDecisionContexts(Decision decision, AIController aiController)
         {
-            coverShootPoints = ((AIController_HumanoidSoldier)aiController).blackboard.tPCoverPeekInfos;
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)aiController).blackboard;
 
-            contexesToReturn = new DecisionContext[coverShootPoints.Length];
+            int coverPeekPointsCountCount = blackboard.tPCoverPeekInfos.Length;
+            if (coverPeekPointsCountCount > maxTacticalPointTargetsPerDecision)
+            {
+                coverPeekPointsCountCount = maxTacticalPointTargetsPerDecision;
+            }
+            contexesToReturn = new DecisionContext[coverPeekPointsCountCount];
 
-            for (int i = 0; i < contexesToReturn.Length; i++)
+            for (int i = 0; i < coverPeekPointsCountCount; i++)
             {
                 contexesToReturn[i] = contexesPool.Dequeue();
-                contexesToReturn[i].SetUpContext(decision, aiController, null,  coverShootPoints[i]);
+                contexesToReturn[i].SetUpContext(decision, aiController, null, blackboard.tPCoverPeekInfos[i]);
             }
 
             //return them back to the pool
-            for (int i = 0; i < contexesToReturn.Length; i++)
+            for (int i = 0; i < coverPeekPointsCountCount; i++)
             {
                 contexesPool.Enqueue(contexesToReturn[i]);
             }
-
-
 
             return contexesToReturn;
         }
     }
 }
+

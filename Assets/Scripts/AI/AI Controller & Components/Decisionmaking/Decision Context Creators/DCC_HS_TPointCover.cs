@@ -43,8 +43,6 @@ namespace BenitosAI
                 contexesPool.Enqueue(contexesToReturn[i]);
             }
 
-
-
             return contexesToReturn;
         }
     }

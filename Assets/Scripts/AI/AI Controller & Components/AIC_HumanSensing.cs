@@ -34,9 +34,9 @@ namespace BenitosAI
         
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         [SerializeField] int maxTPointsSensed = 30;
-        [Tooltip("limit their number, so there will be less cover points ignored")]
-        [SerializeField] int maxOpenFieldPointsSensed = 15;
-        [SerializeField] int maxTCoverShootPointsSensed = 5;
+        //[Tooltip("limit their number, so there will be less cover points ignored")]
+        //[SerializeField] int maxOpenFieldPointsSensed = 15;
+       // [SerializeField] int maxTCoverShootPointsSensed = 5;
 
 
         [Header("Optimisation")]
@@ -146,8 +146,10 @@ namespace BenitosAI
 
                 HashSet<(TacticalPoint,float)> coverPointsSensed = new HashSet<(TacticalPoint, float)>();
                 HashSet<(TacticalPoint, float)> openFieldPointsSensed = new HashSet<(TacticalPoint, float)>();
+                HashSet<(TacticalPoint, float)> coverPeekPointSensed = new HashSet<(TacticalPoint, float)>();
 
-                int openFieldPointsAlreadySensed = 0;
+
+                //int openFieldPointsAlreadySensed = 0;
 
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
@@ -162,47 +164,24 @@ namespace BenitosAI
                             {
                                 coverPointsSensed.Add((tPoint, currentDistance));
                             }
-                            else if(openFieldPointsAlreadySensed< maxOpenFieldPointsSensed)
+                            /*else if(openFieldPointsAlreadySensed< maxOpenFieldPointsSensed)
                             {
                                 if (tPoint.tacticalPointType == TacticalPointType.OpenFieldPoint)
                                 {
                                     openFieldPointsAlreadySensed++;
                                     openFieldPointsSensed.Add((tPoint, currentDistance));
                                 }
+                            }*/
+                            // I started ignoring open Field points as i dont have a use for them yet
+                            else if(tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+                            {
+                                coverPeekPointSensed.Add((tPoint, currentDistance));
                             }
-                            //cover shoot points are ignored at this step, they dont have a collider
                         }
                     }
                 }
 
-                //Add coverPeekPoints if i am inside a point
-                HashSet<(TacticalPoint, float)> coverPeekPointInfos = new HashSet<(TacticalPoint, float)>();
-
-                TacticalPoint currentlyUsedPoint = blackboard.GetCurrentlyUsedTacticalPoint();
-                TacticalPoint[] currentCoverPeekPoints = new TacticalPoint[0];
-                if (currentlyUsedPoint != null)
-                {
-                    //Debug.Log("I am inside Cover Point Point");
-                    if(currentlyUsedPoint.tacticalPointType == TacticalPointType.CoverPoint) 
-                    {
-                        currentCoverPeekPoints = currentlyUsedPoint.coverPeekPoints;
-                    }
-                    else if(currentlyUsedPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
-                    {
-                        //Debug.Log("I am inside Cover Peek Point");
-                        currentCoverPeekPoints = currentlyUsedPoint.coverPointAssignedTo.coverPeekPoints;
-                    }
-
-                    for (int i = 0; i < currentCoverPeekPoints.Length; i++)
-                    {
-                        TacticalPoint tPoint = currentCoverPeekPoints[i];
-                        //Debug.Log("Sensed new Cover Peek Point: " + tPoint.GetHashCode());
-                        coverPeekPointInfos.Add((tPoint, Vector3.Distance(myPosition, tPoint.GetPointPosition())));
-                    }
-
-                }
-
-                blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverPeekPointInfos);
+                blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverPeekPointSensed);
 
                 #endregion
 
