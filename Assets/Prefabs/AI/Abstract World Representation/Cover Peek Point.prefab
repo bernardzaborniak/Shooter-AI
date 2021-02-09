@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 902266486636468215, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 9043686618385529948, guid: 7aee00115b5b49c4783f66140fb3f5ed, type: 3}
+      objectReference: {fileID: -6494281647793862075, guid: b473cf8b722f2ad4397c7e0223213524, type: 3}
     - target: {fileID: 2269259421604854345, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -19,6 +19,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: meshFilter
+      value: 
+      objectReference: {fileID: 1435235533121248114}
+    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: crouchedMesh
+      value: 
+      objectReference: {fileID: 8179290374832772292, guid: 049e1709ad16c2949a943c84bb59c2cd, type: 3}
+    - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+      propertyPath: standingMesh
+      value: 
+      objectReference: {fileID: -6494281647793862075, guid: b473cf8b722f2ad4397c7e0223213524, type: 3}
     - target: {fileID: 4265351544102868340, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
       propertyPath: pointRenderer
       value: 
@@ -116,5 +128,10 @@ PrefabInstance:
 --- !u!23 &4928979965720268 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2269259421604854345, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
+  m_PrefabInstance: {fileID: 2265175966080896133}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &1435235533121248114 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: 902266486636468215, guid: ca35dd84968f68042a8a57b4ebcc9724, type: 3}
   m_PrefabInstance: {fileID: 2265175966080896133}
   m_PrefabAsset: {fileID: 0}

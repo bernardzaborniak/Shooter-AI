@@ -21,7 +21,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
     [Header("Generation Params")]
     public float gridSize;
     public float generatedPointRadius;
-    public int generatedPointCapacity;
+    //public int generatedPointCapacity;
     BoxCollider generatorBoundingBox;
 
     public float minDistanceOfGeneratedPointToNavmeshVertex;
@@ -173,7 +173,7 @@ public class TacticalPointsGeneratorBox : MonoBehaviour
                     spawnedPoint.transform.rotation = Quaternion.identity; //let them all have the same rotation for easier comparing
 
                     TacticalPoint tacticalPoint = spawnedPoint.GetComponent<TacticalPoint>();
-                    tacticalPoint.capacity = generatedPointCapacity;
+                    //tacticalPoint.capacity = generatedPointCapacity;
                     tacticalPoint.radius = generatedPointRadius;
 
                 }

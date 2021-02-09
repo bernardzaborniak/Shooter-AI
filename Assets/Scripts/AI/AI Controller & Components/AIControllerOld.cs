@@ -257,14 +257,14 @@ namespace BenitosAI
                     }
                     else
                     {
-                        if ((usedTacticalPoint).stanceType == 0)
-                        {
-                            characterController.ChangeCharacterStanceToStandingCombatStance();
-                        }
-                        else if ((usedTacticalPoint).stanceType == 1)
-                        {
+                        //if ((usedTacticalPoint).stanceType == 0)
+                        //{
+                       //     characterController.ChangeCharacterStanceToStandingCombatStance();
+                        //}
+                        //else if ((usedTacticalPoint).stanceType == 1)
+                        //{
                             characterController.ChangeCharacterStanceToCrouchingStance();
-                        }
+                       // }
 
                         //check if the current cover isnt as good as it was anymore
                         if (Vector3.Angle(directionToNearestEnemy, usedTacticalPoint.transform.forward) > 80)
@@ -288,14 +288,14 @@ namespace BenitosAI
                     }
                     else
                     {
-                        if ((usedTacticalPoint).stanceType == 0)
-                        {
+                        //if ((usedTacticalPoint).stanceType == 0)
+                        //{
                             characterController.ChangeCharacterStanceToStandingCombatStance();
-                        }
-                        else if ((usedTacticalPoint).stanceType == 1)
-                        {
-                            characterController.ChangeCharacterStanceToCrouchingStance();
-                        }
+                        //}
+                       // else if ((usedTacticalPoint).stanceType == 1)
+                        //{
+                         //   characterController.ChangeCharacterStanceToCrouchingStance();
+                        //}
 
                         //check if the current cover isnt as good as it was anymore
                         if (Vector3.Angle(directionToNearestEnemy, usedTacticalPoint.transform.forward) > 80)

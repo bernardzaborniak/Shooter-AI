@@ -33,7 +33,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
                     friendliesInfo[i] = (friendlyTransforms[i].position, Vector3.Distance(friendlyTransforms[i].position, tPointToTest.GetPointPosition()));
                 }
 
-            tPointToTest.DetermineQualityOfCover(type, threatsInfo, friendliesInfo, crouchTest);
+            tPointToTest.DetermineQualityOfCoverOld(type, threatsInfo, friendliesInfo, crouchTest);
             //}
 
             

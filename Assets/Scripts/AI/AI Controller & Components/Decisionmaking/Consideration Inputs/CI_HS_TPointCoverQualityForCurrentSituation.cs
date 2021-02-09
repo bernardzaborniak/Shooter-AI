@@ -54,7 +54,7 @@ namespace BenitosAI
             // {
             //     Debug.Log("NANANANANA");
             // }
-            float rating = decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching);
+            float rating = decisionContext.targetTacticalPoint.tacticalPoint.DetermineQualityOfCoverOld(consideration.tPointEvaluationType, threatsInfo, friendliesInfo, consideration.tPointEvaluationCrouching);
             UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;
