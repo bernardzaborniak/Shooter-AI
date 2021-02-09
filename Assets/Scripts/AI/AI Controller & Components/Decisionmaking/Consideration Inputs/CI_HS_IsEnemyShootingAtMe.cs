@@ -19,7 +19,7 @@ namespace BenitosAI
                 //if(infos[i].entityTags.actionTags)
                 foreach (EntityActionTag tag in infos[i].entityTags.actionTags)
                 {
-                    if(tag.type == EntityActionTagType.ShootingAtTarget)
+                    if(tag.type == EntityActionTag.Type.ShootingAtTarget)
                     {
                         if(tag.shootAtTarget == blackboard.GetMyEntity())
                         {

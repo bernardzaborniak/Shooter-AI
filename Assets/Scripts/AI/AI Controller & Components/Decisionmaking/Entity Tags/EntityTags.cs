@@ -7,9 +7,16 @@ namespace BenitosAI
     public class EntityTags : MonoBehaviour
     {
         //[Header("Tagging System")]
+  
+        //action tags
         public HashSet<EntityActionTag> actionTags = new HashSet<EntityActionTag>();
-
         public EntityActionTag[] actionTagsVisualised;
+
+        //threat tags
+        [Tooltip("What kind of threats does this unit pose?")]
+        public EntityThreatTag[] threatTags;
+        [Tooltip("a rough represantation of how strong this unit is - a normal soldier would be like 1, a mech something like 10-40")]
+        public float strengthLevel;
 
         public void AddEntityActionTags(EntityActionTag[] tagsToAdd)
         {

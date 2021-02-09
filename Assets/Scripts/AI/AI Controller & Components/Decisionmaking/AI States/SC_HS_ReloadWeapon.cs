@@ -31,7 +31,7 @@ namespace BenitosAI
             charController = this.aiController.characterController;
 
             actionTags = new EntityActionTag[1];
-            actionTags[0] = new EntityActionTag(EntityActionTagType.ReloadingWeapon);
+            actionTags[0] = new EntityActionTag(EntityActionTag.Type.ReloadingWeapon);
         }
 
         public override void OnStateEnter()

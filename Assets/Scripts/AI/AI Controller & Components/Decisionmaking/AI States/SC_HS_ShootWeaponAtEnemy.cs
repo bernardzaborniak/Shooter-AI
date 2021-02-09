@@ -39,7 +39,7 @@ namespace BenitosAI
             this.allowedWeaponAimingErrorAngle = allowedWeaponAimingErrorAngle;
 
             actionTags = new EntityActionTag[1];
-            actionTags[0] = new EntityActionTag(EntityActionTagType.ShootingAtTarget);
+            actionTags[0] = new EntityActionTag(EntityActionTag.Type.ShootingAtTarget);
             actionTags[0].shootAtTarget = target.entity;
         }
 

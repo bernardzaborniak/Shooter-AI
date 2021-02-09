@@ -4,36 +4,39 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    //this tags are added automaticly by decisions & the ai controller
 
-    public enum EntityActionTagType
-    {
-        //Soldier Positionin
-        /* Idle,
-         Sprinting,
-         Walking,
-         InCoverHiding,
-         InCoverPeeking,
-         //Soldier Combat & Interaction
-         InteractionIdle,
-         ChangingWeapon,
-         ReloadingWeapon,
-         ShootingAt,
-         ThrowingGrenade
-         //other actions for other units will be listed here too...*/
-
-        ShootingAtTarget,
-        ReloadingWeapon,
-        ThrowingGrenade
-
-    }
+  
 
     [System.Serializable]
     public class EntityActionTag
     {
-        public EntityActionTagType type;
+        public enum Type
+        {
+            //Soldier Positionin
+            /* Idle,
+             Sprinting,
+             Walking,
+             InCoverHiding,
+             InCoverPeeking,
+             //Soldier Combat & Interaction
+             InteractionIdle,
+             ChangingWeapon,
+             ReloadingWeapon,
+             ShootingAt,
+             ThrowingGrenade
+             //other actions for other units will be listed here too...*/
+
+            ShootingAtTarget,
+            ReloadingWeapon,
+            ThrowingGrenade
+
+        }
+
+        public Type type;
         public GameEntity shootAtTarget;
 
-        public EntityActionTag(EntityActionTagType type)
+        public EntityActionTag(Type type)
         {
             this.type = type;
         }

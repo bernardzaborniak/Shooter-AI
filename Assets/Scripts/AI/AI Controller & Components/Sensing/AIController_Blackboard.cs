@@ -71,6 +71,9 @@ namespace BenitosAI
             UpdateEntityInfos(ref newEnemyInfos, ref enemyInfos, maxEnemyInfosCount, ref meanThreatDirection);
             UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount, ref meanFriendlyDirection);
 
+            UpdateCurrentBalanceOfPower();
+
+            #region Debug visualisation -> delete later
             if (meanThreatDirection != Vector3.zero)
             {
                 meanThreatDirectionVisualiser.forward = meanThreatDirection;
@@ -91,6 +94,9 @@ namespace BenitosAI
                 meanFriendlyDirectionVisualiser.gameObject.SetActive(false);
 
             }
+
+            #endregion
+
         }
 
         public void UpdateTPointInfos( HashSet<(TacticalPoint, float)> newTPCoverInfos,  HashSet<(TacticalPoint, float)> newTPOpenFieldInfos,  HashSet<(TacticalPoint, float)> newTPCoverPeekInfos)
@@ -153,6 +159,32 @@ namespace BenitosAI
                 meanDirectionToUpdate += (infosToUpdate[i].entity.transform.position - myEntity.transform.position).normalized * (1000 - infosToUpdate[i].lastDistanceMeasured);
             }
             meanDirectionToUpdate.Normalize();
+        }
+
+        void UpdateCurrentBalanceOfPower()
+        {
+            float enemyCombinedStrength = 0;
+            float friendlyCombinedStrength = 0;
+
+            for (int i = 0; i < enemyInfos.Length; i++)
+            {
+                enemyCombinedStrength += enemyInfos[i].entityTags.strengthLevel;
+            }
+
+            for (int i = 0; i < friendlyInfos.Length; i++)
+            {
+                friendlyCombinedStrength += friendlyInfos[i].entityTags.strengthLevel;
+            }
+            friendlyCombinedStrength += myEntity.entityTags.strengthLevel;
+
+            if (enemyCombinedStrength == 0)
+            {
+                currentBalanceOfPower = 1;
+            }
+            else 
+            {
+                currentBalanceOfPower = friendlyCombinedStrength / enemyCombinedStrength;
+            }
         }
 
         void UpdateTPointInfos(ref HashSet<(TacticalPoint, float)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
