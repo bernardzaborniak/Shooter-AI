@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Run To Middle
+  m_Name: Advance to Position - Walk
   m_EditorClassIdentifier: 
   decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-  correspondingAiStateCreator: {fileID: 11400000, guid: 4f01a15be2c18564993e54ca5d3bf0c2, type: 2}
-  considerations:
-  - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
-  - {fileID: 11400000, guid: 710261104c64c7f44903fa367f83494f, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: 0ce2f6775463a38418223fa5f4ff72b6, type: 2}
+  considerations: []

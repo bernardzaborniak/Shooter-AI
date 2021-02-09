@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Hold Position Idle
+  m_Name: Hold Position Combat Stance Standing
   m_EditorClassIdentifier: 
   decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-  correspondingAiStateCreator: {fileID: 11400000, guid: fee5bf6fe80012d4392193111e6868d2, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
   considerations:
   - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
-  - {fileID: 11400000, guid: 9a0b72105fe7d7140b855aea6641a29c, type: 2}

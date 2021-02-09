@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
+  m_Name: Go to TPCoverPeek - Walk
+  m_EditorClassIdentifier: 
+  decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
+  correspondingAiStateCreator: {fileID: 11400000, guid: b4a491b24ade53549b29bcc4e9829a09, type: 2}
+  considerations: []

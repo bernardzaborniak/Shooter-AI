@@ -971,26 +971,32 @@ MonoBehaviour:
     - name: 'Run To Middle '
       decision: {fileID: 11400000, guid: 6fcd3f9116695334c94ca9b170dec177, type: 2}
       weigt: 1
-    - name: 'Walk To Desired Weapon Range Combat Stance Standing '
-      decision: {fileID: 11400000, guid: 517b72124801270408cd9eb1554e72c2, type: 2}
-      weigt: 2
-    - name: 'Hold Position Combat Stance Standing '
-      decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
-      weigt: 2
     - name: 'Hold Position Idle '
       decision: {fileID: 11400000, guid: 735aedd5fb062d84786683278269ea7b, type: 2}
       weigt: 1
+    - name: 'Hold Position Combat Stance Standing '
+      decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
+      weigt: 2
     - name: 'Hold Position Combat Stance Crouching '
       decision: {fileID: 11400000, guid: e9771dd66d5df2141834a708f5c15f4c, type: 2}
       weigt: 2
-    - name: '0 Hide In Cover Crouched '
-      decision: {fileID: 11400000, guid: a142522b7466a9043aef36fd9ba84531, type: 2}
+    - name: 'Advance to Position - Walk '
+      decision: {fileID: 11400000, guid: 176457d909a3ec34c96cfebb92bdb06f, type: 2}
+      weigt: 2
+    - name: 'Flank To Position - Walk '
+      decision: {fileID: 11400000, guid: bd417fe297336be488ef6d67d071225c, type: 2}
+      weigt: 2
+    - name: 'Fall Back to Position - Walk '
+      decision: {fileID: 11400000, guid: a0a034cfa94498b4d9b6b500d26c4c67, type: 2}
+      weigt: 2
+    - name: 'Fall Back to Position - Sprint '
+      decision: {fileID: 11400000, guid: 96aa97f6f0edeaf4e9902adfad7cab40, type: 2}
+      weigt: 2
+    - name: 'Go to TPCover - Walk '
+      decision: {fileID: 11400000, guid: 1f8e2d63d8775e14b9d2cb2757e45bf7, type: 2}
       weigt: 3
-    - name: '0 Peek From Cover '
-      decision: {fileID: 11400000, guid: ab1d7d3a650a3e7488fa221dfe8a2207, type: 2}
-      weigt: 3
-    - name: '0 Walk To Nearest Fitting Cover '
-      decision: {fileID: 11400000, guid: bfcbd981e770b3a4d8c7490300d4f115, type: 2}
+    - name: 'Go to TPCoverPeek - Walk '
+      decision: {fileID: 11400000, guid: 9441dd53514e14f478fe6dbc87bf2d75, type: 2}
       weigt: 3
     useMemory: 1
     memory:
@@ -1246,6 +1252,7 @@ MonoBehaviour:
   meanFriendlyDirection: {x: 0, y: 0, z: 0}
   meanFriendlyDirectionVisualiser: {fileID: 4386737770532825956}
   currentBalanceOfPower: 0
+  numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds: 0
 --- !u!114 &7864116541130220572
 MonoBehaviour:
   m_ObjectHideFlags: 0
