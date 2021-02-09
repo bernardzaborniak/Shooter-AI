@@ -46,6 +46,15 @@ namespace BenitosAI
 
         #endregion
 
+        //Information Evaluated from Sensing Infos
+        public Vector3 meanThreatDirection;
+        public Transform meanThreatDirectionVisualiser;
+        public Vector3 meanFriendlyDirection;
+        public Transform meanFriendlyDirectionVisualiser;
+
+        [Tooltip("How does it seem who has the advantage right now in fighting?")]
+        public float currentBalanceOfPower;
+
 
         public override void SetUpComponent(GameEntity entity)
         {
@@ -59,112 +68,29 @@ namespace BenitosAI
         {
             //-> The new entities are registered, while the older ones arent forgotten completely.
 
-            UpdateEntityInfos(ref newEnemyInfos, ref enemyInfos, maxEnemyInfosCount);
-            UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount);
+            UpdateEntityInfos(ref newEnemyInfos, ref enemyInfos, maxEnemyInfosCount, ref meanThreatDirection);
+            UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount, ref meanFriendlyDirection);
 
-            #region------------Enemies------------------
-
-            //1. Create dictionary of current infos        
-            /*Dictionary<int,SensedEntityInfo> currentEnemyInfosDict = new Dictionary<int,SensedEntityInfo>(); //the entity hashSets are the keys
-            for (int i = 0; i < enemyInfos.Length; i++)
+            if (meanThreatDirection != Vector3.zero)
             {
-                currentEnemyInfosDict.Add(enemyInfos[i].entity.GetHashCode(), enemyInfos[i]);
+                meanThreatDirectionVisualiser.forward = meanThreatDirection;
+                meanThreatDirectionVisualiser.gameObject.SetActive(true);
             }
-
-            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
-            foreach ((EntitySensingInterface entitySensInterface, float distanceToEntity) newEntityInfoTuple in newEnemyInfos)
+            else
             {
-                int currentKey = newEntityInfoTuple.entitySensInterface.entityAssignedTo.GetHashCode();
-                if (currentEnemyInfosDict.ContainsKey(currentKey))
-                {
-                    // update the current info
-                    currentEnemyInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
-                }
-                else
-                {
-                    // or create & add new info
-                    currentEnemyInfosDict.Add(currentKey, new SensedEntityInfo(newEntityInfoTuple.entitySensInterface, newEntityInfoTuple.distanceToEntity));
-                }
+                meanThreatDirectionVisualiser.gameObject.SetActive(false);
+
             }
-
-            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
-            SensedEntityInfo[] newEnemyInfosSortedArray = new SensedEntityInfo[currentEnemyInfosDict.Count];
-            currentEnemyInfosDict.Values.CopyTo(newEnemyInfosSortedArray,0);
-
-            //4. Sort array according to distance
-            Array.Sort(newEnemyInfosSortedArray,
-            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-            //5 Cut array
-            int newEnemyInfoArraySize = newEnemyInfosSortedArray.Length;
-            if (newEnemyInfoArraySize > maxEnemyInfosCount) newEnemyInfoArraySize = maxEnemyInfosCount;
-
-            enemyInfos = new SensedEntityInfo[newEnemyInfoArraySize];
-
-            for (int i = 0; i < newEnemyInfoArraySize; i++)
+            if (meanFriendlyDirection != Vector3.zero)
             {
-                enemyInfos[i] = newEnemyInfosSortedArray[i];
-
-                //if we still have old info, not updated this frame, "predict" its distance
-                if (enemyInfos[i].frameCountWhenLastSeen != Time.frameCount)
-                {
-                    sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
-                }
+                meanFriendlyDirectionVisualiser.forward = meanFriendlyDirection;
+                meanFriendlyDirectionVisualiser.gameObject.SetActive(true);
             }
-
-            #endregion ------------------------------
-
-            #region------------Friendlies------------------
-
-            //1. Create dictionary of current infos        
-            Dictionary<int, SensedEntityInfo> currentFriendlyInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
-            for (int i = 0; i < friendlyInfos.Length; i++)
+            else
             {
-                currentFriendlyInfosDict.Add(friendlyInfos[i].entity.GetHashCode(), friendlyInfos[i]);
+                meanFriendlyDirectionVisualiser.gameObject.SetActive(false);
+
             }
-
-            //2. Go through new infos, update the infos in idcitionary if ocntains, or create and add new elements to dictionary
-            foreach ((EntitySensingInterface entitySensInterface, float distanceToEntity) newEntityInfoTuple in newFriendlyInfos)
-            {
-                int currentKey = newEntityInfoTuple.entitySensInterface.entityAssignedTo.GetHashCode();
-                if (currentFriendlyInfosDict.ContainsKey(currentKey))
-                {
-                    // update the current info
-                    currentFriendlyInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
-                }
-                else
-                {
-                    // or create & add new info
-                    currentFriendlyInfosDict.Add(currentKey, new SensedEntityInfo(newEntityInfoTuple.entitySensInterface, newEntityInfoTuple.distanceToEntity));
-                }
-            }
-
-            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
-            SensedEntityInfo[] newFriendlyInfosSortedArray = new SensedEntityInfo[currentFriendlyInfosDict.Count];
-            currentFriendlyInfosDict.Values.CopyTo(newFriendlyInfosSortedArray, 0);
-
-            //4. Sort array according to distance
-            Array.Sort(newFriendlyInfosSortedArray,
-            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-            //5 Cut array
-            int newFriendlyInfoArraySize = newFriendlyInfosSortedArray.Length;
-            if (newFriendlyInfoArraySize > maxFriendlyInfosCount) newFriendlyInfoArraySize = maxFriendlyInfosCount;
-
-            friendlyInfos = new SensedEntityInfo[newFriendlyInfoArraySize];
-
-            for (int i = 0; i < newFriendlyInfoArraySize; i++)
-            {
-                friendlyInfos[i] = newFriendlyInfosSortedArray[i];
-
-                //if we still have old info, not updated this frame, "predict" its distance
-                if (friendlyInfos[i].frameCountWhenLastSeen != Time.frameCount)
-                {
-                    sensing.UpdateEntityInfoDistance(ref friendlyInfos[i]);
-                }
-            }*/
-
-            #endregion --------------------------------
         }
 
         public void UpdateTPointInfos( HashSet<(TacticalPoint, float)> newTPCoverInfos,  HashSet<(TacticalPoint, float)> newTPOpenFieldInfos,  HashSet<(TacticalPoint, float)> newTPCoverPeekInfos)
@@ -174,7 +100,7 @@ namespace BenitosAI
             UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos, 10); //it will hopefully never by more than 3
         }
 
-        void UpdateEntityInfos(ref HashSet<(EntitySensingInterface, float)> newEntityInfos, ref SensedEntityInfo[] infosToUpdate, int maxInfosCount)
+        void UpdateEntityInfos(ref HashSet<(EntitySensingInterface, float)> newEntityInfos, ref SensedEntityInfo[] infosToUpdate, int maxInfosCount, ref Vector3 meanDirectionToUpdate)
         {
             //1. Create dictionary of current infos        
             Dictionary<int, SensedEntityInfo> currentEntityInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
@@ -216,13 +142,17 @@ namespace BenitosAI
             int newInfosArraySize = newInfosSortedArray.Length;
             if (newInfosArraySize > maxInfosCount) newInfosArraySize = maxInfosCount;
 
+            //6. create the new updated array
             infosToUpdate = new SensedEntityInfo[newInfosArraySize];
+            meanDirectionToUpdate = Vector3.zero;
 
             for (int i = 0; i < newInfosArraySize; i++)
             {
                 infosToUpdate[i] = newInfosSortedArray[i];
+                //Normalize the direction and multiply by an inverse of distance, so closer objects are weighted more heavily.
+                meanDirectionToUpdate += (infosToUpdate[i].entity.transform.position - myEntity.transform.position).normalized * (1000 - infosToUpdate[i].lastDistanceMeasured);
             }
-
+            meanDirectionToUpdate.Normalize();
         }
 
         void UpdateTPointInfos(ref HashSet<(TacticalPoint, float)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
