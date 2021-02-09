@@ -55,6 +55,10 @@ namespace BenitosAI
         [Tooltip("How does it seem who has the advantage right now in fighting?")]
         public float currentBalanceOfPower;
 
+        public int numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds;
+        (int numOfEnemies,float time) maxNumberOfEnemiesShootingAtMeMemory;
+        
+
 
         public override void SetUpComponent(GameEntity entity)
         {
@@ -72,6 +76,7 @@ namespace BenitosAI
             UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount, ref meanFriendlyDirection);
 
             UpdateCurrentBalanceOfPower();
+            UpdateNumberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds();
 
             #region Debug visualisation -> delete later
             if (meanThreatDirection != Vector3.zero)
@@ -185,6 +190,43 @@ namespace BenitosAI
             {
                 currentBalanceOfPower = friendlyCombinedStrength / enemyCombinedStrength;
             }
+        }
+
+        void UpdateNumberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds()
+        {
+            //1 if the maxNumberOfEnemiesShootingAtMeMemory is older than 3 seconds, reset it to num of enemies 0
+            if(Time.time- maxNumberOfEnemiesShootingAtMeMemory.time > 3)
+            {
+                maxNumberOfEnemiesShootingAtMeMemory.time = Time.time;
+                maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies = 0;
+            }
+            //2. check how mayn enemies are shooting at me this frame
+            int numOfEnemiesShootingAtMeNow = 0;
+            for (int i = 0; i < enemyInfos.Length; i++)
+            {
+                foreach (EntityActionTag tag in enemyInfos[i].entityTags.actionTags)
+                {
+                    if (tag.type == EntityActionTag.Type.ShootingAtTarget)
+                    {
+                        if (tag.shootAtTarget == GetMyEntity())
+                        {
+                            numOfEnemiesShootingAtMeNow++;
+                        }
+                    }
+                }
+            }
+
+            //3. if memory is num0 or the current number of enemies is bigger than memory
+            //-> update max memory
+
+            if (numOfEnemiesShootingAtMeNow > maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies)
+            {
+                maxNumberOfEnemiesShootingAtMeMemory.time = Time.time;
+                maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies = numOfEnemiesShootingAtMeNow;
+            }
+
+            //4.set the current to max memory
+            numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds = maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies;
         }
 
         void UpdateTPointInfos(ref HashSet<(TacticalPoint, float)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)
