@@ -973,7 +973,7 @@ public class TacticalPoint : MonoBehaviour
 
             //Debug.Log("threatsRating: " + threatsRating);
             //Debug.Log("friendlyVisibilityRating: " + friendlyVisibilityRating);
-            endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
+            endResult = threatsRating * 0.8f + friendlyVisibilityRating * 0.2f;
         }
         else if (evaluationType == QualityOfCoverEvaluationType.Moderate2)
         {
@@ -981,10 +981,10 @@ public class TacticalPoint : MonoBehaviour
             float friendlyVisibilityRating = CalculateFriendliesVisibilityRating(friendlies, usedCoverDistanceRating);
 
 
-            endResult = threatsRating * 0.75f + friendlyVisibilityRating * 0.25f;
+            endResult = threatsRating * 0.8f + friendlyVisibilityRating * 0.2f;
 
         }
-        else if (evaluationType == QualityOfCoverEvaluationType.Agressive1)
+        else if (evaluationType == QualityOfCoverEvaluationType.Agressive2)
         {
             //Agressive evaluation: the more enemies in sight, the better + friendlyVisibilityBonus
 
@@ -1005,7 +1005,6 @@ public class TacticalPoint : MonoBehaviour
     {
         //the more enemies are not behind cover and visible to be shot, the better
         float rating = 0;
-        //Debug.Log("rate threats agressively----------------------------------");
         for (int i = 0; i < threats.Length; i++)
         {
             Vector3 directionTowardsThreat = threats[i].threatPosition - GetPointPosition();
@@ -1030,8 +1029,6 @@ public class TacticalPoint : MonoBehaviour
         //the more enemies are behind cover, the better
         float rating = 0;
 
-
-
         for (int i = 0; i < threats.Length; i++)
         {
             Vector3 directionTowardsThreat = threats[i].threatPosition - GetPointPosition();
@@ -1039,8 +1036,9 @@ public class TacticalPoint : MonoBehaviour
 
             if (threats[i].distanceToThreat > usedCoverDistanceRating[index])
             {
-                // coverBetweenPointAndThreat = true;
-                rating += usedCoverQualityRating[index];
+                float modifiedQuality = usedCoverQualityRating[index]; //we rate the quality a bit higher, to reduce fluctuation
+                modifiedQuality += (1 - modifiedQuality) * 0.5f;
+                rating += modifiedQuality;
             }
         }
 
