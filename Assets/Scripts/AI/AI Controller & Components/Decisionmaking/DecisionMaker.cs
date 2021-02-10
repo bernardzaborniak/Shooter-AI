@@ -72,7 +72,7 @@ namespace BenitosAI
                     catch (System.Exception e) { }
 
                     Consideration[] considerations;
-                    considerations = context.decision.GetConsiderations();
+                    considerations = context.decision.considerations;
                     considerationsMemory = new ConsiderationMemory[considerations.Length];
 
                     for (int i = 0; i < considerationsMemory.Length; i++)
@@ -144,12 +144,15 @@ namespace BenitosAI
 
         AIState currentState;
         AIController aiController;
-       
-        DecisionContext lastSelectedDecisionContext = new DecisionContext(); //was public before - does it cause errors?
+
+        Memory.DecisionContextMemory lastSelectedDecisionContextMemory; //= new DecisionContext(); //was public before - does it cause errors?
 
         [Header("Memory")]
         [SerializeField] bool useMemory;
         public Memory memory;
+
+        //Momentum
+        float currentMomentum;
 
         #endregion
 
@@ -174,8 +177,26 @@ namespace BenitosAI
                 DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
 
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
-                {
+                {                 
+                    //If its the same as the current selected context - add momentum
+                    if (decisionContexesToAdd[j].ContextIsTheSameAs(lastSelectedDecisionContextMemory))
+                    {
+                        //Debug.Log("context the same as selected");
+                        //update momentum
+                        currentMomentum -= (Time.time - lastSelectedDecisionContextMemory.timeOfDecison) * lastSelectedDecisionContextMemory.decision.momentumDecayRate;
+                        //Debug.Log("current momentum + " + currentMomentum + " sold: " + aiController.transform.parent.name + aiController.transform.parent.gameObject.GetHashCode());
+
+                        //if resulting value would be smaller than current rating, ignore momentum
+                        if(currentMomentum > decisionContexesToAdd[j].rating)
+                        {
+                            //add momentum to the current rating
+                            decisionContexesToAdd[j].rating = currentMomentum;
+                        }
+
+                    }
+
                     currentRating = decisionContexesToAdd[j].rating;
+
                     if (currentRating > bestRatingSoFar)
                     {
                         bestRatingSoFar = currentRating;
@@ -202,10 +223,19 @@ namespace BenitosAI
         {
             // the check here needs to be different - how do we check if a decision context is the same? -> check if the assigned decsision and targets are all the same? -
             // or check if their states are the same - the states are initialised by decisions at runtime or at start?- how are the states parameters set?
+            if(decisionContext.decision.name == "Reload Weapon")
+            {
+                Debug.Log("StartExecutingDecision: Reload Weapon");
+                Debug.Log("last selected context: " + lastSelectedDecisionContextMemory.decision.name);
+            }
 
             // TODO coulsd it be that because of pooling currentDecidedDecisionContextis already used by somebody else?
-            if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContext))
-            {             
+            if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContextMemory))
+            {
+                if (decisionContext.decision.name == "Reload Weapon")
+                {
+                    Debug.Log("-> was not the same");
+                }
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
@@ -217,9 +247,13 @@ namespace BenitosAI
 
                 aiController.entityTags.AddEntityActionTags(currentState.GetActionTagsToAddOnStateEnter());
 
-                lastSelectedDecisionContext.SetUpContext(decisionContext);
+                //lastSelectedDecisionContextMemory.SetUpContext(decisionContext);
+                lastSelectedDecisionContextMemory = new Memory.DecisionContextMemory(decisionContext, 0); // weight doesnt matter for this memory
 
                 if (useMemory) memory.OnSelectedNewDecision(decisionContext);
+
+                //set the momentum
+                if(decisionContext.decision.hasMomentum) currentMomentum = decisionContext.rating + decisionContext.decision.momentumSelectedBonus;
             }
         }
 

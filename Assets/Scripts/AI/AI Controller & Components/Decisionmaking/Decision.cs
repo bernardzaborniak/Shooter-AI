@@ -13,7 +13,16 @@ namespace BenitosAI
         [SerializeField] AIStateCreator correspondingAiStateCreator;
         //every decision has a list of considerations based on which to decide
         [Space(5)]
-        [SerializeField] Consideration[] considerations;
+        public Consideration[] considerations;
+
+        [Header("Momentum")]
+        public bool hasMomentum;
+        [ConditionalHide()]
+        [Tooltip("when selecting this decision, this bonus is added to the rating")]
+        public float momentumSelectedBonus;
+        [Tooltip("how much does the momentum loose per second?")]
+        public float momentumDecayRate;
+
 
 
 
@@ -40,10 +49,10 @@ namespace BenitosAI
         }
 
         //THis method is used for visualisation
-        public Consideration[] GetConsiderations()
+        /*public Consideration[] GetConsiderations()
         {
             return considerations;
-        }
+        }*/
 
 
     }

@@ -32,6 +32,7 @@ namespace BenitosAI
         public override void OnStateEnter() 
         {
             charController.MoveTo(targetPosition, true);
+            charController.ChangeCharacterStanceToStandingCombatStance();
         }
 
         public override void OnStateExit()

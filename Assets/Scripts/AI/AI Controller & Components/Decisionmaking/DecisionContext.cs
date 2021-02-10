@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
-namespace BenitosAI
+﻿namespace BenitosAI
 {
     // Package of Information concerning a decision
     // [System.Serializable] //Only for Debug purposes
@@ -62,6 +57,41 @@ namespace BenitosAI
                         return true;
                     }
                 }
+            }
+
+            return false;
+        }
+
+        public bool ContextIsTheSameAs(DecisionMaker.Memory.DecisionContextMemory contextMemory)
+        {
+            if (contextMemory == null) return false;
+
+            if (decision == contextMemory.decision)
+            {
+                try
+                {
+                    if (targetEntity.entity == contextMemory.targetEntity)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                } catch (System.Exception e) { }
+                try
+                {
+                    if (targetTacticalPoint.tacticalPoint == contextMemory.targetTacticalPoint)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                } catch (System.Exception e) { }
+
+                return true;
             }
 
             return false;

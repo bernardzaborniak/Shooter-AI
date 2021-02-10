@@ -39,7 +39,7 @@ namespace BenitosAI
             }
             
             tmp_timeSinceDecided.text = memoryItem.timeOfDecison.ToString("F2");
-            tmp_considerationNumber.text = memoryItem.decision.GetConsiderations().Length.ToString();
+            tmp_considerationNumber.text = memoryItem.decision.considerations.Length.ToString();
 
 
             timeWhenDecided = memoryItem.timeOfDecison;
