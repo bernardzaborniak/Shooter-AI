@@ -25,8 +25,9 @@ public class CustomCurve
     public CurveType curveType;
 
 
-    [SerializeField] float bi_threshold = 0.5f;
-    [SerializeField] bool bi_inverse;
+    [SerializeField] float bi_Threshold = 0.5f;
+    [SerializeField] bool bi_Inverse;
+    [SerializeField] float bi_VertShift;
 
     [SerializeField] float lin_Slope = 1;
     [SerializeField] float lin_Shift;
@@ -79,15 +80,15 @@ public class CustomCurve
 
     float GetRemappedValueBinary(float input)
     {
-        if (!bi_inverse)
+        if (!bi_Inverse)
         {
-            if (input > bi_threshold) return 1;
-            else return 0;
+            if (input > bi_Threshold) return (1 + bi_VertShift);
+            else return (0 + bi_VertShift);
         }
         else
         {
-            if (input > bi_threshold) return 0;
-            else return 1;
+            if (input > bi_Threshold) return 0 + bi_VertShift;
+            else return 1 + bi_VertShift;
         }
 
     }

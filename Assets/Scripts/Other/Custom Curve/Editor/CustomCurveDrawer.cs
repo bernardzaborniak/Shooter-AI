@@ -33,12 +33,14 @@ public class CustomCurveDrawer : PropertyDrawer
 
         if(curveType == 0)
         {
-            SerializedProperty bi_thresholdProp = property.FindPropertyRelative("bi_threshold");
-            SerializedProperty bi_inverse = property.FindPropertyRelative("bi_inverse");
+            SerializedProperty bi_ThresholdProp = property.FindPropertyRelative("bi_Threshold");
+            SerializedProperty bi_Inverse = property.FindPropertyRelative("bi_Inverse");
+            SerializedProperty bi_VertShift = property.FindPropertyRelative("bi_VertShift");
 
             //EditorGUILayout.PropertyField(bi_thresholdProp);
-            EditorGUILayout.Slider(bi_thresholdProp, 0f, 1f);
-            EditorGUILayout.PropertyField(bi_inverse);
+            EditorGUILayout.Slider(bi_ThresholdProp, 0f, 1f);
+            EditorGUILayout.PropertyField(bi_Inverse);
+            EditorGUILayout.PropertyField(bi_VertShift);
         }
         else if(curveType == 1)
         {

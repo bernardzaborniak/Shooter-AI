@@ -994,10 +994,10 @@ MonoBehaviour:
       weigt: 0
     - name: 'Go to TPCover - Walk '
       decision: {fileID: 11400000, guid: 1f8e2d63d8775e14b9d2cb2757e45bf7, type: 2}
-      weigt: 3
+      weigt: 4
     - name: 'Go to TPCoverPeek - Walk '
       decision: {fileID: 11400000, guid: 9441dd53514e14f478fe6dbc87bf2d75, type: 2}
-      weigt: 3
+      weigt: 4
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
@@ -1012,7 +1012,7 @@ MonoBehaviour:
       weigt: 1
     - name: 'Reload Weapon '
       decision: {fileID: 11400000, guid: 32e7c59ccba1bd846aed7abc828de916, type: 2}
-      weigt: 2
+      weigt: 3
     - name: 'Shoot Weapon At Enemy '
       decision: {fileID: 11400000, guid: d7eebe65d50f3e840a97304fab5e4b39, type: 2}
       weigt: 3
@@ -1252,7 +1252,7 @@ MonoBehaviour:
   meanFriendlyDirection: {x: 0, y: 0, z: 0}
   meanFriendlyDirectionVisualiser: {fileID: 4386737770532825956}
   currentBalanceOfPower: 0
-  numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds: 0
+  numberOfEnemiesShootingAtMeLast3Sec: 0
 --- !u!114 &7864116541130220572
 MonoBehaviour:
   m_ObjectHideFlags: 0

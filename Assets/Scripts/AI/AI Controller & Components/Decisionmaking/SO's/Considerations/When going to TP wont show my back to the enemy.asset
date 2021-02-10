@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: When TP is towards Threat Direction
+  m_Name: When going to TP wont show my back to the enemy
   m_EditorClassIdentifier: 
   description: to prevent running with the back to the enemy when searching for a
     TPoint
@@ -34,8 +34,9 @@ MonoBehaviour:
   tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
     curveType: 2
-    bi_threshold: 0.5
-    bi_inverse: 0
+    bi_Threshold: 0.5
+    bi_Inverse: 0
+    bi_VertShift: 0
     lin_Slope: -1
     lin_Shift: 1
     ex_Slope: -1

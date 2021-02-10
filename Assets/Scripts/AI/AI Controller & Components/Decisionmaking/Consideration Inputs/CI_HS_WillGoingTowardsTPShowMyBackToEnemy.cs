@@ -6,15 +6,18 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/AngleBetweenThreatAndTPDirection ", fileName = "AngleBetweenThreatAndTPDirection ")]
+    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/WillGoingTowardsTPShowMyBackToEnemy ", fileName = "WillGoingTowardsTPShowMyBackToEnemy ")]
 
-    public class CI_HS_AngleBetweenThreatAndTPDirection : ConsiderationInput
+    public class CI_HS_WillGoingTowardsTPShowMyBackToEnemy : ConsiderationInput
     {
         // uses consideration min & max - needs range type
         // uses targetTPoint
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
+            //TODO
+
+
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
             //calculate angle between idrection towards tp point and mean threat direction
             Vector3 directionTowardsTPoint = decisionContext.targetTacticalPoint.tacticalPoint.GetPointPosition() - blackboard.GetMyEntity().transform.position;
