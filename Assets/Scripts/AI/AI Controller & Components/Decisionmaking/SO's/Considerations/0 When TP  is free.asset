@@ -10,25 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: If Has Seen Enemiesi n the last 3 seconds
+  m_Name: 0 When TP  is free
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
-  exampleInput2: 0
-  exampleInput3: 0
-  exampleInput4: 0
+  exampleInput2: 0.25
+  exampleInput3: 0.5
+  exampleInput4: 0.75
   exampleInput5: 1
-  exampleOutput1: 1
-  exampleOutput2: 1
-  exampleOutput3: 1
-  exampleOutput4: 1
+  exampleOutput1: 0
+  exampleOutput2: 0
+  exampleOutput3: 0
+  exampleOutput4: 0
   exampleOutput5: 0
-  considerationInput: {fileID: 11400000, guid: c2610a6b26aae12449498a745cf0a543, type: 2}
+  considerationInput: {fileID: 11400000, guid: 0425748c5bb2241429e923b01da73353, type: 2}
   min: 0
   max: 0
   desiredFloatValue: 0
   weaponID: 0
-  tPointEvaluationCrouching: 0
   tPointEvaluationType: 0
   tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
   tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0

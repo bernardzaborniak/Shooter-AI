@@ -55,7 +55,7 @@ namespace BenitosAI
         [Tooltip("How does it seem who has the advantage right now in fighting?")]
         public float currentBalanceOfPower;
 
-        public int numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds;
+        public int numberOfEnemiesShootingAtMeLast3Sec;
         (int numOfEnemies,float time) maxNumberOfEnemiesShootingAtMeMemory;
         
 
@@ -226,7 +226,7 @@ namespace BenitosAI
             }
 
             //4.set the current to max memory
-            numberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds = maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies;
+            numberOfEnemiesShootingAtMeLast3Sec = maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies;
         }
 
         void UpdateTPointInfos(ref HashSet<(TacticalPoint, float)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate, int maxInfosCount)

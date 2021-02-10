@@ -570,6 +570,8 @@ public class TacticalPoint : MonoBehaviour
     // Is there room on this point for another soldier?
     public bool IsPointFull()
     {
+        //change this algorythm somehow?
+
         if(tacticalPointType == TacticalPointType.CoverPoint)
         {
             if (usingEntity)
@@ -588,6 +590,29 @@ public class TacticalPoint : MonoBehaviour
 
                 return false;
 
+            }
+        }
+        else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
+        {
+            if (usingEntity)
+            {
+                return true;
+            }
+            else if (coverPointAssignedTo.usingEntity)
+            {
+                return true;
+            }
+            else
+            {
+                for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+                {
+                    if (coverPeekPoints[i].IsPointFull())
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
         else

@@ -48,7 +48,6 @@ namespace BenitosAI
         //for WeaponID params Type
         public int weaponID;
         //for TPointQualityEvaluationParams params type
-        public bool tPointEvaluationCrouching;
         public QualityOfCoverEvaluationType tPointEvaluationType;
         public int tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
         public int tPointEvaluationMaxFriendliesToAcknowledgeWhileRating;

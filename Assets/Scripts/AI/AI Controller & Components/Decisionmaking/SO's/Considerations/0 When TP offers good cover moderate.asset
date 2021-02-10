@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: 0 When TP offers good cover defensive standing
+  m_Name: 0 When TP offers good cover moderate
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
@@ -28,8 +28,7 @@ MonoBehaviour:
   max: 0
   desiredFloatValue: 0
   weaponID: 0
-  tPointEvaluationCrouching: 0
-  tPointEvaluationType: 0
+  tPointEvaluationType: 4
   tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 3
   tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 2
   considerationCurve:

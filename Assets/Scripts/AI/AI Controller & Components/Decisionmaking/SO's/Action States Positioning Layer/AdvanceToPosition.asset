@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed94059cc31095646870425c56a693ee, type: 3}
   m_Name: AdvanceToPosition
   m_EditorClassIdentifier: 
-  targetPosition: {x: 0, y: 0, z: 0}
+  minAdvanceDistance: 2
+  maxAdvanceDistance: 7
+  maxAngleDeviationFromDirectionToThreats: 45

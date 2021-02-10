@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98574f59541df90459f5581564be72ff, type: 3}
-  m_Name: FallBackToPosition
+  m_Script: {fileID: 11500000, guid: a1bf0bea86f438448a7fe2513ff10ac7, type: 3}
+  m_Name: NumberOfEnemiesShootingAtMeLast3Sec
   m_EditorClassIdentifier: 
-  minFallBackDistance: 3
-  maxFallBackDistance: 8
-  maxAngleDeviationFromDirectionToThreats: 45
-  sprint: 0
+  inputParamsType: 1

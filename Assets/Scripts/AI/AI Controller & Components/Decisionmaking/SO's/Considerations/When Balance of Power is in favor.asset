@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: 0 When TP offers good cover agressive crouching
+  m_Name: When Balance of Power is in favor
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
@@ -19,19 +19,19 @@ MonoBehaviour:
   exampleInput4: 0.75
   exampleInput5: 1
   exampleOutput1: 0
-  exampleOutput2: 0
-  exampleOutput3: 0
-  exampleOutput4: 0
-  exampleOutput5: 0
-  considerationInput: {fileID: 11400000, guid: 203447bd5bd9d78458e83b0b9bc128cd, type: 2}
-  min: 0
-  max: 0
+  exampleOutput2: 0.25
+  exampleOutput3: 0.5
+  exampleOutput4: 0.75
+  exampleOutput5: 1
+  considerationInput: {fileID: 11400000, guid: f9738e6a7014b394e92be3f4d545abd9, type: 2}
+  min: 1.1
+  max: 1.6
   desiredFloatValue: 0
   weaponID: 0
-  tPointEvaluationCrouching: 1
-  tPointEvaluationType: 2
-  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 3
-  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 2
+  tPointEvaluationCrouching: 0
+  tPointEvaluationType: 0
+  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
+  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
     curveType: 1
     bi_threshold: 0.5

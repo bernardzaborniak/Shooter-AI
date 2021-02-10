@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
-  m_Name: If Has Not Seen Enemiesi in the last 3 seconds
+  m_Name: Only When Ammo is relatively Low
   m_EditorClassIdentifier: 
   description: 
   exampleInput1: 0
-  exampleInput2: 0
-  exampleInput3: 1
-  exampleInput4: 0
+  exampleInput2: 0.25
+  exampleInput3: 0.5
+  exampleInput4: 0.75
   exampleInput5: 1
-  exampleOutput1: 0
-  exampleOutput2: 0
-  exampleOutput3: 1
+  exampleOutput1: 1
+  exampleOutput2: 0.9357663
+  exampleOutput3: 0.5175666
   exampleOutput4: 0
-  exampleOutput5: 1
-  considerationInput: {fileID: 11400000, guid: c2610a6b26aae12449498a745cf0a543, type: 2}
+  exampleOutput5: 0
+  considerationInput: {fileID: 11400000, guid: c1e91b9ed6f3d92419624b4ebc686bc3, type: 2}
   min: 0
   max: 0
   desiredFloatValue: 0
-  weaponID: 0
+  weaponID: 1
   tPointEvaluationCrouching: 0
   tPointEvaluationType: 0
   tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
   tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
   considerationCurve:
-    curveType: 0
+    curveType: 2
     bi_threshold: 0.5
-    bi_inverse: 1
+    bi_inverse: 0
     lin_Slope: 1
     lin_Shift: 0
-    ex_Slope: 1
-    ex_Exponent: 2
-    ex_VertShift: 0
-    ex_HorizShift: 0
+    ex_Slope: -1.25
+    ex_Exponent: 3.5
+    ex_VertShift: 1.09
+    ex_HorizShift: -0.3
     logistic_Slope: 0.15
     logistic_XShift: 0
     logistic_YShift: 0
@@ -59,33 +59,33 @@ MonoBehaviour:
     - {x: 0.12727273, y: 1}
     - {x: 0.14545454, y: 1}
     - {x: 0.16363636, y: 1}
-    - {x: 0.18181819, y: 1}
-    - {x: 0.2, y: 1}
-    - {x: 0.21818182, y: 1}
-    - {x: 0.23636363, y: 1}
-    - {x: 0.25454545, y: 1}
-    - {x: 0.27272728, y: 1}
-    - {x: 0.29090908, y: 1}
-    - {x: 0.3090909, y: 1}
-    - {x: 0.3272727, y: 1}
-    - {x: 0.34545454, y: 1}
-    - {x: 0.36363637, y: 1}
-    - {x: 0.38181818, y: 1}
-    - {x: 0.4, y: 1}
-    - {x: 0.4181818, y: 1}
-    - {x: 0.43636364, y: 1}
-    - {x: 0.45454547, y: 1}
-    - {x: 0.47272727, y: 1}
-    - {x: 0.4909091, y: 1}
-    - {x: 0.5090909, y: 0}
-    - {x: 0.5272727, y: 0}
-    - {x: 0.54545456, y: 0}
-    - {x: 0.56363636, y: 0}
-    - {x: 0.58181816, y: 0}
-    - {x: 0.6, y: 0}
-    - {x: 0.6181818, y: 0}
-    - {x: 0.6363636, y: 0}
-    - {x: 0.6545454, y: 0}
+    - {x: 0.18181819, y: 0.9929488}
+    - {x: 0.2, y: 0.9795146}
+    - {x: 0.21818182, y: 0.96480197}
+    - {x: 0.23636363, y: 0.94874054}
+    - {x: 0.25454545, y: 0.9312587}
+    - {x: 0.27272728, y: 0.91228354}
+    - {x: 0.29090908, y: 0.8917412}
+    - {x: 0.3090909, y: 0.8695564}
+    - {x: 0.3272727, y: 0.8456528}
+    - {x: 0.34545454, y: 0.8199528}
+    - {x: 0.36363637, y: 0.7923776}
+    - {x: 0.38181818, y: 0.76284766}
+    - {x: 0.4, y: 0.73128194}
+    - {x: 0.4181818, y: 0.6975987}
+    - {x: 0.43636364, y: 0.6617147}
+    - {x: 0.45454547, y: 0.62354594}
+    - {x: 0.47272727, y: 0.5830072}
+    - {x: 0.4909091, y: 0.54001224}
+    - {x: 0.5090909, y: 0.49447417}
+    - {x: 0.5272727, y: 0.4463045}
+    - {x: 0.54545456, y: 0.39541405}
+    - {x: 0.56363636, y: 0.34171295}
+    - {x: 0.58181816, y: 0.2851098}
+    - {x: 0.6, y: 0.22551222}
+    - {x: 0.6181818, y: 0.16282773}
+    - {x: 0.6363636, y: 0.096961915}
+    - {x: 0.6545454, y: 0.027820006}
     - {x: 0.6727273, y: 0}
     - {x: 0.6909091, y: 0}
     - {x: 0.7090909, y: 0}
