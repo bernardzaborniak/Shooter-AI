@@ -571,8 +571,16 @@ public class TacticalPoint : MonoBehaviour
     public bool IsPointFull()
     {
         //change this algorythm somehow?
+        if (usingEntity)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
-        if(tacticalPointType == TacticalPointType.CoverPoint)
+        /*if(tacticalPointType == TacticalPointType.CoverPoint)
         {
             if (usingEntity)
             {
@@ -606,7 +614,12 @@ public class TacticalPoint : MonoBehaviour
             {
                 for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
                 {
-                    if (coverPeekPoints[i].IsPointFull())
+                    // to prevent stack overflow :)
+                    if (coverPointAssignedTo.coverPeekPoints[i] != this)
+                    {
+
+                    }
+                    if (coverPointAssignedTo.coverPeekPoints[i].IsPointFull())
                     {
                         return true;
                     }
@@ -625,14 +638,34 @@ public class TacticalPoint : MonoBehaviour
             {
                 return false;
             }
-        }
+        }*/
 
-       
+
     }
+
 
     public void OnEntityEntersPoint(GameEntity entity)
     {
         usingEntity = entity;
+
+        //also set the other peek or cover points as used
+        if(tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            for (int i = 0; i < coverPeekPoints.Length; i++)
+            {
+                coverPeekPoints[i].usingEntity = usingEntity;
+            }
+        }
+        else if(tacticalPointType == TacticalPointType.CoverPeekPoint)
+        {
+            if (coverPointAssignedTo == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
+            coverPointAssignedTo.usingEntity = usingEntity;
+
+            for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+            {
+                coverPointAssignedTo.coverPeekPoints[i].usingEntity = usingEntity;
+            }
+        }
     }
 
     public void OnEntityExitsPoint(GameEntity entity)
@@ -640,6 +673,23 @@ public class TacticalPoint : MonoBehaviour
         if (usingEntity == entity)
         {
             usingEntity = null;
+
+            if (tacticalPointType == TacticalPointType.CoverPoint)
+            {
+                for (int i = 0; i < coverPeekPoints.Length; i++)
+                {
+                    coverPeekPoints[i].usingEntity = null;
+                }
+            }
+            else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
+            {
+                coverPointAssignedTo.usingEntity = null;
+
+                for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+                {
+                    coverPointAssignedTo.coverPeekPoints[i].usingEntity = null;
+                }
+            }
         }
     }
 
