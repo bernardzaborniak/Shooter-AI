@@ -194,6 +194,10 @@ namespace BenitosAI
                         }
 
                     }
+                    else
+                    {
+                        currentMomentum = 0;
+                    }
 
                     currentRating = decisionContexesToAdd[j].rating;
 
@@ -270,10 +274,12 @@ namespace BenitosAI
         {
             if (currentState != null)
             {
-                Debug.Log("aborting from inside: " + currentState.ToString());
+                //Debug.Log("aborting from inside: " + currentState.ToString());
                 currentState.OnStateExit();
                 aiController.entityTags.RemoveEntityActionTags(currentState.GetActionTagsToRemoveOnStateExit());
             }
+
+            lastSelectedDecisionContextMemory = null;
         }
 
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5414721128516502280}
   - component: {fileID: 5414721128516502282}
   - component: {fileID: 5414721128516502283}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Laser Pointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5414721128916407937}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: IK Positions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5414721129011632210}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: 'Secondary Hand '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5414721129847952668}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Primary Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5414721130269733900}
   - component: {fileID: 5414721130269733903}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Pistol Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5165640602971171829}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7841081555297796298}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shoot Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,6 +337,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5414721130269733900}
     m_Modifications:
+    - target: {fileID: -5857643681962457424, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -353,9 +357,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2857125749306335211, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
       propertyPath: m_Name
       value: pistol-a
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2152320070076265890, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2763737261186289871, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364322799193060638, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69e6133d2e42d1e4088d59652ea73d2f, type: 3}
@@ -378,6 +402,10 @@ PrefabInstance:
     - target: {fileID: 5068680422720389526, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
       propertyPath: m_Name
       value: VFX Shoot A
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068680422720389526, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
       propertyPath: m_RootOrder
@@ -461,6 +489,18 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: bdedb5930858448439c0b9a28bb1286c, type: 3}
       propertyPath: m_Name
       value: pistol-a-mag-full
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: bdedb5930858448439c0b9a28bb1286c, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826966694714554278, guid: bdedb5930858448439c0b9a28bb1286c, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586628643497114078, guid: bdedb5930858448439c0b9a28bb1286c, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdedb5930858448439c0b9a28bb1286c, type: 3}

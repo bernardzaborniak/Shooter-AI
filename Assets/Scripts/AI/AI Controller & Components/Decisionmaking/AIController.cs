@@ -13,8 +13,11 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
         public EntityTags entityTags;
         public DecisionMaker[] decisionLayers;
         [Space(10)]
-        public float decisionInterval;
-        float nextDecisionTime;
+        //public float decisionInterval;
+        //float nextDecisionTime;
+
+        [Header("Optimisation")]
+        public AIControllerOptimiser optimiser;
 
         public override void SetUpComponent(GameEntity entity)
         {
@@ -23,7 +26,7 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
 
 
-            nextDecisionTime = Time.time + Random.Range(0, nextDecisionTime);
+            //nextDecisionTime = Time.time + Random.Range(0, nextDecisionTime);
 
             for (int i = 0; i < decisionLayers.Length; i++)
             {
@@ -34,24 +37,36 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
         public override void UpdateComponent()
         {
-            // Update Current States
+            if (optimiser.ShouldAIControllerBeUpdated())
+            {
+                optimiser.OnAIControllerWasUpdated();
+
+                UpdateDecisionMakers();
+            }
+
             for (int i = 0; i < decisionLayers.Length; i++)
             {
                 decisionLayers[i].UpdateCurrentState();
             }
+        }
+
+        protected virtual void UpdateDecisionMakers()
+        {
+            // Update Current States
+            
 
             // Decide every x seconds
-            if (Time.time > nextDecisionTime)
-            {
+            //if (Time.time > nextDecisionTime)
+            //{
                 //Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
 
-                nextDecisionTime = Time.time + decisionInterval;
+                //nextDecisionTime = Time.time + decisionInterval;
 
                 for (int i = 0; i < decisionLayers.Length; i++)
                 {
                     decisionLayers[i].Decide();
                 }
-            }
+            //}
         }
 
        /* public GameEntity GetEntity()

@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b81f4b5560a79a46a2ee442eaafbe0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frameInterval: 0
 --- !u!1 &5535569795069852340
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,13 +234,13 @@ MonoBehaviour:
   sortIntoLODGroupsFrameInterval: 0
   LODGroups:
   - name: LOD0
-    updateCycleFrameInterval: 0
+    updateCycleFrameInterval: 30
     debugGroupSizes: 
   - name: LOD1
-    updateCycleFrameInterval: 0
+    updateCycleFrameInterval: 45
     debugGroupSizes: 
   - name: LOD Last
-    updateCycleFrameInterval: 0
+    updateCycleFrameInterval: 90
     debugGroupSizes: 
   LODGroupSizes: 
   distanceOfLOD1Start: 20

@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b70952ecdbc096d4ea004bdadab56d54, type: 3}
-  m_Name: ShootWeaponAtEnemy
+  m_Script: {fileID: 11500000, guid: ab762f485c7dabb47bb921c734554244, type: 3}
+  m_Name: HasLineofFire
   m_EditorClassIdentifier: 
-  weaponID: 1
-  allowedWeaponAimingErrorAngle: 15
-  checkLineOfFireInterval: 0.4
+  inputParamsType: 0
   checkLineOfFireLayerMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 0

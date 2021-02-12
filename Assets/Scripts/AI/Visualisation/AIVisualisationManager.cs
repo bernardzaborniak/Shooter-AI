@@ -266,7 +266,7 @@ namespace BenitosAI
                             selectedSoldierBlackboard = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIController_Blackboard>(); //not the nicest way to get this sensing component;
                             lastUpdateSensingFrameCount = selectedSoldierBlackboard.lastFrameCountSensingInfoWasUpdated;
 
-                            selectedSoldierAIController = currentSelectedSoldier.transform.GetChild(2).GetComponent<AIController_HumanoidSoldier>();
+                            selectedSoldierAIController = currentSelectedSoldier.transform.GetChild(1).GetComponent<AIController_HumanoidSoldier>();
                         }
                         else
                         {

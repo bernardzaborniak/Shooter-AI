@@ -16,6 +16,8 @@ namespace BenitosAI
         //change the components to just an array?
 
 
+
+
         // Start is called before the first frame update
         public override void SetUpComponent(GameEntity entity)
         {

@@ -6,7 +6,7 @@ public class AIControllerOptimiser : MonoBehaviour, IScriptOptimiser
 {
     //instead of directly updating the sensing script, the optimiser just tells the sensing script when an update would be good and performant.
 
-    bool updateAIControllerNextTimePossible;
+    [SerializeField] bool updateAIControllerNextTimePossible;
 
     private void OnEnable()
     {
@@ -21,6 +21,7 @@ public class AIControllerOptimiser : MonoBehaviour, IScriptOptimiser
     public void UpdateOptimiser()
     {
         updateAIControllerNextTimePossible = true;
+       // Debug.Log("updateAIControllerNextTimePossible = true ");
     }
 
     public Vector3 GetPosition()
@@ -28,12 +29,12 @@ public class AIControllerOptimiser : MonoBehaviour, IScriptOptimiser
         return transform.position;
     }
 
-    public bool ShouldSensingBeUpdated()
+    public bool ShouldAIControllerBeUpdated()
     {
         return updateAIControllerNextTimePossible;
     }
 
-    public void OnSensingWasUpdated()
+    public void OnAIControllerWasUpdated()
     {
         updateAIControllerNextTimePossible = false;
     }

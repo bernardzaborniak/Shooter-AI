@@ -83,7 +83,6 @@ public class Projectile : MonoBehaviour
                     if (damageable.GetTeamID() == projectileTeamID)
                     {
                         damageBlockedCauseOfFriendlyFire = true;
-                        Debug.Log("friendly Fire Blocked");
                     }
 
                 }
@@ -95,7 +94,6 @@ public class Projectile : MonoBehaviour
                     if (damageable.GetTeamID() == projectileTeamID)
                     {
                         damageBlockedCauseOfFriendlyFire = true;
-                        Debug.Log("friendly Fire Blocked");
                     }
                 }
             }
