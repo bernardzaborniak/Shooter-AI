@@ -223,19 +223,10 @@ namespace BenitosAI
         {
             // the check here needs to be different - how do we check if a decision context is the same? -> check if the assigned decsision and targets are all the same? -
             // or check if their states are the same - the states are initialised by decisions at runtime or at start?- how are the states parameters set?
-            if(decisionContext.decision.name == "Reload Weapon")
-            {
-                Debug.Log("StartExecutingDecision: Reload Weapon");
-                Debug.Log("last selected context: " + lastSelectedDecisionContextMemory.decision.name);
-            }
 
             // TODO coulsd it be that because of pooling currentDecidedDecisionContextis already used by somebody else?
             if (!decisionContext.ContextIsTheSameAs(lastSelectedDecisionContextMemory))
             {
-                if (decisionContext.decision.name == "Reload Weapon")
-                {
-                    Debug.Log("-> was not the same");
-                }
                 if (currentState != null)
                 {
                     currentState.OnStateExit();
@@ -262,7 +253,26 @@ namespace BenitosAI
             //updates current state
             if (currentState != null)
             {
-                currentState.UpdateState();
+                //state update return a bool if this state should be continued or aborted
+                if (currentState.ShouldStateBeAborted())
+                {
+                    AbortCurrentDecision();
+                }
+                else
+                {
+                    currentState.UpdateState();
+                }
+            }
+        }
+
+        //can be called by the selected deicison execution logic- if it deciedes it isnt a valid decision anymore
+        public void AbortCurrentDecision()
+        {
+            if (currentState != null)
+            {
+                Debug.Log("aborting from inside: " + currentState.ToString());
+                currentState.OnStateExit();
+                aiController.entityTags.RemoveEntityActionTags(currentState.GetActionTagsToRemoveOnStateExit());
             }
         }
 

@@ -25,6 +25,11 @@ public class Gun : Item, IItemWithIKHandPositions
     public float damage;
     public float projectileLaunchVelocity;
     public float bloom;
+    //Override Frienldy fire for specific Weapons
+    public bool overrideFriendlyFireSetting;
+    [ShowWhen("overrideFriendlyFireSetting")]
+    public bool overridenFriendlyFireOn;
+
     [Min(1)]
     public int magazineSize;
     int bulletsInMagazine;
@@ -87,11 +92,11 @@ public class Gun : Item, IItemWithIKHandPositions
                 
                 if (!usedByPlayer)
                 {
-                    projectile.Activate(false, wieldingEntity, this, weaponHolderMovementSpeed, damage, projectileLaunchVelocity);
+                    projectile.Activate(false, wieldingEntity, this, weaponHolderMovementSpeed, damage, projectileLaunchVelocity, overrideFriendlyFireSetting, overridenFriendlyFireOn);
                 }
                 else
                 {
-                    projectile.Activate(true, wieldingEntity, this, weaponHolderMovementSpeed, damage, projectileLaunchVelocity);
+                    projectile.Activate(true, wieldingEntity, this, weaponHolderMovementSpeed, damage, projectileLaunchVelocity, overrideFriendlyFireSetting, overridenFriendlyFireOn);
                 }
 
                 #endregion

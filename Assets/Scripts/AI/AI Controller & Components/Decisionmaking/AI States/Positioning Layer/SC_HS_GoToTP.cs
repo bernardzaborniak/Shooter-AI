@@ -142,7 +142,11 @@ namespace BenitosAI
                     state = State.MovingToTP;
                 }
             }
+        }
 
+        public override bool ShouldStateBeAborted()
+        {
+            return false;
         }
     }
 }

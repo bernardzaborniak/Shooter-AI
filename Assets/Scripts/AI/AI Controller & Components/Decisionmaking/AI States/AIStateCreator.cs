@@ -23,6 +23,8 @@ namespace BenitosAI
 
         public abstract void UpdateState();
 
+        public abstract bool ShouldStateBeAborted();
+
 
     }
 }

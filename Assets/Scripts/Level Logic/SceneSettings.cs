@@ -28,6 +28,8 @@ public class SceneSettings : MonoBehaviour
     [Tooltip("Because with changing the gravityMultiplier we would need to change all forces - we do it here . If gravityMult is 1, this should also be one , if gravity is 8 ,this hsoulkd be 2,6667 or 1/3 of 8")]
     public float forceMultiplier = 1;*/
 
+    //to expand - the teams ids etc will be set up here? - or at least thir diplomacy relation?
+
 
     void Awake()
     {
@@ -49,6 +51,7 @@ public class SceneSettings : MonoBehaviour
 
     public bool AllowDamage(int myTeamID, int otherTeamID)
     {
+        //expand this check with diplomacy status
         if (!allowFriendlyFire)
         {
             if (myTeamID != otherTeamID)

@@ -89,6 +89,11 @@ namespace BenitosAI
         {
 
         }
+
+        public override bool ShouldStateBeAborted()
+        {
+            return false;
+        }
     }
 
 }

@@ -464,6 +464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7782482838716011733}
+  - component: {fileID: 7978013287316497860}
   m_Layer: 0
   m_Name: Scene Settings
   m_TagString: Untagged
@@ -485,6 +486,24 @@ Transform:
   m_Father: {fileID: 7782482839959260089}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7978013287316497860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782482838716011738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61ef8a29263609f49a31c34613593f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowFriendlyFire: 1
+  playerEntity: {fileID: 0}
+  objectsInHandPhysicsLayer: 0
+  weaponsInHandPhysicsLayer: 0
+  physicalObjectsPhysicsLayer: 0
+  enableThrowableAndThrowingHandCollisionDelay: 0
 --- !u!1 &7782482838886103182
 GameObject:
   m_ObjectHideFlags: 0

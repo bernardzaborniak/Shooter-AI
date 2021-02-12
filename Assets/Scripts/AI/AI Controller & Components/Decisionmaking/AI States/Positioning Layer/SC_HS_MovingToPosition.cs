@@ -58,6 +58,11 @@ namespace BenitosAI
                 charController.MoveTo(targetPosition, true);
             }*/
         }
+
+        public override bool ShouldStateBeAborted()
+        {
+            return false;
+        }
     }
 }
 

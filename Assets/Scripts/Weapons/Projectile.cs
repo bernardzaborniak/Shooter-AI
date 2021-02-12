@@ -11,7 +11,14 @@ public class Projectile : MonoBehaviour
     GameEntity shooterEntity;
     public float damage;
 
+    //override FF
+    public bool overrideFriendlyFireSetting;
+    [ShowWhen("overrideFriendlyFireSetting")]
+    public bool overridenFriendlyFireOn;
+
     Vector3 velocityLastFrame;
+
+    public ProjectileImpactEffectController impactEffectDisableController;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +31,7 @@ public class Projectile : MonoBehaviour
         velocityLastFrame = rb.velocity;
     }
 
-    public void Activate(bool shotByPlayer, GameEntity shooterEntity, Gun gunFromWhichItWasShot, Vector3 shootersMovementVelocity, float damage, float launchVelocity)
+    public void Activate(bool shotByPlayer, GameEntity shooterEntity, Gun gunFromWhichItWasShot, Vector3 shootersMovementVelocity, float damage, float launchVelocity, bool overrideFriendlyFireSetting = false, bool overridenFriendlyFireOn = false)
     {
         //this.shotByPlayer = shotByPlayer;
 
@@ -41,6 +48,11 @@ public class Projectile : MonoBehaviour
             Debug.Log("Warning: no shooter Entity set in Projectile");
         }
         this.shooterEntity = shooterEntity;
+
+        this.overrideFriendlyFireSetting = overrideFriendlyFireSetting;
+        this.overridenFriendlyFireOn = overridenFriendlyFireOn;
+
+        impactEffectDisableController.Reset(transform);
 
         /*if (audioSource != null)
         {
@@ -62,15 +74,45 @@ public class Projectile : MonoBehaviour
 
         if(damageable != null)
         {
-            DamageInfo damageInfo = new DamageInfo(damage, null, velocityLastFrame * rb.mass, collision.contacts[0].point, collision.contacts[0].normal);
+            bool damageBlockedCauseOfFriendlyFire = false;
 
-            damageable.TakeDamage(ref damageInfo);
+            if (overrideFriendlyFireSetting)
+            {
+                if (!overridenFriendlyFireOn)
+                {
+                    if (damageable.GetTeamID() == projectileTeamID)
+                    {
+                        damageBlockedCauseOfFriendlyFire = true;
+                        Debug.Log("friendly Fire Blocked");
+                    }
 
+                }
+            }
+            else
+            {
+                if (!SceneSettings.Instance.allowFriendlyFire)
+                {
+                    if (damageable.GetTeamID() == projectileTeamID)
+                    {
+                        damageBlockedCauseOfFriendlyFire = true;
+                        Debug.Log("friendly Fire Blocked");
+                    }
+                }
+            }
+
+            if (!damageBlockedCauseOfFriendlyFire)
+            {
+                DamageInfo damageInfo = new DamageInfo(damage, null, velocityLastFrame * rb.mass, collision.contacts[0].point, collision.contacts[0].normal);
+
+                damageable.TakeDamage(ref damageInfo);
+            }          
         }
 
-        //Destroy(gameObject);
+        impactEffectDisableController.EnableImpactEffect(collision.contacts[0].point, collision.contacts[0].normal);
+
         gameObject.SetActive(false);
     }
+
 
 
 }

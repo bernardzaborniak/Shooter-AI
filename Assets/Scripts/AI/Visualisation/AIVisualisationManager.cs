@@ -603,9 +603,15 @@ namespace BenitosAI
                         //-> a not so elegant way to get this object -> its for debug only anyway
                         DecisionMaker.Memory memoryLayer0 = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).decisionLayers[0].memory;
                         DecisionMaker.Memory memoryLayer1 = (gameEntitiesInArea[i].GetComponent<GameEntity>().components[2] as AIController_HumanoidSoldier).decisionLayers[1].memory;
+
+                        //get health & ammo info
+                        float healthRatio = gameEntitiesInArea[i].GetComponent<GameEntity>().components[1].GetComponent<EC_Health>().GetRemainingHealthToMaxHalthRatio();
+                        float ammoRatio = gameEntitiesInArea[i].GetComponent<GameEntity>().components[0].GetComponent<EC_HumanoidCharacterController>().GetAmmoRemainingInMagazineRatio();
+
                         try
                         {
-                            visualiser.UpdateVisualiser(cameraController.transform.forward, memoryLayer0.selectedDecisionsRemembered[0], memoryLayer1.selectedDecisionsRemembered[0]);
+                            //visualiser.UpdateVisualiser(cameraController.transform.forward, memoryLayer0.selectedDecisionsRemembered[0], memoryLayer1.selectedDecisionsRemembered[0]);
+                            visualiser.UpdateVisualiser(cameraController.transform.forward, memoryLayer0.selectedDecisionsRemembered[0], memoryLayer1.selectedDecisionsRemembered[0], healthRatio,ammoRatio);
                         }catch(Exception e)
                         {
                             //I do this, cause it sometimes causes an index out of range exception if memory wasnt updated yet?

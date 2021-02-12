@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5414721128516502280
 Transform:
   m_ObjectHideFlags: 0
@@ -234,6 +234,8 @@ MonoBehaviour:
   damage: 50
   projectileLaunchVelocity: 400
   bloom: 0
+  overrideFriendlyFireSetting: 1
+  overridenFriendlyFireOn: 0
   magazineSize: 7
   defaultReloadDuration: 1.5
   rateOfFire: 100
@@ -378,6 +380,10 @@ PrefabInstance:
       value: VFX Shoot A
       objectReference: {fileID: 0}
     - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -390,6 +396,10 @@ PrefabInstance:
       value: 0.174
       objectReference: {fileID: 0}
     - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -399,14 +409,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5068680422720389527, guid: 5045f58d16140014d91c60a0b75ed647, type: 3}

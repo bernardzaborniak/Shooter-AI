@@ -112,6 +112,10 @@ namespace BenitosAI
                 charController.StopMoving();
             }*/
         }
+        public override bool ShouldStateBeAborted()
+        {
+            return false;
+        }
     }
 }
 

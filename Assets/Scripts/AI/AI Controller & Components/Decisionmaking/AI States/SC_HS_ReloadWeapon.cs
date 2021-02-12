@@ -25,13 +25,14 @@ namespace BenitosAI
         EntityActionTag[] actionTags;
 
 
-        public St_HS_ReloadWeapon(AIController aiController, DecisionContext context, int weaponID)
+        public St_HS_ReloadWeapon(AIController aiController , DecisionContext context, int weaponID)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             charController = this.aiController.characterController;
 
             actionTags = new EntityActionTag[1];
             actionTags[0] = new EntityActionTag(EntityActionTag.Type.ReloadingWeapon);
+
         }
 
         public override void OnStateEnter()
@@ -57,6 +58,17 @@ namespace BenitosAI
         public override void UpdateState()
         {
             charController.StartReloadingWeapon();
+
+        }
+
+        public override bool ShouldStateBeAborted()
+        {
+            if (charController.GetAmmoRemainingInMagazineRatio() == 1)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

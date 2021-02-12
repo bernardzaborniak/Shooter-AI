@@ -82,6 +82,11 @@ namespace BenitosAI
                // targetPoint.tacticalPoint.OnEntityEntersPoint(aiController.humanSensing.GetMyEntity());
             //}
         }
+
+        public override bool ShouldStateBeAborted()
+        {
+            return false;
+        }
     }
 
 
