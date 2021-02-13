@@ -353,7 +353,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
                 reloadingEndTime = Time.time + reloadDuration;
 
-                animationController.StartReloadingWeapon(reloadDuration);
+                animationController.StartReloadingWeapon(reloadDuration*0.8f); //make the animation a bit shorter, as the transitiona back to normal also needs a little time
 
                 //handsIKController.DisableIKs();
                 handsIKController.OnStartReloadingWeapon();

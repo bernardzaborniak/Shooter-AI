@@ -27,7 +27,8 @@ namespace BenitosAI
             {
                 if (hit.distance < decisionContext.targetEntity.lastDistanceMeasured)
                 {
-                    if (hit.distance / decisionContext.targetEntity.lastDistanceMeasured < 0.66)
+                    //if (hit.distance / decisionContext.targetEntity.lastDistanceMeasured < 0.66)
+                    if (decisionContext.targetEntity.lastDistanceMeasured - hit.distance > 0.3f)
                     {
                         return 0;
                     }

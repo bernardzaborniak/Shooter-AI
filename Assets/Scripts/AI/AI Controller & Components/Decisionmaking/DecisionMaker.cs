@@ -194,10 +194,10 @@ namespace BenitosAI
                         }
 
                     }
-                    else
+                    /*else
                     {
                         currentMomentum = 0;
-                    }
+                    }*/
 
                     currentRating = decisionContexesToAdd[j].rating;
 
@@ -248,7 +248,7 @@ namespace BenitosAI
                 if (useMemory) memory.OnSelectedNewDecision(decisionContext);
 
                 //set the momentum
-                if(decisionContext.decision.hasMomentum) currentMomentum = decisionContext.rating + decisionContext.decision.momentumSelectedBonus;
+                if (decisionContext.decision.hasMomentum) currentMomentum = decisionContext.rating + decisionContext.decision.momentumSelectedBonus;
             }
         }
 
@@ -280,6 +280,7 @@ namespace BenitosAI
             }
 
             lastSelectedDecisionContextMemory = null;
+            currentMomentum = 0;
         }
 
 

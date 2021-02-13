@@ -21,6 +21,12 @@ public class EC_Health : EntityComponent
     [Header("Hitbox Logic")]
     public Hitbox[] hitboxes;
 
+    [Header("Regeneration")]
+    public bool hasRegeneration;
+    public float timeAfterWhichRegenerationStarts;
+    public float regenerationRate;
+    float lastRecieveDamageTime;
+
    
 
     public override void SetUpComponent(GameEntity entity)
@@ -48,6 +54,7 @@ public class EC_Health : EntityComponent
     {
         //returns true if health falls below 0
         currentHealth -= damageInfo.damage;
+        lastRecieveDamageTime = Time.time;
 
         if (currentHealth <= 0)
         {
@@ -61,6 +68,7 @@ public class EC_Health : EntityComponent
             myEntity.OnTakeDamage(ref damageInfo);
             return false;
         }
+
 
         /*if (healthBarFill != null)
         {
@@ -92,20 +100,30 @@ public class EC_Health : EntityComponent
 
     public override void UpdateComponent()
     {
+        base.UpdateComponent();
+
+        if (hasRegeneration)
+        {
+            if(Time.time-lastRecieveDamageTime > timeAfterWhichRegenerationStarts)
+            {
+                currentHealth += Mathf.Clamp(maxHealth - currentHealth, 0, regenerationRate * Time.deltaTime);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             DamageInfo di = new DamageInfo(51);
             TakeDamage(ref di);
-            currentHealth += 51;
+           // currentHealth += 51;
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
             DamageInfo di = new DamageInfo(21);
             TakeDamage(ref di);
-            currentHealth += 21;
+            //currentHealth += 21;
         }
 
-        base.UpdateComponent();
+
 
         if (colorChanged)
         {

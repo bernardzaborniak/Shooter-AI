@@ -125,8 +125,9 @@ namespace BenitosAI
 
         public override bool ShouldStateBeAborted()
         {
+            return !target.IsAlive();
             //return stateShouldBeAbortedCauseNoLineOfFire;
-            return false;
+            //return false;
         }
     }
 }
