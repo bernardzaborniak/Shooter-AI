@@ -216,7 +216,7 @@ namespace BenitosAI
                         characterController.ChangeCharacterStanceToStandingCombatStance();
                     }
 
-                    if (targetTacticalPoint.IsPointFull())
+                    if (targetTacticalPoint.IsPointUsedByAnotherEntity(myEntity))
                     {
                         targetTacticalPoint = null;
                         positioningState = PositioningState.OpenField;
@@ -666,7 +666,7 @@ namespace BenitosAI
 
         void EnterTacticalPoint(TacticalPoint point)
         {
-            if (!point.IsPointFull())
+            if (!point.IsPointUsedByAnotherEntity(myEntity))
             {
                 point.OnEntityEntersPoint(entityAttachedTo);
                 usedTacticalPoint = point;

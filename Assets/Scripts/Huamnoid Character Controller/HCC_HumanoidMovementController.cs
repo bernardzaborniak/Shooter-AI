@@ -278,7 +278,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
 
         if (movementState == MovementState.Default)
         {
-
+            //Debug.Log("current status: " + currentMovementOrder.orderExecutionStatus);
             //1. Navmesh Link Check
             if (agent.isOnOffMeshLink)
             {
@@ -325,8 +325,20 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
             }
             else if (currentMovementOrder.IsBeingExecuted())
             {
-                float dist = agent.remainingDistance;
-                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0))
+                float dist;
+
+                if (agent.pathPending) //the idstance is updated with a frame delay?
+                {
+                    dist = Vector3.Distance(agent.transform.position, agent.destination);
+                }
+                else
+                {
+                    dist = agent.remainingDistance;
+                }
+
+               // Debug.Log("---------being executed: current position: " + myEntity.transform.position + " target position: " + agent.destination + " remaining Distance: " + agent.remainingDistance + " dist: " + dist);
+
+                if ((dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && dist == 0))
                 {
                     currentMovementOrder.OnFinishedExecuting();
                 }
@@ -337,6 +349,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 if (agent.isOnNavMesh)
                 {
                     agent.ResetPath();
+                    agent.isStopped = true;
                     currentMovementOrder.OnAbort();
                 }
             }
@@ -460,7 +473,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
     {
        // if(movementState == MovementState.Default)
         //{
-            Debug.Log("move 3");
+            //Debug.Log("move 3");
             currentMovementOrder.SetCurrentOrder(destination, false);
         //}
        
@@ -497,7 +510,10 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         //currentMovementOrder.sprint = false;
 
         //currentMovementOrder.OnAbort();
-        currentMovementOrder.OnScheduleAbort();
+        if (!currentMovementOrder.IsFinishedOrNoOrder())
+        {
+            currentMovementOrder.OnScheduleAbort();
+        }
         //}
     }
 

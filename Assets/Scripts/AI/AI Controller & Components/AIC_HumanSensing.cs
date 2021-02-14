@@ -158,7 +158,7 @@ namespace BenitosAI
                         TacticalPoint tPoint = collidersInRadius[i].GetComponent<TacticalPoint>();
                         float currentDistance = Vector3.Distance(myPosition, tPoint.GetPointPosition());
 
-                        if (!tPoint.IsPointFull())
+                        if (!tPoint.IsPointUsedByAnotherEntity(myEntity) && !tPoint.IsPointBeingTargetedByAnotherEntity(myEntity))
                         {
                             if (tPoint.tacticalPointType == TacticalPointType.CoverPoint)
                             {
@@ -177,6 +177,7 @@ namespace BenitosAI
                             {
                                 coverPeekPointSensed.Add((tPoint, currentDistance));
                             }
+
                         }
                     }
                 }

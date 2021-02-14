@@ -12,15 +12,17 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            if (!decisionContext.targetTacticalPoint.tacticalPoint.IsPointFull())
+            //not needed anymore? - sensing takes care of this
+
+            /*if (!decisionContext.targetTacticalPoint.tacticalPoint.IsPointUsedByAnotherEntity())
             {
                 return 1;
             }
-            else if (decisionContext.targetTacticalPoint.tacticalPoint.usingEntity == ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetMyEntity())
+            else if (decisionContext.targetTacticalPoint.tacticalPoint.entityUsingThisPoint == ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetMyEntity())
             {
                 //else if i am already using it
                 return 1;
-            }
+            }*/
 
             return 0;
         }

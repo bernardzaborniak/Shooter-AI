@@ -249,6 +249,7 @@ namespace BenitosAI
 
                 //set the momentum
                 if (decisionContext.decision.hasMomentum) currentMomentum = decisionContext.rating + decisionContext.decision.momentumSelectedBonus;
+                else currentMomentum = 0;
             }
         }
 

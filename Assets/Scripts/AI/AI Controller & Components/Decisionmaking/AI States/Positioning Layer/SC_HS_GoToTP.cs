@@ -73,11 +73,14 @@ namespace BenitosAI
             charController.MoveTo(targetTP.GetPointPosition(), sprint);
 
             state = State.MovingToTP;
+            aiController.OnStartTargetingTPoint(targetTP);
         }
 
         public override void OnStateExit()
         {
             aiController.OnLeaveTPoint(targetTP);
+            aiController.OnStopTargetingTPoint(targetTP);
+
         }
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
@@ -97,11 +100,12 @@ namespace BenitosAI
 
             if(state == State.MovingToTP)
             {
-                if (!targetTP.IsPointFull())
+                if (!targetTP.IsPointUsedByAnotherEntity(myEntity))
                 {
                     if (distanceToTPSquared < enterTPDistanceSquared)
                     {
                         aiController.OnEnterTPoint(targetTP);
+                        aiController.OnStopTargetingTPoint(targetTP);
 
                         //charController.StopMoving();
                         charController.MoveTo(targetTP.GetPointPosition(), false);
@@ -123,6 +127,8 @@ namespace BenitosAI
                 if(distanceToTPSquared > exitTPDistanceSquared)
                 {
                     aiController.OnLeaveTPoint(targetTP);
+                    aiController.OnStartTargetingTPoint(targetTP);
+
 
                     if (moveToTPStance == EC_HumanoidCharacterController.CharacterStance.StandingIdle)
                     {

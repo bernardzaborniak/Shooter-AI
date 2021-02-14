@@ -30,7 +30,8 @@ public class TacticalPoint : MonoBehaviour
     #region Fields 
 
     public TacticalPointType tacticalPointType;
-    public GameEntity usingEntity;
+    public GameEntity entityUsingThisPoint;
+    public GameEntity entityTargetingThisPoint;
 
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
@@ -567,18 +568,23 @@ public class TacticalPoint : MonoBehaviour
         return transform.position;
     }
 
+    public bool IsPointUsedByAnEntity()
+    {
+        return entityUsingThisPoint;
+    }
+
+
     // Is there room on this point for another soldier?
-    public bool IsPointFull()
+    public bool IsPointUsedByAnotherEntity(GameEntity myEntity)
     {
         //change this algorythm somehow?
-        if (usingEntity)
+        if (entityUsingThisPoint)
         {
-            return true;
+            if(entityUsingThisPoint != myEntity) return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
+
 
         /*if(tacticalPointType == TacticalPointType.CoverPoint)
         {
@@ -643,51 +649,111 @@ public class TacticalPoint : MonoBehaviour
 
     }
 
+    public bool IsPointBeingTargetedByAnotherEntity(GameEntity myEntity)
+    {
+        if (entityTargetingThisPoint)
+        {
+            if (entityTargetingThisPoint != myEntity) return true;
+        }
+
+        return false;
+    }
+
+   
 
     public void OnEntityEntersPoint(GameEntity entity)
     {
-        usingEntity = entity;
+        entityUsingThisPoint = entity;
 
         //also set the other peek or cover points as used
         if(tacticalPointType == TacticalPointType.CoverPoint)
         {
             for (int i = 0; i < coverPeekPoints.Length; i++)
             {
-                coverPeekPoints[i].usingEntity = usingEntity;
+                coverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
             }
         }
         else if(tacticalPointType == TacticalPointType.CoverPeekPoint)
         {
             if (coverPointAssignedTo == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
-            coverPointAssignedTo.usingEntity = usingEntity;
+            coverPointAssignedTo.entityUsingThisPoint = entityUsingThisPoint;
 
             for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
             {
-                coverPointAssignedTo.coverPeekPoints[i].usingEntity = usingEntity;
+                coverPointAssignedTo.coverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
             }
         }
     }
 
     public void OnEntityExitsPoint(GameEntity entity)
     {
-        if (usingEntity == entity)
+        if (entityUsingThisPoint == entity)
         {
-            usingEntity = null;
+            entityUsingThisPoint = null;
 
             if (tacticalPointType == TacticalPointType.CoverPoint)
             {
                 for (int i = 0; i < coverPeekPoints.Length; i++)
                 {
-                    coverPeekPoints[i].usingEntity = null;
+                    coverPeekPoints[i].entityUsingThisPoint = null;
                 }
             }
             else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
             {
-                coverPointAssignedTo.usingEntity = null;
+                coverPointAssignedTo.entityUsingThisPoint = null;
 
                 for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
                 {
-                    coverPointAssignedTo.coverPeekPoints[i].usingEntity = null;
+                    coverPointAssignedTo.coverPeekPoints[i].entityUsingThisPoint = null;
+                }
+            }
+        }
+    }
+
+    public void OnEntityStartsTargetingThisPoint(GameEntity entity)
+    {
+        entityTargetingThisPoint = entity;
+
+        //also set the other peek or cover points as used
+        if (tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            for (int i = 0; i < coverPeekPoints.Length; i++)
+            {
+                coverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
+            }
+        }
+        else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
+        {
+            if (coverPointAssignedTo == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
+            coverPointAssignedTo.entityTargetingThisPoint = entityTargetingThisPoint;
+
+            for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+            {
+                coverPointAssignedTo.coverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
+            }
+        }
+    }
+
+    public void OnEntityStopsTargetingThisPoint(GameEntity entity)
+    {
+        if (entityTargetingThisPoint == entity)
+        {
+            entityTargetingThisPoint = null;
+
+            if (tacticalPointType == TacticalPointType.CoverPoint)
+            {
+                for (int i = 0; i < coverPeekPoints.Length; i++)
+                {
+                    coverPeekPoints[i].entityTargetingThisPoint = null;
+                }
+            }
+            else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
+            {
+                coverPointAssignedTo.entityTargetingThisPoint = null;
+
+                for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+                {
+                    coverPointAssignedTo.coverPeekPoints[i].entityTargetingThisPoint = null;
                 }
             }
         }

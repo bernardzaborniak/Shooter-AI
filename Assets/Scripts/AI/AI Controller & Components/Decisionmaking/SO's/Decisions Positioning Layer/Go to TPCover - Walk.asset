@@ -15,7 +15,6 @@ MonoBehaviour:
   decisionContextCreator: {fileID: 11400000, guid: b639cbe22c3eb4749aa83d55c02dd423, type: 2}
   correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
   considerations:
-  - {fileID: 11400000, guid: 922e3133db6e66247ad854d23b4f80df, type: 2}
   - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
   - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
   - {fileID: 11400000, guid: f243423aa31fbeb498490d0c639de554, type: 2}
@@ -25,4 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e35a2677f87d20c4a904effc85b49d92, type: 2}
   hasMomentum: 1
   momentumSelectedBonus: 3
-  momentumDecayRate: 1
+  momentumDecayRate: 2

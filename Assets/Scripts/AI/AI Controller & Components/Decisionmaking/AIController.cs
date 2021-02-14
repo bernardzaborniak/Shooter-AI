@@ -69,10 +69,17 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
             //}
         }
 
-       /* public GameEntity GetEntity()
+        /* public GameEntity GetEntity()
+         {
+             return myEntity;
+         }*/
+        public override void OnDie(ref DamageInfo damageInfo)
         {
-            return myEntity;
-        }*/
+            for (int i = 0; i < decisionLayers.Length; i++)
+            {
+                decisionLayers[i].AbortCurrentDecision();
+            }
+        }
     }
 
 }

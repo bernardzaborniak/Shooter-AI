@@ -104,7 +104,7 @@ namespace BenitosAI
                         blockShootingCauseNoLineOfFire = false;
 
                         //If the difference between distance to enemy and raycasted distance turns out to be bigger than 1/3 of the measured distance -> abort.
-                        RaycastHit hit;
+                        /*RaycastHit hit;
                         //the raycasts starts from roughly the middle of the gun - maybe set a specified point for it later - > this also keeps guns from shooting, when they are inside a wall
                         Vector3 raycastStartPoint = charController.GetCurrentWeaponShootPoint().position + -charController.GetCurrentWeaponShootPoint().forward * 0.3f;
                         if (Physics.Raycast(raycastStartPoint, charController.GetCurrentWeaponShootPoint().forward, out hit, Mathf.Infinity, checkLineOfFireLayerMask))
@@ -115,6 +115,20 @@ namespace BenitosAI
                                 {
                                     blockShootingCauseNoLineOfFire = true;
                                     //Debug.Log("aborth shooting weapon cause of line of fire obstruction");
+                                }
+                            }
+                        }*/
+                        RaycastHit hit;
+                        blockShootingCauseNoLineOfFire = true;
+                        Vector3 raycastStartPoint = charController.GetCurrentWeaponShootPoint().position + -charController.GetCurrentWeaponShootPoint().forward * 0.3f;
+                        if (Physics.Raycast(raycastStartPoint, target.GetAimPosition() - raycastStartPoint, out hit, Mathf.Infinity, checkLineOfFireLayerMask))
+                        {
+                            Hitbox hitbox = hit.collider.gameObject.GetComponent<Hitbox>();
+                            if (hitbox)
+                            {
+                                if (hitbox.GetEntity() == target.entity)
+                                {
+                                    blockShootingCauseNoLineOfFire = false;
                                 }
                             }
                         }

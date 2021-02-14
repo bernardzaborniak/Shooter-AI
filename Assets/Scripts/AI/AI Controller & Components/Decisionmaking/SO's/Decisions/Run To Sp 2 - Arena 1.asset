@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba5a714495be1bf44976879c410ccaa0, type: 3}
-  m_Name: Run To Sp 2
+  m_Name: Run To Sp 2 - Arena 1
   m_EditorClassIdentifier: 
   decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
   correspondingAiStateCreator: {fileID: 11400000, guid: 02233108f8207c94290d22a1e94afd7a, type: 2}
   considerations:
-  - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
+  - {fileID: 11400000, guid: 710261104c64c7f44903fa367f83494f, type: 2}
+  - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
+  hasMomentum: 0
+  momentumSelectedBonus: 0
+  momentumDecayRate: 0

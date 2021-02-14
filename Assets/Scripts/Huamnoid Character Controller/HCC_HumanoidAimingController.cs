@@ -634,29 +634,38 @@ public class HCC_HumanoidAimingController : HumanoidCharacterComponent
 
     public float GetCurrentWeaponAimingErrorAngle(bool ignoreRecoil)
     {
-        Vector3 directionToCurrentAimTarget = Vector3.zero;
+        if (aimingWeapon)
+        {
+            Vector3 directionToCurrentAimTarget = Vector3.zero;
 
-        if(currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
-        {
-            directionToCurrentAimTarget = weaponDirectionToTarget;
-        }
-        else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Position)
-        {
-            directionToCurrentAimTarget = weaponPositionOfTarget - aimingReferencePointOnBody.position;
-        }
-        else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
-        {
-            directionToCurrentAimTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;    
-        }
+            if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
+            {
+                directionToCurrentAimTarget = weaponDirectionToTarget;
+            }
+            else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Position)
+            {
+                directionToCurrentAimTarget = weaponPositionOfTarget - aimingReferencePointOnBody.position;
+            }
+            else if (currentWeaponTargetingMethod == AimAtTargetingMethod.Direction)
+            {
+                directionToCurrentAimTarget = weaponTransformOfTarget.position - aimingReferencePointOnBody.position;
+            }
 
-        if (ignoreRecoil)
-        {
-            return Vector3.Angle(directionToCurrentAimTarget, currentWeaponDirection);
+            if (ignoreRecoil)
+            {
+                return Vector3.Angle(directionToCurrentAimTarget, currentWeaponDirection);
+            }
+            else
+            {
+                return Vector3.Angle(directionToCurrentAimTarget, currentlySelectedWeapon.transform.forward);
+            }
         }
         else
         {
-            return Vector3.Angle(directionToCurrentAimTarget, currentlySelectedWeapon.transform.forward);
+            return Mathf.Infinity;
         }
+
+        
 
     }
 

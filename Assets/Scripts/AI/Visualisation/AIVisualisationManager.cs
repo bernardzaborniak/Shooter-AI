@@ -455,7 +455,7 @@ namespace BenitosAI
                     {
                         MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
                         point.pointRenderer.GetPropertyBlock(propertyBlock);
-                        if (point.IsPointFull())
+                        if (point.IsPointUsedByAnEntity())
                         {
                             propertyBlock.SetFloat(takenBoolName, 1f);
                         }
