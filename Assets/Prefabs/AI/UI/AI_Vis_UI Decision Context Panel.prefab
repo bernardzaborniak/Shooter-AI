@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 156.61768, y: -109.430824}
-  m_SizeDelta: {x: 292.6353, y: 34.8864}
+  m_AnchoredPosition: {x: 147.27277, y: -109.430824}
+  m_SizeDelta: {x: 280.8266, y: 34.8864}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4485568521991989961
 CanvasRenderer:
@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -97,11 +97,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0.07058824}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.07058824}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -462,6 +462,7 @@ MonoBehaviour:
   tmp_considerationNumber: {fileID: 3559269511389857509}
   considerationParent: {fileID: 2312113028537546736}
   considerationPrefab: {fileID: 8855624119549063225, guid: 3f6f5dfa323b78f43ad03ced3102d470, type: 3}
+  targetButton: {fileID: 427991181079735144}
 --- !u!114 &2221436055928869422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,15 +509,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.735849, g: 0.114542544, b: 0.114542544, a: 0.31764707}
+  m_Material: {fileID: 2100000, guid: 148134149d2e6294f9b97d595462dd7f, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1618,6 +1619,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -23.500597
       objectReference: {fileID: 0}
+    - target: {fileID: 914468593826557348, guid: 80667cc060a27084d9ec66a93b7595e0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 882c3a61ebcd4154da78981698c18b5d, type: 2}
     - target: {fileID: 3067392543295745805, guid: 80667cc060a27084d9ec66a93b7595e0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1720,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8062201296189286197, guid: 80667cc060a27084d9ec66a93b7595e0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8062201296189286197, guid: 80667cc060a27084d9ec66a93b7595e0, type: 3}
       propertyPath: m_AnchoredPosition.y

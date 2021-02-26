@@ -694,7 +694,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600498454242363683}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1030,7 +1030,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156478137895783229}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2434,15 +2434,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.4431373, b: 0.54901963, a: 0.7647059}
+  m_Material: {fileID: 2100000, guid: 58efa2531c7827d489ff613cbdbe30e4, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2647,7 +2647,7 @@ GameObject:
   - component: {fileID: 2035957270754190613}
   - component: {fileID: 2071650484987916110}
   m_Layer: 5
-  m_Name: Last Selected Decisions
+  m_Name: Selected Decisions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2696,15 +2696,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.4431373, b: 0.54901963, a: 0.7647059}
+  m_Material: {fileID: 2100000, guid: 58efa2531c7827d489ff613cbdbe30e4, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3235,7 +3235,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8109118915272826589}
   m_HandleRect: {fileID: 3717339945472077707}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4125,8 +4125,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -69.799774, y: 417.43933}
-  m_SizeDelta: {x: 227.99164, y: 55.790634}
+  m_AnchoredPosition: {x: 0.162, y: 417.43933}
+  m_SizeDelta: {x: 357.095, y: 55.791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1538746512944815975
 CanvasRenderer:
@@ -4156,7 +4156,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Last DM Cycle:'
+  m_text: 'Aviable Decisions:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4411,7 +4411,7 @@ GameObject:
   - component: {fileID: 3105362429209575497}
   - component: {fileID: 7212469104652389895}
   m_Layer: 0
-  m_Name: DecisionCycle TMP
+  m_Name: Selected Decisions TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4433,8 +4433,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -69.799774, y: 398}
-  m_SizeDelta: {x: 227.99164, y: 55.790634}
+  m_AnchoredPosition: {x: -65.058, y: 398}
+  m_SizeDelta: {x: 225.427, y: 55.791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3105362429209575497
 CanvasRenderer:
@@ -4464,7 +4464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Last Selected Decisions:'
+  m_text: 'Selected Decisions:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5050,7 +5050,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 675631981900521784}
   m_HandleRect: {fileID: 4535620509530155201}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6652,7 +6652,7 @@ GameObject:
   - component: {fileID: 4557382692441733483}
   - component: {fileID: 7518639360339630896}
   m_Layer: 5
-  m_Name: Last Cycle
+  m_Name: Aviable Decisions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6699,15 +6699,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.4431373, b: 0.54901963, a: 0.7647059}
+  m_Material: {fileID: 2100000, guid: 58efa2531c7827d489ff613cbdbe30e4, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

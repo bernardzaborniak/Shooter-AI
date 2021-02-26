@@ -18,6 +18,7 @@ namespace BenitosAI
         [Space(5)]
         public RectTransform considerationParent;
         public GameObject considerationPrefab;
+        public GameObject targetButton;
 
 
         float timeWhenDecided;
@@ -51,16 +52,21 @@ namespace BenitosAI
             {
                 referencedObjectTransform = memoryItem.targetEntity.transform;
                 tmp_targetName.text = memoryItem.targetEntityName;
+
+                targetButton.SetActive(true);
             }    
             else if(memoryItem.targetTacticalPoint != null)
             {
                 referencedObjectTransform = memoryItem.targetTacticalPoint.transform;
                 tmp_targetName.text = memoryItem.targetTacticalPoint.name + memoryItem.targetTacticalPoint.GetHashCode();
 
+                targetButton.SetActive(true);
+
             }
             else
             {
                 tmp_targetName.text = memoryItem.targetEntityName;
+                targetButton.SetActive(false);
             }
 
 
