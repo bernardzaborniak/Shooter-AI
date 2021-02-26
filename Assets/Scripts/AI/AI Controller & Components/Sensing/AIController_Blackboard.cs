@@ -21,7 +21,7 @@ namespace BenitosAI
         public AIC_HumanSensing sensing;
 
         #region For Storing Sensing Information
-        [Header("For Storing Sensing Information")]
+        [Header("Sensed Information")]
 
         //Infomation Freshness
         public float lastTimeSensingInfoWasUpdated;
@@ -37,19 +37,23 @@ namespace BenitosAI
 
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;
-       // [SerializeField] int maxTPCoverInfosCount;
+        // [SerializeField] int maxTPCoverInfosCount;
         //[SerializeField] int maxTPOpenFieldInfosCount;
-       // [SerializeField] int maxTPCoverPeekInfosCount;
+        // [SerializeField] int maxTPCoverPeekInfosCount;
 
         #endregion
+
+        [Header("Other Information")]
 
         [SerializeField] TacticalPoint currentlyUsedTPoint;
 
 
         //Information Evaluated from Sensing Infos
         public Vector3 meanThreatDirection;
-        public Transform meanThreatDirectionVisualiser;
         public Vector3 meanFriendlyDirection;
+
+        public bool visuasliseThreatAndFriendlyDirections;
+        public Transform meanThreatDirectionVisualiser;
         public Transform meanFriendlyDirectionVisualiser;
 
         [Tooltip("How does it seem who has the advantage right now in fighting?")]
@@ -82,26 +86,36 @@ namespace BenitosAI
             UpdateNumberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds();
 
             #region Debug visualisation -> delete later
-            if (meanThreatDirection != Vector3.zero)
+
+            if (visuasliseThreatAndFriendlyDirections)
             {
-                meanThreatDirectionVisualiser.forward = meanThreatDirection;
-                meanThreatDirectionVisualiser.gameObject.SetActive(true);
+                if (meanThreatDirection != Vector3.zero)
+                {
+                    meanThreatDirectionVisualiser.forward = meanThreatDirection;
+                    meanThreatDirectionVisualiser.gameObject.SetActive(true);
+                }
+                else
+                {
+                    meanThreatDirectionVisualiser.gameObject.SetActive(false);
+
+                }
+                if (meanFriendlyDirection != Vector3.zero)
+                {
+                    meanFriendlyDirectionVisualiser.forward = meanFriendlyDirection;
+                    meanFriendlyDirectionVisualiser.gameObject.SetActive(true);
+                }
+                else
+                {
+                    meanFriendlyDirectionVisualiser.gameObject.SetActive(false);
+
+                }
             }
             else
             {
                 meanThreatDirectionVisualiser.gameObject.SetActive(false);
-
-            }
-            if (meanFriendlyDirection != Vector3.zero)
-            {
-                meanFriendlyDirectionVisualiser.forward = meanFriendlyDirection;
-                meanFriendlyDirectionVisualiser.gameObject.SetActive(true);
-            }
-            else
-            {
                 meanFriendlyDirectionVisualiser.gameObject.SetActive(false);
-
             }
+           
 
             #endregion
 

@@ -287,7 +287,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3934425371985904448}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5177054578761928801}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 914468593826557348}
   - component: {fileID: 8463223266555065171}
   m_Layer: 0
-  m_Name: Sensing Topic Panel
+  m_Name: Expandable Panel With Show in Worldspace Option
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,7 +733,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelToExpand: {fileID: 8395180575784215632}
-  contentSizeFitterToUpdate: {fileID: 8463223266555065171}
   tmp_numberOfItemsInsidePanel: {fileID: 7346208884126487877}
 --- !u!114 &70197548199975589
 MonoBehaviour:
@@ -781,15 +780,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.735849, g: 0.114542544, b: 0.114542544, a: 0.31764707}
+  m_Material: {fileID: 2100000, guid: 58efa2531c7827d489ff613cbdbe30e4, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

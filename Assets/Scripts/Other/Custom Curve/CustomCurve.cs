@@ -93,18 +93,6 @@ public class CustomCurve
 
     }
 
-    float GetRemappedValueExponential(float input)
-    {
-        // Input should be between 0 and 1, return is between 0 and 1 too
-        /* return Mathf.Clamp
-             (
-                 ex_Slope * Mathf.Pow(input- ex_HorizShift, ex_Exponent) + ex_VertShift,
-                 0,
-                 1
-             );*/   
-        return ex_Slope * Mathf.Pow(input - ex_HorizShift, ex_Exponent) + ex_VertShift;
-    }
-
     float GetRemappedValueLinear(float input)
     {
         // Input should be between 0 and 1, return is between 0 and 1 too
@@ -116,6 +104,19 @@ public class CustomCurve
              );*/
         return lin_Slope * input + lin_Shift;
     }
+
+    float GetRemappedValueExponential(float input)
+    {
+        // Input should be between 0 and 1, return is between 0 and 1 too
+        /* return Mathf.Clamp
+             (
+                 ex_Slope * Mathf.Pow(input- ex_HorizShift, ex_Exponent) + ex_VertShift,
+                 0,
+                 1
+             );*/   
+        return ex_Slope * Mathf.Pow(input - ex_HorizShift, ex_Exponent) + ex_VertShift;
+    }
+   
 
     float GetRemappedValueLogistic(float input)
     {
