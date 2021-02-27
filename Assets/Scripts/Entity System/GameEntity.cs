@@ -23,7 +23,8 @@ public class GameEntity : MonoBehaviour
     public bool isDead = false; //to prevent calling onDie more than once
 
     [Header("Tags")]
-    public BenitosAI.EntityTags entityTags;
+    //public BenitosAI.EntityTags entityTags;
+    public EntityTags entityTags;
 
     /* [Header("For Aiming of Enemies")]
      [Tooltip("collection of positions to aim at")]

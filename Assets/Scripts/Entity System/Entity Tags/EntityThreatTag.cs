@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BenitosAI
-{
+//namespace BenitosAI
+//{
     //added to thew tags by the designer in edit mode, this tags inform other entities about what kind of threat this unit poses
     [System.Serializable]
     public class EntityThreatTag 
@@ -22,4 +22,4 @@ namespace BenitosAI
             this.type = type;
         }
     }
-}
+//}

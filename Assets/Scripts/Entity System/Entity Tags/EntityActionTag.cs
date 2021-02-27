@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BenitosAI
-{
+//namespace BenitosAI
+//{
     //this tags are added automaticly by decisions & the ai controller
 
   
@@ -41,6 +41,6 @@ namespace BenitosAI
             this.type = type;
         }
     }
-}
+//}
 
 
