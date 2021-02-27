@@ -98,9 +98,9 @@ namespace BenitosAI
             }
 
             //2
-            public void AddToLastDecisionsRemembered(DecisionContext context, float weight)
+            public void AddToLastDecisionsRemembered(DecisionContext context)
             {
-                lastDecisionsRemembered.Add(new DecisionContextMemory(context, weight));
+                lastDecisionsRemembered.Add(new DecisionContextMemory(context, context.decision.weight));
             }
 
             //3
@@ -114,7 +114,7 @@ namespace BenitosAI
             public void OnSelectedNewDecision(DecisionContext context)
             {
                 //add to queue
-                selectedDecisionsRememberedQueue.Enqueue(new DecisionContextMemory(context, 0));
+                selectedDecisionsRememberedQueue.Enqueue(new DecisionContextMemory(context, context.decision.weight));
                 //cut queue if necessary
                 while(selectedDecisionsRememberedQueue.Count> numberOfPriorSelectedDecisionsRemembered)
                 {
@@ -140,7 +140,8 @@ namespace BenitosAI
         [Tooltip("When rating a decision, if the score drops below this value -> just discard the decision")]
         public float discardThreshold;
 
-        public DecisionWrapper[] decisions;
+       // public DecisionWrapper[] decisions;
+        public Decision[] decisions;
 
         AIState currentState;
         AIController aiController;
@@ -174,7 +175,8 @@ namespace BenitosAI
 
             for (int i = 0; i < decisions.Length; i++)
             {
-                DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
+                //DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
+                DecisionContext[] decisionContexesToAdd = decisions[i].GetRatedDecisionContexts(aiController, discardThreshold);
 
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {                 
@@ -208,7 +210,8 @@ namespace BenitosAI
                         bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);  
                     }
 
-                    if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
+                    //if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
+                    if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j]);
 
                 }
             }

@@ -5,6 +5,7 @@ using UnityEditor;
 
 namespace BenitosAI
 {
+   /*
     [CustomPropertyDrawer(typeof(DecisionWrapper))]
     public class DecisionWrapperDrawer : PropertyDrawer
     {
@@ -74,7 +75,7 @@ namespace BenitosAI
             //  EditorGUILayout.PropertyField(weigtProp);
             //}
 
-        }
+      /*  }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -90,5 +91,5 @@ namespace BenitosAI
             }
 
         }
-    }
+    }*/
 }

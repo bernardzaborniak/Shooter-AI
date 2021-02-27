@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [System.Serializable]
+   /* [System.Serializable]
     public class DecisionWrapper
     {
         [HideInInspector]
@@ -12,5 +12,5 @@ namespace BenitosAI
         public Decision decision;
         [Min(0)]
         public float weigt = 1f;
-    }
+    }*/
 }

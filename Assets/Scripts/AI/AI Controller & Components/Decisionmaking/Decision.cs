@@ -5,15 +5,19 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
-    public class Decision : ScriptableObject
+   // [CreateAssetMenu(menuName = "AI/Decision", fileName = "New Decision")]
+    [System.Serializable]
+    public class Decision //: ScriptableObject
     {
+        [Space(5)]
+        public string name;
+        public float weight;
         [Space(5)]
         [SerializeField] DecisionContextCreator decisionContextCreator;
         [SerializeField] AIStateCreator correspondingAiStateCreator;
         //every decision has a list of considerations based on which to decide
-        [Space(5)]
-        public Consideration[] considerations;
+
+
 
         [Header("Momentum")]
         public bool hasMomentum;
@@ -22,6 +26,12 @@ namespace BenitosAI
         public float momentumSelectedBonus;
         [Tooltip("how much does the momentum loose per second?")]
         public float momentumDecayRate;
+
+        [Space(5)]
+        //[Header("Considerations")]
+        public Consideration[] considerations;
+
+
 
 
 
@@ -32,9 +42,11 @@ namespace BenitosAI
         }
 
 
-        public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float weight, float discardThreshold)
+        //public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float weight, float discardThreshold)
+        public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float discardThreshold)
         {
             // Create contexes according to number of targets
+            Debug.Log("deicision OCntext creator: " + decisionContextCreator + " decision: " + this.name);
             DecisionContext[] contexts = decisionContextCreator.GetDecisionContexts(this, aiController);
 
             // Score each context

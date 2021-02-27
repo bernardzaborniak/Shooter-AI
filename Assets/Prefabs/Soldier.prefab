@@ -1114,17 +1114,57 @@ MonoBehaviour:
     discardThreshold: 0.15
     decisions:
     - name: 'Hold Position Combat Stance Standing '
-      decision: {fileID: 11400000, guid: bd6c696aa77f8af4b80d9343085b80e4, type: 2}
-      weigt: 2
+      weight: 2
+      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 1
+      momentumDecayRate: 1
+      considerations:
+      - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
+      - {fileID: 11400000, guid: f1d9b1f8d2dc1a84fbebd805ee1221e3, type: 2}
+      - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
     - name: 'Hold Position Combat Stance Crouching '
-      decision: {fileID: 11400000, guid: e9771dd66d5df2141834a708f5c15f4c, type: 2}
-      weigt: 2
+      weight: 2
+      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: e1c2b9d54f8291744869c82f03ae0a6b, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 2
+      considerations:
+      - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: 9a5d23463fc734845b8047d8419afc9d, type: 2}
+      - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
     - name: 'Go to TPCover - Walk '
-      decision: {fileID: 11400000, guid: 1f8e2d63d8775e14b9d2cb2757e45bf7, type: 2}
-      weigt: 5
+      weight: 5
+      decisionContextCreator: {fileID: 11400000, guid: b639cbe22c3eb4749aa83d55c02dd423, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 3
+      momentumDecayRate: 2
+      considerations:
+      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
+      - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: f243423aa31fbeb498490d0c639de554, type: 2}
+      - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
+      - {fileID: 11400000, guid: 35610281a8e988f45a39c9c6c0b5bf75, type: 2}
+      - {fileID: 11400000, guid: 517d09a4897753842b06ced799116d65, type: 2}
+      - {fileID: 11400000, guid: e35a2677f87d20c4a904effc85b49d92, type: 2}
     - name: 'Go to TPCoverPeek - Walk '
-      decision: {fileID: 11400000, guid: 9441dd53514e14f478fe6dbc87bf2d75, type: 2}
-      weigt: 5
+      weight: 5
+      decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 1
+      considerations:
+      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
+      - {fileID: 11400000, guid: ccde11d08a6cdb745a083977481c9aaa, type: 2}
+      - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}
+      - {fileID: 11400000, guid: 6c1c63757e8c61f4f821e60433172dce, type: 2}
+      - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
+      - {fileID: 11400000, guid: 517d09a4897753842b06ced799116d65, type: 2}
+      - {fileID: 11400000, guid: a351d30f756409c4aaf6f0d29e4d71a0, type: 2}
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
@@ -1135,14 +1175,42 @@ MonoBehaviour:
     discardThreshold: 0.15
     decisions:
     - name: 'Hold Weapon In Hand Idle '
-      decision: {fileID: 11400000, guid: 2bf66bd181e107e40ba609ae243fefe5, type: 2}
-      weigt: 1
+      weight: 1
+      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 290cb002636c4304ebe6ba23f2384b82, type: 2}
+      hasMomentum: 0
+      momentumSelectedBonus: 0
+      momentumDecayRate: 0
+      considerations:
+      - {fileID: 11400000, guid: d1628f675bf03944da9ccc014ff20853, type: 2}
     - name: 'Reload Weapon '
-      decision: {fileID: 11400000, guid: 32e7c59ccba1bd846aed7abc828de916, type: 2}
-      weigt: 3
+      weight: 3
+      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 9efd7928857d9134798af8df77012614, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 1
+      momentumDecayRate: 1
+      considerations:
+      - {fileID: 11400000, guid: 82f5c3c1b32e7c7408c3f67730b890bc, type: 2}
+      - {fileID: 11400000, guid: 22b11c92325ccb7498870f47c13b4608, type: 2}
+      - {fileID: 11400000, guid: a0c44ad7abb06d44cbaede4dfa63b1d1, type: 2}
+      - {fileID: 11400000, guid: c5fdd2805b6236e4584ad3a5f3b48917, type: 2}
+      - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
     - name: 'Shoot Weapon At Enemy '
-      decision: {fileID: 11400000, guid: d7eebe65d50f3e840a97304fab5e4b39, type: 2}
-      weigt: 3
+      weight: 3
+      decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 82dfbb72ebc1cb440b5e375b1dc6859c, type: 2}
+      hasMomentum: 0
+      momentumSelectedBonus: 0
+      momentumDecayRate: 0
+      considerations:
+      - {fileID: 11400000, guid: 82f5c3c1b32e7c7408c3f67730b890bc, type: 2}
+      - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
+      - {fileID: 11400000, guid: 11436a3adfe83de419d458b601390653, type: 2}
+      - {fileID: 11400000, guid: 58a4a6a0a9c0af64f877a0c73cd6495a, type: 2}
+      - {fileID: 11400000, guid: fd6d14595cea2b446aa7d6035116f0fe, type: 2}
+      - {fileID: 11400000, guid: 3c07dac0b9237684fbd9641c2e70a2d0, type: 2}
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
@@ -5181,7 +5249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6be324008b89e6e46b59b621e2b6386c, type: 3}
       propertyPath: m_Name
-      value: YBot
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6be324008b89e6e46b59b621e2b6386c, type: 3}
       propertyPath: m_Layer
