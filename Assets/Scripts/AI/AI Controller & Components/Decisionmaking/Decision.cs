@@ -46,7 +46,7 @@ namespace BenitosAI
         public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float discardThreshold)
         {
             // Create contexes according to number of targets
-            Debug.Log("deicision OCntext creator: " + decisionContextCreator + " decision: " + this.name);
+            Debug.Log("deicision OCntext creator: " + decisionContextCreator + " decision: " + this.name + " ai:" + aiController.transform.parent.name);
             DecisionContext[] contexts = decisionContextCreator.GetDecisionContexts(this, aiController);
 
             // Score each context
