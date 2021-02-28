@@ -54,7 +54,8 @@ public class Gun : Item, IItemWithIKHandPositions
     public ParticleSystem shootParticle;
 
 
-    private void Start()
+    //should be set up instead of start, cause start wont execute if this object is inactive inside the inventory hierarchy
+    public void SetUp()
     {
         shootInterval = 1 / (rateOfFire / 60);
         bulletsInMagazine = magazineSize;
