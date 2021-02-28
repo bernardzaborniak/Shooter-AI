@@ -396,11 +396,6 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         {
             if (inventory[weaponID] is Gun)
             {
-                if(weaponID == 2)
-                {
-                    Debug.Log("weapon 2 magazine fill: " + (inventory[weaponID] as Gun).GetBulletsInMagazineLeftRatio());
-
-                }
                 return (inventory[weaponID] as Gun).GetBulletsInMagazineLeftRatio();
             }
         }

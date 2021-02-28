@@ -23,6 +23,7 @@ namespace BenitosAI
         EC_HumanoidCharacterController charController;
 
         EntityActionTag[] actionTags;
+        int weaponID;
 
 
         public St_HS_ReloadWeapon(AIController aiController , DecisionContext context, int weaponID)
@@ -32,12 +33,13 @@ namespace BenitosAI
 
             actionTags = new EntityActionTag[1];
             actionTags[0] = new EntityActionTag(EntityActionTag.Type.ReloadingWeapon);
+            this.weaponID = weaponID;
 
         }
 
         public override void OnStateEnter()
         {
-           
+            charController.ChangeSelectedItem(weaponID);
         }
 
         public override void OnStateExit()
