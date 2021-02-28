@@ -105,7 +105,7 @@ namespace BenitosAI
 
         Vector3 CalculateNewAimDir()
         {
-            Quaternion randomRot = Quaternion.Euler(Random.Range(-maxDeviationAngleFromMovementOrThreatDirection, maxDeviationAngleFromMovementOrThreatDirection), Random.Range(-maxDeviationAngleFromMovementOrThreatDirection, maxDeviationAngleFromMovementOrThreatDirection), Random.Range(-maxDeviationAngleFromMovementOrThreatDirection, maxDeviationAngleFromMovementOrThreatDirection));
+            Quaternion randomRot = Quaternion.Euler(Random.Range(-maxDeviationAngleFromMovementOrThreatDirection/2, maxDeviationAngleFromMovementOrThreatDirection/2), Random.Range(-maxDeviationAngleFromMovementOrThreatDirection, maxDeviationAngleFromMovementOrThreatDirection), Random.Range(-maxDeviationAngleFromMovementOrThreatDirection, maxDeviationAngleFromMovementOrThreatDirection));
 
             if (blackboard.meanThreatDirection != Vector3.zero)
             {
