@@ -5,9 +5,9 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/IsInsideTPCover", fileName = "Is Inside TP Cover")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/IsInsideTPCoverPeek", fileName = "Is Inside TPCoverPeek")]
 
-    public class CI_HS_IsInsideTPCover : ConsiderationInput
+    public class CI_HS_IsInsideTPCoverPeek : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
@@ -18,7 +18,7 @@ namespace BenitosAI
             TacticalPoint tPoint = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetCurrentlyUsedTacticalPoint();
             if (tPoint != null)
             {
-                if(tPoint.tacticalPointType == TacticalPointType.CoverPoint)
+                if (tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
                 {
                     return 1;
                 }

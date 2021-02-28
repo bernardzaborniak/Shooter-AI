@@ -1237,6 +1237,18 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 11436a3adfe83de419d458b601390653, type: 2}
       - {fileID: 11400000, guid: 3f9fddf894fbedc4ab1bd5113eab5404, type: 2}
       - {fileID: 11400000, guid: 3c07dac0b9237684fbd9641c2e70a2d0, type: 2}
+    - name: Throw Grenade
+      weight: 3
+      decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 511646c0096cc2646bbf6d9219554eb3, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 5
+      momentumDecayRate: 1.5
+      considerations:
+      - {fileID: 11400000, guid: 26b564fa134b7204a91dd75402819073, type: 2}
+      - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
+      - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: 84866b1a9499a034190b9adeb4ecc431, type: 2}
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
