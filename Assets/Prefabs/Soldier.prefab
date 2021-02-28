@@ -1174,7 +1174,7 @@ MonoBehaviour:
     decisionMethod: 0
     discardThreshold: 0.15
     decisions:
-    - name: 'Hold Primary Weapon In Hand Idle '
+    - name: Hold Primary Weapon In Hand
       weight: 1
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 290cb002636c4304ebe6ba23f2384b82, type: 2}
@@ -1215,7 +1215,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: a0c44ad7abb06d44cbaede4dfa63b1d1, type: 2}
       - {fileID: 11400000, guid: c5fdd2805b6236e4584ad3a5f3b48917, type: 2}
       - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
-    - name: Hold Secondary Weapon In Hand Idle
+    - name: Hold Secondary Weapon In Hand
       weight: 1
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 14d26c340f02e7448afb1f999ed3e88c, type: 2}
