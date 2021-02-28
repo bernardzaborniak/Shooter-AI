@@ -12,7 +12,7 @@ namespace BenitosAI
         {
             None,
             Range,
-            RangeAndDesiredFloatValue,
+            RangeAndDesiredFloatValue, //this could be delete, normal range works just as good?
             WeaponID,
             TPointQualityEvaluationParams,
             Direction //usefull for things like prioritise targets in front of me

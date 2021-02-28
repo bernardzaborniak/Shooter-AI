@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/DistanceToTP", fileName = "DistanceToTP")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Distance to TP", fileName = "Distance to TP")]
 
     public class CI_HS_DistanceToTP : ConsiderationInput
     {

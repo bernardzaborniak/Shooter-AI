@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/HasSeenEnemies", fileName = "HasSeenEnemies")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has seen Enemies", fileName = "Has seen Enemies")]
     public class CI_HS_HasSeenEnemies : ConsiderationInput
     {
         [Tooltip("If the information about the enemy entity is older than x seconds, ignore it")]

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/IsCrouched", fileName = "IsCrouched")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is Crouched", fileName = "Is Crouched")]
     public class CI_HS_IsCrouched : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/WhenTPIsFree", fileName = "WhenTPIsFree")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/When TP is Free", fileName = "When TP is Free")]
 
     public class CI_HS_WhenTPIsFree : ConsiderationInput
     {

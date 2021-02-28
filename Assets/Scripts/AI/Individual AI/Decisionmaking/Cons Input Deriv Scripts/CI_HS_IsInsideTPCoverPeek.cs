@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/IsInsideTPCoverPeek", fileName = "Is Inside TPCoverPeek")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is inside TPCoverPeek", fileName = "Is inside TPCoverPeek")]
 
     public class CI_HS_IsInsideTPCoverPeek : ConsiderationInput
     {

@@ -3891,9 +3891,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e19c3112f295041acaa0c0ba400fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 16
-  armor: 62
-  gun: {fileID: 0}
 --- !u!114 &137516266 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5389394481685980531, guid: 331a44c133b786842af3095e9f0ea04f, type: 3}
@@ -18805,52 +18802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16499ce2151f5ea49ab634719ce01f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customSerializedClass1:
-    scale: 1
-    curve:
-      m_Curve:
-      - time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 1
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  customSerializedClass2:
-    scale: 1
-    curve:
-      m_Curve:
-      - time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 1
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
 --- !u!1 &498113228
 GameObject:
   m_ObjectHideFlags: 0
@@ -42771,9 +42722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e19c3112f295041acaa0c0ba400fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 16
-  armor: 62
-  gun: {fileID: 0}
 --- !u!43 &809674928
 Mesh:
   m_ObjectHideFlags: 0
@@ -50006,9 +49954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3e19c3112f295041acaa0c0ba400fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 16
-  armor: 62
-  gun: {fileID: 0}
 --- !u!1 &979460664
 GameObject:
   m_ObjectHideFlags: 0
@@ -55768,9 +55713,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fbe2ec74bc6d04cb5729644ec57365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
-  tankModel: {fileID: 0}
-  serverAdress: 127.2.2.5
 --- !u!1001 &1152810907
 PrefabInstance:
   m_ObjectHideFlags: 0

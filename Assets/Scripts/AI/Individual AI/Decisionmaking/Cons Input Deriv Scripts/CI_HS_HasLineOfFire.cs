@@ -7,7 +7,7 @@ namespace BenitosAI
 {
 
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/HasLineofFire", fileName = "HasLineofFire")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Line of Fire", fileName = "Has Line of Fire")]
     public class CI_HS_HasLineOfFire : ConsiderationInput
     {   
         public LayerMask checkLineOfFireLayerMask;

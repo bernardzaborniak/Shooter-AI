@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/My Health Ratio", fileName = "My Health Ratio")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/My Health Ratio", fileName = "My Health Ratio")]
     public class CI_HS_MyHealthRatio : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)

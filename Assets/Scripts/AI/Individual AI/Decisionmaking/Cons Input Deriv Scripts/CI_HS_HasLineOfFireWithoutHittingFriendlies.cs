@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/ConsiderationInput/Humanoid/HasLineOfFireWithoutHittingFriendlies", fileName = "HasLineOfFireWithoutHittingFriendlies")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Line of Fire without hitting Friendlies", fileName = "Has Line of Fire without hitting Friendlies")]
     public class CI_HS_HasLineOfFireWithoutHittingFriendlies : ConsiderationInput
     {
         //It doesnt check if it has line of fire, as this would be false too often, we also want to allow the unit to shoot if it doent hit
