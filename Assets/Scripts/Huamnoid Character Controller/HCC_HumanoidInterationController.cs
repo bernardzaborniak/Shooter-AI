@@ -98,8 +98,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             if (Time.time > hidingWeaponEndTime)
             {
                 FinishHidingItem();
-            }
-            
+            }          
         }
         else if (itemInteractionState == ItemInteractionState.PullingOutItemInHand)
         {
@@ -110,8 +109,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             if (Time.time > pullingOutWeaponEndTime)
             {
                 FinishPullingOutItem();
-            }
-            
+            }          
         }
         else if(itemInteractionState == ItemInteractionState.ReloadingWeapon)
         {

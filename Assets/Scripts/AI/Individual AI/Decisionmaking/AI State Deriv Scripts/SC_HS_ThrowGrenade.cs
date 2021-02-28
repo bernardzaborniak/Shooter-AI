@@ -23,6 +23,12 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
         SensedEntityInfo target;
+        AIC_AimingController aimingController;
+
+        Grenade equippedGrenade;
+
+        // Saved for the nan exception in the angle calculation
+        Vector3 grenadeAimSpineDirectionLastFrame;
 
 
         public St_HS_ThrowGrenade(AIController aiController, DecisionContext context)
@@ -30,6 +36,10 @@ namespace BenitosAI
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
             target = context.targetEntity;
+
+            aimingController = this.aiController.aimingController;
+            equippedGrenade = this.charController.GetItemInInventory(3) as Grenade;
+            grenadeAimSpineDirectionLastFrame = target.GetAimPosition() - charController.transform.position;
         }
 
         public override void OnStateEnter()
@@ -69,13 +79,32 @@ namespace BenitosAI
             //   aiController.OnEnterTPoint(targetPoint.tacticalPoint);
             // targetPoint.tacticalPoint.OnEntityEntersPoint(aiController.humanSensing.GetMyEntity());
             //}
-            charController.AimSpineAtPosition(target.GetAimPosition());
             charController.ChangeSelectedItem(3);
             charController.StartThrowingGrenade();
+
+            float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, target.lastDistanceMeasured);
+
+            Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(target.GetEntityPosition(), target.GetCurrentVelocity(), true, grenadeThrowingVelocity, false);
+            if (float.IsNaN(aimSpineDirection.x))
+            {
+                aimSpineDirection = grenadeAimSpineDirectionLastFrame;
+            }
+            charController.AimSpineAtPosition(aimSpineDirection);
+
+
+            charController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimSpineDirection);
+
+            grenadeAimSpineDirectionLastFrame = aimSpineDirection;
         }
+
 
         public override bool ShouldStateBeAborted()
         {
+            if (charController.GetItemInInventory(3) == null)
+            {
+                return true;
+            }
+
             return false;
         }
     }
