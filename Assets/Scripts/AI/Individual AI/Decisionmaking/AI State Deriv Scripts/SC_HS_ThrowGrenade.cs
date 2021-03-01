@@ -90,7 +90,7 @@ namespace BenitosAI
                 Debug.Log("aiming spine was nan");
                 aimSpineDirection = grenadeAimSpineDirectionLastFrame;
             }
-            charController.AimSpineAtPosition(aimSpineDirection);
+            charController.AimSpineInDirection(aimSpineDirection);
 
 
             charController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimSpineDirection);

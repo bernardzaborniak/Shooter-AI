@@ -50,7 +50,11 @@ public class Grenade : Item
         transform.SetParent(null);
         rigidbody.isKinematic = false;
 
+        Debug.Log("Grenade Throw: " + direction + " " + throwVelocity);
         rigidbody.velocity = direction.normalized * throwVelocity;
+        Debug.Log("Grenade Throw: vel: " + rigidbody.velocity );
+
+
         rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
 
         nextActivateDangerTagTime = Time.time + dangerTagActivationDelayAfterThrow;
@@ -74,6 +78,8 @@ public class Grenade : Item
         {
             if (thrownOrDropped)
             {
+                //Debug.Log("Grenade flying: " + rigidbody.velocity);
+
                 if (Time.time > nextActivateDangerTagTime)
                 {
                     environmentalDangerTag.dangerActive = true;
@@ -96,6 +102,8 @@ public class Grenade : Item
 
     private void OnCollisionStay(Collision collision)
     {
+        //Debug.Log("grenade collides with : " + collision.collider.name);
+
         Vector3 velocityHorizontalOnly = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
         float velocityMagnitude = velocityHorizontalOnly.magnitude;
         //rigidbody.velocity += -rigidbody.velocity.normalized * Mathf.Clamp(velocityMagnitude, -customFriction * Time.time, customFriction * Time.time);

@@ -390,20 +390,23 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 // 4. Update rotation according to movement direction or externally set direction if manualRotation=true
                 if (!manualRotation)
                 {
-                    if (agent.desiredVelocity != Vector3.zero)
+                    desiredForward = agent.desiredVelocity;
+
+                    /*if (agent.desiredVelocity != Vector3.zero)
                     {
-                        desiredForward = agent.desiredVelocity;
                         //could the nan come from here?
                     }
                     else
                     {
                         desiredForward = agent.transform.forward;
-                    }
+                    }*/
                 }
+                if (desiredForward == Vector3.zero) desiredForward = transform.forward;
 
-                
-                if (desiredForward != Vector3.zero) RotateTowards(desiredForward);
-                else Debug.Log("rotate towards desiredForward is vector3.zero + manualRotation: " + manualRotation);
+
+                //if (desiredForward != Vector3.zero) RotateTowards(desiredForward);
+                //else Debug.Log("rotate towards desiredForward is vector3.zero + manualRotation: " + manualRotation);
+                RotateTowards(desiredForward);
             }
             
 
