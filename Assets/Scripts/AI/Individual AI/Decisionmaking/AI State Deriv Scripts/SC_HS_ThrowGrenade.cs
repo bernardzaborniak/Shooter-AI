@@ -87,6 +87,7 @@ namespace BenitosAI
             Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(target.GetEntityPosition(), target.GetCurrentVelocity(), true, grenadeThrowingVelocity, false);
             if (float.IsNaN(aimSpineDirection.x))
             {
+                Debug.Log("aiming spine was nan");
                 aimSpineDirection = grenadeAimSpineDirectionLastFrame;
             }
             charController.AimSpineAtPosition(aimSpineDirection);

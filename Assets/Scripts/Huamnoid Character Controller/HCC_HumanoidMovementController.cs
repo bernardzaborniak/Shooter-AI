@@ -309,7 +309,8 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 {
                     rotatingTowardsOffMeshLinkOverridesOtherRotation = true;
 
-                    RotateTowards(offMeshLinkTraversalDirectionNoY);
+                    if (offMeshLinkTraversalDirectionNoY != Vector3.zero) RotateTowards(offMeshLinkTraversalDirectionNoY);
+                    else Debug.Log("rotate towards offMeshLinkTraversalDirectionNoY is vector3.zero");
                 }
 
             }
@@ -391,12 +392,18 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 {
                     if (agent.desiredVelocity != Vector3.zero)
                     {
-                        desiredForward = agent.desiredVelocity;   
+                        desiredForward = agent.desiredVelocity;
                         //could the nan come from here?
+                    }
+                    else
+                    {
+                        desiredForward = agent.transform.forward;
                     }
                 }
 
-                RotateTowards(desiredForward);
+                
+                if (desiredForward != Vector3.zero) RotateTowards(desiredForward);
+                else Debug.Log("rotate towards desiredForward is vector3.zero + manualRotation: " + manualRotation);
             }
             
 
@@ -454,7 +461,11 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
                 {
                     offMeshLinkTraversalVelocity = (newPosition - agent.transform.position) / Time.deltaTime;
                 }
-                RotateTowards(offMeshLinkTraversalDirection);
+
+               
+                if (offMeshLinkTraversalDirection != Vector3.zero) RotateTowards(offMeshLinkTraversalDirection);
+                else Debug.Log("rotate towards offMeshLinkTraversalDirection is vector3.zero");
+
                 agent.transform.position = newPosition;
             }
             else

@@ -40,6 +40,9 @@ public class Grenade : Item
     public GameObject model;
 
     [Header("AI")]
+    public float dangerTagActivationDelayAfterThrow = 1;
+    float nextActivateDangerTagTime;
+    bool thrownOrDropped = false;
     public BenitosAI.EnvironmentalDangerTag environmentalDangerTag;
 
     public void Throw(Vector3 direction, float throwVelocity)
@@ -49,12 +52,15 @@ public class Grenade : Item
 
         rigidbody.velocity = direction.normalized * throwVelocity;
         rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+
+        nextActivateDangerTagTime = Time.time + dangerTagActivationDelayAfterThrow;
+        thrownOrDropped = true;
     }
 
     public void ArmGrenade()
     {
         armed = true;
-        environmentalDangerTag.dangerActive = true;
+        //environmentalDangerTag.dangerActive = true;
 
         if (grenadeType == GrenadeType.TimeDelay)
         {
@@ -66,6 +72,14 @@ public class Grenade : Item
     {
         if (!exploded)
         {
+            if (thrownOrDropped)
+            {
+                if (Time.time > nextActivateDangerTagTime)
+                {
+                    environmentalDangerTag.dangerActive = true;
+                }
+            }
+           
             if (armed)
             {
                 if (grenadeType == GrenadeType.TimeDelay)
@@ -102,6 +116,7 @@ public class Grenade : Item
     void Explode()
     {
         exploded = true;
+        environmentalDangerTag.dangerActive = false;
         model.SetActive(false);
         explosionEffect.Play();
 

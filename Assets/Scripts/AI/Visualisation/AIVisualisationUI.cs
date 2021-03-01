@@ -256,6 +256,10 @@ namespace BenitosAI
                 {
                     objectsToDestroy.Add(sensingTPointsCoverPeekPanel.panelToExpand.GetChild(i).gameObject);
                 }
+                for (int i = 0; i < environmentalDangersPanel.panelToExpand.childCount; i++)
+                {
+                    objectsToDestroy.Add(environmentalDangersPanel.panelToExpand.GetChild(i).gameObject);
+                }
                 for (int i = 0; i < sensingTPointCurrentlyUsedPanel.panelToExpand.childCount; i++)
                 {
                     objectsToDestroy.Add(sensingTPointCurrentlyUsedPanel.panelToExpand.GetChild(i).gameObject);
@@ -321,7 +325,7 @@ namespace BenitosAI
                 foreach ((EnvironmentalDangerTag danger, float distance) danger in blackboard.environmentalDangerInfos)
                 {
                     newSensingItem = Instantiate(sensingUIItemPrefab, environmentalDangersPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
-                    newSensingItem.SetUp((danger.danger.dangerType.ToString() + danger.GetHashCode()), danger.distance, 0, 0, danger.danger.transform, manager);
+                    newSensingItem.SetUp((danger.danger.dangerType.ToString() + danger.danger.GetHashCode()), danger.distance, 0, 0, danger.danger.transform, manager);
                 }
                 environmentalDangersPanel.UpdateNumberOfItemsInsidePanel(blackboard.environmentalDangerInfos.Length);
 
@@ -489,6 +493,11 @@ namespace BenitosAI
         public void OnShowTPCoverPeekInfosInWorldButtonClicked(ToogleableButton button)
         {
             manager.settings.ShowTPCoverPeekInWorld = button.active;
+        }
+
+        public void OnShowEnvironmentalDangersInWorldButtonClicked(ToogleableButton button)
+        {
+            manager.settings.ShowEnvironmentalDangersInWorld = button.active;
         }
 
         public void OnShowCurrentlyUsedTPointInWorldButtonClicked(ToogleableButton button)

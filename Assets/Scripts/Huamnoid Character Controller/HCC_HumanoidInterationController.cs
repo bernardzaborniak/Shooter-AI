@@ -68,6 +68,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
     float currentGrenadeThrowVelocity;
     Vector3 currentGrenadeThrowDirection;
+    public GameObject currentGrenadeThrowDirectionVisualiser;
     //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
     [Tooltip("makes sure the grenade isnt somehow thrown too far away")]
@@ -454,7 +455,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
                 //this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
                 //this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
 
-                Debug.Log("start throwing grenade");
+                Debug.Log("start throwing grenade " + transform.parent.GetHashCode());
 
                 nextRemovePinTime = Time.time + removePinTime;
                 pinRemovedFromGrenade = false;
@@ -478,6 +479,8 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             }
             this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
             this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
+
+            currentGrenadeThrowDirectionVisualiser.transform.forward = currentGrenadeThrowDirection;
             //throw direction is just spine direction
         }
     }
@@ -487,10 +490,11 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     void FinishThrowingGrenade()
     {
         itemInteractionState = ItemInteractionState.Idle;
-        Debug.Log("finished throwing grenade: direction: " + currentGrenadeThrowDirection + " velocity: " + currentGrenadeThrowVelocity);
+        Debug.Log("finished throwing grenade: direction: " + currentGrenadeThrowDirection + " velocity: " + currentGrenadeThrowVelocity + " " + transform.parent.GetHashCode());
         (inventory[currentSelectedItemID] as Grenade).Throw(currentGrenadeThrowDirection, currentGrenadeThrowVelocity);
         inventory[currentSelectedItemID] = null; //Remove grenade from inventory
         animationController.AbortThrowingGrenade();
+
 
     }
 
@@ -498,9 +502,13 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
     {
         if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
         {
+
             // can be caused by stagger or flinch
             if (pinRemovedFromGrenade)
             {
+                Debug.Log("AbortThrowingGrenade: direction: " + aimingController.GetCurrentSpineAimDirection() + " velocity: random -3 to + 3" + " " + transform.parent.GetHashCode());
+
+
                 // an armed grenade will be dropped
                 itemInteractionState = ItemInteractionState.Idle;
                 (inventory[currentSelectedItemID] as Grenade).Throw(aimingController.GetCurrentSpineAimDirection(), Random.Range(-3, 3));  //is this the proper way
@@ -509,6 +517,9 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             }
             else
             {
+                Debug.Log("AbortThrowingGrenade: pin not removed: " + transform.parent.GetHashCode());
+
+
                 // an unarmed grenade will not be dropped
                 itemInteractionState = ItemInteractionState.Idle;
                 animationController.AbortThrowingGrenade();

@@ -106,6 +106,20 @@ namespace BenitosAI
                 }
             }
 
+            [SerializeField] bool showEnvironmentalDangersInWorld;
+            public bool ShowEnvironmentalDangersInWorld
+            {
+                get
+                {
+                    return showEnvironmentalDangersInWorld;
+                }
+                set
+                {
+                    showEnvironmentalDangersInWorld = value;
+                    manager.UpdateBlackboardInfoVisualisersInWorldSpace();
+                }
+            }
+
             [SerializeField] bool showTPCurrentlyUsedInWorld;
             public bool ShowTPCurrentlyUsedInWorld
             {
@@ -175,6 +189,7 @@ namespace BenitosAI
         [SerializeField] GameObject tPCoverInfoVisualiserPrefab;
         [SerializeField] GameObject tPOpenFieldInfoVisualiserPrefab;
         [SerializeField] GameObject tPCoverPeekInfoVisualiserPrefab;
+        [SerializeField] GameObject environmentalDangerInfoVisualiserPrefab;
         [SerializeField] GameObject tPCurrentlyUsedInfoVisualiserPrefab;
 
         HashSet<AI_Vis_SensedBlackboardInfoVisualiser> blackboardInfoVisualisersInUse = new HashSet<AI_Vis_SensedBlackboardInfoVisualiser>();
@@ -714,6 +729,18 @@ namespace BenitosAI
                         instantiatedObject = Instantiate(tPCoverPeekInfoVisualiserPrefab, visualisedBlackboardInfoParent);
                         instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
                         instantiatedVisualiser.SetUpForTPointCoverPeekInfo(selectedSoldierBlackboard.tPCoverPeekInfos[i]);
+
+                        blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
+                    }
+                }
+
+                if (settings.ShowEnvironmentalDangersInWorld)
+                {
+                    for (int i = 0; i < selectedSoldierBlackboard.environmentalDangerInfos.Length; i++)
+                    {
+                        instantiatedObject = Instantiate(environmentalDangerInfoVisualiserPrefab, visualisedBlackboardInfoParent);
+                        instantiatedVisualiser = instantiatedObject.GetComponent<AI_Vis_SensedBlackboardInfoVisualiser>();
+                        instantiatedVisualiser.SetUpForEnvironmentalDanger(selectedSoldierBlackboard.environmentalDangerInfos[i]);
 
                         blackboardInfoVisualisersInUse.Add(instantiatedVisualiser);
                     }

@@ -106,6 +106,17 @@ public class AI_Vis_SensedBlackboardInfoVisualiser : MonoBehaviour
         transform.position = tPointInfo.tacticalPoint.GetPointPosition();
     }
 
+    public void SetUpForEnvironmentalDanger((BenitosAI.EnvironmentalDangerTag dangerTag, float distance) dangerInfo)
+    {
+        tmp_type.text = "Environmental Danger";
+        tmp_name.text = dangerInfo.dangerTag.ToString() + " " + dangerInfo.dangerTag.GetHashCode();
+        tmp_distance.text = dangerInfo.distance.ToString("F1");
+        tmp_timeSinceLastSeen.gameObject.SetActive(false);
+        tmp_framesSinceLastSeen.gameObject.SetActive(false);
+
+        transform.position = dangerInfo.dangerTag.transform.position;
+    }
+
 
     public void SetUpForCurrentlyUsedTPoint(TacticalPoint tPoint)
     {
