@@ -48,6 +48,7 @@ namespace BenitosAI
         public UIExpandCollapsePanel sensingTPointsCoverPanel;
         public UIExpandCollapsePanel sensingTPointsOpenFieldPanel;
         public UIExpandCollapsePanel sensingTPointsCoverPeekPanel;
+        public UIExpandCollapsePanel environmentalDangersPanel;
         public UIExpandCollapsePanel sensingTPointCurrentlyUsedPanel;
 
 
@@ -316,8 +317,17 @@ namespace BenitosAI
                 }
                 sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
 
+                // Update Environmental Dangers Panel ---------------------------
+                foreach ((EnvironmentalDangerTag danger, float distance) danger in blackboard.environmentalDangerInfos)
+                {
+                    newSensingItem = Instantiate(sensingUIItemPrefab, environmentalDangersPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
+                    newSensingItem.SetUp((danger.danger.dangerType.ToString() + danger.GetHashCode()), danger.distance, 0, 0, danger.danger.transform, manager);
+                }
+                environmentalDangersPanel.UpdateNumberOfItemsInsidePanel(blackboard.environmentalDangerInfos.Length);
+
+
                 // Update TPoints CurrentlyUsed Panel --------------------------------
-                if(blackboard.GetCurrentlyUsedTacticalPoint())
+                if (blackboard.GetCurrentlyUsedTacticalPoint())
                 {
                     TacticalPoint tPoint = blackboard.GetCurrentlyUsedTacticalPoint();
                     newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointCurrentlyUsedPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();

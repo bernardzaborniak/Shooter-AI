@@ -37,6 +37,10 @@ public class Grenade : Item
 
     [Header("Explosion Effect")]
     public ParticleSystem explosionEffect;
+    public GameObject model;
+
+    [Header("AI")]
+    public BenitosAI.EnvironmentalDangerTag environmentalDangerTag;
 
     public void Throw(Vector3 direction, float throwVelocity)
     {
@@ -50,6 +54,7 @@ public class Grenade : Item
     public void ArmGrenade()
     {
         armed = true;
+        environmentalDangerTag.dangerActive = true;
 
         if (grenadeType == GrenadeType.TimeDelay)
         {
@@ -97,6 +102,7 @@ public class Grenade : Item
     void Explode()
     {
         exploded = true;
+        model.SetActive(false);
         explosionEffect.Play();
 
         //damage

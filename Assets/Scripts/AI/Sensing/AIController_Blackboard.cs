@@ -34,6 +34,7 @@ namespace BenitosAI
         [NonSerialized] public SensedTacticalPointInfo[] tPOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
         //[NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
         [NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
+        [NonSerialized] public (EnvironmentalDangerTag,float)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
 
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;
@@ -73,7 +74,7 @@ namespace BenitosAI
 
         }
 
-    #region Updating Sensing Information
+        #region Updating Sensing Information
 
         public void UpdateEntityInfos( HashSet<(EntitySensingInterface, float)> newEnemyInfos,  HashSet<(EntitySensingInterface, float)> newFriendlyInfos)
         {
@@ -130,6 +131,16 @@ namespace BenitosAI
             UpdateTPointInfos(ref newTPCoverInfos, ref tPCoverInfos);
             UpdateTPointInfos(ref newTPOpenFieldInfos, ref tPOpenFieldInfos);
             UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos); //it will hopefully never by more than 3
+        }
+
+        public void UpdateEnvironmentalDangerInfos(HashSet<(EnvironmentalDangerTag dangerTag, float distance)> dangerInfos)
+        {
+            environmentalDangerInfos = new (EnvironmentalDangerTag, float)[dangerInfos.Count];
+
+            dangerInfos.CopyTo(environmentalDangerInfos,0);
+
+            Array.Sort(environmentalDangerInfos,
+           delegate ((EnvironmentalDangerTag dangerTag, float distance) x, (EnvironmentalDangerTag dangerTag, float distance) y) { return x.distance.CompareTo(y.distance); });
         }
 
         void UpdateEntityInfos(ref HashSet<(EntitySensingInterface, float)> newEntityInfos, ref SensedEntityInfo[] infosToUpdate, int maxInfosCount, ref Vector3 meanDirectionToUpdate)
@@ -343,6 +354,8 @@ namespace BenitosAI
              }*/
 
         }
+
+
 
         #endregion
 

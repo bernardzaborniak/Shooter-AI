@@ -114,6 +114,7 @@ Transform:
   m_Children:
   - {fileID: 5617385334671842312}
   - {fileID: 8428189655560341835}
+  - {fileID: 8077141860290664525}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -148,6 +149,8 @@ MonoBehaviour:
   throwVelocityAt10mDistance: 10
   customFriction: 100
   explosionEffect: {fileID: 8624509330663834669}
+  model: {fileID: 8051726512605182125}
+  environmentalDangerTag: {fileID: 8480258104369149314}
 --- !u!135 &4430186062093522037
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -271,6 +274,66 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3949241746370585197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8077141860290664525}
+  - component: {fileID: 8480258104369149314}
+  - component: {fileID: 3532994418543655640}
+  m_Layer: 26
+  m_Name: Environmental Danger Tag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8077141860290664525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949241746370585197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1175254386195368408}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8480258104369149314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949241746370585197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34abadd4274299d4cace19d18b60bf45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dangerType: 0
+  dangerLevel: 1
+  dangerActive: 0
+--- !u!135 &3532994418543655640
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949241746370585197}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4797404193589949080
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,6 +460,10 @@ PrefabInstance:
       value: ExplosionEffect
       objectReference: {fileID: 0}
     - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -409,6 +476,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -419,14 +490,6 @@ PrefabInstance:
     - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4782049037023670730, guid: 1c6d0ab366c814d4ca74ca115ee5cb68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

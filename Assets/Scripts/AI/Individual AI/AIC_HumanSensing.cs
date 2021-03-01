@@ -25,8 +25,12 @@ namespace BenitosAI
         [SerializeField] float hearingRadius;
         [Tooltip("tPoints are automaticly sensed in this radius, without any vision checks")]
         [SerializeField] float sensingTPointsRadius;
+        [Tooltip("tPoints are automaticly sensed in this radius, without any vision checks")]
+        [SerializeField] float environmentalDangersSensedRadius;
+
         [SerializeField] LayerMask sensingLayerMask;
         [SerializeField] LayerMask postSensingLayerMask;
+        [SerializeField] LayerMask environmentalDangerSensingLayerMask;
         [SerializeField] LayerMask visibilityLosTestLayerMask;
 
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
@@ -34,9 +38,12 @@ namespace BenitosAI
         
         [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
         [SerializeField] int maxTPointsSensed = 30;
+
+        [Tooltip("Size of the collider array Physics.OverlapSphere returns - limited for optimisation")]
+        [SerializeField] int maxEnvironmentalDangersSensed= 30;
         //[Tooltip("limit their number, so there will be less cover points ignored")]
         //[SerializeField] int maxOpenFieldPointsSensed = 15;
-       // [SerializeField] int maxTCoverShootPointsSensed = 5;
+        // [SerializeField] int maxTCoverShootPointsSensed = 5;
 
 
         [Header("Optimisation")]
@@ -144,12 +151,11 @@ namespace BenitosAI
                 collidersInRadius = new Collider[maxTPointsSensed]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
                 Physics.OverlapSphereNonAlloc(transform.position, sensingTPointsRadius, collidersInRadius, postSensingLayerMask);
 
-                HashSet<(TacticalPoint,float)> coverPointsSensed = new HashSet<(TacticalPoint, float)>();
+
+                HashSet<(TacticalPoint, float)> coverPointsSensed = new HashSet<(TacticalPoint, float)>();
                 HashSet<(TacticalPoint, float)> openFieldPointsSensed = new HashSet<(TacticalPoint, float)>();
                 HashSet<(TacticalPoint, float)> coverPeekPointSensed = new HashSet<(TacticalPoint, float)>();
 
-
-                //int openFieldPointsAlreadySensed = 0;
 
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
@@ -173,7 +179,7 @@ namespace BenitosAI
                                 }
                             }*/
                             // I started ignoring open Field points as i dont have a use for them yet
-                            else if(tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+                            else if (tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
                             {
                                 coverPeekPointSensed.Add((tPoint, currentDistance));
                             }
@@ -183,6 +189,40 @@ namespace BenitosAI
                 }
 
                 blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverPeekPointSensed);
+
+                //int openFieldPointsAlreadySensed = 0;
+
+
+                #endregion
+
+                #region Scan for Environmental Dangers
+
+                // fill collections
+                collidersInRadius = new Collider[maxEnvironmentalDangersSensed]; //30 is the max numbers this array can have through physics overlap sphere, we need to initialize the array with its size before calling OverlapSphereNonAlloc
+                Physics.OverlapSphereNonAlloc(transform.position, environmentalDangersSensedRadius, collidersInRadius, environmentalDangerSensingLayerMask);
+
+
+                HashSet<(EnvironmentalDangerTag, float)> dangersSensed = new HashSet<(EnvironmentalDangerTag, float)>();
+
+
+                for (int i = 0; i < collidersInRadius.Length; i++)
+                {
+                    if (collidersInRadius[i] != null)
+                    {
+                        EnvironmentalDangerTag dangerTag = collidersInRadius[i].GetComponent<EnvironmentalDangerTag>();
+
+                        if (dangerTag.dangerActive)
+                        {
+                            float currentDistance = Vector3.Distance(myPosition, dangerTag.transform.position);
+                            dangersSensed.Add((dangerTag, currentDistance));
+                        }
+                    }
+                }
+
+                blackboard.UpdateEnvironmentalDangerInfos(dangersSensed);
+
+
+                
 
                 #endregion
 

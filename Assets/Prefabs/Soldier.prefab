@@ -1310,17 +1310,22 @@ MonoBehaviour:
   visionRadius: 40
   hearingRadius: 7
   sensingTPointsRadius: 8
+  environmentalDangersSensedRadius: 8
   sensingLayerMask:
     serializedVersion: 2
     m_Bits: 16777216
   postSensingLayerMask:
     serializedVersion: 2
     m_Bits: 33554432
+  environmentalDangerSensingLayerMask:
+    serializedVersion: 2
+    m_Bits: 67108864
   visibilityLosTestLayerMask:
     serializedVersion: 2
     m_Bits: 768
   maxEntitiesSensed: 30
   maxTPointsSensed: 30
+  maxEnvironmentalDangersSensed: 30
   optimiser: {fileID: 4214416404046456006}
 --- !u!114 &3586266366417383842
 MonoBehaviour:
