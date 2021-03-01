@@ -47,7 +47,7 @@ namespace BenitosAI
             this.maxDeviationAngleFromMovementOrThreatDirection = maxDeviationAngleFromMovementOrThreatDirection;
             this.minChangeAimDieInterval = minChangeAimDieInterval;
             this.maxChangeAimDirInterval = maxChangeAimDirInterval;
-            nextChangeAimDirTime = Time.time + Random.Range(minChangeAimDieInterval, maxChangeAimDirInterval);
+            
 
             
         }
@@ -59,6 +59,8 @@ namespace BenitosAI
             //charController.StopAimingWeapon();
 
             currentAimDir = CalculateNewAimDir();
+
+            nextChangeAimDirTime = Time.time + Random.Range(minChangeAimDieInterval, maxChangeAimDirInterval) + 2; //2 is the delay which is always there after enter
 
         }
 

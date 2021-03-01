@@ -68,7 +68,6 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
 
     float currentGrenadeThrowVelocity;
     Vector3 currentGrenadeThrowDirection;
-    public GameObject currentGrenadeThrowDirectionVisualiser;
     //public float throwGrenadeMaxRange;
     float throwingGrenadeEndTime;
     [Tooltip("makes sure the grenade isnt somehow thrown too far away")]
@@ -480,8 +479,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
             this.currentGrenadeThrowVelocity = currentGrenadeThrowVelocity;
             this.currentGrenadeThrowDirection = currentGrenadeThrowDirection;
 
-            currentGrenadeThrowDirectionVisualiser.transform.forward = currentGrenadeThrowDirection;
-            //throw direction is just spine direction
+            //throw direction is just spine direction - do i still need to implement this?
         }
     }
 
@@ -503,7 +501,7 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         if(itemInteractionState == ItemInteractionState.ThrowingGrenade)
         {
 
-            // can be caused by stagger or flinch
+            // can be caused by stagger
             if (pinRemovedFromGrenade)
             {
                 Debug.Log("AbortThrowingGrenade: direction: " + aimingController.GetCurrentSpineAimDirection() + " velocity: random -3 to + 3" + " " + transform.parent.GetHashCode());
