@@ -298,15 +298,15 @@ namespace BenitosAI
                 sensingFriendliesPanel.UpdateNumberOfItemsInsidePanel(blackboard.friendlyInfos.Length);
 
                 // Update TPoints Cover Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in blackboard.tPCoverInfos)
+                foreach ((TacticalPoint tPoint,float distance) tPointInfo in blackboard.tPCoverInfos)
                 {
                     newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
-                    newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
+                    newSensingItem.SetUp((tPointInfo.tPoint.tacticalPointType.ToString() + tPointInfo.tPoint.GetHashCode()), tPointInfo.distance, 0, 0, tPointInfo.tPoint.transform, manager);
                 }
                 sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverInfos.Length);
 
                 // Update TPoints OpenField Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in blackboard.tPOpenFieldInfos)
+                foreach ((TacticalPoint tPoint, float distance) tPointInfoin blackboard.tPOpenFieldInfos)
                 {
                     newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
                     newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);

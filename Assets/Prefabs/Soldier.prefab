@@ -1143,8 +1143,9 @@ MonoBehaviour:
       momentumSelectedBonus: 5
       momentumDecayRate: 1
       considerations:
-      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
+      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: f243423aa31fbeb498490d0c639de554, type: 2}
       - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
       - {fileID: 11400000, guid: 35610281a8e988f45a39c9c6c0b5bf75, type: 2}
@@ -1158,8 +1159,8 @@ MonoBehaviour:
       momentumSelectedBonus: 4
       momentumDecayRate: 1
       considerations:
-      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
+      - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}
       - {fileID: 11400000, guid: 6c1c63757e8c61f4f821e60433172dce, type: 2}
       - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
@@ -1318,7 +1319,7 @@ MonoBehaviour:
   headTransform: {fileID: 1936154419766259478}
   visionRadius: 40
   hearingRadius: 7
-  sensingTPointsRadius: 8
+  sensingTPointsRadius: 20
   environmentalDangersSensedRadius: 8
   sensingLayerMask:
     serializedVersion: 2
@@ -1333,8 +1334,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 768
   maxEntitiesSensed: 30
-  maxTPointsSensed: 30
-  maxEnvironmentalDangersSensed: 30
+  maxTPointsSensed: 130
+  maxEnvironmentalDangersSensed: 10
   optimiser: {fileID: 4214416404046456006}
 --- !u!114 &3586266366417383842
 MonoBehaviour:

@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace BenitosAI
 {
+    //Deprecated
+
     // SensingInfo Component saves information about tactical points it has seen in this container.
     [System.Serializable]//For debug purposes
     public class SensedTacticalPointInfo

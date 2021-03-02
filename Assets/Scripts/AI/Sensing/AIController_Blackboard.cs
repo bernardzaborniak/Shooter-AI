@@ -30,11 +30,12 @@ namespace BenitosAI
 
         [NonSerialized] public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
         [NonSerialized] public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
-        [NonSerialized] public SensedTacticalPointInfo[] tPCoverInfos = new SensedTacticalPointInfo[0];//sorted by distance
-        [NonSerialized] public SensedTacticalPointInfo[] tPOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
+
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverInfos; //sorted by distance
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPOpenFieldInfos; //sorted by distance
         //[NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
-        [NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
-        [NonSerialized] public (EnvironmentalDangerTag dangerTag,float distance)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverPeekInfos; //= new (TacticalPoint, float)[0]//not sorted by distance
+        [NonSerialized] public (EnvironmentalDangerTag tPoint, float distance)[] environmentalDangerInfos;// = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
 
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;
@@ -128,9 +129,30 @@ namespace BenitosAI
             // UpdateTPointInfos(ref newTPOpenFieldInfos, ref tPOpenFieldInfos, maxTPOpenFieldInfosCount);
             // UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos, maxTPCoverPeekInfosCount); //it will hopefully never by more than 3
 
-            UpdateTPointInfos(ref newTPCoverInfos, ref tPCoverInfos);
-            UpdateTPointInfos(ref newTPOpenFieldInfos, ref tPOpenFieldInfos);
-            UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos); //it will hopefully never by more than 3
+           // UpdateTPointInfos(ref newTPCoverInfos, ref tPCoverInfos);
+            //UpdateTPointInfos(ref newTPOpenFieldInfos, ref tPOpenFieldInfos);
+            //UpdateTPointInfos(ref newTPCoverPeekInfos, ref tPCoverPeekInfos); //it will hopefully never by more than 3
+
+
+            // Cover Points
+            tPCoverInfos = new (TacticalPoint, float)[newTPCoverInfos.Count];
+            newTPCoverInfos.CopyTo(tPCoverInfos, 0);
+
+            Array.Sort(tPCoverInfos,
+            delegate ((TacticalPoint tPoint, float distance) x, (TacticalPoint tPoint, float distance) y) { return x.distance.CompareTo(y.distance); });
+
+            // Open Field Points
+            tPOpenFieldInfos = new (TacticalPoint, float)[newTPOpenFieldInfos.Count];
+            newTPOpenFieldInfos.CopyTo(tPOpenFieldInfos, 0);
+            Array.Sort(tPOpenFieldInfos,
+            delegate ((TacticalPoint tPoint, float distance) x, (TacticalPoint tPoint, float distance) y) { return x.distance.CompareTo(y.distance); });
+
+            // Cover Peek Points
+            tPCoverPeekInfos = new (TacticalPoint, float)[newTPCoverPeekInfos.Count];
+            newTPCoverPeekInfos.CopyTo(tPCoverPeekInfos, 0);
+            Array.Sort(tPCoverPeekInfos,
+            delegate ((TacticalPoint tPoint, float distance) x, (TacticalPoint tPoint, float distance) y) { return x.distance.CompareTo(y.distance); });
+
         }
 
         public void UpdateEnvironmentalDangerInfos(HashSet<(EnvironmentalDangerTag dangerTag, float distance)> dangerInfos)
@@ -261,6 +283,7 @@ namespace BenitosAI
             numberOfEnemiesShootingAtMeLast3Sec = maxNumberOfEnemiesShootingAtMeMemory.numOfEnemies;
         }
 
+        // Deprecated
         void UpdateTPointInfos(ref HashSet<(TacticalPoint tPoint, float distanceToPoint)> newTPInfos, ref SensedTacticalPointInfo[] infosToUpdate)//, int maxInfosCount)
         {
 
