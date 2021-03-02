@@ -69,41 +69,41 @@ public class AI_Vis_SensedBlackboardInfoVisualiser : MonoBehaviour
         transform.position = entityInfo.GetEntityPosition();
     }
 
-    public void SetUpForTPointCoverInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    public void SetUpForTPointCoverInfo((TacticalPoint tPoint, float distance) tPointInfo)
     {
         tmp_type.text = "TP Cover";
-        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
-        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+        tmp_name.text = tPointInfo.tPoint.name + " " + tPointInfo.tPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.distance.ToString("F1");
 
-        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
-        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+        tmp_timeSinceLastSeen.gameObject.SetActive(false);
+        tmp_framesSinceLastSeen.gameObject.SetActive(false);
 
-        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+        transform.position = tPointInfo.tPoint.GetPointPosition();
 
     }
 
-    public void SetUpForTPointOpenFieldInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    public void SetUpForTPointOpenFieldInfo((TacticalPoint tPoint, float distance) tPointInfo)
     {
         tmp_type.text = "TP Open Field";
-        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
-        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+        tmp_name.text = tPointInfo.tPoint.name + " " + tPointInfo.tPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.distance.ToString("F1");
 
-        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
-        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+        tmp_timeSinceLastSeen.gameObject.SetActive(false);
+        tmp_framesSinceLastSeen.gameObject.SetActive(false);
 
-        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+        transform.position = tPointInfo.tPoint.GetPointPosition();
     }
 
-    public void SetUpForTPointCoverPeekInfo(BenitosAI.SensedTacticalPointInfo tPointInfo)
+    public void SetUpForTPointCoverPeekInfo((TacticalPoint tPoint, float distance) tPointInfo)
     {
         tmp_type.text = "TP Cover Peek";
-        tmp_name.text = tPointInfo.tacticalPoint.name + " " + tPointInfo.tacticalPoint.GetHashCode();
-        tmp_distance.text = tPointInfo.lastDistanceMeasured.ToString("F1");
+        tmp_name.text = tPointInfo.tPoint.name + " " + tPointInfo.tPoint.GetHashCode();
+        tmp_distance.text = tPointInfo.distance.ToString("F1");
 
-        timeWhenLastSeen = tPointInfo.timeWhenLastSeen;
-        frameCountWhenLastSeen = tPointInfo.frameCountWhenLastSeen;
+        tmp_timeSinceLastSeen.gameObject.SetActive(false);
+        tmp_framesSinceLastSeen.gameObject.SetActive(false);
 
-        transform.position = tPointInfo.tacticalPoint.GetPointPosition();
+        transform.position = tPointInfo.tPoint.GetPointPosition();
     }
 
     public void SetUpForEnvironmentalDanger((BenitosAI.EnvironmentalDangerTag dangerTag, float distance) dangerInfo)

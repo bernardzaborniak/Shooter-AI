@@ -23,7 +23,7 @@ namespace BenitosAI
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-        SensedTacticalPointInfo targetPoint;
+        TacticalPoint targetPoint;
 
         bool takeCoverCrouched;
 
@@ -32,7 +32,7 @@ namespace BenitosAI
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
             this.takeCoverCrouched = takeCoverCrouched;
-            targetPoint = context.targetTacticalPoint;
+            targetPoint = context.targetTacticalPoint.tPoint;
         }
 
         public override void OnStateEnter()
@@ -41,8 +41,8 @@ namespace BenitosAI
             //charController.StopAimingSpine();
             //charController.StopAimingWeapon();
 
-            charController.MoveTo(targetPoint.tacticalPoint.GetPointPosition());
-            aiController.OnEnterTPoint(targetPoint.tacticalPoint);
+            charController.MoveTo(targetPoint.GetPointPosition());
+            aiController.OnEnterTPoint(targetPoint);
 
             if (takeCoverCrouched)
             {
@@ -59,7 +59,7 @@ namespace BenitosAI
             //leave tPoint
             //targetPoint.tacticalPoint.OnEntityExitsPoint(aiController.humanSensing.GetMyEntity());
             //instead use some method, which also saves current point in sensing
-            aiController.OnLeaveTPoint(targetPoint.tacticalPoint);
+            aiController.OnLeaveTPoint(targetPoint);
 
         }
 

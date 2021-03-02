@@ -21,7 +21,9 @@ public enum QualityOfCoverEvaluationType
     Agressive1,
     Defensive2,
     Moderate2,
-    Agressive2
+    Agressive2,
+    CoverSimple,
+    CoverPeekSimple
 }
 
 [ExecuteInEditMode]
@@ -337,7 +339,7 @@ public class TacticalPoint : MonoBehaviour
                     }
                 }
 
-                //The modified mode algorythm
+                //The modified mode algorythm  - apparently it doesnt work well with the new cover rating
                 CalculateDistanceModeAlgorythmGroup currentGroup = null;
                 List<CalculateDistanceModeAlgorythmGroup> groupsUsed = new List<CalculateDistanceModeAlgorythmGroup>();
 
@@ -843,6 +845,8 @@ public class TacticalPoint : MonoBehaviour
         return endResult;
     }
 
+    
+
     float RateThreatsAgressively((Vector3 threatPosition, float distanceToThreat)[] threats, float[] usedCoverDistanceRating)
     {
         //the more enemies are not behind cover and visible to be shot, the better
@@ -957,6 +961,75 @@ public class TacticalPoint : MonoBehaviour
         }
         return rating;
     }
+
+
+
+    //simpler method
+    public float DetermineQualityOfCover(QualityOfCoverEvaluationType evaluationType, Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
+    {
+        float rating = 0;
+
+        if (meanThreatDirection == Vector3.zero) return 0;
+
+
+        if (evaluationType == QualityOfCoverEvaluationType.CoverSimple)
+        {
+            //int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(meanThreatDirection);
+            (float distance, float quality) ratingForDirection = GetRatingForDirection(meanThreatDirection);
+
+            if (ratingForDirection.distance < 2)
+            {
+                rating = ratingForDirection.quality;
+            }
+            else
+            {
+                rating = 0;
+            }
+
+        }
+        else if(evaluationType == QualityOfCoverEvaluationType.CoverPeekSimple)
+        {
+            if (closestEnemyPosition == Vector3.zero) return 0;
+
+            //corresponding cover point + the peek point
+            (float distance, float quality) ratingForDirectionInCorrespondingCoverPoint = coverPointAssignedTo.GetRatingForDirection(meanThreatDirection);
+            (float distance, float quality) ratingForDirection = GetRatingForDirection(meanThreatDirection);
+
+            //corresponding cover - weighted 0.3
+            if (ratingForDirectionInCorrespondingCoverPoint.distance < 1.5)
+            {
+                rating += 0.3f * ratingForDirectionInCorrespondingCoverPoint.quality;
+            }
+
+            //the peek point - weighted 0.7
+            float distanceToEnemyFromPoint = Vector3.Distance(closestEnemyPosition, transform.position);
+
+
+            if(distanceToEnemyFromPoint< ratingForDirection.distance)
+            {
+                rating += 0.7f;
+            }
+        }
+
+
+        return rating;
+    }
+
+
+    public (float distance, float quality) GetRatingForDirection(Vector3 direction)
+    {
+        int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(direction);
+
+        if(type == Type.Crouched)
+        {
+            return (coverRating.crouchedDistanceRating[directionIndex], coverRating.crouchedQualityRating[directionIndex]);
+        }
+        else
+        {
+            return (coverRating.standingDistanceRating[directionIndex], coverRating.standingQualityRating[directionIndex]);
+        }
+    }
+
 
 
     #endregion

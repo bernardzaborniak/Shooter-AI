@@ -12,7 +12,7 @@
 
         // Optional
         public SensedEntityInfo targetEntity; //Who is the target of my action
-        public SensedTacticalPointInfo targetTacticalPoint; //Who is the target of my action
+        public (TacticalPoint tPoint, float distance) targetTacticalPoint; //Who is the target of my action
 
         public DecisionContext()
         {
@@ -35,7 +35,7 @@
             this.rating = objectToCopyValuesFrom.rating;
         }
 
-        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetEntity, SensedTacticalPointInfo targetTacticalPoint)
+        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetEntity, (TacticalPoint tPoint, float distance) targetTacticalPoint)
         {
             this.decision = decision;
             this.aiController = aiController;
@@ -81,7 +81,7 @@
                 } catch (System.Exception e) { }
                 try
                 {
-                    if (targetTacticalPoint.tacticalPoint == contextMemory.targetTacticalPoint)
+                    if (targetTacticalPoint.tPoint == contextMemory.targetTacticalPoint)
                     {
                         return true;
                     }

@@ -31,11 +31,11 @@ namespace BenitosAI
         [NonSerialized] public SensedEntityInfo[] enemyInfos = new SensedEntityInfo[0]; //sorted by distance
         [NonSerialized] public SensedEntityInfo[] friendlyInfos = new SensedEntityInfo[0];//sorted by distance
 
-        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverInfos; //sorted by distance
-        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPOpenFieldInfos; //sorted by distance
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverInfos = new (TacticalPoint, float)[0]; //sorted by distance
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPOpenFieldInfos = new (TacticalPoint, float)[0]; //sorted by distance
         //[NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
-        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverPeekInfos; //= new (TacticalPoint, float)[0]//not sorted by distance
-        [NonSerialized] public (EnvironmentalDangerTag tPoint, float distance)[] environmentalDangerInfos;// = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
+        [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverPeekInfos = new (TacticalPoint, float)[0]; // sorted by distance
+        [NonSerialized] public (EnvironmentalDangerTag dangerTag, float distance)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
 
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;

@@ -29,7 +29,7 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
 
-        SensedTacticalPointInfo targetTPInfo;
+        TacticalPoint targetTPoint;
         bool sprint;
         EC_HumanoidCharacterController.CharacterStance stance;
 
@@ -44,7 +44,7 @@ namespace BenitosAI
             this.sprint = sprint;
             this.stance = stance;
 
-            targetTPInfo = context.targetTacticalPoint;
+            targetTPoint = context.targetTacticalPoint.tPoint;
 
         }
 
@@ -67,7 +67,7 @@ namespace BenitosAI
                 charController.ChangeCharacterStanceToCrouchingStance();
             }
 
-            charController.MoveTo(targetTPInfo.tacticalPoint.GetPointPosition(), sprint);
+            charController.MoveTo(targetTPoint.GetPointPosition(), sprint);
         }
 
         public override void OnStateExit()

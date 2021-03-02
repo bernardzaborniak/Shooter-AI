@@ -12,7 +12,7 @@ namespace BenitosAI
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            float input = Utility.Remap(decisionContext.targetTacticalPoint.lastDistanceMeasured, consideration.min, consideration.max, 0, 1);
+            float input = Utility.Remap(decisionContext.targetTacticalPoint.distance, consideration.min, consideration.max, 0, 1);
             return Mathf.Clamp(input, 0, 1);
         }
     }

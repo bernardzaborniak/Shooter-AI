@@ -68,7 +68,7 @@ namespace BenitosAI
                     try { targetEntityName = targetEntity.name + " " + targetEntity.GetHashCode(); }
                     catch (System.Exception e) { targetEntityName = "no Target"; }
 
-                    try { this.targetTacticalPoint = context.targetTacticalPoint.tacticalPoint; }
+                    try { this.targetTacticalPoint = context.targetTacticalPoint.tPoint; }
                     catch (System.Exception e) { }
 
                     Consideration[] considerations;

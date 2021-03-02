@@ -306,18 +306,18 @@ namespace BenitosAI
                 sensingTPointsCoverPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverInfos.Length);
 
                 // Update TPoints OpenField Panel --------------------------------
-                foreach ((TacticalPoint tPoint, float distance) tPointInfoin blackboard.tPOpenFieldInfos)
+                foreach ((TacticalPoint tPoint, float distance) tPointInfo in blackboard.tPOpenFieldInfos)
                 {
                     newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsOpenFieldPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
-                    newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
+                    newSensingItem.SetUp((tPointInfo.tPoint.tacticalPointType.ToString() + tPointInfo.tPoint.GetHashCode()), tPointInfo.distance, 0, 0, tPointInfo.tPoint.transform, manager);
                 }
                 sensingTPointsOpenFieldPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPOpenFieldInfos.Length);
 
                 // Update TPoints CoverPeek Panel --------------------------------
-                foreach (SensedTacticalPointInfo tPoint in blackboard.tPCoverPeekInfos)
+                foreach ((TacticalPoint tPoint, float distance) tPointInfo in blackboard.tPCoverPeekInfos)
                 {
                     newSensingItem = Instantiate(sensingUIItemPrefab, sensingTPointsCoverPeekPanel.panelToExpand).GetComponent<AI_Vis_UI_SensingItem>();
-                    newSensingItem.SetUp((tPoint.tacticalPoint.tacticalPointType.ToString() + tPoint.tacticalPoint.GetHashCode()), tPoint.lastDistanceMeasured, tPoint.timeWhenLastSeen, tPoint.frameCountWhenLastSeen, tPoint.tacticalPoint.transform, manager);
+                    newSensingItem.SetUp((tPointInfo.tPoint.tacticalPointType.ToString() + tPointInfo.tPoint.GetHashCode()), tPointInfo.distance, 0, 0, tPointInfo.tPoint.transform, manager);
                 }
                 sensingTPointsCoverPeekPanel.UpdateNumberOfItemsInsidePanel(blackboard.tPCoverPeekInfos.Length);
 
