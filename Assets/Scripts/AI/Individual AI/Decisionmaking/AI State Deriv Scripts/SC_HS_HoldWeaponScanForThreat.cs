@@ -54,13 +54,10 @@ namespace BenitosAI
 
         public override void OnStateEnter()
         {
-            //charController.MoveTo(targetPosition, true);
-            //charController.StopAimingSpine();
-            //charController.StopAimingWeapon();
+           
+           // currentAimDir = CalculateNewAimDir();
 
-            currentAimDir = CalculateNewAimDir();
-
-            nextChangeAimDirTime = Time.time + Random.Range(minChangeAimDieInterval, maxChangeAimDirInterval) + 2; //2 is the delay which is always there after enter
+           // nextChangeAimDirTime = Time.time + Random.Range(minChangeAimDieInterval, maxChangeAimDirInterval) + 2; //2 is the delay which is always there after enter
 
         }
 
@@ -89,13 +86,23 @@ namespace BenitosAI
             }*/
 
 
-            if(Time.time > nextChangeAimDirTime)
+            /*if(Time.time > nextChangeAimDirTime)
             {
                 nextChangeAimDirTime = Time.time + Random.Range(minChangeAimDieInterval, maxChangeAimDirInterval);
                 currentAimDir = CalculateNewAimDir();
-            }
+            }*/
 
-            charController.AimSpineInDirection(currentAimDir);
+            //charController.AimSpineInDirection(currentAimDir);
+
+            if (blackboard.meanThreatDirection != Vector3.zero)
+            {
+                charController.AimSpineInDirection(blackboard.meanThreatDirection);
+            }
+            else
+            {
+                charController.StopAimingSpine();
+            }
+                
 
            
         }

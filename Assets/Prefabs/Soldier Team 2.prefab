@@ -81,46 +81,50 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a92a067b8465bab488933944caf32ba1, type: 2}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: decisionLayers.Array.data[0].decisions.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].name
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].name
       value: 'Run To Sp 1 '
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].weigt
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].weight
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].weight
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].hasMomentum
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].decision
-      value: 
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].momentumDecayRate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].decisionContextCreator
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].momentumSelectedBonus
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].decisionContextCreator
       value: 
       objectReference: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].considerations.Array.size
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].considerations.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].correspondingAiStateCreator
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].correspondingAiStateCreator
       value: 
       objectReference: {fileID: 11400000, guid: 800b1500c694c3949a5facd2676b4613, type: 2}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].considerations.Array.data[0]
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].considerations.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].considerations.Array.data[1]
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].considerations.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: b31885f121534394783282a506d28285, type: 2}
     - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
-      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[4].considerations.Array.data[2]
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].considerations.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
     - target: {fileID: 8032510007199776535, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}

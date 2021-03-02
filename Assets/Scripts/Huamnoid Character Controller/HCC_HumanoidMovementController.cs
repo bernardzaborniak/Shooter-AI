@@ -150,7 +150,7 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         public Vector3 destination;
         public bool sprint;
 
-        public enum OrderExecutionStatus
+        enum OrderExecutionStatus
         {
             Ordered,
             BeingExecuted,
@@ -166,14 +166,20 @@ public class HCC_HumanoidMovementController : HumanoidCharacterComponent, IMovea
         }
 
 
-        public void SetCurrentOrder(Vector3 destination)
+        /*public void SetCurrentOrder(Vector3 destination)
         {
             orderExecutionStatus = OrderExecutionStatus.Ordered;
             this.destination = destination;
-        }
+        }*/
 
         public void SetCurrentOrder(Vector3 destination, bool sprint)
         {
+            //check if its not the same order
+            if(this.destination == destination)
+            {
+                if (this.sprint == sprint) return;
+            }
+
             orderExecutionStatus = OrderExecutionStatus.Ordered;
             this.destination = destination;
             this.sprint = sprint;

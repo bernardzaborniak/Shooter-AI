@@ -1118,7 +1118,7 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
       hasMomentum: 1
-      momentumSelectedBonus: 1
+      momentumSelectedBonus: 3
       momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
@@ -1129,8 +1129,8 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: e1c2b9d54f8291744869c82f03ae0a6b, type: 2}
       hasMomentum: 1
-      momentumSelectedBonus: 2
-      momentumDecayRate: 2
+      momentumSelectedBonus: 4
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
       - {fileID: 11400000, guid: 9a5d23463fc734845b8047d8419afc9d, type: 2}
@@ -1140,8 +1140,8 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: b639cbe22c3eb4749aa83d55c02dd423, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
       hasMomentum: 1
-      momentumSelectedBonus: 3
-      momentumDecayRate: 2
+      momentumSelectedBonus: 5
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
@@ -1155,7 +1155,7 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
       hasMomentum: 1
-      momentumSelectedBonus: 2
+      momentumSelectedBonus: 4
       momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
@@ -1165,6 +1165,15 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
       - {fileID: 11400000, guid: 517d09a4897753842b06ced799116d65, type: 2}
       - {fileID: 11400000, guid: a351d30f756409c4aaf6f0d29e4d71a0, type: 2}
+    - name: Run Away From Grenade Threat
+      weight: 8
+      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 17821fa0ab585d747a1a557584a31d62, type: 2}
+      hasMomentum: 1
+      momentumSelectedBonus: 1
+      momentumDecayRate: 1
+      considerations:
+      - {fileID: 11400000, guid: 8a4f48fb633094b4eba6440e1df1d048, type: 2}
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
@@ -1178,9 +1187,9 @@ MonoBehaviour:
       weight: 1
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 290cb002636c4304ebe6ba23f2384b82, type: 2}
-      hasMomentum: 0
-      momentumSelectedBonus: 0
-      momentumDecayRate: 0
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
       - {fileID: 11400000, guid: d1d2f48ffadc01541a795e42054ce5e9, type: 2}
@@ -1189,9 +1198,9 @@ MonoBehaviour:
       weight: 3
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 82dfbb72ebc1cb440b5e375b1dc6859c, type: 2}
-      hasMomentum: 0
-      momentumSelectedBonus: 0
-      momentumDecayRate: 0
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
       - {fileID: 11400000, guid: 82f5c3c1b32e7c7408c3f67730b890bc, type: 2}
@@ -1206,7 +1215,7 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 9efd7928857d9134798af8df77012614, type: 2}
       hasMomentum: 1
-      momentumSelectedBonus: 1
+      momentumSelectedBonus: 2
       momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
@@ -1219,9 +1228,9 @@ MonoBehaviour:
       weight: 1
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 14d26c340f02e7448afb1f999ed3e88c, type: 2}
-      hasMomentum: 0
-      momentumSelectedBonus: 0
-      momentumDecayRate: 0
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
       - {fileID: 11400000, guid: 907e2ed7d47aa1b459b085162c2dccac, type: 2}
@@ -1230,9 +1239,9 @@ MonoBehaviour:
       weight: 3
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: d401862100df57648a67089ea16e1f7e, type: 2}
-      hasMomentum: 0
-      momentumSelectedBonus: 0
-      momentumDecayRate: 0
+      hasMomentum: 1
+      momentumSelectedBonus: 2
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
       - {fileID: 11400000, guid: 907e2ed7d47aa1b459b085162c2dccac, type: 2}
@@ -1248,7 +1257,7 @@ MonoBehaviour:
       correspondingAiStateCreator: {fileID: 11400000, guid: 511646c0096cc2646bbf6d9219554eb3, type: 2}
       hasMomentum: 1
       momentumSelectedBonus: 5
-      momentumDecayRate: 1.5
+      momentumDecayRate: 1
       considerations:
       - {fileID: 11400000, guid: 26b564fa134b7204a91dd75402819073, type: 2}
       - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}

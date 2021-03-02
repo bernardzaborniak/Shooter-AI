@@ -34,7 +34,7 @@ namespace BenitosAI
         [NonSerialized] public SensedTacticalPointInfo[] tPOpenFieldInfos = new SensedTacticalPointInfo[0];//sorted by distance
         //[NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
         [NonSerialized] public SensedTacticalPointInfo[] tPCoverPeekInfos = new SensedTacticalPointInfo[0];//not sorted by distance
-        [NonSerialized] public (EnvironmentalDangerTag,float)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
+        [NonSerialized] public (EnvironmentalDangerTag dangerTag,float distance)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
 
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;

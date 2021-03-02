@@ -137,7 +137,7 @@ MonoBehaviour:
   explosionDamageAtCenter: 200
   explosionForceAtCenter: 50
   grenadeType: 0
-  grenadeExplosionTimeDelay: 4
+  grenadeExplosionTimeDelay: 5
   grenadeExplosionBlockingUnitsAndBlockingSurfacesLayermask:
     serializedVersion: 2
     m_Bits: 768
@@ -150,7 +150,7 @@ MonoBehaviour:
   customFriction: 100
   explosionEffect: {fileID: 8624509330663834669}
   model: {fileID: 8051726512605182125}
-  dangerTagActivationTimeAfterThrow: 1
+  dangerTagActivationDelayAfterThrow: 1
   environmentalDangerTag: {fileID: 8480258104369149314}
 --- !u!135 &4430186062093522037
 SphereCollider:
