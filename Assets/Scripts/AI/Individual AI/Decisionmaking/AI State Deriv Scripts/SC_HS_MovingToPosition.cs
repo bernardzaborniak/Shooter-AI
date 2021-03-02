@@ -52,6 +52,13 @@ namespace BenitosAI
 
         public override void UpdateState() 
         {
+            //somehow sometme the move to order is ignored:
+            if (!charController.IsMoving())
+            {
+                charController.MoveTo(targetPosition, true);
+            }
+
+
             //Debug.Log("updating state: ");
            /* if (!charController.IsMoving())
             {
