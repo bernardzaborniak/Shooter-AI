@@ -45,6 +45,7 @@ namespace BenitosAI
         //public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float weight, float discardThreshold)
         public DecisionContext[] GetRatedDecisionContexts(AIController aiController, float discardThreshold)
         {
+
             // Create contexes according to number of targets
             DecisionContext[] contexts = decisionContextCreator.GetDecisionContexts(this, aiController);
 

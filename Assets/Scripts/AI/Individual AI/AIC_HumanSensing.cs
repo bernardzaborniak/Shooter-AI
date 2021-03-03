@@ -66,7 +66,6 @@ namespace BenitosAI
             //if (Time.time > nextSensingTime)
             if (optimiser.ShouldSensingBeUpdated() && Time.time - blackboard.lastTimeSensingInfoWasUpdated > 0) //only update if more than 0,0 seconds have passed, don't update when time is stopped inside the game
             {
-                UnityEngine.Profiling.Profiler.BeginSample("Sensing Profiling");
 
                 optimiser.OnSensingWasUpdated();
 
@@ -156,6 +155,7 @@ namespace BenitosAI
                 HashSet<(TacticalPoint, float)> openFieldPointsSensed = new HashSet<(TacticalPoint, float)>();
                 HashSet<(TacticalPoint, float)> coverPeekPointSensed = new HashSet<(TacticalPoint, float)>();
 
+                UnityEngine.Profiling.Profiler.BeginSample("Sensing TPoints Distance Calculation");
 
                 for (int i = 0; i < collidersInRadius.Length; i++)
                 {
@@ -187,6 +187,8 @@ namespace BenitosAI
                         }
                     }
                 }
+                UnityEngine.Profiling.Profiler.EndSample();
+
 
                 blackboard.UpdateTPointInfos(coverPointsSensed, openFieldPointsSensed, coverPeekPointSensed);
 
@@ -226,7 +228,6 @@ namespace BenitosAI
 
                 #endregion
 
-                UnityEngine.Profiling.Profiler.EndSample();
 
             }
         }

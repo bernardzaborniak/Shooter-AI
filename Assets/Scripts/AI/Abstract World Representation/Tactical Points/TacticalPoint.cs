@@ -939,6 +939,8 @@ public class TacticalPoint : MonoBehaviour
     //simpler method
     public float DetermineQualityOfCoverSimple(Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
     {
+        UnityEngine.Profiling.Profiler.BeginSample("DetermineQualityOfCoverSimple");
+
         float rating = 0;
 
         if (meanThreatDirection == Vector3.zero) return 0;
@@ -951,7 +953,10 @@ public class TacticalPoint : MonoBehaviour
 
             if (ratingForDirection.distance < 2)
             {
-                rating = ratingForDirection.quality;
+                // rating = ratingForDirection.quality;
+                if (ratingForDirection.quality > 0.5f) rating = 1;
+                else rating = ratingForDirection.quality;
+
             }
             else
             {
@@ -981,6 +986,8 @@ public class TacticalPoint : MonoBehaviour
             {
                 rating += 0.7f;
             }
+            UnityEngine.Profiling.Profiler.EndSample();
+
         }
 
 
@@ -989,9 +996,13 @@ public class TacticalPoint : MonoBehaviour
 
     public (float distance, float quality) GetRatingForDirection(Vector3 direction)
     {
+        //UnityEngine.Profiling.Profiler.BeginSample("Rate Cover Points: GetRatingForDirection");
+
         int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(direction);
 
-        if(type == Type.Crouched)
+        //UnityEngine.Profiling.Profiler.EndSample();
+
+        if (type == Type.Crouched)
         {
             return (coverRating.crouchedDistanceRating[directionIndex], coverRating.crouchedQualityRating[directionIndex]);
         }

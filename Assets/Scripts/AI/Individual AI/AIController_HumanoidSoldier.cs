@@ -34,10 +34,19 @@ namespace BenitosAI
         {
             base.UpdateComponent();
 
+            UnityEngine.Profiling.Profiler.BeginSample("Ai Controller Update Blackboard");
             //Update Components
             blackboard.UpdateComponent();
+            UnityEngine.Profiling.Profiler.EndSample();
+
+            UnityEngine.Profiling.Profiler.BeginSample("Ai Controller Update Human Sensing");
             humanSensing.UpdateComponent();
+            UnityEngine.Profiling.Profiler.EndSample();
+
+            UnityEngine.Profiling.Profiler.BeginSample("Ai Controller Update Aiming Controller");
             aimingController.UpdateComponent();
+            UnityEngine.Profiling.Profiler.EndSample();
+
         }
 
         public void OnEnterTPoint(TacticalPoint tPoint)

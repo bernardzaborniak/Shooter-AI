@@ -258,6 +258,7 @@ namespace BenitosAI
 
         public void UpdateCurrentState()
         {
+            UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Update Current State");
             //updates current state
             if (currentState != null)
             {
@@ -271,6 +272,8 @@ namespace BenitosAI
                     currentState.UpdateState();
                 }
             }
+            UnityEngine.Profiling.Profiler.EndSample();
+
         }
 
         //can be called by the selected deicison execution logic- if it deciedes it isnt a valid decision anymore

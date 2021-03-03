@@ -11,16 +11,17 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("RateCoverPoint");
+            //UnityEngine.Profiling.Profiler.BeginSample("RateCoverPointBeginning");
+            //this takes way too much performance?
 
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
 
-            Vector3 closestEnemyPosition = Vector3.zero;
-            try { closestEnemyPosition = blackboard.enemyInfos[0].GetEntityPosition(); }
-            catch(System.Exception e) { }
+            if (blackboard.enemyInfos.Length == 0) return 0;
 
-            float rating = decisionContext.targetTacticalPoint.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEnemyPosition);
-            UnityEngine.Profiling.Profiler.EndSample();
+            SensedEntityInfo closestEntity = blackboard.enemyInfos[0];
+
+            float rating = decisionContext.targetTacticalPoint.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
+            //UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;
         }

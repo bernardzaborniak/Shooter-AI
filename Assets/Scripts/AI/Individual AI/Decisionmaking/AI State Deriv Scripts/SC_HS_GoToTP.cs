@@ -108,7 +108,7 @@ namespace BenitosAI
                         aiController.OnStopTargetingTPoint(targetTP);
 
                         //charController.StopMoving();
-                        charController.MoveTo(targetTP.GetPointPosition(), false);
+                        //charController.MoveTo(targetTP.GetPointPosition(), false);
 
                         if (targetTP.type == TacticalPoint.Type.Crouched)
                         {
@@ -120,7 +120,10 @@ namespace BenitosAI
                         }
                         state = State.InsideTP;
                     }
-                }          
+
+                    charController.MoveTo(targetTP.GetPointPosition(), false); //sometimes the mvoe order is ignored?
+
+                }
             }
             else if(state == State.InsideTP)
             {

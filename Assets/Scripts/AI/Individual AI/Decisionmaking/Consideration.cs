@@ -67,6 +67,8 @@ namespace BenitosAI
 
         public float GetConsiderationRating(DecisionContext context)
         {
+            
+
             //Get Input, already normalized by ConsideraionInput
             input = considerationInput.GetConsiderationInput(context, this);
 
@@ -77,7 +79,9 @@ namespace BenitosAI
             //Debug.Log("Consideration: Remapped Curve: " + considerationCurve.GetRemappedValue(input));
 
             //Modify input by curve, curve also normalizes automaticly
+
             return considerationCurve.GetRemappedValue(input);
+
         }
 
         //Only for Visualisations

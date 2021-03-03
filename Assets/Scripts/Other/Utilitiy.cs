@@ -8,9 +8,16 @@ using UnityEngine.EventSystems; // used for DoesMouseClickOnThisPositionHitUIEle
 // This class ombines some usefull functions
 public static class Utility
 {
-    public static float Remap(this float value, float from1, float to1, float from2, float to2)
+    public static float Remap(this float value, float from1, float to1, float from2, float to2, bool clamp = false)
     {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        if (!clamp)
+        {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+        else
+        {
+            return Mathf.Clamp((value - from1) / (to1 - from1) * (to2 - from2) + from2,from2,to2);
+        }
     }
 
     #region Quaternion Utils

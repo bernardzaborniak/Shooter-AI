@@ -106,6 +106,7 @@
             {
                 score *= considerations[c].GetConsiderationRating(this);
 
+
                 if (score < discardThreshold)
                 {
                     score = -1;

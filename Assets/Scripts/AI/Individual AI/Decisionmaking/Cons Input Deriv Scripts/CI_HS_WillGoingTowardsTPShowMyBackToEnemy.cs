@@ -15,27 +15,21 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
-            //TODO
-
+            //if thwe if the distance is smaller than 1m, just ignore it
+            if (decisionContext.targetTacticalPoint.distance < 1) return 0;
 
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
 
-            //if thwe if the distance is smaller than 1m, just ignore it
-            if (decisionContext.targetTacticalPoint.distance > 1)
-            {
-                //calculate angle between idrection towards tp point and mean threat direction
-                Vector3 directionTowardsTPoint = decisionContext.targetTacticalPoint.tPoint.GetPointPosition() - blackboard.GetMyEntity().transform.position;
-                directionTowardsTPoint.y = 0;
-                Vector3 meanThreatDirection = blackboard.meanThreatDirection;
-                meanThreatDirection.y = 0;
 
-                float remappedAngle = Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), consideration.min, consideration.max, 0, 1);
-                return Mathf.Clamp(remappedAngle, 0, 1);
-            }
-            else
-            {
-                return 0;
-            }
+            //calculate angle between idrection towards tp point and mean threat direction
+            Vector3 directionTowardsTPoint = decisionContext.targetTacticalPoint.tPoint.GetPointPosition() - blackboard.GetMyEntity().transform.position;
+            directionTowardsTPoint.y = 0;
+            Vector3 meanThreatDirection = blackboard.meanThreatDirection;
+            meanThreatDirection.y = 0;
+
+            return Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), consideration.min, consideration.max, 0, 1, true);
+            //float remappedAngle = Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), consideration.min, consideration.max, 0, 1, true);
+            //return Mathf.Clamp(remappedAngle, 0, 1);
         }
     }
 }
