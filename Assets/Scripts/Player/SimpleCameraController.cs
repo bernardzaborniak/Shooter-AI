@@ -156,13 +156,13 @@ namespace UnityTemplateProjects
                 }
 
                 // Exit Sample  
-                if (Input.GetKey(KeyCode.Escape))
+                /*if (Input.GetKey(KeyCode.Escape))
                 {
-                    Application.Quit();
+                    //Application.Quit();
                 #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
+                    //UnityEditor.EditorApplication.isPlaying = false;
                 #endif
-                }
+                }*/
                 // Hide and lock cursor when right mouse button pressed
                 if (Input.GetMouseButtonDown(1))
                 {

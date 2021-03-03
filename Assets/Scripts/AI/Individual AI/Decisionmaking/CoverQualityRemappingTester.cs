@@ -59,7 +59,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
 
             }
 
-            Debug.Log(tPointToTest.DetermineQualityOfCover(type, mainThreatDirection, closestEnemyPosition));
+            Debug.Log(tPointToTest.DetermineQualityOfCoverSimple( mainThreatDirection, closestEnemyPosition));
 
             
         }

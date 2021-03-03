@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityTemplateProjects;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 
@@ -16,6 +17,11 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("max is 3")]
     public int timeSpeedLevel = 3;
+
+    [Header("Controls Screen")]
+    public GameObject controlsScreen;
+    public GameObject openControlsButton;
+
 
 
     enum PlayerControllerMode
@@ -36,8 +42,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
         #region Slowmo Input
-        
+
         /*else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Time.timeScale = 0.1f;
@@ -82,7 +89,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            timeSpeedLevel =  Mathf.Clamp(timeSpeedLevel-1, 0, 3);
+            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel - 1, 0, 3);
 
             UpdateTimeScale();
         }
@@ -94,9 +101,9 @@ public class PlayerController : MonoBehaviour
             UpdateTimeScale();
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(Time.timeScale == 0)
+            if (Time.timeScale == 0)
             {
                 UpdateTimeScale();
             }
@@ -121,6 +128,14 @@ public class PlayerController : MonoBehaviour
         }
 
         #endregion
+
+
+
+        //Back to Main menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     void UpdateTimeScale()
@@ -156,5 +171,17 @@ public class PlayerController : MonoBehaviour
     {
         simpleCameraController.enabled = false;
 
+    }
+
+    public void OnOpenControlsMenuClicked()
+    {
+        controlsScreen.SetActive(true);
+        openControlsButton.SetActive(false);
+    }
+
+    public void OnCloseControlsMenuClicked()
+    {
+        controlsScreen.SetActive(false);
+        openControlsButton.SetActive(true);
     }
 }

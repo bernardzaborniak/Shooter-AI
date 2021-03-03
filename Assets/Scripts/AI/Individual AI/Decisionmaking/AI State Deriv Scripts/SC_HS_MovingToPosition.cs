@@ -32,7 +32,7 @@ namespace BenitosAI
         public override void OnStateEnter() 
         {
             charController.MoveTo(targetPosition, true);
-            charController.ChangeCharacterStanceToStandingCombatStance();
+            charController.ChangeCharacterStanceToStandingIdle();
         }
 
         public override void OnStateExit()
@@ -53,10 +53,10 @@ namespace BenitosAI
         public override void UpdateState() 
         {
             //somehow sometme the move to order is ignored:
-            if (!charController.IsMoving())
-            {
+           // if (!charController.IsMoving())
+            //{
                 charController.MoveTo(targetPosition, true);
-            }
+           // }
 
 
             //Debug.Log("updating state: ");

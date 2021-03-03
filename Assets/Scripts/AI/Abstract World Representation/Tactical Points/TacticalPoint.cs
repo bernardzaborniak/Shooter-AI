@@ -22,8 +22,7 @@ public enum QualityOfCoverEvaluationType
     Defensive2,
     Moderate2,
     Agressive2,
-    CoverSimple,
-    CoverPeekSimple
+    Simple
 }
 
 [ExecuteInEditMode]
@@ -764,31 +763,6 @@ public class TacticalPoint : MonoBehaviour
 
     #region For Evaluation Cover Quality 
 
-    int MapWorldSpaceDirectionToCoverRatingDirectionIndex(Vector3 worldSpaceDirection)
-    {
-        worldSpaceDirection.y = 0;
-
-        //float signedAngle = Vector3.SignedAngle(Vector3.forward, directionTowardsThreat, Vector3.up); //like this or better use the tactical points directions instead?
-        float signedAngle = Vector3.SignedAngle(transform.forward, worldSpaceDirection, transform.up);
-
-        //remap the angle to 360, and shift a little cause 0 index goes in both directions
-        if (signedAngle < 0)
-        {
-            signedAngle += 360f + 22.5f;
-
-            if (signedAngle > 360)
-            {
-                signedAngle -= 360;
-            }
-        }
-        else
-        {
-            signedAngle += 22.5f;
-        }
-
-
-        return (int)(signedAngle / 45f);
-    }
 
     public float DetermineQualityOfCover(QualityOfCoverEvaluationType evaluationType, (Vector3 threatPosition, float distanceToThreat)[] threats, (Vector3 friendlyPosition, float distanceToFriendly)[] friendlies)
     {
@@ -844,8 +818,6 @@ public class TacticalPoint : MonoBehaviour
         //Debug.Log("endResult: " + endResult);
         return endResult;
     }
-
-    
 
     float RateThreatsAgressively((Vector3 threatPosition, float distanceToThreat)[] threats, float[] usedCoverDistanceRating)
     {
@@ -965,14 +937,14 @@ public class TacticalPoint : MonoBehaviour
 
 
     //simpler method
-    public float DetermineQualityOfCover(QualityOfCoverEvaluationType evaluationType, Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
+    public float DetermineQualityOfCoverSimple(Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
     {
         float rating = 0;
 
         if (meanThreatDirection == Vector3.zero) return 0;
 
 
-        if (evaluationType == QualityOfCoverEvaluationType.CoverSimple)
+        if (tacticalPointType == TacticalPointType.CoverPoint)
         {
             //int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(meanThreatDirection);
             (float distance, float quality) ratingForDirection = GetRatingForDirection(meanThreatDirection);
@@ -987,7 +959,7 @@ public class TacticalPoint : MonoBehaviour
             }
 
         }
-        else if(evaluationType == QualityOfCoverEvaluationType.CoverPeekSimple)
+        else if(tacticalPointType == TacticalPointType.CoverPeekPoint)
         {
             if (closestEnemyPosition == Vector3.zero) return 0;
 
@@ -1015,7 +987,6 @@ public class TacticalPoint : MonoBehaviour
         return rating;
     }
 
-
     public (float distance, float quality) GetRatingForDirection(Vector3 direction)
     {
         int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(direction);
@@ -1029,6 +1000,33 @@ public class TacticalPoint : MonoBehaviour
             return (coverRating.standingDistanceRating[directionIndex], coverRating.standingQualityRating[directionIndex]);
         }
     }
+
+    int MapWorldSpaceDirectionToCoverRatingDirectionIndex(Vector3 worldSpaceDirection)
+    {
+        worldSpaceDirection.y = 0;
+
+        //float signedAngle = Vector3.SignedAngle(Vector3.forward, directionTowardsThreat, Vector3.up); //like this or better use the tactical points directions instead?
+        float signedAngle = Vector3.SignedAngle(transform.forward, worldSpaceDirection, transform.up);
+
+        //remap the angle to 360, and shift a little cause 0 index goes in both directions
+        if (signedAngle < 0)
+        {
+            signedAngle += 360f + 22.5f;
+
+            if (signedAngle > 360)
+            {
+                signedAngle -= 360;
+            }
+        }
+        else
+        {
+            signedAngle += 22.5f;
+        }
+
+
+        return (int)(signedAngle / 45f);
+    }
+
 
 
 
