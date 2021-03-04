@@ -313,32 +313,21 @@ public class TacticalPoint : MonoBehaviour
 
                 #endregion
 
-                #region Calculate the meanDistance -> DistanceRating
+                #region Calculate the DistanceRating
 
-               // Array.Sort(infoArray,
-          // delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
-
-                //create the array of raycasts
+                //Create the sorted array of raycasts
                 RaycastUsedToGenerateCoverRating[] raycastUsedSortedByDistance = new RaycastUsedToGenerateCoverRating[numberOfRaycastsPerDirection];
                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
                 {
                     raycastUsedSortedByDistance[n] = pointCastRaysContainer.GetRay(p, i, n);
                 }
 
-                //sort the array of raycasts
+                //Sort the array of raycasts based on distance
                 System.Array.Sort(raycastUsedSortedByDistance,
                 delegate (RaycastUsedToGenerateCoverRating x, RaycastUsedToGenerateCoverRating y) { return x.distance.CompareTo(y.distance); });
 
-                if(p ==0 && i == 6)
-                {
-                    Debug.Log("raycastUsedSortedByDistance: -------");
-                    for (int n = 0; n < numberOfRaycastsPerDirection; n++)
-                    {
-                        Debug.Log("ray: distance: " + raycastUsedSortedByDistance[n].distance);                   
-                    }
-                }
 
-                //The modified mode algorythm  - apparently it doesnt work well with the new cover rating
+                //The modified mode algorythm  - apparently it doesnt work well with the new cover rating :(
                 CalculateDistanceModeAlgorythmGroup currentGroup = null;
                 List<CalculateDistanceModeAlgorythmGroup> groupsUsed = new List<CalculateDistanceModeAlgorythmGroup>();
 
@@ -374,19 +363,6 @@ public class TacticalPoint : MonoBehaviour
                     }                 
                 }
 
-                if (p == 0 && i == 6)
-                {
-                    Debug.Log("groups created by algorthm: -------");
-                    for (int n = 0; n < groupsUsed.Count; n++)
-                    {
-                        Debug.Log("group: " + n + "------------------------" );
-
-                        foreach(float value in groupsUsed[n].GetGroupValues())
-                        {
-                            Debug.Log("v alueInGroup: " + value);
-                        }
-                    }
-                }
 
                 //Get the biggestGroup & their mean value is the distance we will use
                 CalculateDistanceModeAlgorythmGroup biggestGroup = null;
@@ -403,48 +379,9 @@ public class TacticalPoint : MonoBehaviour
                 float distanceRating = biggestGroup.GetMeanValueOfGroup();
 
 
-                /* List<RaycastUsedToGenerateCoverRating> raycastsNotInfinite = new List<RaycastUsedToGenerateCoverRating>();
-
-                 for (int n = 0; n < numberOfRaycastsPerDirection; n++)
-                 {
-                     if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
-                     {
-                         raycastsNotInfinite.Add()
-                         //numberOfRaycastsWhichAreNotInfinite++;
-                         //allDistancesCombined += pointCastRaysContainer.GetRay(p, i, n).distance;
-                     }
-
-                 }*/
-
-
-
-                /*float meanDistance;
-                float allDistancesCombined = 0;
-                int numberOfRaycastsWhichAreNotInfinite = 0;
-
-                for (int n = 0; n < numberOfRaycastsPerDirection; n++)
-                {
-                    if (!pointCastRaysContainer.GetRay(p, i, n).IsInfinite())
-                    {
-                        numberOfRaycastsWhichAreNotInfinite++;
-                        allDistancesCombined += pointCastRaysContainer.GetRay(p, i, n).distance;
-                    }
-
-                }
-
-
-                if (numberOfRaycastsWhichAreNotInfinite == 0)
-                {
-                    meanDistance = Mathf.Infinity;
-                }
-                else
-                {
-                    meanDistance = allDistancesCombined / numberOfRaycastsWhichAreNotInfinite;
-                }*/
-
                 #endregion
 
-                #region Calculate the average absolute deviation -> QualityRating
+                #region Calculate the QualityRating
                 float qualityRating;
 
                 if (distanceRating == Mathf.Infinity)

@@ -11,12 +11,12 @@ public class TacticalPointsManagerEditor : Editor
         DrawDefaultInspector(); //this methiod draws the deault editor, we can add more custom editors later
 
 
-        if (GUILayout.Button("Generate All Points"))
+        if (GUILayout.Button("Generate Open Field Points"))
         {
             ((TacticalPointsManager)target).GenerateAll();
         }
 
-        if (GUILayout.Button("Bake All Cover Ratings"))
+        if (GUILayout.Button("Bake Cover Ratings"))
         {
             ((TacticalPointsManager)target).ResetAllPointRotations();
             ((TacticalPointsManager)target).BakeAllCoverRatings();
@@ -28,7 +28,7 @@ public class TacticalPointsManagerEditor : Editor
             ((TacticalPointsManager)target).UpdatePointRatings();
         }
 
-        if (GUILayout.Button("Reset All Point Rotations "))
+        if (GUILayout.Button("Reset Point Rotations "))
         {
             ((TacticalPointsManager)target).ResetAllPointRotations();
         }
