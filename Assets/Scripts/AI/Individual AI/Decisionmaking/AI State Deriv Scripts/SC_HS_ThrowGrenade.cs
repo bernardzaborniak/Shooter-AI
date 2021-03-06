@@ -84,18 +84,21 @@ namespace BenitosAI
 
             float grenadeThrowingVelocity = aimingController.DetermineThrowingObjectVelocity(equippedGrenade, target.lastDistanceMeasured);
 
-            Vector3 aimSpineDirection = aimingController.GetDirectionToAimAtTarget(target.GetEntityPosition(), target.GetCurrentVelocity(), true, grenadeThrowingVelocity, false);
-            if (float.IsNaN(aimSpineDirection.x))
+            Vector3 aimDirection = aimingController.GetDirectionToAimAtTarget(target.GetEntityPosition(), target.GetCurrentVelocity(), true, grenadeThrowingVelocity, false);
+            if (float.IsNaN(aimDirection.x))
             {
                 Debug.Log("aiming spine was nan");
-                aimSpineDirection = grenadeAimSpineDirectionLastFrame;
+                aimDirection = grenadeAimSpineDirectionLastFrame;
             }
+
+            Vector3 aimSpineDirection = aimDirection;
+            aimSpineDirection.y = 0; // it looked starnge when there were looking up
             charController.AimSpineInDirection(aimSpineDirection);
 
 
-            charController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimSpineDirection);
+            charController.UpdateVelocityWhileThrowingGrenade(grenadeThrowingVelocity, aimDirection);
 
-            grenadeAimSpineDirectionLastFrame = aimSpineDirection;
+            grenadeAimSpineDirectionLastFrame = aimDirection;
         }
 
 
