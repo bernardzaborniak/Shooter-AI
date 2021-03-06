@@ -464,19 +464,116 @@ namespace BenitosAI
 
         #region Rating TPoints
 
-        public float GetTPRating(TacticalPoint tPoint)
+        public float GetTPTacticalRating(TacticalPoint tPoint)
         {
+            float rating = 0;
             //tPoint. hashCode is the dicitionary key
 
-            return -1; //if no rating aviable
+            //check if rating is needed - only check the target point, as all correspnding points are rated together
+            if (!tPRatingsCache.ContainsKey(tPoint.GetHashCode()))
+            {
+                RateTPTogetherWithCorrespondingPoints(tPoint);
+            }
+
+            if (tPoint.tacticalPointType == TacticalPointType.CoverPoint)
+            {
+                //return cover point rating *0.7 + best peek point rating;
+
+                rating = 0.7f * tPRatingsCache[tPoint.GetHashCode()].rating;
+
+                float bestPeekPointRating = 0;
+                for (int i = 0; i < tPoint.correspondingCoverPeekPoints.Length; i++)
+                {
+                    float peekPointRating = tPRatingsCache[tPoint.correspondingCoverPeekPoints[i].GetHashCode()].rating;
+                    if (peekPointRating > bestPeekPointRating)
+                    {
+                        bestPeekPointRating = peekPointRating;
+                    }
+                }
+
+                rating += 0.3f * bestPeekPointRating;
+                return rating;
+            }
+            else if(tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+            {
+                //return peek point * 0.7 + cover point *0.3f
+
+                rating = 0.7f * tPRatingsCache[tPoint.GetHashCode()].rating + 0.3f * tPRatingsCache[tPoint.correspondingCoverPoint.GetHashCode()].rating;
+                return rating;
+            }
+
+            return rating;
         }
 
-        public float RateTPTogetherWithCorrespondingPoints(TacticalPoint tPoint)
+        public void RateTPTogetherWithCorrespondingPoints(TacticalPoint tPoint)
         {
             //rates the cover or peek point together with the coresponding cover or peek points
 
             //1. dertermin coverPoint parent, rate this
             //" go through all peek points, rate them, only calculate distance to enemy once for cover point it there is an enemy
+
+            TacticalPoint coverPoint = null;
+
+            if(tPoint.tacticalPointType == TacticalPointType.CoverPoint)
+            {
+                coverPoint = tPoint;
+            }
+            else if(tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+            {
+                coverPoint = tPoint.correspondingCoverPoint;
+            }
+
+
+            //Rate all 0 when no enemy is visible
+            if(enemyInfos.Length == 0)
+            {
+                tPRatingsCache.Add(coverPoint.GetHashCode(), (0, Time.time));
+                for (int i = 0; i < coverPoint.correspondingCoverPeekPoints.Length; i++)
+                {
+                    tPRatingsCache.Add(coverPoint.correspondingCoverPeekPoints[i].GetHashCode(), (0, Time.time));
+                }
+
+                return;
+            }
+           
+
+
+            //Rate Cover Point:
+            (float distance, float quality) tPCoverRatingForDirection = coverPoint.GetRatingForDirection(meanThreatDirection);
+
+            float coverPointRating;
+
+            if (tPCoverRatingForDirection.distance < 2)
+            {
+                if (tPCoverRatingForDirection.quality > 0.5f) coverPointRating = 1;
+                else coverPointRating = tPCoverRatingForDirection.quality;
+            }
+            else
+            {
+                coverPointRating = 0;
+            }
+            //Save Cover Point Rating
+
+            tPRatingsCache.Add(coverPoint.GetHashCode(), (coverPointRating, Time.time));
+
+            //Rate Cover Peek Points & Save their Ratings
+
+
+            float distanceToEnemyFromPoint = Vector3.Distance(enemyInfos[0].GetEntityPosition(), coverPoint.transform.position);
+
+            for (int i = 0; i < coverPoint.correspondingCoverPeekPoints.Length; i++)
+            {
+                (float distance, float quality) tPCoverPeekRatingForDirection = coverPoint.correspondingCoverPeekPoints[i].GetRatingForDirection(meanThreatDirection);
+
+                if (distanceToEnemyFromPoint < tPCoverPeekRatingForDirection.distance)
+                {
+                    tPRatingsCache.Add(coverPoint.correspondingCoverPeekPoints[i].GetHashCode(), (1, Time.time));
+                }
+                else
+                {
+                    tPRatingsCache.Add(coverPoint.correspondingCoverPeekPoints[i].GetHashCode(), (0, Time.time));
+                }
+            }
         }
 
         #endregion

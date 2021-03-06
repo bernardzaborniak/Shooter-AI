@@ -36,11 +36,11 @@ public class TacticalPoint : MonoBehaviour
 
     [Tooltip("only used if  type is CoverShootPoint")]
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
-    public TacticalPoint[] coverPeekPoints; //or ShotPositions
+    public TacticalPoint[] correspondingCoverPeekPoints; //or ShotPositions
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPoint)]
     public Transform coverPeekPointsParent;
     [ShowWhen("tacticalPointType", TacticalPointType.CoverPeekPoint)]
-    public TacticalPoint coverPointAssignedTo;
+    public TacticalPoint correspondingCoverPoint;
 
     [Tooltip("not really used yet")]
     public float radius;
@@ -189,15 +189,15 @@ public class TacticalPoint : MonoBehaviour
         //Updates the references of children instantiated in editor by the level Designer
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
-            coverPeekPoints = new TacticalPoint[coverPeekPointsParent.childCount];
+            correspondingCoverPeekPoints = new TacticalPoint[coverPeekPointsParent.childCount];
             for (int i = 0; i < coverPeekPointsParent.childCount; i++)
             {
                 TacticalPoint tp = coverPeekPointsParent.GetChild(i).GetComponent<TacticalPoint>();
                 if (tp)
                 {
-                    coverPeekPoints[i] = tp;
-                    coverPeekPoints[i].coverPointAssignedTo = this;
-                    EditorUtility.SetDirty(coverPeekPoints[i]);
+                    correspondingCoverPeekPoints[i] = tp;
+                    correspondingCoverPeekPoints[i].correspondingCoverPoint = this;
+                    EditorUtility.SetDirty(correspondingCoverPeekPoints[i]);
 
                 }
                 else
@@ -215,10 +215,10 @@ public class TacticalPoint : MonoBehaviour
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
             //save old positions
-            Vector3[] oldPositions = new Vector3[coverPeekPoints.Length];
+            Vector3[] oldPositions = new Vector3[correspondingCoverPeekPoints.Length];
             for (int i = 0; i < oldPositions.Length; i++)
             {
-                oldPositions[i] = coverPeekPoints[i].transform.position;
+                oldPositions[i] = correspondingCoverPeekPoints[i].transform.position;
             }
 
             //rotate parent
@@ -227,8 +227,8 @@ public class TacticalPoint : MonoBehaviour
             //restore old posiitons
             for (int i = 0; i < oldPositions.Length; i++)
             {
-                coverPeekPoints[i].transform.position = oldPositions[i];
-                coverPeekPoints[i].transform.rotation = Quaternion.identity;
+                correspondingCoverPeekPoints[i].transform.position = oldPositions[i];
+                correspondingCoverPeekPoints[i].transform.rotation = Quaternion.identity;
             }
         }
         else
@@ -611,19 +611,19 @@ public class TacticalPoint : MonoBehaviour
         //also set the other peek or cover points as used
         if(tacticalPointType == TacticalPointType.CoverPoint)
         {
-            for (int i = 0; i < coverPeekPoints.Length; i++)
+            for (int i = 0; i < correspondingCoverPeekPoints.Length; i++)
             {
-                coverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
+                correspondingCoverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
             }
         }
         else if(tacticalPointType == TacticalPointType.CoverPeekPoint)
         {
-            if (coverPointAssignedTo == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
-            coverPointAssignedTo.entityUsingThisPoint = entityUsingThisPoint;
+            if (correspondingCoverPoint == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
+            correspondingCoverPoint.entityUsingThisPoint = entityUsingThisPoint;
 
-            for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+            for (int i = 0; i < correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
             {
-                coverPointAssignedTo.coverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
+                correspondingCoverPoint.correspondingCoverPeekPoints[i].entityUsingThisPoint = entityUsingThisPoint;
             }
         }
     }
@@ -636,18 +636,18 @@ public class TacticalPoint : MonoBehaviour
 
             if (tacticalPointType == TacticalPointType.CoverPoint)
             {
-                for (int i = 0; i < coverPeekPoints.Length; i++)
+                for (int i = 0; i < correspondingCoverPeekPoints.Length; i++)
                 {
-                    coverPeekPoints[i].entityUsingThisPoint = null;
+                    correspondingCoverPeekPoints[i].entityUsingThisPoint = null;
                 }
             }
             else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
             {
-                coverPointAssignedTo.entityUsingThisPoint = null;
+                correspondingCoverPoint.entityUsingThisPoint = null;
 
-                for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+                for (int i = 0; i < correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
                 {
-                    coverPointAssignedTo.coverPeekPoints[i].entityUsingThisPoint = null;
+                    correspondingCoverPoint.correspondingCoverPeekPoints[i].entityUsingThisPoint = null;
                 }
             }
         }
@@ -660,19 +660,19 @@ public class TacticalPoint : MonoBehaviour
         //also set the other peek or cover points as used
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
-            for (int i = 0; i < coverPeekPoints.Length; i++)
+            for (int i = 0; i < correspondingCoverPeekPoints.Length; i++)
             {
-                coverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
+                correspondingCoverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
             }
         }
         else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
         {
-            if (coverPointAssignedTo == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
-            coverPointAssignedTo.entityTargetingThisPoint = entityTargetingThisPoint;
+            if (correspondingCoverPoint == null) Debug.Log("tactical peek point: " + name + " has no coverPointAssignedTo assigned to it! -> fix dat!!!");
+            correspondingCoverPoint.entityTargetingThisPoint = entityTargetingThisPoint;
 
-            for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+            for (int i = 0; i < correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
             {
-                coverPointAssignedTo.coverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
+                correspondingCoverPoint.correspondingCoverPeekPoints[i].entityTargetingThisPoint = entityTargetingThisPoint;
             }
         }
     }
@@ -685,18 +685,18 @@ public class TacticalPoint : MonoBehaviour
 
             if (tacticalPointType == TacticalPointType.CoverPoint)
             {
-                for (int i = 0; i < coverPeekPoints.Length; i++)
+                for (int i = 0; i < correspondingCoverPeekPoints.Length; i++)
                 {
-                    coverPeekPoints[i].entityTargetingThisPoint = null;
+                    correspondingCoverPeekPoints[i].entityTargetingThisPoint = null;
                 }
             }
             else if (tacticalPointType == TacticalPointType.CoverPeekPoint)
             {
-                coverPointAssignedTo.entityTargetingThisPoint = null;
+                correspondingCoverPoint.entityTargetingThisPoint = null;
 
-                for (int i = 0; i < coverPointAssignedTo.coverPeekPoints.Length; i++)
+                for (int i = 0; i < correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
                 {
-                    coverPointAssignedTo.coverPeekPoints[i].entityTargetingThisPoint = null;
+                    correspondingCoverPoint.correspondingCoverPeekPoints[i].entityTargetingThisPoint = null;
                 }
             }
         }

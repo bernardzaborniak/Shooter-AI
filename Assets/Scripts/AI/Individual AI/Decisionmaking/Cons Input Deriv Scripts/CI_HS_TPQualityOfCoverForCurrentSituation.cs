@@ -8,8 +8,22 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TP Quality of Cover for Current Situation", fileName = "TP Quality of Cover for Current Situation")]
     public class CI_HS_TPQualityOfCoverForCurrentSituation : ConsiderationInput
     {
-
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        {
+            UnityEngine.Profiling.Profiler.BeginSample("RateCoverPointBeginning");
+            //this takes way too much performance?
+
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
+
+            float rating = blackboard.GetTPTacticalRating(decisionContext.targetTacticalPointInfo.tPoint);
+            UnityEngine.Profiling.Profiler.EndSample();
+            return rating;
+
+
+
+        }
+
+        /*public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
             //UnityEngine.Profiling.Profiler.BeginSample("RateCoverPointBeginning");
             //this takes way too much performance?
@@ -27,7 +41,28 @@ namespace BenitosAI
             //UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;
-        }
+        }*/
+
+
+        /*public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        {
+            //UnityEngine.Profiling.Profiler.BeginSample("RateCoverPointBeginning");
+            //this takes way too much performance?
+
+            AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
+
+            if (blackboard.enemyInfos.Length == 0) return 0;
+
+            SensedEntityInfo closestEntity = blackboard.enemyInfos[0];
+
+           // float rating = decisionContext.targetTacticalPointInfo.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
+            float rating = 0;
+
+
+            //UnityEngine.Profiling.Profiler.EndSample();
+
+            return rating;
+        }*/
 
         /*public float GetConsiderationInputOld(DecisionContext decisionContext, Consideration consideration)
         {

@@ -23,16 +23,16 @@ namespace BenitosAI
             {
                 if (currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPoint)
                 {
-                    for (int i = 0; i < currentlyUsedTP.coverPeekPoints.Length; i++)
+                    for (int i = 0; i < currentlyUsedTP.correspondingCoverPeekPoints.Length; i++)
                     {
-                        if (currentlyUsedTP.coverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                        if (currentlyUsedTP.correspondingCoverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
                     }
                 }
                 else if(currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPeekPoint)
                 {
-                    for (int i = 0; i < currentlyUsedTP.coverPointAssignedTo.coverPeekPoints.Length; i++)
+                    for (int i = 0; i < currentlyUsedTP.correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
                     {
-                        if (currentlyUsedTP.coverPointAssignedTo.coverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                        if (currentlyUsedTP.correspondingCoverPoint.correspondingCoverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
                     }
                 }
             }
@@ -40,7 +40,7 @@ namespace BenitosAI
             {
                 if (currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPeekPoint)
                 {
-                    if (currentlyUsedTP.coverPointAssignedTo == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                    if (currentlyUsedTP.correspondingCoverPoint == decisionContext.targetTacticalPointInfo.tPoint) return 1;
 
                 }
             }

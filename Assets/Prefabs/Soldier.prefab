@@ -1271,6 +1271,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
       - {fileID: 11400000, guid: 84866b1a9499a034190b9adeb4ecc431, type: 2}
       - {fileID: 11400000, guid: 570334864ec1269478eed5155da27d1d, type: 2}
+      - {fileID: 11400000, guid: 0eeb8bffb638e7c439bd434f69b0c734, type: 2}
     useMemory: 1
     memory:
       numberOfPriorSelectedDecisionsRemembered: 8
@@ -1298,6 +1299,8 @@ MonoBehaviour:
   sensing: {fileID: 7864116541130220572}
   lastTimeSensingInfoWasUpdated: 0
   lastFrameCountSensingInfoWasUpdated: 0
+  cleanUpTPRatingsCacheInterval: 0.5
+  timeAfterWhichToRecaulculateRating: 1
   maxEnemyInfosCount: 10
   maxFriendlyInfosCount: 6
   currentlyUsedTPoint: {fileID: 0}

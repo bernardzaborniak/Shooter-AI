@@ -94,9 +94,9 @@ public class CoverQualityRemappingTester : MonoBehaviour
             //Go through the cover points peek points, take the best rated from them
             float bestPeekPointRating = 0;
             float distanceToEnemyFromPoint = Vector3.Distance(closestEnemyPosition, tPToRate.transform.position); //only calculate the distance to the cover point, this distance will be used in the peek point rating
-            for (int i = 0; i < tPToRate.coverPeekPoints.Length; i++)
+            for (int i = 0; i < tPToRate.correspondingCoverPeekPoints.Length; i++)
             {
-                (float distance, float quality) ratingForDirectionInCorrespondingPeekPoint = tPToRate.coverPeekPoints[i].GetRatingForDirection(meanThreatDirection);
+                (float distance, float quality) ratingForDirectionInCorrespondingPeekPoint = tPToRate.correspondingCoverPeekPoints[i].GetRatingForDirection(meanThreatDirection);
                 if (distanceToEnemyFromPoint < ratingForDirectionInCorrespondingPeekPoint.distance)
                 {
                     bestPeekPointRating = 1;
@@ -112,7 +112,7 @@ public class CoverQualityRemappingTester : MonoBehaviour
             if (closestEnemyPosition == Vector3.zero) return 0;
 
             //get rating for the actual peek point we are rating + the corresponding cover point
-            (float distance, float quality) ratingForDirectionInCorrespondingCoverPoint = tPToRate.coverPointAssignedTo.GetRatingForDirection(meanThreatDirection);
+            (float distance, float quality) ratingForDirectionInCorrespondingCoverPoint = tPToRate.correspondingCoverPoint.GetRatingForDirection(meanThreatDirection);
             (float distance, float quality) ratingForDirection = tPToRate.GetRatingForDirection(meanThreatDirection);
 
             //corresponding cover point is weighted 0.3
