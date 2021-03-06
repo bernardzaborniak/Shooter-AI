@@ -37,6 +37,11 @@ namespace BenitosAI
         [NonSerialized] public (TacticalPoint tPoint, float distance)[] tPCoverPeekInfos = new (TacticalPoint, float)[0]; // sorted by distance
         [NonSerialized] public (EnvironmentalDangerTag dangerTag, float distance)[] environmentalDangerInfos = new (EnvironmentalDangerTag, float)[0];//not sorted by distance
 
+        Dictionary<int, (float rating, float timeWhenRated)> tPRatingsCache = new Dictionary<int, (float rating, float timeWhenRated)>(); //the key is the TPoint hashcode
+        public float cleanUpTPRatingsCacheInterval = 0.5f;
+        public float timeAfterWhichToRecaulculateRating = 1;
+        float nextCleanUpTPRatingsCacheTime;
+
         [SerializeField] int maxEnemyInfosCount;
         [SerializeField] int maxFriendlyInfosCount;
         // [SerializeField] int maxTPCoverInfosCount;
@@ -74,6 +79,34 @@ namespace BenitosAI
         {
             base.SetUpComponent(entity);
 
+            nextCleanUpTPRatingsCacheTime = Time.time + UnityEngine.Random.Range(0, cleanUpTPRatingsCacheInterval);
+
+        }
+
+        public override void UpdateComponent()
+        {
+            //clear ratings cache if needed
+            if(Time.time> nextCleanUpTPRatingsCacheTime)
+            {
+                nextCleanUpTPRatingsCacheTime = Time.time + cleanUpTPRatingsCacheInterval;
+
+                HashSet<int> infosToRemove = new HashSet<int>();
+
+                //Choose which old infos to delete
+                foreach (KeyValuePair<int, (float rating, float timeWhenRated)> ratingInfo in tPRatingsCache)
+                {
+                    if(Time.time - ratingInfo.Value.timeWhenRated > timeAfterWhichToRecaulculateRating)
+                    {
+                        infosToRemove.Add(ratingInfo.Key);
+                    }
+                }
+
+                //Delete old infos
+                foreach (int ratingInfoKey in infosToRemove)
+                {
+                    tPRatingsCache.Remove(ratingInfoKey);
+                }
+            }
         }
 
         #region Updating Sensing Information
@@ -428,6 +461,25 @@ namespace BenitosAI
         {
             return characterController.GetCurrentWeaponShootPoint();
         }
+
+        #region Rating TPoints
+
+        public float GetTPRating(TacticalPoint tPoint)
+        {
+            //tPoint. hashCode is the dicitionary key
+
+            return -1; //if no rating aviable
+        }
+
+        public float RateTPTogetherWithCorrespondingPoints(TacticalPoint tPoint)
+        {
+            //rates the cover or peek point together with the coresponding cover or peek points
+
+            //1. dertermin coverPoint parent, rate this
+            //" go through all peek points, rate them, only calculate distance to enemy once for cover point it there is an enemy
+        }
+
+        #endregion
 
 
     }
