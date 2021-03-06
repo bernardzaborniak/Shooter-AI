@@ -59,13 +59,93 @@ public class CoverQualityRemappingTester : MonoBehaviour
 
             }
 
-            Debug.Log(tPointToTest.DetermineQualityOfCoverSimple( mainThreatDirection, closestEnemyPosition));
+            //Debug.Log(tPointToTest.DetermineQualityOfCoverSimple( mainThreatDirection, closestEnemyPosition));
+            Debug.Log(DetermineQualityOfCoverSimple(tPointToTest, mainThreatDirection, closestEnemyPosition));
 
             
         }
+
+
     }
 
-   
+    float DetermineQualityOfCoverSimple(TacticalPoint tPToRate, Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
+    {
+        float rating = 0;
+
+        if (meanThreatDirection == Vector3.zero) return 0;
+
+
+        if (tPToRate.tacticalPointType == TacticalPointType.CoverPoint)
+        {
+            // Rate the actual Cover Point first
+            (float distance, float quality) ratingForDirection = tPToRate.GetRatingForDirection(meanThreatDirection);
+
+            if (ratingForDirection.distance < 2)
+            {
+                if (ratingForDirection.quality > 0.5f) rating = 1;
+                else rating = ratingForDirection.quality;    
+            }
+            else
+            {
+                return 0;
+            }
+            rating *= 0.7f;
+
+            //Go through the cover points peek points, take the best rated from them
+            float bestPeekPointRating = 0;
+            float distanceToEnemyFromPoint = Vector3.Distance(closestEnemyPosition, tPToRate.transform.position); //only calculate the distance to the cover point, this distance will be used in the peek point rating
+            for (int i = 0; i < tPToRate.coverPeekPoints.Length; i++)
+            {
+                (float distance, float quality) ratingForDirectionInCorrespondingPeekPoint = tPToRate.coverPeekPoints[i].GetRatingForDirection(meanThreatDirection);
+                if (distanceToEnemyFromPoint < ratingForDirectionInCorrespondingPeekPoint.distance)
+                {
+                    bestPeekPointRating = 1;
+                }
+
+            }
+
+            rating += bestPeekPointRating * 0.3f;
+
+        }
+        else if (tPToRate.tacticalPointType == TacticalPointType.CoverPeekPoint)
+        {
+            if (closestEnemyPosition == Vector3.zero) return 0;
+
+            //get rating for the actual peek point we are rating + the corresponding cover point
+            (float distance, float quality) ratingForDirectionInCorrespondingCoverPoint = tPToRate.coverPointAssignedTo.GetRatingForDirection(meanThreatDirection);
+            (float distance, float quality) ratingForDirection = tPToRate.GetRatingForDirection(meanThreatDirection);
+
+            //corresponding cover point is weighted 0.3
+            if (ratingForDirectionInCorrespondingCoverPoint.distance < 2)
+            {
+                if (ratingForDirectionInCorrespondingCoverPoint.quality > 0.5f) rating = 1;
+                else rating = ratingForDirectionInCorrespondingCoverPoint.quality;
+
+                rating *= 0.3f ;
+            }
+
+
+            //the actual peek point - weighted 0.7
+            float distanceToEnemyFromPoint = Vector3.Distance(closestEnemyPosition, tPToRate.transform.position);
+            //Optimisation Idea: instead of calculating this distance - use distance to point + measured distance to enemy combined?
+            Debug.Log("distanceToEnemyFromPoint: " + distanceToEnemyFromPoint);
+            Debug.Log("ratingForDirection.distance: " + ratingForDirection.distance);
+            if (distanceToEnemyFromPoint < ratingForDirection.distance)
+            {
+                rating += 0.7f;
+            }
+        }
+
+
+        return rating;
+
+        //cover and peek point rating methoden zusammenfassen?
+
+        // um zu optimieren - bereits geratete points im blackboard speichern?
+    }
+
+
+
 
 
 }

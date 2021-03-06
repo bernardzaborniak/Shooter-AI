@@ -20,7 +20,10 @@ namespace BenitosAI
 
             SensedEntityInfo closestEntity = blackboard.enemyInfos[0];
 
-            float rating = decisionContext.targetTacticalPointInfo.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
+           // float rating = decisionContext.targetTacticalPointInfo.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
+            float rating = 0;
+
+
             //UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;

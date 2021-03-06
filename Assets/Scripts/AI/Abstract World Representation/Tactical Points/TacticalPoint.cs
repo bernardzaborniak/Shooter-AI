@@ -706,7 +706,7 @@ public class TacticalPoint : MonoBehaviour
     #region For Evaluation Cover Quality 
 
 
-    public float DetermineQualityOfCover(QualityOfCoverEvaluationType evaluationType, (Vector3 threatPosition, float distanceToThreat)[] threats, (Vector3 friendlyPosition, float distanceToFriendly)[] friendlies)
+   /* public float DetermineQualityOfCover(QualityOfCoverEvaluationType evaluationType, (Vector3 threatPosition, float distanceToThreat)[] threats, (Vector3 friendlyPosition, float distanceToFriendly)[] friendlies)
     {
         //Prepare Values
         float endResult = 0;
@@ -874,12 +874,12 @@ public class TacticalPoint : MonoBehaviour
             rating = rating / (friendlies.Length * 1f);
         }
         return rating;
-    }
+    }*/
 
 
 
     //simpler method
-    public float DetermineQualityOfCoverSimple(Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
+    /*public float DetermineQualityOfCoverSimple(Vector3 meanThreatDirection, Vector3 closestEnemyPosition)
     {
         UnityEngine.Profiling.Profiler.BeginSample("DetermineQualityOfCoverSimple");
 
@@ -931,7 +931,7 @@ public class TacticalPoint : MonoBehaviour
 
 
         return rating;
-    }
+    }*/
 
     public (float distance, float quality) GetRatingForDirection(Vector3 direction)
     {
