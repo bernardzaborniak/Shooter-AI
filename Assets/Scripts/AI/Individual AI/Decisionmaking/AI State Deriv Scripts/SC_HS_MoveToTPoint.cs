@@ -44,7 +44,7 @@ namespace BenitosAI
             this.sprint = sprint;
             this.stance = stance;
 
-            targetTPoint = context.targetTacticalPoint.tPoint;
+            targetTPoint = context.targetTacticalPointInfo.tPoint;
 
         }
 

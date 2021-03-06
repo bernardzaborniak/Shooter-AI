@@ -18,7 +18,7 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntity, weaponID, allowedWeaponAimingErrorAngle, checkLineOfFireInterval, checkLineOfFireLayerMask);
+            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntityInfo, weaponID, allowedWeaponAimingErrorAngle, checkLineOfFireInterval, checkLineOfFireLayerMask);
             return state;
         }
     }

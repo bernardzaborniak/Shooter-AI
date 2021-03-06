@@ -48,6 +48,7 @@ namespace BenitosAI
         [Header("Other Information")]
 
         [SerializeField] TacticalPoint currentlyUsedTPoint;
+        [SerializeField] TacticalPoint currentlyTargetedTPoint;
 
 
         //Information Evaluated from Sensing Infos
@@ -391,6 +392,16 @@ namespace BenitosAI
         public TacticalPoint GetCurrentlyUsedTacticalPoint()
         {
             return currentlyUsedTPoint;
+        }
+
+        public void SetCurrentlyTargetedTacticalPoint(TacticalPoint targetedPoint)
+        {
+            currentlyTargetedTPoint = targetedPoint;
+        }
+
+        public TacticalPoint GetCurrentlyTargetedPoint()
+        {
+            return currentlyTargetedTPoint;
         }
 
         public float GetRemainingHealthToMaxHalthRatio()

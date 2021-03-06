@@ -587,14 +587,19 @@ public class TacticalPoint : MonoBehaviour
 
     }
 
-    public bool IsPointBeingTargetedByAnotherEntity(GameEntity myEntity)
+    public bool IsPointBeingTargetedByAnotherEntity(GameEntity askingEntity)
     {
         if (entityTargetingThisPoint)
         {
-            if (entityTargetingThisPoint != myEntity) return true;
+            if (entityTargetingThisPoint != askingEntity) return true;
         }
 
         return false;
+    }
+
+    public bool IsPointBeingTargetedByAnyEntity()
+    {
+        return entityTargetingThisPoint;
     }
 
    
@@ -885,38 +890,35 @@ public class TacticalPoint : MonoBehaviour
 
         if (tacticalPointType == TacticalPointType.CoverPoint)
         {
-            //int directionIndex = MapWorldSpaceDirectionToCoverRatingDirectionIndex(meanThreatDirection);
             (float distance, float quality) ratingForDirection = GetRatingForDirection(meanThreatDirection);
 
             if (ratingForDirection.distance < 2)
             {
-                // rating = ratingForDirection.quality;
                 if (ratingForDirection.quality > 0.5f) rating = 1;
                 else rating = ratingForDirection.quality;
-
             }
             else
             {
                 rating = 0;
             }
-
         }
         else if(tacticalPointType == TacticalPointType.CoverPeekPoint)
         {
             if (closestEnemyPosition == Vector3.zero) return 0;
 
-            //corresponding cover point + the peek point
+            //get rating for the corresponding cover point + the actual peek point we are rating
             (float distance, float quality) ratingForDirectionInCorrespondingCoverPoint = coverPointAssignedTo.GetRatingForDirection(meanThreatDirection);
             (float distance, float quality) ratingForDirection = GetRatingForDirection(meanThreatDirection);
 
-            //corresponding cover - weighted 0.3
+            //corresponding cover point is weighted 0.3
             if (ratingForDirectionInCorrespondingCoverPoint.distance < 1.5)
             {
                 rating += 0.3f * ratingForDirectionInCorrespondingCoverPoint.quality;
             }
 
-            //the peek point - weighted 0.7
+            //the actual peek point - weighted 0.7
             float distanceToEnemyFromPoint = Vector3.Distance(closestEnemyPosition, transform.position);
+            //instead of calculating this distance - use distance to point + measured distance to enemy combined?
 
 
             if(distanceToEnemyFromPoint< ratingForDirection.distance)

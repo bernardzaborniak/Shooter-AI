@@ -62,13 +62,13 @@ namespace BenitosAI
                     this.aiController = context.aiController;
                     timeOfDecison = Time.time;
 
-                    try{  this.targetEntity = context.targetEntity.entity;  }
+                    try{  this.targetEntity = context.targetEntityInfo.entity;  }
                     catch (System.Exception e) { }
 
                     try { targetEntityName = targetEntity.name + " " + targetEntity.GetHashCode(); }
                     catch (System.Exception e) { targetEntityName = "no Target"; }
 
-                    try { this.targetTacticalPoint = context.targetTacticalPoint.tPoint; }
+                    try { this.targetTacticalPoint = context.targetTacticalPointInfo.tPoint; }
                     catch (System.Exception e) { }
 
                     Consideration[] considerations;

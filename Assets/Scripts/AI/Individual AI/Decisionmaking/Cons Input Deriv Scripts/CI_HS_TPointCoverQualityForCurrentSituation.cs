@@ -20,7 +20,7 @@ namespace BenitosAI
 
             SensedEntityInfo closestEntity = blackboard.enemyInfos[0];
 
-            float rating = decisionContext.targetTacticalPoint.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
+            float rating = decisionContext.targetTacticalPointInfo.tPoint.DetermineQualityOfCoverSimple(blackboard.meanThreatDirection, closestEntity.GetEntityPosition());
             //UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;
@@ -53,15 +53,15 @@ namespace BenitosAI
 
             for (int i = 0; i < threatsInfo.Length; i++)
             {
-                threatsInfo[i] = (enemyInfos[i].GetEntityPosition(), Vector3.Distance(enemyInfos[i].GetEntityPosition(), decisionContext.targetTacticalPoint.tPoint.GetPointPosition()));
+                threatsInfo[i] = (enemyInfos[i].GetEntityPosition(), Vector3.Distance(enemyInfos[i].GetEntityPosition(), decisionContext.targetTacticalPointInfo.tPoint.GetPointPosition()));
             }
 
             for (int i = 0; i < friendliesInfo.Length; i++)
             {
-                friendliesInfo[i] = (friendlyInfos[i].GetEntityPosition(), Vector3.Distance(friendlyInfos[i].GetEntityPosition(), decisionContext.targetTacticalPoint.tPoint.GetPointPosition()));
+                friendliesInfo[i] = (friendlyInfos[i].GetEntityPosition(), Vector3.Distance(friendlyInfos[i].GetEntityPosition(), decisionContext.targetTacticalPointInfo.tPoint.GetPointPosition()));
             }
 
-            float rating = decisionContext.targetTacticalPoint.tPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo);
+            float rating = decisionContext.targetTacticalPointInfo.tPoint.DetermineQualityOfCover(consideration.tPointEvaluationType, threatsInfo, friendliesInfo);
             UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;

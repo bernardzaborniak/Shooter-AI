@@ -35,7 +35,7 @@ namespace BenitosAI
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
-            target = context.targetEntity;
+            target = context.targetEntityInfo;
 
             aimingController = this.aiController.aimingController;
             equippedGrenade = this.charController.GetItemInInventory(3) as Grenade;

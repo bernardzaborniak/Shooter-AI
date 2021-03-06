@@ -20,7 +20,7 @@ namespace BenitosAI
 
             SensedEntityInfo nearestEnemyInfo = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.enemyInfos[0];
 
-            return Utility.Remap(Vector3.Distance(nearestEnemyInfo.GetEntityPosition(), decisionContext.targetTacticalPoint.tPoint.GetPointPosition()), consideration.min, consideration.max, 0, 1, true);
+            return Utility.Remap(Vector3.Distance(nearestEnemyInfo.GetEntityPosition(), decisionContext.targetTacticalPointInfo.tPoint.GetPointPosition()), consideration.min, consideration.max, 0, 1, true);
       
         }
     }

@@ -1137,9 +1137,10 @@ MonoBehaviour:
       - {fileID: 11400000, guid: f243423aa31fbeb498490d0c639de554, type: 2}
       - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
       - {fileID: 11400000, guid: 35610281a8e988f45a39c9c6c0b5bf75, type: 2}
-      - {fileID: 11400000, guid: c1576a41dc96ca2448214541c729daed, type: 2}
+      - {fileID: 11400000, guid: e124c8660b8ca7d4b9e712881a244260, type: 2}
       - {fileID: 11400000, guid: 517d09a4897753842b06ced799116d65, type: 2}
       - {fileID: 11400000, guid: 4f4ee30107cd953468f35e4c7b58bfc2, type: 2}
+      - {fileID: 11400000, guid: c1576a41dc96ca2448214541c729daed, type: 2}
     - name: 'Go to TPCoverPeek - Walk '
       weight: 6
       decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
@@ -1154,9 +1155,10 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}
       - {fileID: 11400000, guid: 6c1c63757e8c61f4f821e60433172dce, type: 2}
       - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
-      - {fileID: 11400000, guid: c1576a41dc96ca2448214541c729daed, type: 2}
+      - {fileID: 11400000, guid: e124c8660b8ca7d4b9e712881a244260, type: 2}
       - {fileID: 11400000, guid: 517d09a4897753842b06ced799116d65, type: 2}
       - {fileID: 11400000, guid: 4f4ee30107cd953468f35e4c7b58bfc2, type: 2}
+      - {fileID: 11400000, guid: c1576a41dc96ca2448214541c729daed, type: 2}
     - name: 'Hold Position Combat Stance Crouching '
       weight: 2
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
@@ -1299,6 +1301,7 @@ MonoBehaviour:
   maxEnemyInfosCount: 10
   maxFriendlyInfosCount: 6
   currentlyUsedTPoint: {fileID: 0}
+  currentlyTargetedTPoint: {fileID: 0}
   meanThreatDirection: {x: 0, y: 0, z: 0}
   meanFriendlyDirection: {x: 0, y: 0, z: 0}
   visuasliseThreatAndFriendlyDirections: 0

@@ -32,7 +32,7 @@ namespace BenitosAI
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
             this.takeCoverCrouched = takeCoverCrouched;
-            targetPoint = context.targetTacticalPoint.tPoint;
+            targetPoint = context.targetTacticalPointInfo.tPoint;
         }
 
         public override void OnStateEnter()

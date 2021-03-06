@@ -16,13 +16,13 @@ namespace BenitosAI
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
         {
             //if thwe if the distance is smaller than 1m, just ignore it
-            if (decisionContext.targetTacticalPoint.distance < 1) return 0;
+            if (decisionContext.targetTacticalPointInfo.distance < 1) return 0;
 
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
 
 
             //calculate angle between idrection towards tp point and mean threat direction
-            Vector3 directionTowardsTPoint = decisionContext.targetTacticalPoint.tPoint.GetPointPosition() - blackboard.GetMyEntity().transform.position;
+            Vector3 directionTowardsTPoint = decisionContext.targetTacticalPointInfo.tPoint.GetPointPosition() - blackboard.GetMyEntity().transform.position;
             directionTowardsTPoint.y = 0;
             Vector3 meanThreatDirection = blackboard.meanThreatDirection;
             meanThreatDirection.y = 0;

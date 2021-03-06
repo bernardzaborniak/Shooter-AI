@@ -11,8 +11,8 @@
         public AIController aiController; //who s asking?
 
         // Optional
-        public SensedEntityInfo targetEntity; //Who is the target of my action
-        public (TacticalPoint tPoint, float distance) targetTacticalPoint; //Who is the target of my action
+        public SensedEntityInfo targetEntityInfo; //Who is the target of my action
+        public (TacticalPoint tPoint, float distance) targetTacticalPointInfo; //Who is the target of my action
 
         public DecisionContext()
         {
@@ -21,7 +21,7 @@
 
         public DecisionContext(DecisionContext objectToCopyValuesFrom)
         {
-            SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.targetEntity, objectToCopyValuesFrom.targetTacticalPoint);
+            SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.targetEntityInfo, objectToCopyValuesFrom.targetTacticalPointInfo);
             rating = objectToCopyValuesFrom.rating;
         }
 
@@ -29,8 +29,8 @@
         {
             this.decision = objectToCopyValuesFrom.decision;
             this.aiController = objectToCopyValuesFrom.aiController;
-            this.targetEntity = objectToCopyValuesFrom.targetEntity;
-            this.targetTacticalPoint = objectToCopyValuesFrom.targetTacticalPoint;
+            this.targetEntityInfo = objectToCopyValuesFrom.targetEntityInfo;
+            this.targetTacticalPointInfo = objectToCopyValuesFrom.targetTacticalPointInfo;
 
             this.rating = objectToCopyValuesFrom.rating;
         }
@@ -39,8 +39,8 @@
         {
             this.decision = decision;
             this.aiController = aiController;
-            this.targetEntity = targetEntity;
-            this.targetTacticalPoint = targetTacticalPoint;
+            this.targetEntityInfo = targetEntity;
+            this.targetTacticalPointInfo = targetTacticalPoint;
         }
 
         // this could be more elegantly solved by making the hashcode dependant on this variables? - but then i would have problems weh saving this objects in a hashSet? or overide the == operator?
@@ -50,9 +50,9 @@
 
             if (decision == otherContext.decision)
             {
-                if (targetEntity == otherContext.targetEntity)
+                if (targetEntityInfo == otherContext.targetEntityInfo)
                 {
-                    if (targetTacticalPoint == otherContext.targetTacticalPoint)
+                    if (targetTacticalPointInfo == otherContext.targetTacticalPointInfo)
                     {
                         return true;
                     }
@@ -70,7 +70,7 @@
             {
                 try
                 {
-                    if (targetEntity.entity == contextMemory.targetEntity)
+                    if (targetEntityInfo.entity == contextMemory.targetEntity)
                     {
                         return true;
                     }
@@ -81,7 +81,7 @@
                 } catch (System.Exception e) { }
                 try
                 {
-                    if (targetTacticalPoint.tPoint == contextMemory.targetTacticalPoint)
+                    if (targetTacticalPointInfo.tPoint == contextMemory.targetTacticalPoint)
                     {
                         return true;
                     }

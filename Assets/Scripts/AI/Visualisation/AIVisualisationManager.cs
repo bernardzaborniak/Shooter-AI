@@ -160,6 +160,7 @@ namespace BenitosAI
 
         //for changing the point material
         string takenBoolName = "Boolean_C1FD8F9C";
+        string targetedBoolName = "Boolean_a54f3124a51644a6b92706ade265f320";
 
         // For Optimising Update Times in edit mode
         public float updateVisualisersInEditModeInterval = 0.5f;
@@ -477,8 +478,17 @@ namespace BenitosAI
                         else
                         {
                             propertyBlock.SetFloat(takenBoolName, 0f);
-
                         }
+
+                        if (point.IsPointBeingTargetedByAnyEntity())
+                        {
+                            propertyBlock.SetFloat(targetedBoolName, 1f);
+                        }
+                        else
+                        {
+                            propertyBlock.SetFloat(targetedBoolName, 0f);
+                        }
+
                         point.pointRenderer.SetPropertyBlock(propertyBlock);
                     }
 

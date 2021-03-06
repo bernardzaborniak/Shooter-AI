@@ -55,7 +55,7 @@ namespace BenitosAI
             this.sprint = sprint;
             this.stance = stance;
 
-            targetEntityInfo = context.targetEntity;
+            targetEntityInfo = context.targetEntityInfo;
 
             nextIssueMoveOrderTime = 0;
 

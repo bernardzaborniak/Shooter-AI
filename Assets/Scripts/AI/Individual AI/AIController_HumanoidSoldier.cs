@@ -63,11 +63,13 @@ namespace BenitosAI
 
         public void OnStartTargetingTPoint(TacticalPoint tPoint)
         {
+            blackboard.SetCurrentlyTargetedTacticalPoint(tPoint);
             tPoint.OnEntityStartsTargetingThisPoint(blackboard.GetMyEntity());
         }
 
         public void OnStopTargetingTPoint(TacticalPoint tPoint)
         {
+            blackboard.SetCurrentlyTargetedTacticalPoint(null);
             tPoint.OnEntityStopsTargetingThisPoint(blackboard.GetMyEntity());
         }
     }

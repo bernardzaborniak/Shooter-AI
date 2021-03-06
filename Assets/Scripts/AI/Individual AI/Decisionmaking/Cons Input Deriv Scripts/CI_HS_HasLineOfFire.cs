@@ -31,12 +31,12 @@ namespace BenitosAI
             Vector3 raycastStartPoint = weaponShootPointTransform.position;
 
             RaycastHit hit;
-            if (Physics.Raycast(raycastStartPoint, decisionContext.targetEntity.GetAimPosition()- raycastStartPoint, out hit, Mathf.Infinity, checkLineOfFireLayerMask))
+            if (Physics.Raycast(raycastStartPoint, decisionContext.targetEntityInfo.GetAimPosition()- raycastStartPoint, out hit, Mathf.Infinity, checkLineOfFireLayerMask))
             {
                 Hitbox hitbox = hit.collider.gameObject.GetComponent<Hitbox>();
                 if (hitbox)
                 {
-                    if(hitbox.GetEntity() == decisionContext.targetEntity.entity)
+                    if(hitbox.GetEntity() == decisionContext.targetEntityInfo.entity)
                     {
                         return 1;
                     }
