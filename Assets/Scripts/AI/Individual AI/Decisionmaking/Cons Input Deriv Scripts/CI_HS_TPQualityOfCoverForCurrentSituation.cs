@@ -5,8 +5,8 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TPointCover Quality for Current Situation", fileName = "TPointCover Quality for Current Situation")]
-    public class CI_HS_TPointCoverQualityForCurrentSituation : ConsiderationInput
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TP Quality of Cover for Current Situation", fileName = "TP Quality of Cover for Current Situation")]
+    public class CI_HS_TPQualityOfCoverForCurrentSituation : ConsiderationInput
     {
 
         public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
@@ -26,7 +26,7 @@ namespace BenitosAI
             return rating;
         }
 
-        public float GetConsiderationInputOld(DecisionContext decisionContext, Consideration consideration)
+        /*public float GetConsiderationInputOld(DecisionContext decisionContext, Consideration consideration)
         {
             UnityEngine.Profiling.Profiler.BeginSample("RateCoverPoint");
 
@@ -65,7 +65,7 @@ namespace BenitosAI
             UnityEngine.Profiling.Profiler.EndSample();
 
             return rating;
-        }
+        }*/
     }
 
 }
