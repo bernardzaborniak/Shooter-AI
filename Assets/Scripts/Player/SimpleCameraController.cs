@@ -10,6 +10,9 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
+        [Tooltip("[Solves camera stops moving bug")]
+        public float minBoost;
+
         #region for framing on target object
         [Header("For Framing on Objects")]
         [Tooltip("The smaller the smooth time, the fast the framing")]
@@ -35,9 +38,11 @@ namespace UnityTemplateProjects
         }
         CameraControllType cameraControllType =  CameraControllType.ConstrolledByPlayer;
 
-        
+
 
         #endregion
+
+       
 
         class CameraState
         {
@@ -149,11 +154,11 @@ namespace UnityTemplateProjects
 
                 #if ENABLE_LEGACY_INPUT_MANAGER
 
-                if (Input.GetKeyDown(KeyCode.F))
+                /*if (Input.GetKeyDown(KeyCode.F))
                 {
                     FrameOnObject(debugTargetToLerpAt);
 
-                }
+                }*/
 
                 // Exit Sample  
                 /*if (Input.GetKey(KeyCode.Escape))
@@ -198,6 +203,7 @@ namespace UnityTemplateProjects
 
                 // Modify movement by a boost factor (defined in Inspector and modified in play mode through the mouse scroll wheel)
                 boost += Input.mouseScrollDelta.y * 0.2f;
+                if (boost < minBoost) boost = minBoost;
                 translation *= Mathf.Pow(2.0f, boost);
 
                  #elif USE_INPUT_SYSTEM

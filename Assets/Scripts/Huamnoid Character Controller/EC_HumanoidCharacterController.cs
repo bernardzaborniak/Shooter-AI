@@ -1210,6 +1210,9 @@ public class EC_HumanoidCharacterController : EntityComponent
     {
         BlockAimingSpineByModifier();
         BlockAimingWeaponByModifier();
+
+        AbortReloadingWeapon();
+        AbortThrowingGrenade();
     }
 
     void OnRemoveSprintingModifier()

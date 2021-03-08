@@ -22,7 +22,7 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
 
-        EntityActionTag[] actionTags;
+        //EntityActionTag[] actionTags;
 
         Vector3 directionTowardsGrenadeDanger;
 
@@ -32,14 +32,16 @@ namespace BenitosAI
             this.aiController = (AIController_HumanoidSoldier)aiController;
             charController = this.aiController.characterController;
 
-            actionTags = new EntityActionTag[1];
-            actionTags[0] = new EntityActionTag(EntityActionTag.Type.ReloadingWeapon);
+            //actionTags = new EntityActionTag[1];
+            //actionTags[0] = new EntityActionTag(EntityActionTag.Type.ReloadingWeapon);
 
         }
 
         public override void OnStateEnter()
         {
-            
+            //this code prevents the bug, wehre the soldier is stuck in the throwing grenade or reloading state - seems to be a problem with the charackter ocntroller
+           // charController.AbortThrowingGrenade();
+            //charController.AbortReloadingWeapon();
         }
 
         public override void OnStateExit()
@@ -49,12 +51,12 @@ namespace BenitosAI
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
         {
-            return actionTags;
+            return null;
         }
 
         public override EntityActionTag[] GetActionTagsToRemoveOnStateExit()
         {
-            return actionTags;
+            return null;
         }
 
         public override void UpdateState()

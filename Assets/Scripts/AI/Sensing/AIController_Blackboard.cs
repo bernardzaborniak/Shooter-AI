@@ -104,8 +104,6 @@ namespace BenitosAI
                 //Delete old infos
                 foreach (int ratingInfoKey in infosToRemove)
                 {
-                    Debug.Log("removed tp cover rating info cause it was to old");
-
                     tPRatingsCache.Remove(ratingInfoKey);
                 }
             }
