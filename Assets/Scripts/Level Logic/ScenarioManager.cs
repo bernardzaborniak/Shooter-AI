@@ -5,6 +5,11 @@ using TMPro;
 
 public class ScenarioManager : MonoBehaviour
 {
+    [Header("Orders")]
+    public BenitosAI.Decision team1Order;
+    public BenitosAI.Decision team2Order;
+
+
     [Header("References")]
     public Transform[] team1Spawns;
     public Transform[] team2Spawns;
