@@ -8,7 +8,7 @@ namespace BenitosAI
     //The sole purpose of this Property Drawer is to make the DecisionPropertyDrawer work, it wont work unless the propertyDrawer it is serialised in has a custom editor too.
 
 
-    [CustomPropertyDrawer(typeof(DecisionMaker))]
+    /*[CustomPropertyDrawer(typeof(DecisionMaker))]
     public class DecisionMakerDrawer : PropertyDrawer
     {
         public Dictionary<string, bool> unfold = new Dictionary<string, bool>();
@@ -76,6 +76,6 @@ namespace BenitosAI
 
 
         
-    }
+    }*/
 }
 

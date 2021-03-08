@@ -7,7 +7,7 @@ namespace BenitosAI
 {
     //The sole purpose of this editor is to make the DecisionPropertyDrawer work, it wont work unless the monobehaviour it is serialised in has a custom editor too.
 
-    [CustomEditor(typeof(AIController), true)]
+   /* [CustomEditor(typeof(AIController), true)]
     public class AIControllerEditor : Editor
     {
         private static readonly string[] ExcludedFields = new string[] { "decisionLayers" };
@@ -25,6 +25,6 @@ namespace BenitosAI
             //Editor innerEditor = Editor.CreateEditor(listItem, typeof(BasicElementEditor));
             //innerEditor.OnInspectorGUI();
         }
-    }
+    }*/
 }
 

@@ -141,7 +141,7 @@ namespace BenitosAI
         public float discardThreshold;
 
        // public DecisionWrapper[] decisions;
-        public Decision[] decisions;
+       
 
         AIState currentState;
         AIController aiController;
@@ -154,6 +154,9 @@ namespace BenitosAI
 
         //Momentum
         float currentMomentum;
+
+        [Space(5)]
+        public Decision[] decisions;
 
         #endregion
 
