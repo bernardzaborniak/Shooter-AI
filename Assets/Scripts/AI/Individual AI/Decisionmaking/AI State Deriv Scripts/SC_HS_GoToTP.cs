@@ -13,8 +13,13 @@ namespace BenitosAI
         public float enterTPDistance;
         public float exitTPDistance;
 
+       // [SerializeField] protected AIStateCreatorInputParams inputParams;
+
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
+         
+           // inputParams.inputParamsType = AIStateCreatorInputParams.InputParamsType.Position;
+
             St_HS_GoToTP state = new St_HS_GoToTP(aiController, context, moveToTPStance, sprint, enterTPDistance, exitTPDistance);
             return state;
         }

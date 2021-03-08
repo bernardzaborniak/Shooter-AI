@@ -14,6 +14,10 @@ namespace BenitosAI
         public float maxAngleDeviationFromDirectionToThreats;
         public bool sprint;
 
+        void OnEnable()
+        {
+            inputParamsType = AIStateCreatorInputParams.InputParamsType.Color;
+        }
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {

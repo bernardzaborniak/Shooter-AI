@@ -60,7 +60,47 @@ namespace BenitosAI
             {
                 position.y += 18 + 8;
 
-                EditorGUI.PropertyField(position, property.FindPropertyRelative("correspondingAiStateCreator"));
+                // AI State Creator Params
+                SerializedProperty aISTateCreatorProp = property.FindPropertyRelative("correspondingAiStateCreator");
+                EditorGUI.PropertyField(position, aISTateCreatorProp);
+
+                AIStateCreator aIStateCreator = aISTateCreatorProp.objectReferenceValue as AIStateCreator;
+                Debug.Log("aIStateCreator: " + aIStateCreator);
+
+                SerializedProperty aIStateCreatorInputParamsProp = property.FindPropertyRelative("aIStateCreatorInputParams");
+                //AIStateCreatorInputParams aIStateCreatorInputParams = aIStateCreatorInputParamsProp.objectReferenceValue as System.Object as AIStateCreatorInputParams; //going through system.object is needed on classes not deriving from monobhaviour or scripbale onjertcs
+                //AIStateCreatorInputParams aIStateCreatorInputParams = aIStateCreatorInputParamsProp.objectReferenceValue as AIStateCreatorInputParams; //going through system.object is needed on classes not deriving from monobhaviour or scripbale onjertcs
+
+                //Debug.Log("aIStateCreator.inputParams: " + aIStateCreator.inputParams.inputParamsType);
+
+                // SerializedObject serializedObject = new SerializedObject(aIStateCreator);
+                //serializedObject.Update();
+                Debug.Log("aIStateCreatorInputParamsProp: " + aIStateCreatorInputParamsProp);
+                Debug.Log("aIStateCreator.inputParamsType: " + aIStateCreator.inputParamsType);
+                List <UnityEditor.SerializedProperty> aIStateProperties = AIStateCreatorInputParamsSerializationHelper.GetCorrespondingParams(aIStateCreatorInputParamsProp, aIStateCreator.inputParamsType);
+                for (int i = 0; i < aIStateProperties.Count; i++)
+                {
+                    position.y += 18;
+                    //Debug.Log("prop: " + aIStateProperties[i]);
+                    //EditorGUI.LabelField(position, "labelo");
+                    /*if(aIStateProperties[i].propertyType == SerializedPropertyType.Vector3)
+                    {
+                        Debug.Log("aIStateProperties[i].displayName: " + aIStateProperties[i].displayName + " was vector3");
+                        aIStateProperties[i].vector3Value = EditorGUI.Vector3Field(position, aIStateProperties[i].displayName, aIStateProperties[i].vector3Value);
+
+                    }
+                    else
+                    {
+                        EditorGUI.PropertyField(position, aIStateProperties[i]);
+
+                    }*/
+                    EditorGUI.PropertyField(position, aIStateProperties[i]);
+
+                }
+
+                //update
+                
+                //-----------------------------
 
                 position.y += 18+6;
                 SerializedProperty hasMomentumProp = property.FindPropertyRelative("hasMomentum");

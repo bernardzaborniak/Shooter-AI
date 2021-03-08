@@ -14,6 +14,11 @@ namespace BenitosAI
         [Tooltip("the unit advances towards the mean direction where threats are coming from - rotated by a random with this value at maximum on the xz plane")]
         public float maxAngleDeviationFromDirectionToThreats;
 
+        void OnEnable()
+        {
+            inputParamsType = AIStateCreatorInputParams.InputParamsType.Position;
+        }
+
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
             St_HS_AdvanceToPosition state = new St_HS_AdvanceToPosition(aiController, context, minAdvanceDistance, maxAdvanceDistance, maxAngleDeviationFromDirectionToThreats);//, targetPosition);
