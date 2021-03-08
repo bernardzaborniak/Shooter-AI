@@ -6,6 +6,14 @@ namespace BenitosAI
 {
     public abstract class AIStateCreator : ScriptableObject
     {
+        public enum InputParamsType
+        {
+            Position,
+
+        }
+
+        public InputParamsType inputParamsType;
+
         public abstract AIState CreateState(AIController aiController, DecisionContext context);
     }
 
