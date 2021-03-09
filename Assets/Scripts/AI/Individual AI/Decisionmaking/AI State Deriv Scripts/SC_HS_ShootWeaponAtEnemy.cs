@@ -5,16 +5,9 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/States/ShootWeaponAtEnemy", fileName = "ShootWeaponAtEnemy")]
+    [CreateAssetMenu(menuName = "AI/States/ShootWeaponAtEnemy", fileName = "Shoot Weapon At Enemy")]
     public class SC_HS_ShootWeaponAtEnemy : AIStateCreator
     {
-        //public int weaponID;
-        //public int allowedWeaponAimingErrorAngle = 15;
-
-        //[Tooltip("Every x Seconds a line of fire raycastr is send, to check if there is nothing obstructing the shooting")]
-       // public float checkLineOfFireInterval;
-        //public LayerMask checkLineOfFireLayerMask;
-
         void OnEnable()
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]

@@ -5,60 +5,56 @@ using UnityEngine;
 /*
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/AdvanceToPosition", fileName = "AdvanceToPosition")]
-    public class SC_HS_AdvanceToPosition : AIStateCreator
+    [CreateAssetMenu(menuName = "AI/States/FallBackToPosition", fileName = "FallBackToPosition")]
+    public class SC_HS_FallBackToPosition : AIStateCreator
     {
-        //public Vector3 targetPosition;
-        public float minAdvanceDistance;
-        public float maxAdvanceDistance;
+        public float minFallBackDistance;
+        public float maxFallBackDistance;
         [Tooltip("the unit advances towards the mean direction where threats are coming from - rotated by a random with this value at maximum on the xz plane")]
         public float maxAngleDeviationFromDirectionToThreats;
+        public bool sprint;
 
-        void OnEnable()
-        {
-            inputParamsType = AIStateCreatorInputParams.InputParamsType.Position;
-        }
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
         {
-            St_HS_AdvanceToPosition state = new St_HS_AdvanceToPosition(aiController, context, minAdvanceDistance, maxAdvanceDistance, maxAngleDeviationFromDirectionToThreats);//, targetPosition);
+            St_HS_FallBackToPosition state = new St_HS_FallBackToPosition(aiController, context, minFallBackDistance, maxFallBackDistance, maxAngleDeviationFromDirectionToThreats, sprint);
             return state;
         }
     }
 
-    public class St_HS_AdvanceToPosition : AIState
+    public class St_HS_FallBackToPosition : AIState
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
-        float minAdvanceDistance;
-        float maxAdvanceDistance;
+        float minFallBackDistance;
+        float maxFallBackDistance;
         float maxAngleDeviationFromDirectionToThreats;
-       // Vector3 targetPosition;
+        bool sprint;
 
-        public St_HS_AdvanceToPosition(AIController aiController, DecisionContext context, float minAdvanceDistance, float maxAdvanceDistance, float maxAngleDeviationFromDirectionToThreats)//, Vector3 targetPosition)
+        public St_HS_FallBackToPosition(AIController aiController, DecisionContext context, float minFallBackDistance, float maxFallBackDistance, float maxAngleDeviationFromDirectionToThreats, bool sprint)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
-            this.minAdvanceDistance = minAdvanceDistance;
-            this.maxAdvanceDistance = maxAdvanceDistance;
+            this.minFallBackDistance = minFallBackDistance;
+            this.maxFallBackDistance = maxFallBackDistance;
             this.maxAngleDeviationFromDirectionToThreats = maxAngleDeviationFromDirectionToThreats;
-            //this.targetPosition = targetPosition;
+            this.sprint = sprint;
         }
 
         public override void OnStateEnter()
         {
             //find a position to advance to 
-            float advancingDistance = Random.Range(minAdvanceDistance, maxAdvanceDistance);
+            float fallBackDistance = Random.Range(minFallBackDistance, maxFallBackDistance);
             float angleDeviation = Random.Range(-maxAngleDeviationFromDirectionToThreats, maxAngleDeviationFromDirectionToThreats);
 
-            Vector3 advancingVector = aiController.blackboard.meanThreatDirection;
+            Vector3 fallBackVector = -aiController.blackboard.meanThreatDirection;
             //rotate the vector
-            advancingVector = Quaternion.AngleAxis(angleDeviation, Vector3.up) * advancingVector;
+            fallBackVector = Quaternion.AngleAxis(angleDeviation, Vector3.up) * fallBackVector;
             //adjust the vector distance
-            advancingVector = advancingVector * advancingDistance;
+            fallBackVector = fallBackVector * fallBackDistance;
 
             charController.ChangeCharacterStanceToStandingCombatStance();
-            charController.MoveTo(aiController.blackboard.GetMyEntity().transform.position + advancingVector);
+            charController.MoveTo(aiController.blackboard.GetMyEntity().transform.position + fallBackVector);
 
         }
 

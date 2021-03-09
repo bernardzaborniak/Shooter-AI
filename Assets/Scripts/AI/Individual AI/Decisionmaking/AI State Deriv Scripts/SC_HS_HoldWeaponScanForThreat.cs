@@ -4,16 +4,9 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/HoldWeaponScanForThreat", fileName = "HoldWeaponScanForThreat")]
+    [CreateAssetMenu(menuName = "AI/States/HoldWeaponScanForThreat", fileName = "Hold Weapon Scan For Threat")]
     public class SC_HS_HoldWeaponScanForThreat : AIStateCreator
     {
-        /*public int weaponID;
-
-        [Tooltip("Aiming Spine Deviation Angle")]
-        public float maxDeviationAngleFromMovementOrThreatDirection;
-        public float minChangeAimDirInterval;
-        public float maxChangeAimDirInterval;*/
-
         void OnEnable()
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]

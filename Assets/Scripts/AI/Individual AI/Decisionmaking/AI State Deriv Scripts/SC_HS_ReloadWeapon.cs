@@ -8,8 +8,6 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/Reload Weapon", fileName = "Reload Weapon")]
     public class SC_HS_ReloadWeapon : AIStateCreator
     {
-        //public int weaponID;
-
         void OnEnable()
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]

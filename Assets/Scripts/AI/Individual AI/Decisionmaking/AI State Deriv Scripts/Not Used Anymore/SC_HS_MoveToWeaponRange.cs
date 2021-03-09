@@ -107,7 +107,7 @@ namespace BenitosAI
 
                 charController.MoveTo(targetEntityInfo.GetEntityPosition() + (charController.transform.position - targetEntityInfo.GetEntityPosition()) * desiredRange, sprint);
             }
-       
+
         }
         public override bool ShouldStateBeAborted()
         {

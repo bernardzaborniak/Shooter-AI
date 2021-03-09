@@ -7,14 +7,6 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/Hold Position", fileName = "Hold Position")]
     public class SC_HS_HoldPosition : AIStateCreator
     {
-        /*public enum Stance
-        {
-            StandingIdle,
-            StandingCombat,
-            Crouching
-        }
-        public Stance stance;*/
-
         void OnEnable()
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]

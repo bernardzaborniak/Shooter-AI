@@ -1238,7 +1238,7 @@ MonoBehaviour:
     - name: 'Hold Position Combat Stance Standing '
       weight: 2
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-      correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: e1c2b9d54f8291744869c82f03ae0a6b, type: 2}
       aIStateCreatorInputParams:
         enterTPDistance: 0
         exitTPDistance: 0
@@ -1359,7 +1359,7 @@ MonoBehaviour:
     - name: Hold Secondary Weapon In Hand
       weight: 1
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-      correspondingAiStateCreator: {fileID: 11400000, guid: 14d26c340f02e7448afb1f999ed3e88c, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 290cb002636c4304ebe6ba23f2384b82, type: 2}
       aIStateCreatorInputParams:
         enterTPDistance: 0
         exitTPDistance: 0
@@ -1385,7 +1385,7 @@ MonoBehaviour:
     - name: 'Shoot Secondary Weapon At Enemy '
       weight: 3
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
-      correspondingAiStateCreator: {fileID: 11400000, guid: d401862100df57648a67089ea16e1f7e, type: 2}
+      correspondingAiStateCreator: {fileID: 11400000, guid: 82dfbb72ebc1cb440b5e375b1dc6859c, type: 2}
       aIStateCreatorInputParams:
         enterTPDistance: 0
         exitTPDistance: 0

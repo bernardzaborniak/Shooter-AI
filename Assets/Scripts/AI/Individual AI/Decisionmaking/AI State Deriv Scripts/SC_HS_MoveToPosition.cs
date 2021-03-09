@@ -7,8 +7,6 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/Move To Position", fileName = "MoveToPosition")]
     public class SC_HS_MoveToPosition : AIStateCreator
     {
-        //public Vector3 targetPosition;
-
         void OnEnable()
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
