@@ -30,15 +30,16 @@ namespace BenitosAI
 
             //Name of the Decision
             SerializedProperty nameProp = property.FindPropertyRelative("name");
-            nameProp.stringValue = EditorGUI.TextField(new Rect(position.x, position.y,position.width/2,position.height), nameProp.stringValue, EditorStyles.label);
+            Rect nameRect = new Rect(position.x, position.y, position.width * 0.525f, position.height);
+            nameProp.stringValue = EditorGUI.TextField(nameRect, nameProp.stringValue);
 
 
             float propertyXPos = position.x;
 
             //Position the dcc property roughly in the middle.
-            position.x = propertyXPos + position.width * 0.5f;
+            position.x = propertyXPos + position.width * 0.55f;
             SerializedProperty dccProp = property.FindPropertyRelative("decisionContextCreator");
-            Rect dccRect = new Rect(position.x, position.y, position.width * 0.275f, position.height);
+            Rect dccRect = new Rect(position.x, position.y, position.width * 0.225f, position.height);
             EditorGUI.ObjectField(dccRect, dccProp.objectReferenceValue, typeof(DecisionContextCreator), false);
 
             //Name the Weight property
