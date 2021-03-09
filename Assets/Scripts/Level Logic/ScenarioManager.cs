@@ -5,8 +5,9 @@ using TMPro;
 
 public class ScenarioManager : MonoBehaviour
 {
-    [Header("Orders")]
+    [Header("Team 1 Order")]
     public BenitosAI.Decision team1Order;
+    [Header("Team 2 Order")]
     public BenitosAI.Decision team2Order;
 
 

@@ -1233,6 +1233,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6815b583f6469b418a4cf764ebae87c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team1Order:
+    name: Run to Spawn of Team 2
+    weight: 0
+    decisionContextCreator: {fileID: 0}
+    correspondingAiStateCreator: {fileID: 11400000, guid: 800b1500c694c3949a5facd2676b4613, type: 2}
+    aIStateCreatorInputParams:
+      enterTPDistance: 0
+      exitTPDistance: 0
+      sprint: 0
+      characterStance: 0
+      minChangeAimDirInterval: 0
+      maxChangeAimDirInterval: 0
+      maxAimingDeviationAngle: 0
+      weaponID: 0
+      position1: {x: 25.5, y: 5, z: 26}
+      position2: {x: 0, y: 0, z: 0}
+      checkLineOfFireInterval: 0
+      checkLineOfFireLayerMask:
+        serializedVersion: 2
+        m_Bits: 0
+    hasMomentum: 1
+    momentumSelectedBonus: 1
+    momentumDecayRate: 1
+    considerations:
+    - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
+    - {fileID: 11400000, guid: b31885f121534394783282a506d28285, type: 2}
+    - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
+  team2Order:
+    name: Run to Spawn of Team 1
+    weight: 0
+    decisionContextCreator: {fileID: 0}
+    correspondingAiStateCreator: {fileID: 11400000, guid: 800b1500c694c3949a5facd2676b4613, type: 2}
+    aIStateCreatorInputParams:
+      enterTPDistance: 0
+      exitTPDistance: 0
+      sprint: 0
+      characterStance: 0
+      minChangeAimDirInterval: 0
+      maxChangeAimDirInterval: 0
+      maxAimingDeviationAngle: 0
+      weaponID: 0
+      position1: {x: 25, y: 5, z: -51}
+      position2: {x: 0, y: 0, z: 0}
+      checkLineOfFireInterval: 0
+      checkLineOfFireLayerMask:
+        serializedVersion: 2
+        m_Bits: 0
+    hasMomentum: 1
+    momentumSelectedBonus: 1
+    momentumDecayRate: 1
+    considerations:
+    - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
+    - {fileID: 11400000, guid: b31885f121534394783282a506d28285, type: 2}
+    - {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
   team1Spawns: []
   team2Spawns: []
   team1Soldier: {fileID: 6552036245015414117, guid: e9d9ea6bbf2b006448069dc4ba0a3410, type: 3}

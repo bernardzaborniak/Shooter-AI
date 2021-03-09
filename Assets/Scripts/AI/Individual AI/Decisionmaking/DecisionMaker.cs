@@ -133,14 +133,13 @@ namespace BenitosAI
         public enum DecisionMethod
         {
             BestRated,
-            RandomOutOf3BestRated
+            RandomOutOf3BestRated // Not implemented yet
         }
 
-        public DecisionMethod decisionMethod;
+        [SerializeField] DecisionMethod decisionMethod;
         [Tooltip("When rating a decision, if the score drops below this value -> just discard the decision")]
-        public float discardThreshold;
+        [SerializeField] float discardThreshold;
 
-       // public DecisionWrapper[] decisions;
        
 
         AIState currentState;
@@ -156,7 +155,7 @@ namespace BenitosAI
         float currentMomentum;
 
         [Space(5)]
-        public Decision[] decisions;
+        [SerializeField] List<Decision> decisions = new List<Decision>();
 
         #endregion
 
@@ -176,7 +175,7 @@ namespace BenitosAI
             float bestRatingSoFar = 0;
             DecisionContext bestRatedDecisionContext = null;
 
-            for (int i = 0; i < decisions.Length; i++)
+            for (int i = 0; i < decisions.Count; i++)
             {
                 //DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
                 DecisionContext[] decisionContexesToAdd = decisions[i].GetRatedDecisionContexts(aiController, discardThreshold);
@@ -291,6 +290,17 @@ namespace BenitosAI
 
             lastSelectedDecisionContextMemory = null;
             currentMomentum = 0;
+        }
+
+
+        public void AddDecision(Decision newDecision)
+        {
+            decisions.Add(newDecision);
+        }
+
+        public void RemoveDecision(Decision decisionToRemove)
+        {
+            decisions.Remove(decisionToRemove);
         }
 
 

@@ -40,7 +40,9 @@ namespace BenitosAI
             position.x = propertyXPos + position.width * 0.55f;
             SerializedProperty dccProp = property.FindPropertyRelative("decisionContextCreator");
             Rect dccRect = new Rect(position.x, position.y, position.width * 0.225f, position.height);
-            EditorGUI.ObjectField(dccRect, dccProp.objectReferenceValue, typeof(DecisionContextCreator), false);
+            dccProp.objectReferenceValue = EditorGUI.ObjectField(dccRect, dccProp.objectReferenceValue, typeof(DecisionContextCreator), false);
+            //EditorGUI.PropertyField(dccRect, roperty.FindPropertyRelative("decisionContextCreator"));
+
 
             //Name the Weight property
             position.x = propertyXPos + position.width * 0.8f;
@@ -61,66 +63,34 @@ namespace BenitosAI
             {
                 position.y += 18 + 8;
 
-                // AI State Creator Params
 
-                // GUIStyle bolderLabelStyle = new GUIStyle(GUI.skin.label);
-                // bolderLabelStyle.fontStyle = FontStyle.Bold;
 
-                Font defaultLabelFont = EditorStyles.label.font;
-                EditorStyles.label.font = EditorStyles.boldLabel.font;
-
-               // EditorGUIUtility.s
 
                 SerializedProperty aISTateCreatorProp = property.FindPropertyRelative("correspondingAiStateCreator");
                 EditorGUI.PropertyField(position, aISTateCreatorProp);
                 
-                EditorStyles.label.font = defaultLabelFont;
 
-
-                //Font defaultLabelFont = EditorStyles.label.font;
-                // Font bolderLabelFont = EditorStyles.boldLabel.font;
-                // EditorStyles.label.font = bolderLabelFont;
-
-
-                AIStateCreator aIStateCreator = aISTateCreatorProp.objectReferenceValue as AIStateCreator;
-                Debug.Log("aIStateCreator: " + aIStateCreator);
-                //EditorStyles.label.font = defaultLabelFont;
 
 
                 SerializedProperty aIStateCreatorInputParamsProp = property.FindPropertyRelative("aIStateCreatorInputParams");
-                //AIStateCreatorInputParams aIStateCreatorInputParams = aIStateCreatorInputParamsProp.objectReferenceValue as System.Object as AIStateCreatorInputParams; //going through system.object is needed on classes not deriving from monobhaviour or scripbale onjertcs
-                //AIStateCreatorInputParams aIStateCreatorInputParams = aIStateCreatorInputParamsProp.objectReferenceValue as AIStateCreatorInputParams; //going through system.object is needed on classes not deriving from monobhaviour or scripbale onjertcs
 
-                //Debug.Log("aIStateCreator.inputParams: " + aIStateCreator.inputParams.inputParamsType);
-
-                // SerializedObject serializedObject = new SerializedObject(aIStateCreator);
-                //serializedObject.Update();
-                Debug.Log("aIStateCreatorInputParamsProp: " + aIStateCreatorInputParamsProp);
-                Debug.Log("aIStateCreator.inputParamsType: " + aIStateCreator.inputParamsType);
-                List <UnityEditor.SerializedProperty> aIStateProperties = AIStateCreatorInputParamsSerializationHelper.GetCorrespondingParams(aIStateCreatorInputParamsProp, aIStateCreator.inputParamsType);
-                EditorGUI.indentLevel += 1;
-                for (int i = 0; i < aIStateProperties.Count; i++)
+                AIStateCreator aIStateCreator = aISTateCreatorProp.objectReferenceValue as AIStateCreator;
+                if (aIStateCreator != null)
                 {
-                    position.y += 18;
-                    //Debug.Log("prop: " + aIStateProperties[i]);
-                    //EditorGUI.LabelField(position, "labelo");
-                    /*if(aIStateProperties[i].propertyType == SerializedPropertyType.Vector3)
+                    List<UnityEditor.SerializedProperty> aIStateProperties = AIStateCreatorInputParamsSerializationHelper.GetCorrespondingParams(aIStateCreatorInputParamsProp, aIStateCreator.inputParamsType);
+                    EditorGUI.indentLevel += 1;
+                    for (int i = 0; i < aIStateProperties.Count; i++)
                     {
-                        Debug.Log("aIStateProperties[i].displayName: " + aIStateProperties[i].displayName + " was vector3");
-                        aIStateProperties[i].vector3Value = EditorGUI.Vector3Field(position, aIStateProperties[i].displayName, aIStateProperties[i].vector3Value);
-
-                    }
-                    else
-                    {
+                        position.y += 18;
                         EditorGUI.PropertyField(position, aIStateProperties[i]);
 
-                    }*/
-                    EditorGUI.PropertyField(position, aIStateProperties[i]);
-
+                    }
+                    EditorGUI.indentLevel -= 1;
                 }
-                EditorGUI.indentLevel -= 1;
 
-                //update
+                
+
+
 
                 //-----------------------------
 
