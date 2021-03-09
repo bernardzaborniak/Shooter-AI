@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace BenitosAI
 {
     [CreateAssetMenu(menuName = "AI/States/Example", fileName = "Example")]
     public class SC_HS_Example : AIStateCreator
     {
-
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
+        {
+            /*inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+             {
+                AIStateCreatorInputParams.InputParamsType.GoToTp,
+             };*/
+        }
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
             St_HS_Example state = new St_HS_Example(aiController, context);
             return state;

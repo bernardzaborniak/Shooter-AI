@@ -8,9 +8,10 @@ namespace BenitosAI
     {
         //public AIStateCreatorInputParams inputParams;
 
-        public AIStateCreatorInputParams.InputParamsType inputParamsType;
+        [HideInInspector]
+        public AIStateCreatorInputParams.InputParamsType[] inputParamsType;
 
-        public abstract AIState CreateState(AIController aiController, DecisionContext context);
+        public abstract AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams);
     }
 
     public abstract class AIState

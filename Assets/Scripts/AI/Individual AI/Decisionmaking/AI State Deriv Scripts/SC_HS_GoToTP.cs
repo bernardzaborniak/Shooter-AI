@@ -5,22 +5,31 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/GoToTP", fileName = "GoToTP")]
+    [CreateAssetMenu(menuName = "AI/States/Go to TP", fileName = "Go to TP")]
     public class SC_HS_GoToTP : AIStateCreator
     {
-        public bool sprint;
-        public EC_HumanoidCharacterController.CharacterStance moveToTPStance;
-        public float enterTPDistance;
-        public float exitTPDistance;
+       // public bool sprint;
+       // public EC_HumanoidCharacterController.CharacterStance moveToTPStance;
+       // public float enterTPDistance;
+       // public float exitTPDistance;
 
-       // [SerializeField] protected AIStateCreatorInputParams inputParams;
 
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
+        {
+            inputParamsType =  new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.GoToTp,
+                AIStateCreatorInputParams.InputParamsType.Sprint,
+                AIStateCreatorInputParams.InputParamsType.CharacterStance
+            };
+        }
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
          
            // inputParams.inputParamsType = AIStateCreatorInputParams.InputParamsType.Position;
 
-            St_HS_GoToTP state = new St_HS_GoToTP(aiController, context, moveToTPStance, sprint, enterTPDistance, exitTPDistance);
+            St_HS_GoToTP state = new St_HS_GoToTP(aiController, context, inputParams.characterStance, inputParams.sprint, inputParams.enterTPDistance, inputParams.exitTPDistance);
             return state;
         }
     }

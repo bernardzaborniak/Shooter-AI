@@ -9,28 +9,64 @@ namespace BenitosAI
     {
 
 
-        public static List<UnityEditor.SerializedProperty> GetCorrespondingParams(UnityEditor.SerializedProperty inputParamsProp, AIStateCreatorInputParams.InputParamsType inputParamsType)//AIStateCreator aiStateCreator, ref UnityEditor.SerializedObject serializedObject)
+        public static List<UnityEditor.SerializedProperty> GetCorrespondingParams(UnityEditor.SerializedProperty inputParamsProp, AIStateCreatorInputParams.InputParamsType[] inputParamsTypes)//AIStateCreator aiStateCreator, ref UnityEditor.SerializedObject serializedObject)
         {
-
+            
 
             List<UnityEditor.SerializedProperty> paramsList = new List<UnityEditor.SerializedProperty>();
 
-            if (inputParamsType == AIStateCreatorInputParams.InputParamsType.Position)
+            for (int i = 0; i < inputParamsTypes.Length; i++)
             {
-                //paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("position1"));
-                //paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("position2"));
+                if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.GoToTp)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.enterTPDistance)));
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.exitTPDistance)));
+                }
 
-                paramsList.Add(inputParamsProp.FindPropertyRelative("position1"));
-                paramsList.Add(inputParamsProp.FindPropertyRelative("position2"));
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.Sprint)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.sprint)));
+                }
 
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.CharacterStance)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.characterStance)));
+                }
 
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.HoldWeaponScanForThreat)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.minChangeAimDirInterval)));
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.maxChangeAimDirInterval)));
+                }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.MaxAimingDeviationAngle)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.maxAimingDeviationAngle)));
+                }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.WeaponID)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.weaponID)));
+                }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.Position1)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.position1)));
+                }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.Position2)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.position2)));
+                }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.LineOfFireCheck)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.checkLineOfFireInterval)));
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.checkLineOfFireLayerMask)));
+                }
             }
-            else if (inputParamsType == AIStateCreatorInputParams.InputParamsType.Color)
-            {
-                // paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("color"));
-                paramsList.Add(inputParamsProp.FindPropertyRelative("color"));
 
-            }
+           
             return paramsList;
         }
 

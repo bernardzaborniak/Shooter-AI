@@ -6,11 +6,13 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/RunAwayFromGrenade", fileName = "RunAwayFromGrenade")]
+    [CreateAssetMenu(menuName = "AI/States/Run Away From Grenade", fileName = "Run Away From Grenade")]
+
+
     public class SC_HS_RunAwayFromGrenade : AIStateCreator
     {
 
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
             St_HS_RunAwayFromGrenade state = new St_HS_RunAwayFromGrenade(aiController, context);
             return state;

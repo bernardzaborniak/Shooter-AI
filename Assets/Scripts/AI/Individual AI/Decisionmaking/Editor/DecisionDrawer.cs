@@ -62,11 +62,30 @@ namespace BenitosAI
                 position.y += 18 + 8;
 
                 // AI State Creator Params
+
+                // GUIStyle bolderLabelStyle = new GUIStyle(GUI.skin.label);
+                // bolderLabelStyle.fontStyle = FontStyle.Bold;
+
+                Font defaultLabelFont = EditorStyles.label.font;
+                EditorStyles.label.font = EditorStyles.boldLabel.font;
+
+               // EditorGUIUtility.s
+
                 SerializedProperty aISTateCreatorProp = property.FindPropertyRelative("correspondingAiStateCreator");
                 EditorGUI.PropertyField(position, aISTateCreatorProp);
+                
+                EditorStyles.label.font = defaultLabelFont;
+
+
+                //Font defaultLabelFont = EditorStyles.label.font;
+                // Font bolderLabelFont = EditorStyles.boldLabel.font;
+                // EditorStyles.label.font = bolderLabelFont;
+
 
                 AIStateCreator aIStateCreator = aISTateCreatorProp.objectReferenceValue as AIStateCreator;
                 Debug.Log("aIStateCreator: " + aIStateCreator);
+                //EditorStyles.label.font = defaultLabelFont;
+
 
                 SerializedProperty aIStateCreatorInputParamsProp = property.FindPropertyRelative("aIStateCreatorInputParams");
                 //AIStateCreatorInputParams aIStateCreatorInputParams = aIStateCreatorInputParamsProp.objectReferenceValue as System.Object as AIStateCreatorInputParams; //going through system.object is needed on classes not deriving from monobhaviour or scripbale onjertcs
@@ -79,6 +98,7 @@ namespace BenitosAI
                 Debug.Log("aIStateCreatorInputParamsProp: " + aIStateCreatorInputParamsProp);
                 Debug.Log("aIStateCreator.inputParamsType: " + aIStateCreator.inputParamsType);
                 List <UnityEditor.SerializedProperty> aIStateProperties = AIStateCreatorInputParamsSerializationHelper.GetCorrespondingParams(aIStateCreatorInputParamsProp, aIStateCreator.inputParamsType);
+                EditorGUI.indentLevel += 1;
                 for (int i = 0; i < aIStateProperties.Count; i++)
                 {
                     position.y += 18;
@@ -98,9 +118,10 @@ namespace BenitosAI
                     EditorGUI.PropertyField(position, aIStateProperties[i]);
 
                 }
+                EditorGUI.indentLevel -= 1;
 
                 //update
-                
+
                 //-----------------------------
 
                 position.y += 18+6;
@@ -137,7 +158,7 @@ namespace BenitosAI
             {
                 if (unfold[property.propertyPath])
                 {
-                    height += 8 + 18 + 18 +18 + 8 + (int)(EditorGUI.GetPropertyHeight(property.FindPropertyRelative("considerations"),false));
+                    height += 8 + 18 + 18 +18 + 8 + 18 + 18 + (int)(EditorGUI.GetPropertyHeight(property.FindPropertyRelative("considerations"),false));
 
                     if (property.FindPropertyRelative("hasMomentum").boolValue)
                     {

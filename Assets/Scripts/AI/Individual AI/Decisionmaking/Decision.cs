@@ -14,6 +14,8 @@ namespace BenitosAI
         public float weight;
         [Space(5)]
         [SerializeField] DecisionContextCreator decisionContextCreator;
+
+        
         [SerializeField] AIStateCreator correspondingAiStateCreator;
         [SerializeField] AIStateCreatorInputParams aIStateCreatorInputParams;
         //every decision has a list of considerations based on which to decide
@@ -43,7 +45,7 @@ namespace BenitosAI
         public AIState CreateState(AIController aiController, DecisionContext context)
         {
             
-            return correspondingAiStateCreator.CreateState(aiController, context);
+            return correspondingAiStateCreator.CreateState(aiController, context, aIStateCreatorInputParams);
         }
 
 

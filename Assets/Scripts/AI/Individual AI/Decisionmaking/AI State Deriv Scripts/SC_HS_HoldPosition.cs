@@ -7,17 +7,25 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/Hold Position", fileName = "Hold Position")]
     public class SC_HS_HoldPosition : AIStateCreator
     {
-        public enum Stance
+        /*public enum Stance
         {
             StandingIdle,
             StandingCombat,
             Crouching
         }
-        public Stance stance;
+        public Stance stance;*/
 
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
         {
-            St_HS_HoldPosition state = new St_HS_HoldPosition(aiController, context, stance);
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.CharacterStance
+            };
+        }
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
+        {
+            St_HS_HoldPosition state = new St_HS_HoldPosition(aiController, context, inputParams.characterStance);
             return state;
         }
     }
@@ -27,9 +35,9 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
 
-        SC_HS_HoldPosition.Stance stance;
+        EC_HumanoidCharacterController.CharacterStance stance;
 
-        public St_HS_HoldPosition(AIController aiController, DecisionContext context, SC_HS_HoldPosition.Stance stance)
+        public St_HS_HoldPosition(AIController aiController, DecisionContext context, EC_HumanoidCharacterController.CharacterStance stance)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
@@ -43,15 +51,15 @@ namespace BenitosAI
             //charController.StopAimingWeapon();
             charController.StopMoving();
 
-            if (stance == SC_HS_HoldPosition.Stance.StandingIdle)
+            if (stance == EC_HumanoidCharacterController.CharacterStance.StandingIdle)
             {
                 charController.ChangeCharacterStanceToStandingIdle();
             }
-            else if (stance == SC_HS_HoldPosition.Stance.StandingCombat)
+            else if (stance == EC_HumanoidCharacterController.CharacterStance.StandingCombatStance)
             {
                 charController.ChangeCharacterStanceToStandingCombatStance();
             }
-            else if (stance == SC_HS_HoldPosition.Stance.Crouching)
+            else if (stance == EC_HumanoidCharacterController.CharacterStance.Crouching)
             {
                 charController.ChangeCharacterStanceToCrouchingStance();
             }

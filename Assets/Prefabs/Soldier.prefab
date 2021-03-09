@@ -1118,29 +1118,25 @@ MonoBehaviour:
       selectedDecisionsRemembered: []
       lastDecisionsRemembered: []
     decisions:
-    - name: 'Hold Position Combat Stance Standing '
-      weight: 1
-      decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-      correspondingAiStateCreator: {fileID: 11400000, guid: 0ce2f6775463a38418223fa5f4ff72b6, type: 2}
-      aIStateCreatorInputParams:
-        position1: {x: 1, y: 2, z: 3}
-        position2: {x: 3, y: 2, z: 3}
-        color: {r: 0.990566, g: 0.042052314, b: 0.042052314, a: 0.94509804}
-      hasMomentum: 1
-      momentumSelectedBonus: 3
-      momentumDecayRate: 1
-      considerations:
-      - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
-      - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
-      - {fileID: 11400000, guid: f1d9b1f8d2dc1a84fbebd805ee1221e3, type: 2}
     - name: Run Away From Grenade Threat
       weight: 8
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 17821fa0ab585d747a1a557584a31d62, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 1
       momentumDecayRate: 1
@@ -1151,9 +1147,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: b639cbe22c3eb4749aa83d55c02dd423, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0.7
+        exitTPDistance: 1
+        sprint: 0
+        characterStance: 1
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 5
       momentumDecayRate: 1
@@ -1174,9 +1181,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: f62389981e241a54ca3b498e8b7ef32b, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: af492a8e1843b294cbd2e4541ca4aadd, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0.7
+        exitTPDistance: 1
+        sprint: 0
+        characterStance: 1
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 4
       momentumDecayRate: 1
@@ -1196,9 +1214,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: e1c2b9d54f8291744869c82f03ae0a6b, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 2
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 4
       momentumDecayRate: 1
@@ -1211,9 +1240,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: c3f0486fa645a6049b9f5d9656c4ec72, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 1
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 3
       momentumDecayRate: 1
@@ -1235,9 +1275,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 290cb002636c4304ebe6ba23f2384b82, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0.2
+        maxChangeAimDirInterval: 3
+        maxAimingDeviationAngle: 15
+        weaponID: 1
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 2
       momentumDecayRate: 1
@@ -1250,9 +1301,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 82dfbb72ebc1cb440b5e375b1dc6859c, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 15
+        weaponID: 1
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0.4
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 768
       hasMomentum: 1
       momentumSelectedBonus: 2
       momentumDecayRate: 1
@@ -1270,9 +1332,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 9efd7928857d9134798af8df77012614, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 1
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 2
       momentumDecayRate: 1
@@ -1288,9 +1361,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 14d26c340f02e7448afb1f999ed3e88c, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0.2
+        maxChangeAimDirInterval: 3
+        maxAimingDeviationAngle: 15
+        weaponID: 2
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 2
       momentumDecayRate: 1
@@ -1303,9 +1387,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: d401862100df57648a67089ea16e1f7e, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 15
+        weaponID: 2
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0.4
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 768
       hasMomentum: 1
       momentumSelectedBonus: 2
       momentumDecayRate: 1
@@ -1323,9 +1418,20 @@ MonoBehaviour:
       decisionContextCreator: {fileID: 11400000, guid: 8af5ad24f60649345a03685104027025, type: 2}
       correspondingAiStateCreator: {fileID: 11400000, guid: 511646c0096cc2646bbf6d9219554eb3, type: 2}
       aIStateCreatorInputParams:
+        enterTPDistance: 0
+        exitTPDistance: 0
+        sprint: 0
+        characterStance: 0
+        minChangeAimDirInterval: 0
+        maxChangeAimDirInterval: 0
+        maxAimingDeviationAngle: 0
+        weaponID: 0
         position1: {x: 0, y: 0, z: 0}
         position2: {x: 0, y: 0, z: 0}
-        color: {r: 0, g: 0, b: 0, a: 0}
+        checkLineOfFireInterval: 0
+        checkLineOfFireLayerMask:
+          serializedVersion: 2
+          m_Bits: 0
       hasMomentum: 1
       momentumSelectedBonus: 5
       momentumDecayRate: 1

@@ -5,14 +5,22 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/ReloadWeapon", fileName = "ReloadWeapon")]
+    [CreateAssetMenu(menuName = "AI/States/Reload Weapon", fileName = "Reload Weapon")]
     public class SC_HS_ReloadWeapon : AIStateCreator
     {
-        public int weaponID;
+        //public int weaponID;
 
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
         {
-            St_HS_ReloadWeapon state = new St_HS_ReloadWeapon(aiController, context, weaponID);
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.WeaponID
+            };
+        }
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
+        {
+            St_HS_ReloadWeapon state = new St_HS_ReloadWeapon(aiController, context, inputParams.weaponID);
             return state;
         }
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 namespace BenitosAI
 {
     [CreateAssetMenu(menuName = "AI/States/MoveToTPoint", fileName = "MoveToTPoint")]
@@ -9,12 +10,7 @@ namespace BenitosAI
     public class SC_HS_MoveToTPoint : AIStateCreator
     {
         public bool sprint;
-        /*public enum Stance
-        {
-            StandingIdle,
-            StandingCombat,
-            Crouching
-        }*/
+
         public EC_HumanoidCharacterController.CharacterStance stance;
 
         public override AIState CreateState(AIController aiController, DecisionContext context)
@@ -96,4 +92,4 @@ namespace BenitosAI
         }
     }
 
-}
+}*/

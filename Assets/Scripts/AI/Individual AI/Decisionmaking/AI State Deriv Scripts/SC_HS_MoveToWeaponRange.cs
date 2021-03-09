@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 namespace BenitosAI
 {
 
@@ -106,16 +107,12 @@ namespace BenitosAI
 
                 charController.MoveTo(targetEntityInfo.GetEntityPosition() + (charController.transform.position - targetEntityInfo.GetEntityPosition()) * desiredRange, sprint);
             }
-            //Debug.Log("updating state: ");
-            /*if (charController.IsMoving())
-            {
-                charController.StopMoving();
-            }*/
+       
         }
         public override bool ShouldStateBeAborted()
         {
             return false;
         }
     }
-}
+}*/
 

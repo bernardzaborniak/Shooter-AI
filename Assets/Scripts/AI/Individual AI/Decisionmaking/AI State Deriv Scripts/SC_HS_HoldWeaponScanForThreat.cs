@@ -7,17 +7,26 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/HoldWeaponScanForThreat", fileName = "HoldWeaponScanForThreat")]
     public class SC_HS_HoldWeaponScanForThreat : AIStateCreator
     {
-        public int weaponID;
+        /*public int weaponID;
 
         [Tooltip("Aiming Spine Deviation Angle")]
         public float maxDeviationAngleFromMovementOrThreatDirection;
         public float minChangeAimDirInterval;
-        public float maxChangeAimDirInterval;
+        public float maxChangeAimDirInterval;*/
 
-
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
         {
-            St_HS_HoldWeaponScanForThreat state = new St_HS_HoldWeaponScanForThreat(aiController, context, weaponID, maxDeviationAngleFromMovementOrThreatDirection, minChangeAimDirInterval, maxChangeAimDirInterval);
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.WeaponID,
+                AIStateCreatorInputParams.InputParamsType.MaxAimingDeviationAngle,
+                AIStateCreatorInputParams.InputParamsType.HoldWeaponScanForThreat
+            };
+        }
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
+        {
+            St_HS_HoldWeaponScanForThreat state = new St_HS_HoldWeaponScanForThreat(aiController, context, inputParams.weaponID, inputParams.maxAimingDeviationAngle, inputParams.minChangeAimDirInterval, inputParams.maxChangeAimDirInterval);
             return state;
         }
     }

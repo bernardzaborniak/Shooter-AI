@@ -131,6 +131,18 @@ PrefabInstance:
       propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].considerations.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: ec84792d169160045a0178645e95b830, type: 2}
+    - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].aIStateCreatorInputParams.position1.x
+      value: 25.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].aIStateCreatorInputParams.position1.y
+      value: 4.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 7954317982755518703, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
+      propertyPath: decisionLayers.Array.data[0].decisions.Array.data[5].aIStateCreatorInputParams.position1.z
+      value: 25.82
+      objectReference: {fileID: 0}
     - target: {fileID: 8032510007199776535, guid: 8f7b5b55361f19e48b964aa9188bf50c, type: 3}
       propertyPath: controllByPlayer
       value: 0

@@ -4,25 +4,33 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    [CreateAssetMenu(menuName = "AI/States/Moving To Position", fileName = "MovingToPosition")]
-    public class SC_HS_MovingToPosition : AIStateCreator
+    [CreateAssetMenu(menuName = "AI/States/Move To Position", fileName = "MoveToPosition")]
+    public class SC_HS_MoveToPosition : AIStateCreator
     {
-        public Vector3 targetPosition;
+        //public Vector3 targetPosition;
 
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
         {
-            St_HS_MovingToPosition state = new St_HS_MovingToPosition(aiController, context, targetPosition);
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.Position1
+            };
+        }
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
+        {
+            St_HS_MoveToPosition state = new St_HS_MoveToPosition(aiController, context, inputParams.position1);
             return state;
         }
     }
 
-    public class St_HS_MovingToPosition : AIState
+    public class St_HS_MoveToPosition : AIState
     {
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
         Vector3 targetPosition;
 
-        public St_HS_MovingToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition)
+        public St_HS_MoveToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;

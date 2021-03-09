@@ -8,17 +8,27 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/States/ShootWeaponAtEnemy", fileName = "ShootWeaponAtEnemy")]
     public class SC_HS_ShootWeaponAtEnemy : AIStateCreator
     {
-        public int weaponID;
-        public int allowedWeaponAimingErrorAngle = 15;
+        //public int weaponID;
+        //public int allowedWeaponAimingErrorAngle = 15;
 
-        [Tooltip("Every x Seconds a line of fire raycastr is send, to check if there is nothing obstructing the shooting")]
-        public float checkLineOfFireInterval;
-        public LayerMask checkLineOfFireLayerMask;
+        //[Tooltip("Every x Seconds a line of fire raycastr is send, to check if there is nothing obstructing the shooting")]
+       // public float checkLineOfFireInterval;
+        //public LayerMask checkLineOfFireLayerMask;
 
-
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        void OnEnable()
         {
-            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntityInfo, weaponID, allowedWeaponAimingErrorAngle, checkLineOfFireInterval, checkLineOfFireLayerMask);
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                AIStateCreatorInputParams.InputParamsType.WeaponID,
+                AIStateCreatorInputParams.InputParamsType.MaxAimingDeviationAngle,
+                AIStateCreatorInputParams.InputParamsType.LineOfFireCheck
+            };
+        }
+
+
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
+        {
+            St_HS_ShootWeaponAtEnemy state = new St_HS_ShootWeaponAtEnemy(aiController, context, context.targetEntityInfo, inputParams.weaponID, inputParams.maxAimingDeviationAngle, inputParams.checkLineOfFireInterval, inputParams.checkLineOfFireLayerMask);
             return state;
         }
     }
@@ -29,7 +39,7 @@ namespace BenitosAI
         EC_HumanoidCharacterController charController;
         SensedEntityInfo target;
         int weaponID;
-        int allowedWeaponAimingErrorAngle;
+        float maxAllowedWeaponAimingErrorAngle;
 
         EntityActionTag[] actionTags;
 
@@ -39,13 +49,13 @@ namespace BenitosAI
         LayerMask checkLineOfFireLayerMask;
 
 
-        public St_HS_ShootWeaponAtEnemy(AIController aiController, DecisionContext context, SensedEntityInfo target, int weaponID, int allowedWeaponAimingErrorAngle, float checkLineOfFireInterval, LayerMask checkLineOfFireLayerMask)
+        public St_HS_ShootWeaponAtEnemy(AIController aiController, DecisionContext context, SensedEntityInfo target, int weaponID, float maxAllowedWeaponAimingErrorAngle, float checkLineOfFireInterval, LayerMask checkLineOfFireLayerMask)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
             this.target = target;
             this.weaponID = weaponID;
-            this.allowedWeaponAimingErrorAngle = allowedWeaponAimingErrorAngle;
+            this.maxAllowedWeaponAimingErrorAngle = maxAllowedWeaponAimingErrorAngle;
 
             actionTags = new EntityActionTag[1];
             actionTags[0] = new EntityActionTag(EntityActionTag.Type.ShootingAtTarget);
@@ -87,7 +97,7 @@ namespace BenitosAI
                 charController.AimSpineAtPosition(target.GetAimPosition());
                 charController.AimWeaponAtPosition(target.GetAimPosition());
 
-                if (charController.GetCurrentWeaponAimingErrorAngle(false) < allowedWeaponAimingErrorAngle)
+                if (charController.GetCurrentWeaponAimingErrorAngle(false) < maxAllowedWeaponAimingErrorAngle)
                 {
                     //Debug.Log("shot weapon error angle: " + charController.GetCurrentWeaponAimingErrorAngle(false));
 

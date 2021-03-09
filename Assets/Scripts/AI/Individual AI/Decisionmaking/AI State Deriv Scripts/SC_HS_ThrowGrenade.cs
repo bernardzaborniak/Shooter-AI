@@ -10,7 +10,7 @@ namespace BenitosAI
 
     public class SC_HS_ThrowGrenade : AIStateCreator
     {
-        public override AIState CreateState(AIController aiController, DecisionContext context)
+        public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
             St_HS_ThrowGrenade state = new St_HS_ThrowGrenade(aiController, context);
 
