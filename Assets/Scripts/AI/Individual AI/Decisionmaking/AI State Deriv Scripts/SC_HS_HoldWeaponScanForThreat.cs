@@ -66,6 +66,8 @@ namespace BenitosAI
         public override void OnStateExit()
         {
             charController.StopAimingSpine();
+            charController.StopAimingWeapon();
+
         }
 
         public override EntityActionTag[] GetActionTagsToAddOnStateEnter()
@@ -99,10 +101,12 @@ namespace BenitosAI
             if (blackboard.meanThreatDirection != Vector3.zero)
             {
                 charController.AimSpineInDirection(blackboard.meanThreatDirection);
+                charController.AimWeaponInDirection(blackboard.meanThreatDirection);
             }
             else
             {
                 charController.StopAimingSpine();
+                charController.StopAimingWeapon();
             }
                 
 

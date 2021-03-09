@@ -80,6 +80,16 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
                 decisionLayers[i].AbortCurrentDecision();
             }
         }
+
+        public void AddDecision(int decisionLayer, Decision newDecision)
+        {
+            decisionLayers[decisionLayer].AddDecision(newDecision);
+        }
+
+        public void RemoveDecision(int decisionLayer, Decision decisionToRemove)
+        {
+            decisionLayers[decisionLayer].RemoveDecision(decisionToRemove);
+        }
     }
 
 }

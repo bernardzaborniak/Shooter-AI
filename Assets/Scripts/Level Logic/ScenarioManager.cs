@@ -5,6 +5,7 @@ using TMPro;
 
 public class ScenarioManager : MonoBehaviour
 {
+    public int layerToAddDecisionsTo;
     [Header("Team 1 Order")]
     public BenitosAI.Decision team1Order;
     [Header("Team 2 Order")]
@@ -139,6 +140,37 @@ public class ScenarioManager : MonoBehaviour
             nextTeam2SpawnTime = Time.time + Random.Range(spawnIntervalMin, spawnIntervalMax);
         }
 
+        #region Test Adding & Removing Decisions
+        /*
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            for (int i = 0; i < team1Soldiers.Count; i++)
+            {
+                BenitosAI.AIController aiController = team1Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+                aiController.AddDecision(0, team1Order);
+            }
+            for (int i = 0; i < team2Soldiers.Count; i++)
+            {
+                BenitosAI.AIController aiController = team2Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+                aiController.AddDecision(0, team1Order);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            for (int i = 0; i < team1Soldiers.Count; i++)
+            {
+                BenitosAI.AIController aiController = team1Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+                aiController.RemoveDecision(0, team1Order);
+            }
+            for (int i = 0; i < team2Soldiers.Count; i++)
+            {
+                BenitosAI.AIController aiController = team2Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+                aiController.RemoveDecision(0, team1Order);
+            }
+        }
+        */
+        #endregion
+
 
     }
 
@@ -146,7 +178,11 @@ public class ScenarioManager : MonoBehaviour
     {
         Transform currentSpawn = team1Spawns[Random.Range(0, team1Spawns.Length)];
 
-        return Instantiate(team1Soldier, currentSpawn.position, currentSpawn.rotation);
+        GameObject spawnedSoldier = Instantiate(team1Soldier, currentSpawn.position, currentSpawn.rotation);
+        BenitosAI.AIController aiController = spawnedSoldier.transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+        aiController.AddDecision(0, team1Order);
+
+        return spawnedSoldier;
 
         //set the target
         //BenitosAI.AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<BenitosAI.AIControllerOld>();
@@ -159,7 +195,13 @@ public class ScenarioManager : MonoBehaviour
     {
         Transform currentSpawn = team2Spawns[Random.Range(0, team2Spawns.Length)];
 
-        return Instantiate(team2Soldier, currentSpawn.position, currentSpawn.rotation);
+        GameObject spawnedSoldier = Instantiate(team2Soldier, currentSpawn.position, currentSpawn.rotation);
+        BenitosAI.AIController aiController = spawnedSoldier.transform.GetChild(1).GetComponent<BenitosAI.AIController>();
+        aiController.AddDecision(0, team2Order);
+
+
+
+        return spawnedSoldier;
 
         //set the target
         //BenitosAI.AIControllerOld aiController = soldier.transform.GetChild(1).GetComponent<BenitosAI.AIControllerOld>();
