@@ -21,7 +21,7 @@ namespace BenitosAI
 
         public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
-            St_HS_ShootWeaponAtEnemy_DCCEntity state = new St_HS_ShootWeaponAtEnemy_DCCEntity(aiController, context, context.targetEntityInfo, inputParams.weaponID, inputParams.maxAimingDeviationAngle, inputParams.checkLineOfFireInterval, inputParams.checkLineOfFireLayerMask);
+            St_HS_ShootWeaponAtEnemy_DCCEntity state = new St_HS_ShootWeaponAtEnemy_DCCEntity(aiController, context, inputParams.weaponID, inputParams.maxAimingDeviationAngle, inputParams.checkLineOfFireInterval, inputParams.checkLineOfFireLayerMask);
             return state;
         }
     }
@@ -42,11 +42,11 @@ namespace BenitosAI
         LayerMask checkLineOfFireLayerMask;
 
 
-        public St_HS_ShootWeaponAtEnemy_DCCEntity(AIController aiController, DecisionContext context, SensedEntityInfo target, int weaponID, float maxAllowedWeaponAimingErrorAngle, float checkLineOfFireInterval, LayerMask checkLineOfFireLayerMask)
+        public St_HS_ShootWeaponAtEnemy_DCCEntity(AIController aiController, DecisionContext context, int weaponID, float maxAllowedWeaponAimingErrorAngle, float checkLineOfFireInterval, LayerMask checkLineOfFireLayerMask)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
-            this.target = target;
+            this.target = (SensedEntityInfo)context.target;
             this.weaponID = weaponID;
             this.maxAllowedWeaponAimingErrorAngle = maxAllowedWeaponAimingErrorAngle;
 

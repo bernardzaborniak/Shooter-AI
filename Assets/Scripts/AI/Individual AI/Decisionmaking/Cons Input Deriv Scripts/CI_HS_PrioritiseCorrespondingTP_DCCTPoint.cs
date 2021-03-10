@@ -16,28 +16,30 @@ namespace BenitosAI
             TacticalPoint currentlyUsedTP = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetCurrentlyUsedTacticalPoint();
             if (currentlyUsedTP == null) return 1;
 
-            if(decisionContext.targetTacticalPointInfo.tPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
+            TacticalPoint targetPoint = ((System.ValueTuple<TacticalPoint, float>)decisionContext.target).Item1;
+
+            if (targetPoint.tacticalPointType == TacticalPointType.CoverPeekPoint)
             {
                 if (currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPoint)
                 {
                     for (int i = 0; i < currentlyUsedTP.correspondingCoverPeekPoints.Length; i++)
                     {
-                        if (currentlyUsedTP.correspondingCoverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                        if (currentlyUsedTP.correspondingCoverPeekPoints[i] == targetPoint) return 1;
                     }
                 }
                 else if(currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPeekPoint)
                 {
                     for (int i = 0; i < currentlyUsedTP.correspondingCoverPoint.correspondingCoverPeekPoints.Length; i++)
                     {
-                        if (currentlyUsedTP.correspondingCoverPoint.correspondingCoverPeekPoints[i] == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                        if (currentlyUsedTP.correspondingCoverPoint.correspondingCoverPeekPoints[i] == targetPoint) return 1;
                     }
                 }
             }
-            else if(decisionContext.targetTacticalPointInfo.tPoint.tacticalPointType == TacticalPointType.CoverPoint)
+            else if(targetPoint.tacticalPointType == TacticalPointType.CoverPoint)
             {
                 if (currentlyUsedTP.tacticalPointType == TacticalPointType.CoverPeekPoint)
                 {
-                    if (currentlyUsedTP.correspondingCoverPoint == decisionContext.targetTacticalPointInfo.tPoint) return 1;
+                    if (currentlyUsedTP.correspondingCoverPoint == targetPoint) return 1;
 
                 }
             }

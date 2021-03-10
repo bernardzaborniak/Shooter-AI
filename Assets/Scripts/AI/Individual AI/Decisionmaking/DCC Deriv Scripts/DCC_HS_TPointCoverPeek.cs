@@ -34,7 +34,7 @@ namespace BenitosAI
             for (int i = 0; i < coverPeekPointsCountCount; i++)
             {
                 contexesToReturn[i] = contexesPool.Dequeue();
-                contexesToReturn[i].SetUpContext(decision, aiController, null, blackboard.tPCoverPeekInfos[i]);
+                contexesToReturn[i].SetUpContext(decision, aiController, blackboard.tPCoverPeekInfos[i]);
             }
 
             //return them back to the pool

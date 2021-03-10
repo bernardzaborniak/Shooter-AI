@@ -47,25 +47,27 @@ namespace BenitosAI
 
             // Set up for camera framing
             this.managerReference = managerReference;
-            
-            if(memoryItem.targetEntity != null)
-            {
-                referencedObjectTransform = memoryItem.targetEntity.transform;
-                tmp_targetName.text = memoryItem.targetEntityName;
+            tmp_targetName.text = memoryItem.targetName;
 
-                targetButton.SetActive(true);
-            }    
-            else if(memoryItem.targetTacticalPoint != null)
-            {
-                referencedObjectTransform = memoryItem.targetTacticalPoint.transform;
-                tmp_targetName.text = memoryItem.targetTacticalPoint.name + memoryItem.targetTacticalPoint.GetHashCode();
 
+            if (memoryItem.target != null)
+            {
                 targetButton.SetActive(true);
 
+                if (memoryItem.target is SensedEntityInfo)
+                {
+                    if (((SensedEntityInfo)memoryItem.target).entity)
+                    {
+                        referencedObjectTransform = ((SensedEntityInfo)memoryItem.target).entity.transform;
+                    }
+                }
+                else if(memoryItem.target is System.ValueTuple<TacticalPoint, float>)
+                {
+                    referencedObjectTransform = ((System.ValueTuple<TacticalPoint, float>)memoryItem.target).Item1.transform;
+                }
             }
             else
             {
-                tmp_targetName.text = memoryItem.targetEntityName;
                 targetButton.SetActive(false);
             }
 

@@ -53,7 +53,7 @@ namespace BenitosAI
             this.moveToTPStance = stance;
             this.sprint = sprint;
 
-            targetTP = context.targetTacticalPointInfo.tPoint;
+            targetTP = ((System.ValueTuple<TacticalPoint, float>)context.target).Item1;
             myEntity = this.aiController.blackboard.GetMyEntity();
 
             enterTPDistanceSquared = enterTPDistance * enterTPDistance;

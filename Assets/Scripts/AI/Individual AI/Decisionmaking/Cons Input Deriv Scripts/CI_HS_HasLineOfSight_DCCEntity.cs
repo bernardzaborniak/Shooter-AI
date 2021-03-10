@@ -23,10 +23,11 @@ namespace BenitosAI
 
             // get head posiiton from sensing, target from context
             Vector3 headPosition = ((AIController_HumanoidSoldier)decisionContext.aiController).humanSensing.headTransform.position;
-            GameEntity targetEntity = decisionContext.targetEntityInfo.entity;
+            GameEntity targetEntity = ((SensedEntityInfo)decisionContext.target).entity;
+           
 
             RaycastHit hit;
-            if(Physics.Raycast(headPosition, decisionContext.targetEntityInfo.GetAimPosition()- headPosition, out hit, Mathf.Infinity, considerationInputParams.lineOfSightLayerMask))
+            if(Physics.Raycast(headPosition, ((SensedEntityInfo)decisionContext.target).GetAimPosition()- headPosition, out hit, Mathf.Infinity, considerationInputParams.lineOfSightLayerMask))
             {
                 Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                 if (hitbox)

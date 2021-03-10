@@ -15,9 +15,6 @@ namespace BenitosAI
         public AIController aiController; //who s asking?
 
         // Optional
-        public SensedEntityInfo targetEntityInfo; //Who is the target of my action
-        public (TacticalPoint tPoint, float distance) targetTacticalPointInfo; //Who is the target of my action
-
         public object target; //same as System.Object
 
         public DecisionContext()
@@ -27,7 +24,7 @@ namespace BenitosAI
 
         public DecisionContext(DecisionContext objectToCopyValuesFrom)
         {
-            SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.targetEntityInfo, objectToCopyValuesFrom.targetTacticalPointInfo);
+            SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.target);
             rating = objectToCopyValuesFrom.rating;
 
         }
@@ -36,18 +33,18 @@ namespace BenitosAI
         {
             this.decision = objectToCopyValuesFrom.decision;
             this.aiController = objectToCopyValuesFrom.aiController;
-            this.targetEntityInfo = objectToCopyValuesFrom.targetEntityInfo;
-            this.targetTacticalPointInfo = objectToCopyValuesFrom.targetTacticalPointInfo;
+
+            this.target = objectToCopyValuesFrom.target;
 
             this.rating = objectToCopyValuesFrom.rating;
         }
 
-        public void SetUpContext(Decision decision, AIController aiController, SensedEntityInfo targetEntity, (TacticalPoint tPoint, float distance) targetTacticalPoint)
+        public void SetUpContext(Decision decision, AIController aiController, object target)
         {
             this.decision = decision;
             this.aiController = aiController;
-            this.targetEntityInfo = targetEntity;
-            this.targetTacticalPointInfo = targetTacticalPoint;
+
+            this.target = target;
         }
 
         // this could be more elegantly solved by making the hashcode dependant on this variables? - but then i would have problems weh saving this objects in a hashSet? or overide the == operator?
@@ -57,12 +54,13 @@ namespace BenitosAI
 
             if (decision == otherContext.decision)
             {
-                if (targetEntityInfo == otherContext.targetEntityInfo)
+                if (target is System.ValueTuple<TacticalPoint, float>)
                 {
-                    if (targetTacticalPointInfo == otherContext.targetTacticalPointInfo)
-                    {
-                        return true;
-                    }
+                    if (((System.ValueTuple<TacticalPoint, float>)target).Item1 == ((System.ValueTuple<TacticalPoint, float>)otherContext.target).Item1) return true;
+                }
+                else
+                {
+                    if (target == otherContext.target) return true;
                 }
             }
 
@@ -75,30 +73,24 @@ namespace BenitosAI
 
             if (decision == contextMemory.decision)
             {
-                try
+                if(target is System.ValueTuple<TacticalPoint, float>)
                 {
-                    if (targetEntityInfo.entity == contextMemory.targetEntity)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                } catch (System.Exception e) { }
-                try
+                    if (((System.ValueTuple<TacticalPoint, float>)target).Item1 == ((System.ValueTuple<TacticalPoint, float>)contextMemory.target).Item1) return true;
+                }
+                else
                 {
-                    if (targetTacticalPointInfo.tPoint == contextMemory.targetTacticalPoint)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                } catch (System.Exception e) { }
+                    if (target == contextMemory.target) return true;
+                }
 
-                return true;
+                /*if (target == contextMemory.target)
+                {
+                    Debug.Log(target + " is the same as " + contextMemory.target);
+                    return true;
+                }
+                else
+                {
+                    Debug.Log(target + " is NOT the same as " + contextMemory.target);
+                }*/
             }
 
             return false;

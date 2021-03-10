@@ -30,9 +30,10 @@ namespace BenitosAI
                 public Decision decision; //what are we trying to do?
                 public AIController aiController; //who s asking?
 
-                public GameEntity targetEntity; //Who is the target of my action
-                public string targetEntityName; //Used to still know the target if the entity was already destroyed
-                public TacticalPoint targetTacticalPoint; //Who is the target of my action
+                //public GameEntity targetEntity; //Who is the target of my action
+                public object target;
+                public string targetName; //Used to still know the target if the entity was already destroyed
+                //public TacticalPoint targetTacticalPoint; //Who is the target of my action
 
                 public float timeOfDecison;
 
@@ -62,14 +63,32 @@ namespace BenitosAI
                     this.aiController = context.aiController;
                     timeOfDecison = Time.time;
 
-                    try{  this.targetEntity = context.targetEntityInfo.entity;  }
+                    this.target = context.target;
+                 
+                    if (target is SensedEntityInfo)
+                    {
+                        if((target as SensedEntityInfo).entity)
+                        {
+                            targetName = (target as SensedEntityInfo).entity.name + " " + (target as SensedEntityInfo).entity.GetHashCode();
+                        }
+                    }
+                    else if(target is System.ValueTuple<TacticalPoint, float>)
+                    {
+                        //(TacticalPoint, float) tuple = (System.ValueTuple<TacticalPoint, float>)target);
+                        targetName = ((System.ValueTuple<TacticalPoint, float>)target).Item1.name + " " + ((System.ValueTuple<TacticalPoint, float>)target).Item1.GetHashCode();
+                    }
+                    else
+                    {
+                        targetName = "No Target";
+                    }
+                    /*try{  this.targetEntity = context.targetEntityInfo.entity;  }
                     catch (System.Exception e) { }
 
-                    try { targetEntityName = targetEntity.name + " " + targetEntity.GetHashCode(); }
-                    catch (System.Exception e) { targetEntityName = "no Target"; }
+                    try { targetName = targetEntity.name + " " + targetEntity.GetHashCode(); }
+                    catch (System.Exception e) { targetName = "no Target"; }
 
                     try { this.targetTacticalPoint = context.targetTacticalPointInfo.tPoint; }
-                    catch (System.Exception e) { }
+                    catch (System.Exception e) { }*/
 
                     Consideration[] considerations;
                     considerations = context.decision.considerations;

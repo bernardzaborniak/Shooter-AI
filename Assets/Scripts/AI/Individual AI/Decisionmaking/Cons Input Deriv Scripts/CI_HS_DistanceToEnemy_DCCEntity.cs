@@ -18,7 +18,7 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
-            float input = Utility.Remap(decisionContext.targetEntityInfo.lastDistanceMeasured, considerationInputParams.min, considerationInputParams.max, 0, 1);
+            float input = Utility.Remap(((SensedEntityInfo)decisionContext.target).lastDistanceMeasured, considerationInputParams.min, considerationInputParams.max, 0, 1);
             return Mathf.Clamp(input, 0, 1);
         }
     }

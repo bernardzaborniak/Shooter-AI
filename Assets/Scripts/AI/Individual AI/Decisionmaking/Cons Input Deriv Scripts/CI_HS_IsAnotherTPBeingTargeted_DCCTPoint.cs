@@ -16,7 +16,7 @@ namespace BenitosAI
 
             if (targetedPoint != null)
             {
-                if(targetedPoint != decisionContext.targetTacticalPointInfo.tPoint)
+                if(targetedPoint != ((System.ValueTuple<TacticalPoint, float>)decisionContext.target).Item1)
                 {
                     return 1;
                 }

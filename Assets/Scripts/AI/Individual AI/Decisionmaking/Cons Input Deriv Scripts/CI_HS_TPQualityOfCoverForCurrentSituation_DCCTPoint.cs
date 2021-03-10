@@ -15,7 +15,7 @@ namespace BenitosAI
 
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
 
-            float rating = blackboard.GetTPTacticalRating(decisionContext.targetTacticalPointInfo.tPoint);
+            float rating = blackboard.GetTPTacticalRating(((System.ValueTuple<TacticalPoint, float>)decisionContext.target).Item1);
             UnityEngine.Profiling.Profiler.EndSample();
             return rating;
 

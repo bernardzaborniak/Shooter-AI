@@ -36,7 +36,7 @@ namespace BenitosAI
             for (int i = 0; i < enemyEntitiesCount; i++)
             {
                 contextsToReturn[i] = contextsPool.Dequeue();
-                contextsToReturn[i].SetUpContext(decision, aiController, sensingInfo.enemyInfos[i], (null,0));
+                contextsToReturn[i].SetUpContext(decision, aiController, sensingInfo.enemyInfos[i]);
             }
 
             //return them back to the pool

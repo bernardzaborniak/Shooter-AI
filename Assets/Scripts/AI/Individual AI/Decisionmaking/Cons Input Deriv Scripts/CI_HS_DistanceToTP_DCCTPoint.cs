@@ -20,7 +20,7 @@ namespace BenitosAI
 
         public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
-            float input = Utility.Remap(decisionContext.targetTacticalPointInfo.distance, considerationInputParams.min, considerationInputParams.max, 0, 1);
+            float input = Utility.Remap(((System.ValueTuple<TacticalPoint, float>)decisionContext.target).Item2, considerationInputParams.min, considerationInputParams.max, 0, 1);
             return Mathf.Clamp(input, 0, 1);
         }
     }
