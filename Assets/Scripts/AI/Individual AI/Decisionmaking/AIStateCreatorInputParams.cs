@@ -21,7 +21,8 @@ namespace BenitosAI
             WeaponID,
             Position1,
             Position2,
-            LineOfFireCheck
+            LineOfFireCheck,
+            Transform1
             // Position,
             //Color
         }
@@ -60,46 +61,8 @@ namespace BenitosAI
         public float checkLineOfFireInterval;
         public LayerMask checkLineOfFireLayerMask;
 
-
-
-        // Type.Position
-        //public Vector3 position1;
-        //public Vector3 position2;
-
-        // Type.Color
-        //public Color color;
-
-
-
-
-        /*#if UNITY_EDITOR
-                public List<UnityEditor.SerializedProperty> GetCorrespondingParams(UnityEditor.SerializedProperty inputParamsProp,InputParamsType inputParamsType)//AIStateCreator aiStateCreator, ref UnityEditor.SerializedObject serializedObject)
-                {
-
-
-                    List<UnityEditor.SerializedProperty> paramsList = new List<UnityEditor.SerializedProperty>();
-
-                    if (inputParamsType == InputParamsType.Position)
-                    {
-                        //paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("position1"));
-                        //paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("position2"));
-
-                        paramsList.Add(inputParamsProp.FindPropertyRelative("position1"));
-                        paramsList.Add(inputParamsProp.FindPropertyRelative("position2"));
-
-
-                    }
-                    else if (inputParamsType == InputParamsType.Color)
-                    {
-                       // paramsList.Add(serializedObject.FindProperty("inputParams").FindPropertyRelative("color"));
-                        paramsList.Add(inputParamsProp.FindPropertyRelative("color"));
-
-                    }
-                    return paramsList;
-                }
-
-
-        #endif*/
+        // Transform
+        public Transform transform1;
 
     }
 

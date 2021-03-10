@@ -1,4 +1,8 @@
-﻿namespace BenitosAI
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BenitosAI
 {
     // Package of Information concerning a decision
     // [System.Serializable] //Only for Debug purposes
@@ -14,6 +18,8 @@
         public SensedEntityInfo targetEntityInfo; //Who is the target of my action
         public (TacticalPoint tPoint, float distance) targetTacticalPointInfo; //Who is the target of my action
 
+        public object target; //same as System.Object
+
         public DecisionContext()
         {
 
@@ -23,6 +29,7 @@
         {
             SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.targetEntityInfo, objectToCopyValuesFrom.targetTacticalPointInfo);
             rating = objectToCopyValuesFrom.rating;
+
         }
 
         public void SetUpContext(DecisionContext objectToCopyValuesFrom)

@@ -62,6 +62,11 @@ namespace BenitosAI
                     paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.checkLineOfFireInterval)));
                     paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.checkLineOfFireLayerMask)));
                 }
+
+                else if (inputParamsTypes[i] == AIStateCreatorInputParams.InputParamsType.Transform1)
+                {
+                    paramsList.Add(inputParamsProp.FindPropertyRelative(nameof(AIStateCreatorInputParams.transform1)));
+                }
             }
 
            

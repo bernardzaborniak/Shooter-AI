@@ -1238,11 +1238,11 @@ MonoBehaviour:
     name: Run to Spawn of Team 2
     weight: 1
     decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-    correspondingAiStateCreator: {fileID: 11400000, guid: 800b1500c694c3949a5facd2676b4613, type: 2}
+    correspondingAiStateCreator: {fileID: 11400000, guid: 2a34dfaae731671489fb8705ed8dc155, type: 2}
     aIStateCreatorInputParams:
       enterTPDistance: 0
       exitTPDistance: 0
-      sprint: 0
+      sprint: 1
       characterStance: 0
       minChangeAimDirInterval: 0
       maxChangeAimDirInterval: 0
@@ -1254,6 +1254,7 @@ MonoBehaviour:
       checkLineOfFireLayerMask:
         serializedVersion: 2
         m_Bits: 0
+      transform1: {fileID: 0}
     hasMomentum: 1
     momentumSelectedBonus: 1
     momentumDecayRate: 1
@@ -1265,11 +1266,11 @@ MonoBehaviour:
     name: Run to Spawn of Team 1
     weight: 1
     decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
-    correspondingAiStateCreator: {fileID: 11400000, guid: 800b1500c694c3949a5facd2676b4613, type: 2}
+    correspondingAiStateCreator: {fileID: 11400000, guid: 2a34dfaae731671489fb8705ed8dc155, type: 2}
     aIStateCreatorInputParams:
       enterTPDistance: 0
       exitTPDistance: 0
-      sprint: 0
+      sprint: 1
       characterStance: 0
       minChangeAimDirInterval: 0
       maxChangeAimDirInterval: 0
@@ -1281,6 +1282,7 @@ MonoBehaviour:
       checkLineOfFireLayerMask:
         serializedVersion: 2
         m_Bits: 0
+      transform1: {fileID: 0}
     hasMomentum: 1
     momentumSelectedBonus: 1
     momentumDecayRate: 1

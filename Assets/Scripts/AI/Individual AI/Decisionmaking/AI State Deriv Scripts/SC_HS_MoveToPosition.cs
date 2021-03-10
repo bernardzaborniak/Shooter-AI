@@ -11,13 +11,15 @@ namespace BenitosAI
         {
             inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
             {
-                AIStateCreatorInputParams.InputParamsType.Position1
+                AIStateCreatorInputParams.InputParamsType.Position1,
+                AIStateCreatorInputParams.InputParamsType.Sprint
+
             };
         }
 
         public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
-            St_HS_MoveToPosition state = new St_HS_MoveToPosition(aiController, context, inputParams.position1);
+            St_HS_MoveToPosition state = new St_HS_MoveToPosition(aiController, context, inputParams.position1, inputParams.sprint);
             return state;
         }
     }
@@ -27,17 +29,19 @@ namespace BenitosAI
         AIController_HumanoidSoldier aiController;
         EC_HumanoidCharacterController charController;
         Vector3 targetPosition;
+        bool sprint;
 
-        public St_HS_MoveToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition)
+        public St_HS_MoveToPosition(AIController aiController, DecisionContext context, Vector3 targetPosition, bool sprint)
         {
             this.aiController = (AIController_HumanoidSoldier)aiController;
             this.charController = this.aiController.characterController;
             this.targetPosition = targetPosition;
+            this.sprint = sprint;
         }
 
         public override void OnStateEnter() 
         {
-            charController.MoveTo(targetPosition, true);
+            charController.MoveTo(targetPosition, sprint);
             charController.ChangeCharacterStanceToStandingIdle();
         }
 
@@ -61,7 +65,7 @@ namespace BenitosAI
             //somehow sometme the move to order is ignored:
            // if (!charController.IsMoving())
             //{
-                charController.MoveTo(targetPosition, true);
+                charController.MoveTo(targetPosition, sprint);
            // }
 
 
