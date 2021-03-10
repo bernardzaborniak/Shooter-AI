@@ -48,6 +48,8 @@ namespace BenitosAI
         //[SerializeField] int maxTPOpenFieldInfosCount;
         // [SerializeField] int maxTPCoverPeekInfosCount;
 
+        public bool getEnemyInfosFromFriendlies;
+
         #endregion
 
         [Header("Other Information")]
@@ -117,6 +119,8 @@ namespace BenitosAI
 
             UpdateEntityInfos(ref newEnemyInfos, ref enemyInfos, maxEnemyInfosCount, ref meanThreatDirection);
             UpdateEntityInfos(ref newFriendlyInfos, ref friendlyInfos, maxFriendlyInfosCount, ref meanFriendlyDirection);
+
+            if (getEnemyInfosFromFriendlies) GetEnemyInfosFromFriendlies();
 
             UpdateCurrentBalanceOfPower();
             UpdateNumberOfEnemiesWhichWereShootingAtMeInTheLast3Seconds();
@@ -412,6 +416,79 @@ namespace BenitosAI
 
         }
 
+
+        //Get SensedEntityInfos from others?
+        public void GetEnemyInfosFromFriendlies()
+        {
+            //1. Create dictionary of current infos        
+            Dictionary<int, SensedEntityInfo> currentEntityInfosDict = new Dictionary<int, SensedEntityInfo>(); //the entity hashSets are the keys
+            for (int i = 0; i < enemyInfos.Length; i++)
+            {
+                if (enemyInfos[i].IsAlive())
+                {
+                    //update its distance - the ai is "predicting" it
+                    //sensing.UpdateEntityInfoDistance(ref enemyInfos[i]);
+                    currentEntityInfosDict.Add(enemyInfos[i].entity.GetHashCode(), enemyInfos[i]);
+                }
+            }
+
+            //go through all friendlies 
+            for (int i = 0; i < friendlyInfos.Length; i++)
+            {
+                if(Time.time - friendlyInfos[i].timeWhenLastSeen < 1f)
+                {
+                    //get the enemy infos of this entity:
+                    SensedEntityInfo[] enemyInfosOfCurrentFriendly = friendlyInfos[i].entity.transform.GetChild(1).GetComponent<AIController_Blackboard>().enemyInfos; //this isnt very nice, have a nice way of acessing sensing via sensing interface? - rework this a little
+
+                    // Debug.Log("enemyInfosOfCurrentFriendly: " + enemyInfosOfCurrentFriendly);
+                    //Debug.Log("enemyInfosOfCurrentFriendly.length: " + enemyInfosOfCurrentFriendly.Length);
+
+                    for (int j = 0; j < enemyInfosOfCurrentFriendly.Length; j++)
+                    {
+                        if (enemyInfosOfCurrentFriendly[j].entity != null)
+                        {
+                            int currentKey = enemyInfosOfCurrentFriendly[j].entity.GetHashCode();
+                            if (currentEntityInfosDict.ContainsKey(currentKey))
+                            {
+                                // update the current info
+                                //currentEntityInfosDict[currentKey].UpdateInfo(newEntityInfoTuple.distanceToEntity);
+                                //dont update the info for now, as the info inside the firendlies may be older
+                            }
+                            else
+                            {
+                                // create & add new info
+                                currentEntityInfosDict.Add(currentKey, new SensedEntityInfo(enemyInfosOfCurrentFriendly[j].sensInterface, Vector3.Distance(enemyInfosOfCurrentFriendly[j].GetEntityPosition(), transform.position)));
+                            }
+                        }
+
+                    }
+                }  
+            }
+
+            //3. Convert dictionary back to array -->dict.Values.CopyTo(foos, 0);
+            SensedEntityInfo[] newInfosSortedArray = new SensedEntityInfo[currentEntityInfosDict.Count];
+            currentEntityInfosDict.Values.CopyTo(newInfosSortedArray, 0);
+
+            //4. Sort array according to distance
+            Array.Sort(newInfosSortedArray,
+            delegate (SensedEntityInfo x, SensedEntityInfo y) { return x.lastDistanceMeasured.CompareTo(y.lastDistanceMeasured); });
+
+            //5 Cut array
+            int newEnemyInfosArraySize = newInfosSortedArray.Length;
+            if (newEnemyInfosArraySize > maxEnemyInfosCount) newEnemyInfosArraySize = maxEnemyInfosCount;
+
+            //6. create the new updated array
+            enemyInfos = new SensedEntityInfo[newEnemyInfosArraySize];
+            meanThreatDirection = Vector3.zero;
+
+            for (int i = 0; i < newEnemyInfosArraySize; i++)
+            {
+                enemyInfos[i] = newInfosSortedArray[i];
+                //Normalize the direction and multiply by an inverse of distance, so closer objects are weighted more heavily.
+                meanThreatDirection += (enemyInfos[i].entity.transform.position - myEntity.transform.position).normalized * (1000 - enemyInfos[i].lastDistanceMeasured);
+            }
+            meanThreatDirection.Normalize();
+        }
 
 
         #endregion

@@ -1167,7 +1167,7 @@ MonoBehaviour:
       considerations:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
       - {fileID: 11400000, guid: dae7f3124674a474899abec920297e37, type: 2}
-      - {fileID: 11400000, guid: b743d18f26c64b44193b18210e1548b0, type: 2}
+      - {fileID: 11400000, guid: 0cba40ce470881c409e8ceded5ee8732, type: 2}
       - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: f243423aa31fbeb498490d0c639de554, type: 2}
       - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
@@ -1201,7 +1201,7 @@ MonoBehaviour:
       considerations:
       - {fileID: 11400000, guid: fab0ff106730fe846ba48467d240ed30, type: 2}
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
-      - {fileID: 11400000, guid: b743d18f26c64b44193b18210e1548b0, type: 2}
+      - {fileID: 11400000, guid: 0cba40ce470881c409e8ceded5ee8732, type: 2}
       - {fileID: 11400000, guid: 6c44772ec94713549bad8aa3afd7c8a7, type: 2}
       - {fileID: 11400000, guid: 001bdfd0719ecb04a8b21fef7a6d0829, type: 2}
       - {fileID: 11400000, guid: 6c1c63757e8c61f4f821e60433172dce, type: 2}
@@ -1236,6 +1236,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
       - {fileID: 11400000, guid: 9a5d23463fc734845b8047d8419afc9d, type: 2}
       - {fileID: 11400000, guid: 0f737b955ab3fe8478cb03ea38c815a1, type: 2}
+      - {fileID: 11400000, guid: ab349ff94947a734a9c9efa512d02ab0, type: 2}
     - name: 'Hold Position Combat Stance Standing '
       weight: 2
       decisionContextCreator: {fileID: 11400000, guid: 38b2dd670aba9864c9bf2bf834afe9d1, type: 2}
@@ -1262,6 +1263,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: d70a1dcb1fb78b543a6047ec150b23aa, type: 2}
       - {fileID: 11400000, guid: 01352f4b5f0975b4792fa632eb234a0f, type: 2}
       - {fileID: 11400000, guid: f1d9b1f8d2dc1a84fbebd805ee1221e3, type: 2}
+      - {fileID: 11400000, guid: ab349ff94947a734a9c9efa512d02ab0, type: 2}
   - name: Item Interaction Layer
     decisionMethod: 0
     discardThreshold: 0.15
@@ -1470,6 +1472,7 @@ MonoBehaviour:
   timeAfterWhichToRecaulculateRating: 1
   maxEnemyInfosCount: 10
   maxFriendlyInfosCount: 6
+  getEnemyInfosFromFriendlies: 1
   currentlyUsedTPoint: {fileID: 0}
   currentlyTargetedTPoint: {fileID: 0}
   meanThreatDirection: {x: 0, y: 0, z: 0}
