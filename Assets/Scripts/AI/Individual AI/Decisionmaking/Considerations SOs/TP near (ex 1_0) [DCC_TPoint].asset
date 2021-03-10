@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
+  m_Name: TP near (ex 1_0) [DCC_TPoint]
+  m_EditorClassIdentifier: 
+  description: 
+  exampleInput1: 0
+  exampleInput2: 0.25
+  exampleInput3: 0.5
+  exampleInput4: 0.75
+  exampleInput5: 1
+  exampleOutput1: 0
+  exampleOutput2: 0
+  exampleOutput3: 0
+  exampleOutput4: 0
+  exampleOutput5: 0
+  considerationInput: {fileID: 11400000, guid: 587126ecb1278df409e28a96fa9b515b, type: 2}
+  considerationInputParams:
+    min: 0
+    max: 40
+    desiredFloatValue: 0
+    weaponID: 0
+    direction: {x: 0, y: 0, z: 0}
+    lineOfFireLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    lineOfSightLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    informationFreshnessThreshold: 0
+  considerationCurve:
+    curveType: 2
+    bi_Threshold: 0.5
+    bi_Inverse: 0
+    bi_VertShift: 0
+    lin_Slope: 1
+    lin_Shift: 0
+    ex_Slope: -1
+    ex_Exponent: 2.52
+    ex_VertShift: 1
+    ex_HorizShift: 0
+    logistic_Slope: 0.15
+    logistic_XShift: 0
+    logistic_YShift: 0
+    logistic_YScalar: 1
+    logit_A: 0.035
+    logit_B: 0.075
+    curveVisualisationPositions:
+    - {x: 0, y: 1}
+    - {x: 0.018181818, y: 0.9999589}
+    - {x: 0.036363635, y: 0.999764}
+    - {x: 0.054545455, y: 0.9993444}
+    - {x: 0.07272727, y: 0.99864644}
+    - {x: 0.09090909, y: 0.9976249}
+    - {x: 0.10909091, y: 0.99623966}
+    - {x: 0.12727273, y: 0.9944546}
+    - {x: 0.14545454, y: 0.99223626}
+    - {x: 0.16363636, y: 0.98955333}
+    - {x: 0.18181819, y: 0.9863766}
+    - {x: 0.2, y: 0.9826781}
+    - {x: 0.21818182, y: 0.97843134}
+    - {x: 0.23636363, y: 0.973611}
+    - {x: 0.25454545, y: 0.9681926}
+    - {x: 0.27272728, y: 0.9621526}
+    - {x: 0.29090908, y: 0.9554684}
+    - {x: 0.3090909, y: 0.9481179}
+    - {x: 0.3272727, y: 0.94007987}
+    - {x: 0.34545454, y: 0.9313335}
+    - {x: 0.36363637, y: 0.92185855}
+    - {x: 0.38181818, y: 0.91163534}
+    - {x: 0.4, y: 0.90064466}
+    - {x: 0.4181818, y: 0.88886774}
+    - {x: 0.43636364, y: 0.87628615}
+    - {x: 0.45454547, y: 0.8628819}
+    - {x: 0.47272727, y: 0.8486373}
+    - {x: 0.4909091, y: 0.8335351}
+    - {x: 0.5090909, y: 0.8175582}
+    - {x: 0.5272727, y: 0.80069005}
+    - {x: 0.54545456, y: 0.7829141}
+    - {x: 0.56363636, y: 0.7642143}
+    - {x: 0.58181816, y: 0.74457467}
+    - {x: 0.6, y: 0.7239796}
+    - {x: 0.6181818, y: 0.7024137}
+    - {x: 0.6363636, y: 0.6798618}
+    - {x: 0.6545454, y: 0.6563089}
+    - {x: 0.6727273, y: 0.6317401}
+    - {x: 0.6909091, y: 0.6061411}
+    - {x: 0.7090909, y: 0.5794973}
+    - {x: 0.72727275, y: 0.5517944}
+    - {x: 0.74545455, y: 0.5230187}
+    - {x: 0.76363635, y: 0.49315614}
+    - {x: 0.7818182, y: 0.46219283}
+    - {x: 0.8, y: 0.43011558}
+    - {x: 0.8181818, y: 0.3969108}
+    - {x: 0.8363636, y: 0.36256528}
+    - {x: 0.8545455, y: 0.3270657}
+    - {x: 0.8727273, y: 0.29039943}
+    - {x: 0.8909091, y: 0.25255346}
+    - {x: 0.90909094, y: 0.21351498}
+    - {x: 0.92727274, y: 0.17327154}
+    - {x: 0.94545454, y: 0.13181067}
+    - {x: 0.96363634, y: 0.08911997}
+    - {x: 0.9818182, y: 0.045186996}
+    - {x: 1, y: 0}
