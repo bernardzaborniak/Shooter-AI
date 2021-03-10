@@ -555,4 +555,14 @@ public class HCC_HumanoidInterationController : HumanoidCharacterComponent
         return true;
     }
 
+    public bool IsChangingWeapon()
+    {
+        if(itemInteractionState == ItemInteractionState.HidingItemInHand || itemInteractionState == ItemInteractionState.PullingOutItemInHand)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }
