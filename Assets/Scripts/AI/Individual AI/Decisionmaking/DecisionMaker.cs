@@ -148,6 +148,7 @@ namespace BenitosAI
         Memory.DecisionContextMemory lastSelectedDecisionContextMemory; //= new DecisionContext(); //was public before - does it cause errors?
 
         [Header("Memory")]
+        [Tooltip("Memory is used for visualisation only, disable it for the finished game, this will improve Decide() performance significantly")]
         [SerializeField] bool useMemory;
         public Memory memory;
 

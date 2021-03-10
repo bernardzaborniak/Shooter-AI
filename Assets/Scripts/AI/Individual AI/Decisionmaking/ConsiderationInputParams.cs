@@ -9,21 +9,14 @@ namespace BenitosAI
     {
         public enum InputParamsType
         {
-           // None,
             Range,
-            DesiredFloatValue, //this could be delete, normal range works just as good?
+            DesiredFloatValue, 
             WeaponID,
-            //TPointQualityEvaluationParams,
-            Direction, //usefull for things like prioritise targets in front of me
-                      //Buff Status
-                      //Assigned Tag
+            Direction, //usefull for things like prioritise targets in front of me ? - not used yet
             LineOfFire,
             LineOfSight,
             InformationFreshness
-
         }
-
-        //public InputParamsType inputParamsType;
 
         // Range
         public float min;

@@ -5,8 +5,8 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Deviation from Desired Distance to Enemy", fileName = "Deviation from Desired Distance to Enemy")]
-    public class CI_HS_DeviationFromDesiredDistanceToEnemy : ConsiderationInput
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Deviation from Desired Distance to Enemy [DCC_Entity]", fileName = "Deviation from Desired Distance to Enemy [DCC_Entity]")]
+    public class CI_HS_DeviationFromDesiredDistanceToEnemy_DCCEntity : ConsiderationInput
     {
         void OnEnable()
         {

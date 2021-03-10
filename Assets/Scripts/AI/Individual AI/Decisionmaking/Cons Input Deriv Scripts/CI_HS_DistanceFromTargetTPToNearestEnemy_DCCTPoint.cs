@@ -7,9 +7,9 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Distance from Target TP to Nearest Enemy", fileName = "Distance from Target TP to Nearest Enemy")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Distance from Target TP to Nearest Enemy [DCC_TPoint]", fileName = "Distance from Target TP to Nearest Enemy [DCC_TPoint]")]
 
-    public class CI_HS_DistanceFromTargetTPToNearestEnemy : ConsiderationInput
+    public class CI_HS_DistanceFromTargetTPToNearestEnemy_DCCTPoint : ConsiderationInput
     {
         void OnEnable()
         {

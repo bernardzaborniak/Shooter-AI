@@ -3,8 +3,8 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Line of Sight", fileName = "Has Line of Sight")]
-    public class CI_HS_HasLineOfSight : ConsiderationInput
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Line of Sight [DCC_Entity]", fileName = "Has Line of Sight [DCC_Entity]")]
+    public class CI_HS_HasLineOfSight_DCCEntity : ConsiderationInput
     {
         //[Tooltip("If the information about the enemy entity is older than x seconds, ignore it")]
         //public float informationFreshnessThreshold = 1f;

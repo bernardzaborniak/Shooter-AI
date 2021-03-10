@@ -28,37 +28,11 @@ namespace BenitosAI
 #endif
         #endregion
 
-        //Inputs needed:
 
-        //character data
-        //mine & targets
-
-        //Game Engine Data
-        //distance between 
-        //elapsed time
-
-        //other systems in the world
-
-        //each of this is predefined -> put them in a dropdown list
-
-        //public ConsiderationInput_HumanoidSoldier considerationInput;
         [SerializeField] ConsiderationInput considerationInput;
         [SerializeField] ConsiderationInputParams considerationInputParams;
-        //float input;
 
-        //for Range
-        //public float min;
-       // public float max;
-        // for desired range
-       // public float desiredFloatValue;
-        //for WeaponID params Type
-       // public int weaponID;
-        //for TPointQualityEvaluationParams params type
-       // public QualityOfCoverEvaluationType tPointEvaluationType;
-       // public int tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
-       // public int tPointEvaluationMaxFriendliesToAcknowledgeWhileRating;
-
-        public CustomCurve considerationCurve;
+        public CustomCurve considerationCurve; //needs to be public because of the ConisderationEditor
 
 
         private void OnValidate()
@@ -66,32 +40,14 @@ namespace BenitosAI
             considerationCurve.UpdateCurveVisualisationKeyframes();
         }
 
-        private void OnEnable()
-        {
-
-        }
-
         public float GetConsiderationRating(DecisionContext context)
-        {
-            
-
-            //Get Input, already normalized by ConsideraionInput
-            //float input = considerationInput.GetConsiderationInput(context, this, considerationInputParams);
+        {            
             float input = considerationInput.GetConsiderationInput(context, considerationInputParams);
 
-            //Debug.Log("Consideration: Ijnput: " + input);
-
-            //TODo Refactor, dont save input into another variable, write it directly into the return statement
-
-            //Debug.Log("Consideration: Remapped Curve: " + considerationCurve.GetRemappedValue(input));
-
-            //Modify input by curve, curve also normalizes automaticly
-
             return considerationCurve.GetRemappedValue(input);
-
         }
 
-        //Only for Visualisations
+        //Used By DecisionMaker Memory 
         public float GetConsiderationInput(DecisionContext context)
         {
             return considerationInput.GetConsiderationInput(context, considerationInputParams);

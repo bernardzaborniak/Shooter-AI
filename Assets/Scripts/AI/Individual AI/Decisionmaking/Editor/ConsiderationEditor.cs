@@ -44,26 +44,21 @@ namespace BenitosAI
 
             #region Input
 
-            //TODO draw input params depending on the selected input paramter enum type?
-
-            // Header
+            // Input Header
             EditorGUILayout.Space(10);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Input", labelStyle2);
             EditorGUILayout.Space(5);
 
-            //----------------- Consideration Inpput ----------------
+            //Consideration Input Params
             SerializedProperty considerationInputProp = serializedObject.FindProperty("considerationInput");
             EditorGUILayout.PropertyField(considerationInputProp, new GUIContent(""));
             EditorGUILayout.Space(5);
 
             // Params 
-
-            
-
             SerializedProperty considerationInputInputParamsProp = serializedObject.FindProperty("considerationInputParams");
 
-            //If there is an considerationInput assigned -> show its properties
+            //If there is an ConsiderationInput assigned -> show its properties
             ConsiderationInput considerationInput = considerationInputProp.objectReferenceValue as ConsiderationInput;
             if (considerationInput != null)
             {
@@ -71,58 +66,12 @@ namespace BenitosAI
                 EditorGUI.indentLevel += 1;
                 for (int i = 0; i < considerationInputProperties.Count; i++)
                 {
-                    //position.y += 18;
-                    //EditorGUI.PropertyField(position, aIStateProperties[i]);
                     EditorGUILayout.PropertyField(considerationInputProperties[i]);
 
                 }
                 EditorGUI.indentLevel -= 1;
             }
 
-            /*ConsiderationInput.InputParamsType type;
-            if (targetConsideration.considerationInput)
-            {
-                type = targetConsideration.considerationInput.inputParamsType;
-
-                if (type == ConsiderationInput.InputParamsType.Range)
-                {
-                    SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
-                    SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
-
-                    EditorGUILayout.PropertyField(considerationInputPropMin);
-                    EditorGUILayout.PropertyField(considerationInputPropMax);
-                }
-                else if (type == ConsiderationInput.InputParamsType.RangeAndDesiredFloatValue)
-                {
-                    SerializedProperty considerationInputPropMin = serializedObject.FindProperty("min");
-                    SerializedProperty considerationInputPropMax = serializedObject.FindProperty("max");
-
-                    EditorGUILayout.PropertyField(considerationInputPropMin);
-                    EditorGUILayout.PropertyField(considerationInputPropMax);
-
-                    SerializedProperty considerationInputPropDesFloatVal = serializedObject.FindProperty("desiredFloatValue");
-                    EditorGUILayout.PropertyField(considerationInputPropDesFloatVal);
-                }
-                else if(type == ConsiderationInput.InputParamsType.WeaponID)
-                {
-                    SerializedProperty weaponIDProp = serializedObject.FindProperty("weaponID");
-                    EditorGUILayout.PropertyField(weaponIDProp);
-                }*/
-            /*else if(type == ConsiderationInput.InputParamsType.TPointQualityEvaluationParams)
-            {
-                SerializedProperty tPointEvaluationTypeProp = serializedObject.FindProperty("tPointEvaluationType");
-                EditorGUILayout.PropertyField(tPointEvaluationTypeProp);
-
-                SerializedProperty tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxEnemiesToAcknowledgeWhileRating");
-                EditorGUILayout.PropertyField(tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp);
-
-                SerializedProperty tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxFriendliesToAcknowledgeWhileRating");
-                EditorGUILayout.PropertyField(tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp);
-            }*/
-       // }
-            
-
-           
             EditorGUILayout.Space(10);
 
             EditorGUILayout.EndVertical();
@@ -140,7 +89,6 @@ namespace BenitosAI
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
             foldoutExampleValues = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutExampleValues, "Show Example Curve Values", EditorStyles.foldout);
-
 
             if (foldoutExampleValues)
             {
@@ -175,24 +123,15 @@ namespace BenitosAI
                 SerializedProperty exampleOutput4Prop = serializedObject.FindProperty("exampleOutput4");
                 SerializedProperty exampleOutput5Prop = serializedObject.FindProperty("exampleOutput5");
 
-                //set the values
-                //exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput1Prop.floatValue);
-                /* exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput1Prop.floatValue, targetConsideration.min, targetConsideration.max, 0, 1));
-                 exampleOutput2Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput2Prop.floatValue, targetConsideration.min, targetConsideration.max, 0, 1));
-                 exampleOutput3Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput3Prop.floatValue, targetConsideration.min, targetConsideration.max, 0, 1));
-                 exampleOutput4Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput4Prop.floatValue, targetConsideration.min, targetConsideration.max, 0, 1));
-                 exampleOutput5Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(Utility.Remap(exampleInput5Prop.floatValue, targetConsideration.min, targetConsideration.max, 0, 1));*/
-
                 exampleOutput1Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput1Prop.floatValue);
                 exampleOutput2Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput2Prop.floatValue);
                 exampleOutput3Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput3Prop.floatValue);
                 exampleOutput4Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput4Prop.floatValue);
                 exampleOutput5Prop.floatValue = targetConsideration.considerationCurve.GetRemappedValue(exampleInput5Prop.floatValue);
 
-
                 // Readonly Outputs
                 EditorGUILayout.BeginHorizontal();
-                GUI.enabled = false;
+                GUI.enabled = false; //workaround to make them readonly
                 EditorGUILayout.TextField(exampleOutput1Prop.floatValue.ToString("F2"));
                 EditorGUILayout.TextField(exampleOutput2Prop.floatValue.ToString("F2"));
                 EditorGUILayout.TextField(exampleOutput3Prop.floatValue.ToString("F2"));
@@ -200,8 +139,6 @@ namespace BenitosAI
                 EditorGUILayout.TextField(exampleOutput5Prop.floatValue.ToString("F2"));
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
-
-
             }
 
             EditorGUILayout.EndVertical();

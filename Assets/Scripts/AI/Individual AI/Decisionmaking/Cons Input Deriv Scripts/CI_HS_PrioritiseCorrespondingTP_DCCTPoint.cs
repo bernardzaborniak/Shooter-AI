@@ -7,9 +7,9 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Prioritise Corresponding TP", fileName = "Prioritise Corresponding TP")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Prioritise Corresponding TP [DCC_TPoint]", fileName = "Prioritise Corresponding TP [DCC_TPoint]")]
 
-    public class CI_HS_PrioritiseCorrespondingTP : ConsiderationInput
+    public class CI_HS_PrioritiseCorrespondingTP_DCCTPoint : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParam)
         {

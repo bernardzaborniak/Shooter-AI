@@ -6,8 +6,8 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is Enemy shooting at Me", fileName = "Is Enemy shooting at Me")]
-    public class CI_HS_IsEnemyShootingAtMe : ConsiderationInput
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Are Enemies Shooting at Me", fileName = "Are Enemies Shooting at Me")]
+    public class CI_HS_AreEnemiesShootingAtMe : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {

@@ -5,12 +5,8 @@ using UnityEditor;
 
 namespace BenitosAI
 {
-
-
     public static class ConsiderationInputParamsSerializationHelper
     {
-
-
         public static List<SerializedProperty> GetCorrespondingParams(SerializedProperty inputParamsProp, ConsiderationInputParams.InputParamsType[] inputParamsTypes)
         {
 

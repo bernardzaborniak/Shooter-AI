@@ -10,8 +10,6 @@ namespace BenitosAI
         [HideInInspector]
         public ConsiderationInputParams.InputParamsType[] inputParamsType;
 
-        //maybe leave consideration out?
-        //public virtual float GetConsiderationInput(DecisionContext context, Consideration consideration, ConsiderationInputParams considerationInputParams)
         public virtual float GetConsiderationInput(DecisionContext context, ConsiderationInputParams considerationInputParams)
         {
             return 0;

@@ -6,9 +6,9 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Will Going Towards TP Show My Back To Enemy ", fileName = "Will Going Towards TP Show My Back To Enemy ")]
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Will Going Towards TP Show My Back To Enemy [DCC_TPoint] ", fileName = "Will Going Towards TP Show My Back To Enemy [DCC_TPoint]")]
 
-    public class CI_HS_WillGoingTowardsTPShowMyBackToEnemy : ConsiderationInput
+    public class CI_HS_WillGoingTowardsTPShowMyBackToEnemy_DCCTPoint : ConsiderationInput
     {
         void OnEnable()
         {

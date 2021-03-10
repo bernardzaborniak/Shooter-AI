@@ -5,8 +5,8 @@ using UnityEngine;
 namespace BenitosAI
 {
 
-    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TP Quality of Cover for Current Situation", fileName = "TP Quality of Cover for Current Situation")]
-    public class CI_HS_TPQualityOfCoverForCurrentSituation : ConsiderationInput
+    [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TP Quality of Cover for Current Situation [DCC_TPoint]", fileName = "TP Quality of Cover for Current Situation [DCC_TPoint]")]
+    public class CI_HS_TPQualityOfCoverForCurrentSituation_DCCTPoint : ConsiderationInput
     {
         public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
