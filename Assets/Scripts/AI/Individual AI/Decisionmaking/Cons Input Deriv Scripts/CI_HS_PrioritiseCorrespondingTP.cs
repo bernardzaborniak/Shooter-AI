@@ -11,10 +11,7 @@ namespace BenitosAI
 
     public class CI_HS_PrioritiseCorrespondingTP : ConsiderationInput
     {
-        // uses consideration min & max - needs range type
-        // uses targetTPoint
-
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParam)
         {
             TacticalPoint currentlyUsedTP = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetCurrentlyUsedTacticalPoint();
             if (currentlyUsedTP == null) return 1;

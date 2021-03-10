@@ -24,13 +24,19 @@ MonoBehaviour:
   exampleOutput4: 0
   exampleOutput5: 0
   considerationInput: {fileID: 11400000, guid: a1e2a62807496a74a96daf2e7cb161de, type: 2}
-  min: 0
-  max: 0
-  desiredFloatValue: 0
-  weaponID: 3
-  tPointEvaluationType: 0
-  tPointEvaluationMaxEnemiesToAcknowledgeWhileRating: 0
-  tPointEvaluationMaxFriendliesToAcknowledgeWhileRating: 0
+  considerationInputParams:
+    min: 0
+    max: 0
+    desiredFloatValue: 0
+    weaponID: 3
+    direction: {x: 0, y: 0, z: 0}
+    lineOfFireLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    lineOfSightLayerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    informationFreshnessThreshold: 0
   considerationCurve:
     curveType: 0
     bi_Threshold: 0.5

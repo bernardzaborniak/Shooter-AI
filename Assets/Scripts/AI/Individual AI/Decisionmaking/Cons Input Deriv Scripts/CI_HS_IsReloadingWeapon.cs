@@ -9,7 +9,7 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is Reloading Weapon", fileName = "Is Reloading Weapon")]
     public class CI_HS_IsReloadingWeapon : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             EntityTags tags = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetMyEntity().entityTags;
 

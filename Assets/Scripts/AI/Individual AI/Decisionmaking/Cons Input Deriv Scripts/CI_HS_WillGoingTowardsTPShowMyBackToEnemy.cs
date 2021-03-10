@@ -10,10 +10,15 @@ namespace BenitosAI
 
     public class CI_HS_WillGoingTowardsTPShowMyBackToEnemy : ConsiderationInput
     {
-        // uses consideration min & max - needs range type
-        // uses targetTPoint
+        void OnEnable()
+        {
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.Range
+            };
+        }
 
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             //if thwe if the distance is smaller than 1m, just ignore it
             if (decisionContext.targetTacticalPointInfo.distance < 1) return 0;
@@ -27,7 +32,7 @@ namespace BenitosAI
             Vector3 meanThreatDirection = blackboard.meanThreatDirection;
             meanThreatDirection.y = 0;
 
-            return Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), consideration.min, consideration.max, 0, 1, true);
+            return Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), considerationInputParams.min, considerationInputParams.max, 0, 1, true);
             //float remappedAngle = Utility.Remap(Vector3.Angle(directionTowardsTPoint, meanThreatDirection), consideration.min, consideration.max, 0, 1, true);
             //return Mathf.Clamp(remappedAngle, 0, 1);
         }

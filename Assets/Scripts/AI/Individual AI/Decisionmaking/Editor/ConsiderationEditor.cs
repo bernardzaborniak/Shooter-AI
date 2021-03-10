@@ -52,14 +52,34 @@ namespace BenitosAI
             EditorGUILayout.LabelField("Input", labelStyle2);
             EditorGUILayout.Space(5);
 
-            // Input Enum 
+            //----------------- Consideration Inpput ----------------
             SerializedProperty considerationInputProp = serializedObject.FindProperty("considerationInput");
             EditorGUILayout.PropertyField(considerationInputProp, new GUIContent(""));
             EditorGUILayout.Space(5);
 
             // Params 
 
-            ConsiderationInput.InputParamsType type;
+            
+
+            SerializedProperty considerationInputInputParamsProp = serializedObject.FindProperty("considerationInputParams");
+
+            //If there is an considerationInput assigned -> show its properties
+            ConsiderationInput considerationInput = considerationInputProp.objectReferenceValue as ConsiderationInput;
+            if (considerationInput != null)
+            {
+                List<UnityEditor.SerializedProperty> considerationInputProperties = ConsiderationInputParamsSerializationHelper.GetCorrespondingParams(considerationInputInputParamsProp, considerationInput.inputParamsType);
+                EditorGUI.indentLevel += 1;
+                for (int i = 0; i < considerationInputProperties.Count; i++)
+                {
+                    //position.y += 18;
+                    //EditorGUI.PropertyField(position, aIStateProperties[i]);
+                    EditorGUILayout.PropertyField(considerationInputProperties[i]);
+
+                }
+                EditorGUI.indentLevel -= 1;
+            }
+
+            /*ConsiderationInput.InputParamsType type;
             if (targetConsideration.considerationInput)
             {
                 type = targetConsideration.considerationInput.inputParamsType;
@@ -87,19 +107,19 @@ namespace BenitosAI
                 {
                     SerializedProperty weaponIDProp = serializedObject.FindProperty("weaponID");
                     EditorGUILayout.PropertyField(weaponIDProp);
-                }
-                /*else if(type == ConsiderationInput.InputParamsType.TPointQualityEvaluationParams)
-                {
-                    SerializedProperty tPointEvaluationTypeProp = serializedObject.FindProperty("tPointEvaluationType");
-                    EditorGUILayout.PropertyField(tPointEvaluationTypeProp);
-
-                    SerializedProperty tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxEnemiesToAcknowledgeWhileRating");
-                    EditorGUILayout.PropertyField(tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp);
-
-                    SerializedProperty tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxFriendliesToAcknowledgeWhileRating");
-                    EditorGUILayout.PropertyField(tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp);
                 }*/
-            }
+            /*else if(type == ConsiderationInput.InputParamsType.TPointQualityEvaluationParams)
+            {
+                SerializedProperty tPointEvaluationTypeProp = serializedObject.FindProperty("tPointEvaluationType");
+                EditorGUILayout.PropertyField(tPointEvaluationTypeProp);
+
+                SerializedProperty tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxEnemiesToAcknowledgeWhileRating");
+                EditorGUILayout.PropertyField(tPointEvaluationMaxEnemiesToAcknowledgeWhileRatingProp);
+
+                SerializedProperty tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp = serializedObject.FindProperty("tPointEvaluationMaxFriendliesToAcknowledgeWhileRating");
+                EditorGUILayout.PropertyField(tPointEvaluationMaxFriendliesToAcknowledgeWhileRatingProp);
+            }*/
+       // }
             
 
            

@@ -8,9 +8,17 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Ammo In Weapon", fileName = "Ammo In Weapon")]
     public class CI_HS_AmmoInWeapon : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        void OnEnable()
         {
-            return ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetAmmoRemainingInMagazineRatio(consideration.weaponID);          
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.WeaponID
+            };
+        }
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
+        {
+            return ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetAmmoRemainingInMagazineRatio(considerationInputParams.weaponID);          
         }
     }
 }

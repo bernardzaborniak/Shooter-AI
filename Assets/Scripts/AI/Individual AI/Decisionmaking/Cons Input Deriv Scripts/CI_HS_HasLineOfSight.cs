@@ -8,9 +8,15 @@ namespace BenitosAI
     {
         //[Tooltip("If the information about the enemy entity is older than x seconds, ignore it")]
         //public float informationFreshnessThreshold = 1f;
-        public LayerMask LoSRaycastLayerMask;
+        void OnEnable()
+        {
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.LineOfSight
+            };
+        }
 
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             //get raycast start posiiton & direction -> how? - get the position and direction from the head - position is head and direction is direction from head to target - aim posiiton
             //- check if hitbox entity is target entity
@@ -20,7 +26,7 @@ namespace BenitosAI
             GameEntity targetEntity = decisionContext.targetEntityInfo.entity;
 
             RaycastHit hit;
-            if(Physics.Raycast(headPosition, decisionContext.targetEntityInfo.GetAimPosition()- headPosition, out hit, Mathf.Infinity, LoSRaycastLayerMask))
+            if(Physics.Raycast(headPosition, decisionContext.targetEntityInfo.GetAimPosition()- headPosition, out hit, Mathf.Infinity, considerationInputParams.lineOfSightLayerMask))
             {
                 Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                 if (hitbox)

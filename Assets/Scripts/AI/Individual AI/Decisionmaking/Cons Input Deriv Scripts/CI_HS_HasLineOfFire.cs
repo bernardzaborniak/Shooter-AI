@@ -9,10 +9,17 @@ namespace BenitosAI
 
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Line of Fire", fileName = "Has Line of Fire")]
     public class CI_HS_HasLineOfFire : ConsiderationInput
-    {   
-        public LayerMask checkLineOfFireLayerMask;
+    {
+        //public LayerMask checkLineOfFireLayerMask;
+        void OnEnable()
+        {
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.LineOfFire
+            };
+        }
 
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             EC_HumanoidCharacterController charController = ((AIController_HumanoidSoldier)decisionContext.aiController).characterController;
 
@@ -31,7 +38,7 @@ namespace BenitosAI
             Vector3 raycastStartPoint = weaponShootPointTransform.position;
 
             RaycastHit hit;
-            if (Physics.Raycast(raycastStartPoint, decisionContext.targetEntityInfo.GetAimPosition()- raycastStartPoint, out hit, Mathf.Infinity, checkLineOfFireLayerMask))
+            if (Physics.Raycast(raycastStartPoint, decisionContext.targetEntityInfo.GetAimPosition()- raycastStartPoint, out hit, Mathf.Infinity, considerationInputParams.lineOfFireLayerMask))
             {
                 Hitbox hitbox = hit.collider.gameObject.GetComponent<Hitbox>();
                 if (hitbox)

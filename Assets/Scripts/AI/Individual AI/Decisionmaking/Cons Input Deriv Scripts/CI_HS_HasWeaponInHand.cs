@@ -9,7 +9,9 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has Weapon in Hand", fileName = "Has Weapon in Hand")]
     public class CI_HS_HasWeaponInHand : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             if (((AIController_HumanoidSoldier)decisionContext.aiController).characterController.GetCurrentlySelectedItem() != null)
             {

@@ -8,7 +8,7 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/TP Quality of Cover for Current Situation", fileName = "TP Quality of Cover for Current Situation")]
     public class CI_HS_TPQualityOfCoverForCurrentSituation : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             UnityEngine.Profiling.Profiler.BeginSample("RateCoverPointBeginning");
             //this takes way too much performance?

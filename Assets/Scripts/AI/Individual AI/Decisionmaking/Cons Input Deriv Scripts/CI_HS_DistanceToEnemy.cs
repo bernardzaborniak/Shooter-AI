@@ -8,12 +8,20 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Distance to Enemy", fileName = "Distance to Enemy")]
     public class CI_HS_DistanceToEnemy : ConsiderationInput
     {
-
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        void OnEnable()
         {
-            float input = Utility.Remap(decisionContext.targetEntityInfo.lastDistanceMeasured, consideration.min, consideration.max, 0, 1);
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.Range
+            };
+        }
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
+        {
+            float input = Utility.Remap(decisionContext.targetEntityInfo.lastDistanceMeasured, considerationInputParams.min, considerationInputParams.max, 0, 1);
             return Mathf.Clamp(input, 0, 1);
         }
     }
 
 }
+

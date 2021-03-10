@@ -10,7 +10,7 @@ namespace BenitosAI
 
     public class CI_HS_WhenTPIsFree : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             //not needed anymore? - sensing takes care of this
 

@@ -10,7 +10,7 @@ namespace BenitosAI
 
     public class CI_HS_IsInDangerOfGrenadeExplosion : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             (EnvironmentalDangerTag danger, float distance)[] dangersInfos = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.environmentalDangerInfos;
 

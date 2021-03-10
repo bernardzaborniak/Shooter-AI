@@ -10,7 +10,7 @@ namespace BenitosAI
     public class CI_HS_IsAnotherTPBeingTargeted : ConsiderationInput
     {
         //returns 1 if the ai is targeting another tpoint
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             TacticalPoint targetedPoint = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.GetCurrentlyTargetedPoint();
 

@@ -31,7 +31,9 @@ public class CustomCurveDrawer : PropertyDrawer
 
         int curveType = curveTypeProp.enumValueIndex;
 
-        if(curveType == 0)
+        EditorGUI.BeginProperty(position, label, property);
+
+        if (curveType == 0)
         {
             SerializedProperty bi_ThresholdProp = property.FindPropertyRelative("bi_Threshold");
             SerializedProperty bi_Inverse = property.FindPropertyRelative("bi_Inverse");
@@ -82,6 +84,8 @@ public class CustomCurveDrawer : PropertyDrawer
             EditorGUILayout.Slider(logit_A, -0.3f, 0.3f);
             EditorGUILayout.Slider(logit_B, -0.3f, 0.3f);
         }
+        EditorGUI.EndProperty();
+
 
         #endregion
 

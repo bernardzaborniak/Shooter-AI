@@ -10,7 +10,10 @@ namespace BenitosAI
 
         public string description;
 
+        #region For Input Visalisation Editor Only
+#if UNITY_EDITOR
         // Example Values to make setting up the curves easier for more complex relationships like squared distances
+
         public float exampleInput1 = 0;
         public float exampleInput2 = 0.25f;
         public float exampleInput3 = 0.5f;
@@ -22,6 +25,8 @@ namespace BenitosAI
         public float exampleOutput3;
         public float exampleOutput4;
         public float exampleOutput5;
+#endif
+        #endregion
 
         //Inputs needed:
 
@@ -37,20 +42,21 @@ namespace BenitosAI
         //each of this is predefined -> put them in a dropdown list
 
         //public ConsiderationInput_HumanoidSoldier considerationInput;
-        public ConsiderationInput considerationInput;
-        float input;
+        [SerializeField] ConsiderationInput considerationInput;
+        [SerializeField] ConsiderationInputParams considerationInputParams;
+        //float input;
 
-        //for ConsiderationInput_HumanoidSoldier_DistanceToClosestEnemy
-        public float min;
-        public float max;
+        //for Range
+        //public float min;
+       // public float max;
         // for desired range
-        public float desiredFloatValue;
+       // public float desiredFloatValue;
         //for WeaponID params Type
-        public int weaponID;
+       // public int weaponID;
         //for TPointQualityEvaluationParams params type
-        public QualityOfCoverEvaluationType tPointEvaluationType;
-        public int tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
-        public int tPointEvaluationMaxFriendliesToAcknowledgeWhileRating;
+       // public QualityOfCoverEvaluationType tPointEvaluationType;
+       // public int tPointEvaluationMaxEnemiesToAcknowledgeWhileRating;
+       // public int tPointEvaluationMaxFriendliesToAcknowledgeWhileRating;
 
         public CustomCurve considerationCurve;
 
@@ -70,7 +76,8 @@ namespace BenitosAI
             
 
             //Get Input, already normalized by ConsideraionInput
-            input = considerationInput.GetConsiderationInput(context, this);
+            //float input = considerationInput.GetConsiderationInput(context, this, considerationInputParams);
+            float input = considerationInput.GetConsiderationInput(context, considerationInputParams);
 
             //Debug.Log("Consideration: Ijnput: " + input);
 
@@ -87,7 +94,7 @@ namespace BenitosAI
         //Only for Visualisations
         public float GetConsiderationInput(DecisionContext context)
         {
-            return considerationInput.GetConsiderationInput(context, this);
+            return considerationInput.GetConsiderationInput(context, considerationInputParams);
         }
     }
 

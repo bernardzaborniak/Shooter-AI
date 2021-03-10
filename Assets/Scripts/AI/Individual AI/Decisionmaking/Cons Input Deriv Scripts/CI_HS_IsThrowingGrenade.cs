@@ -9,7 +9,7 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is Throwing Grenade", fileName = "Is Throwing Grenade")]
     public class CI_HS_IsThrowingGrenade : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             if (((AIController_HumanoidSoldier)decisionContext.aiController).characterController.IsThrowingGrenade())
             {

@@ -11,10 +11,17 @@ namespace BenitosAI
         //It doesnt check if it has line of fire, as this would be false too often, we also want to allow the unit to shoot if it doent hit
         //what we dont want in any case is for the unit to shoot its friends accidentaly
 
- 
-        public LayerMask LoFRaycastLayerMask;
 
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        //public LayerMask LoFRaycastLayerMask;
+        void OnEnable()
+        {
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.LineOfFire
+            };
+        }
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             //get raycast start posiiton & direction -> how? - get the position and direction from the head - position is head and direction is direction from head to target - aim posiiton
             //- check if hitbox entity is target entity
@@ -31,7 +38,7 @@ namespace BenitosAI
             if (gunShootPoint)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(gunShootPoint.position, gunShootPoint.forward, out hit, Mathf.Infinity, LoFRaycastLayerMask))
+                if (Physics.Raycast(gunShootPoint.position, gunShootPoint.forward, out hit, Mathf.Infinity, considerationInputParams.lineOfFireLayerMask))
                 {
                     Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                     if (hitbox)

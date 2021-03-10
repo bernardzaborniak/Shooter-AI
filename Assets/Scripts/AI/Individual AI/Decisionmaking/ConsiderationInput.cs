@@ -4,25 +4,15 @@ using UnityEngine;
 
 namespace BenitosAI
 {
-    //maybe we could do without this class?
 
     public class ConsiderationInput : ScriptableObject
     {
-        public enum InputParamsType
-        {
-            None,
-            Range,
-            RangeAndDesiredFloatValue, //this could be delete, normal range works just as good?
-            WeaponID,
-            //TPointQualityEvaluationParams,
-            Direction //usefull for things like prioritise targets in front of me
-                      //Buff Status
-                      //Assigned Tag
-        }
+        [HideInInspector]
+        public ConsiderationInputParams.InputParamsType[] inputParamsType;
 
-        public InputParamsType inputParamsType;
-
-        public virtual float GetConsiderationInput(DecisionContext context, Consideration consideration)
+        //maybe leave consideration out?
+        //public virtual float GetConsiderationInput(DecisionContext context, Consideration consideration, ConsiderationInputParams considerationInputParams)
+        public virtual float GetConsiderationInput(DecisionContext context, ConsiderationInputParams considerationInputParams)
         {
             return 0;
         }

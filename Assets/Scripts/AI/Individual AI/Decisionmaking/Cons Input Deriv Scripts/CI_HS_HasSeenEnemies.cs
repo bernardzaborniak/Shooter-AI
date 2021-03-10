@@ -8,10 +8,17 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Has seen Enemies", fileName = "Has seen Enemies")]
     public class CI_HS_HasSeenEnemies : ConsiderationInput
     {
-        [Tooltip("If the information about the enemy entity is older than x seconds, ignore it")]
-        public float informationFreshnessThreshold = 1f;
+        void OnEnable()
+        {
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.InformationFreshness
+            };
+        }
 
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+       
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             //dont forget to check how old an infomration about an enemy is
             SensedEntityInfo[] infos = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard.enemyInfos;
@@ -19,7 +26,7 @@ namespace BenitosAI
             {
                 for (int i = 0; i < infos.Length; i++)
                 {
-                    if (Time.time - infos[i].timeWhenLastSeen < informationFreshnessThreshold)
+                    if (Time.time - infos[i].timeWhenLastSeen < considerationInputParams.informationFreshnessThreshold)
                     {
                         return 1;
                     }

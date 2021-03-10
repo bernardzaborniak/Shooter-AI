@@ -12,6 +12,7 @@ namespace BenitosAI
         //move the declaration of this enum somewhere else? - or its good here?
         public enum InputParamsType
         {
+           // None,
             GoToTp,
             Sprint,
             CharacterStance,

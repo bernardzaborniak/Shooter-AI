@@ -9,7 +9,7 @@ namespace BenitosAI
     [CreateAssetMenu(menuName = "AI/Consideration Input/Humanoid/Is Enemy shooting at Me", fileName = "Is Enemy shooting at Me")]
     public class CI_HS_IsEnemyShootingAtMe : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
         {
             AIController_Blackboard blackboard = ((AIController_HumanoidSoldier)decisionContext.aiController).blackboard;
             SensedEntityInfo[] infos = blackboard.enemyInfos;

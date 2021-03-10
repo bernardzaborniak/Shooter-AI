@@ -1,19 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-#if UNITY_EDITOR
 namespace BenitosAI
 {
     public static class AIStateCreatorInputParamsSerializationHelper 
     {
 
 
-        public static List<UnityEditor.SerializedProperty> GetCorrespondingParams(UnityEditor.SerializedProperty inputParamsProp, AIStateCreatorInputParams.InputParamsType[] inputParamsTypes)//AIStateCreator aiStateCreator, ref UnityEditor.SerializedObject serializedObject)
+        public static List<SerializedProperty> GetCorrespondingParams(SerializedProperty inputParamsProp, AIStateCreatorInputParams.InputParamsType[] inputParamsTypes)
         {
-            
-
-            List<UnityEditor.SerializedProperty> paramsList = new List<UnityEditor.SerializedProperty>();
+            List<SerializedProperty> paramsList = new List<SerializedProperty>();
 
             for (int i = 0; i < inputParamsTypes.Length; i++)
             {
@@ -74,5 +72,4 @@ namespace BenitosAI
 
     }
 }
-#endif
 

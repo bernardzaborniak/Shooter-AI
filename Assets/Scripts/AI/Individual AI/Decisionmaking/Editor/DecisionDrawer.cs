@@ -15,7 +15,8 @@ namespace BenitosAI
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            label = EditorGUI.BeginProperty(position, label, property);
+            //label = EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.BeginProperty(position, label, property);
 
             // Update unfold Dictionary
             if (!unfold.ContainsKey(property.propertyPath))

@@ -10,9 +10,17 @@ namespace BenitosAI
 
     public class CI_HS_DistanceToTP : ConsiderationInput
     {
-        public override float GetConsiderationInput(DecisionContext decisionContext, Consideration consideration)
+        void OnEnable()
         {
-            float input = Utility.Remap(decisionContext.targetTacticalPointInfo.distance, consideration.min, consideration.max, 0, 1);
+            inputParamsType = new ConsiderationInputParams.InputParamsType[]
+            {
+                ConsiderationInputParams.InputParamsType.Range
+            };
+        }
+
+        public override float GetConsiderationInput(DecisionContext decisionContext, ConsiderationInputParams considerationInputParams)
+        {
+            float input = Utility.Remap(decisionContext.targetTacticalPointInfo.distance, considerationInputParams.min, considerationInputParams.max, 0, 1);
             return Mathf.Clamp(input, 0, 1);
         }
     }
