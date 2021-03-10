@@ -119,7 +119,24 @@ namespace BenitosAI
             {
                 if (unfold[property.propertyPath])
                 {
-                    height += 8 + 18 + 18 +18 + 8 + 18 + 18 + (int)(EditorGUI.GetPropertyHeight(property.FindPropertyRelative("considerations"),false));  //The strange addition is to simplify adjustment  Default unity line is 16px, margin is 2 -> 18 per line
+                    height += 8 + 18 + 18 + 18 + 8 + 8; //The strange addition is to simplify adjustment  Default unity line is 16px, margin is 2 -> 18 per line
+
+                    //AI STate creator params height:
+                    SerializedProperty aISTateCreatorProp = property.FindPropertyRelative("correspondingAiStateCreator");
+                    SerializedProperty aIStateCreatorInputParamsProp = property.FindPropertyRelative("aIStateCreatorInputParams");
+                    AIStateCreator aIStateCreator = aISTateCreatorProp.objectReferenceValue as AIStateCreator;
+                    if (aIStateCreator != null)
+                    {
+                        List<UnityEditor.SerializedProperty> aIStateProperties = AIStateCreatorInputParamsSerializationHelper.GetCorrespondingParams(aIStateCreatorInputParamsProp, aIStateCreator.inputParamsType);
+                        for (int i = 0; i < aIStateProperties.Count; i++)
+                        {
+                            height += 18;
+
+                        }
+                    }
+
+                    //Conideration list height:
+                    height += (int)(EditorGUI.GetPropertyHeight(property.FindPropertyRelative("considerations"),true));  
 
                     if (property.FindPropertyRelative("hasMomentum").boolValue)
                     {
