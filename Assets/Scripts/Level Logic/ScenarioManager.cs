@@ -40,6 +40,8 @@ public class ScenarioManager : MonoBehaviour
 
     [SerializeField] bool spawnSoldiersTeam2;
 
+    bool getEnemyInfosFromFriendlies;
+
 
     //public int maxSoldiersTeam1;
     //public int maxSoldiersTeam2;
@@ -53,6 +55,8 @@ public class ScenarioManager : MonoBehaviour
     public ToogleableButton button_spawnSoldiersTeam2;
     public TMP_Text tmp_numOfSoldiersSpawnedTeam1;
     public TMP_Text tmp_numOfSoldiersSpawnedTeam2;
+
+
 
 
 
@@ -101,6 +105,32 @@ public class ScenarioManager : MonoBehaviour
                 }
             }
             nextTeam1SpawnTime = Time.time + Random.Range(spawnIntervalMin, spawnIntervalMax);
+
+            if (getEnemyInfosFromFriendlies)
+            {
+                for (int i = 0; i < team1Soldiers.Count; i++)
+                {
+                    if (team1Soldiers[i] != null)
+                    {
+                        // get blackboard
+                        BenitosAI.AIController_Blackboard blackboard = team1Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController_Blackboard>();
+                        blackboard.getEnemyInfosFromFriendlies = true;
+                    }
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < team1Soldiers.Count; i++)
+                {
+                    if (team1Soldiers[i] != null)
+                    {
+                        // get blackboard
+                        BenitosAI.AIController_Blackboard blackboard = team1Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController_Blackboard>();
+                        blackboard.getEnemyInfosFromFriendlies = false;
+                    }
+                }
+            }
         }
 
 
@@ -138,6 +168,32 @@ public class ScenarioManager : MonoBehaviour
                 }
             }
             nextTeam2SpawnTime = Time.time + Random.Range(spawnIntervalMin, spawnIntervalMax);
+
+
+            if (getEnemyInfosFromFriendlies)
+            {
+                for (int i = 0; i < team2Soldiers.Count; i++)
+                {
+                    if (team2Soldiers[i] != null)
+                    {
+                        // get blackboard
+                        BenitosAI.AIController_Blackboard blackboard = team2Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController_Blackboard>();
+                        blackboard.getEnemyInfosFromFriendlies = true;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < team2Soldiers.Count; i++)
+                {
+                    if (team2Soldiers[i] != null)
+                    {
+                        // get blackboard
+                        BenitosAI.AIController_Blackboard blackboard = team2Soldiers[i].transform.GetChild(1).GetComponent<BenitosAI.AIController_Blackboard>();
+                        blackboard.getEnemyInfosFromFriendlies = false;
+                    }
+                }
+            }
         }
 
         #region Test Adding & Removing Decisions
@@ -228,6 +284,11 @@ public class ScenarioManager : MonoBehaviour
     public void OnSetSpawnSoldiersTeam2(ToogleableButton button)
     {
         spawnSoldiersTeam2 = button.active;
+    }
+
+    public void OnGetEnemyInfosFromFriendliesClicked(ToogleableButton button)
+    {
+        getEnemyInfosFromFriendlies = button.active;
     }
 
 
