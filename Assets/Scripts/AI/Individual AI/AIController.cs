@@ -52,21 +52,10 @@ namespace BenitosAI //maybe instead having the ai controller be in benitos names
 
         protected virtual void UpdateDecisionMakers()
         {
-            // Update Current States
-            
-
-            // Decide every x seconds
-            //if (Time.time > nextDecisionTime)
-            //{
-                //Debug.Log(" ----------------------------------------------  Decisionmaker.Decide() " + myEntity.GetHashCode());
-
-                //nextDecisionTime = Time.time + decisionInterval;
-
-                for (int i = 0; i < decisionLayers.Length; i++)
-                {
-                    decisionLayers[i].Decide();
-                }
-            //}
+            for (int i = 0; i < decisionLayers.Length; i++)
+            {
+                decisionLayers[i].Decide();
+            }
         }
 
         /* public GameEntity GetEntity()

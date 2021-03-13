@@ -634,9 +634,8 @@ namespace BenitosAI
 
             tPRatingsCache.Add(coverPoint.GetHashCode(), (coverPointRating, Time.time));
 
+
             //Rate Cover Peek Points & Save their Ratings
-
-
             float distanceToEnemyFromPoint = Vector3.Distance(enemyInfos[0].GetEntityPosition(), coverPoint.transform.position);
 
             for (int i = 0; i < coverPoint.correspondingCoverPeekPoints.Length; i++)

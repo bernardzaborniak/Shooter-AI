@@ -19,7 +19,7 @@ namespace BenitosAI
 
         public DecisionContext()
         {
-
+            
         }
 
         public DecisionContext(DecisionContext objectToCopyValuesFrom)
@@ -27,6 +27,11 @@ namespace BenitosAI
             SetUpContext(objectToCopyValuesFrom.decision, objectToCopyValuesFrom.aiController, objectToCopyValuesFrom.target);
             rating = objectToCopyValuesFrom.rating;
 
+        }
+
+        public bool IsContextValid()
+        {
+            return (decision != null && aiController != null);
         }
 
         public void SetUpContext(DecisionContext objectToCopyValuesFrom)

@@ -184,55 +184,51 @@ namespace BenitosAI
             this.aiController = aiController;
         }
 
+
+
         public void Decide() 
         {
             UnityEngine.Profiling.Profiler.BeginSample("DecisionMaker.Decide");
 
             if (useMemory) memory.CleanUpLastDecisionRemembered();
 
-            //scores all decisions, select the best one, and create new state if this decision is different than the previous one
+            // Score all decisions, select the best one and create a new state if this decision is different from the previous one
             float currentRating = 0;
             float bestRatingSoFar = 0;
-            DecisionContext bestRatedDecisionContext = null;
+            //DecisionContext bestRatedDecisionContext = null;
+            DecisionContext bestRatedDecisionContext = new DecisionContext();
 
             for (int i = 0; i < decisions.Count; i++)
             {
-                //DecisionContext[] decisionContexesToAdd = decisions[i].decision.GetRatedDecisionContexts(aiController, decisions[i].weigt, discardThreshold);
                 DecisionContext[] decisionContexesToAdd = decisions[i].GetRatedDecisionContexts(aiController, discardThreshold);
 
                 for (int j = 0; j < decisionContexesToAdd.Length; j++)
                 {                 
-                    //If its the same as the current selected context - add momentum
+                    // If its the same as the last selected decision -> add momentum
                     if (decisionContexesToAdd[j].ContextIsTheSameAs(lastSelectedDecisionContextMemory))
                     {
-                        //Debug.Log("context the same as selected");
-                        //update momentum
+                        // Update momentum
                         currentMomentum -= (Time.time - lastSelectedDecisionContextMemory.timeOfDecison) * lastSelectedDecisionContextMemory.decision.momentumDecayRate;
-                        //Debug.Log("current momentum + " + currentMomentum + " sold: " + aiController.transform.parent.name + aiController.transform.parent.gameObject.GetHashCode());
 
-                        //if resulting value would be smaller than current rating, ignore momentum
+                        // If the resulting value would be smaller than current rating, ignore momentum
                         if(currentMomentum > decisionContexesToAdd[j].rating)
                         {
-                            //add momentum to the current rating
+                            // Add momentum to the current rating
                             decisionContexesToAdd[j].rating = currentMomentum;
                         }
 
                     }
-                    /*else
-                    {
-                        currentMomentum = 0;
-                    }*/
 
                     currentRating = decisionContexesToAdd[j].rating;
 
                     if (currentRating > bestRatingSoFar)
                     {
                         bestRatingSoFar = currentRating;
-                        //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime
-                        bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);  
+                        //the Decision context needs to be copied, as it is a reference to an object from a pool which can change during runtime.
+                        //bestRatedDecisionContext = new DecisionContext(decisionContexesToAdd[j]);
+                        bestRatedDecisionContext.SetUpContext(decisionContexesToAdd[j]);
                     }
 
-                    //if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j], decisions[i].weigt);
                     if (useMemory) memory.AddToLastDecisionsRemembered(decisionContexesToAdd[j]);
 
                 }
@@ -240,13 +236,16 @@ namespace BenitosAI
 
             if (useMemory) memory.SortLastDecisionsRemembered();
 
-            if(bestRatedDecisionContext != null)
+           // if(bestRatedDecisionContext != null)
+            if(bestRatedDecisionContext.IsContextValid())
             {
                 StartExecutingDecision(bestRatedDecisionContext);
             }
 
             UnityEngine.Profiling.Profiler.EndSample();
         }
+
+
 
         public void StartExecutingDecision(DecisionContext decisionContext)
         {
