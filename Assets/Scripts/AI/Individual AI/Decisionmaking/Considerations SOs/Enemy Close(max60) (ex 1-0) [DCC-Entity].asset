@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37437ab7ab7a4c945938818479689573, type: 3}
   m_Name: Enemy Close(max60) (ex 1-0) [DCC-Entity]
   m_EditorClassIdentifier: 
-  description: 
+  description: "Returns 1 when distance to target enemy is 0m. \nReturns 0 when distance
+    to enemy is 60m.\nLook at the curve for in-between values"
   exampleInput1: 0
   exampleInput2: 0.25
   exampleInput3: 0.5
