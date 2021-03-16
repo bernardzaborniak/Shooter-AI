@@ -15,6 +15,7 @@ public class Grenade : Item
         Impact
     }
     public GrenadeType grenadeType;
+    public DamageType damageType;
     //Expand later so frag grenade has a numer of pieces and thus resulting a percentage of how many pieces hit you where and their damage
     bool armed;// rename it when i introduce proper grenade logic for vr
     float explosionTime;
@@ -130,8 +131,11 @@ public class Grenade : Item
 
         //damage
         Collider[] collidersInExplosionRange = Physics.OverlapSphere(transform.position, explosionRadius, grenadeExplosionBlockingUnitsAndBlockingSurfacesLayermask);
+        HashSet<GameEntity> entitiesWhichAlreadyRecievedDamage = new HashSet<GameEntity>();
 
         Vector3 grenadePosition = transform.position;
+        Debug.Log("Grewnae Explositon Damage -------------------------------------------------------");
+
 
         for (int i = 0; i < collidersInExplosionRange.Length; i++)
         {
@@ -139,26 +143,38 @@ public class Grenade : Item
 
             if (damageable != null)
             {
-                Vector3 directionFromGrenade = collidersInExplosionRange[i].gameObject.transform.position - grenadePosition;
-
-                //check if no obstruction is there
-                bool grenadeFragmentBlockedByObstruction = false;
-
-                RaycastHit hit;
-                if(Physics.Raycast(transform.position, directionFromGrenade, out hit, explosionRadius, grenadeExplosionBlockingLayerMask))
+                if (!entitiesWhichAlreadyRecievedDamage.Contains(damageable.GetGameEntity()))
                 {
-                    if(hit.collider.gameObject != collidersInExplosionRange[i].gameObject)
+                    Vector3 directionFromGrenade = collidersInExplosionRange[i].gameObject.transform.position - grenadePosition;
+
+                    //check if no obstruction is there
+                    bool grenadeFragmentBlockedByObstruction = false;
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, directionFromGrenade, out hit, explosionRadius, grenadeExplosionBlockingLayerMask))
                     {
-                        grenadeFragmentBlockedByObstruction = true;
+                        if (hit.collider.gameObject != collidersInExplosionRange[i].gameObject)
+                        {
+                            grenadeFragmentBlockedByObstruction = true;
+                        }
                     }
-                }
 
-                if (!grenadeFragmentBlockedByObstruction)
-                {
-                    float distance = directionFromGrenade.magnitude;
-                    float damageAndForceModifier = 1 - (distance / explosionRadius);
-                    DamageInfo damInfo = new DamageInfo(explosionDamageAtCenter * damageAndForceModifier, null, directionFromGrenade.normalized * explosionForceAtCenter * damageAndForceModifier);
-                    damageable.TakeDamage(ref damInfo);
+                    if (!grenadeFragmentBlockedByObstruction)
+                    {
+                        float distance = directionFromGrenade.magnitude;
+                        Debug.Log("damageoble give damage: " + collidersInExplosionRange[i].name + "-----");
+
+                        Debug.Log("distance to target was: " + distance);
+                        float damageAndForceModifier = 1 - (distance / explosionRadius);
+                        if (damageAndForceModifier < 0) damageAndForceModifier = 0;
+                        Debug.Log("damageAndForceModifier: " + damageAndForceModifier);
+                        Debug.Log("damage: " + (explosionDamageAtCenter * damageAndForceModifier));
+
+                        DamageInfo damInfo = new DamageInfo(explosionDamageAtCenter * damageAndForceModifier, null, directionFromGrenade.normalized * explosionForceAtCenter * damageAndForceModifier);
+                        damageable.TakeDamage(ref damInfo);
+
+                        entitiesWhichAlreadyRecievedDamage.Add(damageable.GetGameEntity());
+                    }
                 }
             }
         }

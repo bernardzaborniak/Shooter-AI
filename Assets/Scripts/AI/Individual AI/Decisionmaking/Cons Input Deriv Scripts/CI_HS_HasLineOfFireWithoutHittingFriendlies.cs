@@ -43,7 +43,7 @@ namespace BenitosAI
                     Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                     if (hitbox)
                     {
-                        if (hitbox.GetEntity().teamID == blackboard.GetMyEntity().teamID)
+                        if (hitbox.GetGameEntity().teamID == blackboard.GetMyEntity().teamID)
                         {
                             return 0;
                         }

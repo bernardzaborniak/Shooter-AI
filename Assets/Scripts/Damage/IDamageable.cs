@@ -9,4 +9,6 @@ public interface IDamageable<T>
 
     //GameEntity GetDamagedEntity();
     int GetTeamID();
+
+    GameEntity GetGameEntity();
 }

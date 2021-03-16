@@ -6,6 +6,7 @@ using UnityEngine;
 public enum DamageType
 {  
     Default,
+    Grenade,
     Energy,
     Blunt,
     Cut,

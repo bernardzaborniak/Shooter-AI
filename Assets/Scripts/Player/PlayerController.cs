@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform shootPoint;
 
-    [Tooltip("max is 3")]
+    [Tooltip("max is 5")]
     public int timeSpeedLevel = 3;
 
     [Header("Controls Screen")]
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
         ChangeToFlyMode();
 
         timeSpeedLevel = 3;
+        Time.timeScale = 1;
 
     }
 
@@ -89,14 +90,14 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel - 1, 0, 3);
+            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel - 1, 0, 5);
 
             UpdateTimeScale();
         }
 
         if (Input.GetKeyDown(KeyCode.V))
         {
-            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel + 1, 0, 3);
+            timeSpeedLevel = Mathf.Clamp(timeSpeedLevel + 1, 0, 5);
 
             UpdateTimeScale();
         }
@@ -157,7 +158,14 @@ public class PlayerController : MonoBehaviour
         else if (timeSpeedLevel == 3)
         {
             Time.timeScale = 1f;
-
+        }
+        else if (timeSpeedLevel == 4)
+        {
+            Time.timeScale = 2f;
+        }
+        else if (timeSpeedLevel == 5)
+        {
+            Time.timeScale = 5f;
         }
         tmp_currentTimescale.text = Time.timeScale.ToString("F2");
     }

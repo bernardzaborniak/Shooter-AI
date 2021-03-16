@@ -10,6 +10,16 @@ namespace BenitosAI
 
     public class SC_HS_ThrowGrenadeAtNearestEnemy : AIStateCreator
     {
+        void OnEnable()
+        {
+            inputParamsType = new AIStateCreatorInputParams.InputParamsType[]
+            {
+                //AIStateCreatorInputParams.InputParamsType.WeaponID,
+                //AIStateCreatorInputParams.InputParamsType.MaxAimingDeviationAngle,
+                //AIStateCreatorInputParams.InputParamsType.LineOfFireCheck
+            };
+        }
+
         public override AIState CreateState(AIController aiController, DecisionContext context, AIStateCreatorInputParams inputParams)
         {
             St_HS_ThrowGrenadeAtNearestEnemy state = new St_HS_ThrowGrenadeAtNearestEnemy(aiController, context);

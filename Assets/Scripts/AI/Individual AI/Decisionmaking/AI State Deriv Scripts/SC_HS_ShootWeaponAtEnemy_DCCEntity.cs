@@ -129,7 +129,7 @@ namespace BenitosAI
                             Hitbox hitbox = hit.collider.gameObject.GetComponent<Hitbox>();
                             if (hitbox)
                             {
-                                if (hitbox.GetEntity() == target.entity)
+                                if (hitbox.GetGameEntity() == target.entity)
                                 {
                                     blockShootingCauseNoLineOfFire = false;
                                 }

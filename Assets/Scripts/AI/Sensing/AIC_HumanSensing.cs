@@ -114,7 +114,7 @@ namespace BenitosAI
                                     Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                                     if (hitbox)
                                     {
-                                        if (hitbox.GetEntity() == currentEntitySensInterface.entityAssignedTo)
+                                        if (hitbox.GetGameEntity() == currentEntitySensInterface.entityAssignedTo)
                                         {
                                             targetVisible = true;
                                         }

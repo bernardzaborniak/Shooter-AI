@@ -16,8 +16,10 @@ public class Hitbox : MonoBehaviour, IDamageable<DamageInfo>
 
     public bool TakeDamage(ref DamageInfo damageInfo)
     {
-        damageInfo.damage *= damageMultiplier;
+        if(damageInfo.type != DamageType.Grenade) damageInfo.damage *= damageMultiplier;
+
         if (healthComponent == null) Debug.Log("health component null in hitbox: " + gameObject.name);
+
         return healthComponent.TakeDamage(ref damageInfo);
     }
 
@@ -26,7 +28,7 @@ public class Hitbox : MonoBehaviour, IDamageable<DamageInfo>
         return myEntity.teamID;
     }
 
-    public GameEntity GetEntity()
+    public GameEntity GetGameEntity()
     {
         return myEntity;
     }

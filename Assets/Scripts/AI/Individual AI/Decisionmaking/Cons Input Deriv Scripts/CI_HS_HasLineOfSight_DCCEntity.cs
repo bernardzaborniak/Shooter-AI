@@ -32,7 +32,7 @@ namespace BenitosAI
                 Hitbox hitbox = hit.collider.GetComponent<Hitbox>();
                 if (hitbox)
                 {
-                    if(hitbox.GetEntity() == targetEntity)
+                    if(hitbox.GetGameEntity() == targetEntity)
                     {
                         return 1;
                     }

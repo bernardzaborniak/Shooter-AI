@@ -18,8 +18,6 @@ public class ScenarioManager : MonoBehaviour
     public GameObject team1Soldier;
     public GameObject team2Soldier;
 
-    public Transform team1TargetPosition;
-    public Transform team2TargetPosition;
 
     public List<GameObject> team1Soldiers = new List<GameObject>();
     public List<GameObject> team2Soldiers = new List<GameObject>();
