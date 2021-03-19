@@ -141,15 +141,13 @@ public class TacticalPointsManager : MonoBehaviour
         if (tacticalPointsSceneInfo)
         {
             foreach (TacticalPoint point in tacticalPoints)
-        {
-           
+            {
                 point.UpdateRatings(tacticalPointsSceneInfo.GetCoverRating(point.GetPointReferenceID()), tacticalPointsSceneInfo.GetRaysCast(point.GetPointReferenceID()));
-            
-        }
+            }
         }
         else
         {
-            Debug.Log("trying to UpdatePointRatings, but no tacticalPointsSceneInfo assigned - ignore this if you are in prefab edit mode");
+            Debug.Log("trying to UpdatePointRatings, but no tacticalPointsSceneInfo assigned - ignore this if you are in Prefab edit mode");
         }
     }
 
