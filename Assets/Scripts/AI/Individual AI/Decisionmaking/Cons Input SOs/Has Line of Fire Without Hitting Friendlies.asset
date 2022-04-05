@@ -10,9 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa04219ca347c764690ba4aea96938d7, type: 3}
-  m_Name: Has Line of Fire without hitting Friendlies
+  m_Name: Has Line of Fire Without Hitting Friendlies
   m_EditorClassIdentifier: 
-  inputParamsType: 0
-  LoFRaycastLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
+  inputParamsType: 04000000
