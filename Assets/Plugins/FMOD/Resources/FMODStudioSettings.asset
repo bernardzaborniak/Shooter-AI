@@ -77,7 +77,12 @@ MonoBehaviour:
     Value: 32
   Plugins:
   - resonanceaudio
-  MasterBanks: []
-  Banks: []
+  MasterBanks:
+  - Master
+  Banks:
+  - Environment
+  - Guns
+  - Music
+  - Player
   BanksToLoad: []
   LiveUpdatePort: 9264
